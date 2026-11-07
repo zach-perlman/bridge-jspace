@@ -37,6 +37,7 @@ UNIT = {
     "pairs": "pairs of lockers",
     "points": "points",
     "share": "share",
+    "gap_effect": "gap: recall − lookup (effect share)",
 }
 # the axis quantity each cue names: "→ more <quantity>"
 CUE_OF = {
@@ -63,6 +64,7 @@ CUE_OF = {
     "pairs": "pairs",
     "points": "gap",
     "share": "blocked",
+    "gap_effect": "gap",
 }
 
 
@@ -94,7 +96,7 @@ CHANCE = "chance"
 READERS = ("recall", "lookup")
 CONTROLS = ("rotated", "logit lens", "PCA", "a random part", "energy-matched random", "a random vector",
             "layout-only probe", "10 random heads", "no change", "random lens directions",
-            "the whole state swapped in")  # fmt: skip
+            "the whole state swapped in", "the full state")  # fmt: skip
 CONDITIONS = (
     "lens part", "knock-out", "removed from the patch", "swapped in", "the whole change", "a change of item",
     "another entity", "switches blocked beyond random", "address", "identity", "position", "the number",

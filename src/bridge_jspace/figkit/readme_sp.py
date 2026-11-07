@@ -1,0 +1,270 @@
+"""The root README's figures (figures/readme/) on styles-plot, for the readme target. Several are write-up figures
+under the README's file name (ALIAS: the same declaration, the README's figure id, so the registry has their rows under
+both ids); the rest are declared here from the figkit builders' data (exemplars.py, deck_figs.py, claim_figs.py,
+depth_figs.py), same accessors, same file names.
+
+uv run python -m bridge_jspace.figkit.readme_sp [ids...]
+"""
+
+from __future__ import annotations
+
+import re
+import sys
+from pathlib import Path
+
+import styles_plot as sp
+
+from bridge_jspace.figkit import claim_figs as CF
+from bridge_jspace.figkit import data as D
+from bridge_jspace.figkit import depth_figs as DF
+from bridge_jspace.figkit import specs as S
+from bridge_jspace.figkit import writeup_sp as WS
+from bridge_jspace.figkit import writeup_sp_b as WB
+from bridge_jspace.figkit.writeup_sp_base import REPO, ZK, est, need, vocab
+
+OUT = REPO / "figures" / "readme"
+TARGET = "readme"
+DAN = [m for m, _ in D.DAN]
+TWIN = WB.TWIN
+
+# README id -> the write-up figure it draws (the same cells and statuses, scripts/status_registry.py copies them)
+ALIAS = {"r1_c1_split": "fig01_main_split", "r3_last_token": "fig13_last_token", "f9_where": "appB_f9_where",
+         "f8_facts": "appB_f8_facts", "f8_directions": "appB_f8_directions", "f12_order": "appB_f12_order",
+         "f14_two_codes": "appB_f14_two_codes", "f2_controls": "fig05_controls", "p0a_datasets": "fig02_datasets"}  # fmt: skip
+WRITEUP = {**WS.FIGS, **WB.BLOCKED}
+
+
+def _alias(fid: str):
+    def build() -> sp.Figure:
+        fig = WRITEUP[ALIAS[fid]]()
+        fig.id = fid  # the README's figure id: its registry rows (copies of the write-up figure's)
+        return fig
+
+    build.__doc__ = f"The write-up's {ALIAS[fid]}, as the README's {fid}."
+    return build
+
+
+# ---- r1_dan_split: the one-layer test alone --------------------------------------------------------------------------
+def r1_dan_split() -> sp.Figure:
+    """The one-layer test (locker scenes): each reader's switches blocked beyond random on the grey band, and the gap
+    recall − lookup with its 95% interval (the depth README's Fig. 1; the write-up Fig. 1's right half)."""
+    shares = sp.DotColumn(
+        "switches blocked beyond random", "switches", (-0.25, 1.0), (0, 0.5, 1),
+        series=[sp.Series("lookup", {m: est(S.conflict(m, "lookup"), f"layer.{ZK[m]}") for m in DAN}),
+                sp.Series("recall", {m: est(S.conflict(m, "recall"), f"layer.{ZK[m]}") for m in DAN})],
+        connect=("lookup", "recall"), band=(-0.1, 0.1),
+    )  # fmt: skip
+    gap = sp.DotColumn("gap: recall − lookup", "gap_share", (-0.1, 1.1), (0, 0.5, 1),
+                       series=[sp.Series("recall", {m: WS._layer_gap(m) for m in DAN})])  # fmt: skip
+    t = sp.DotTable(DAN, [sp.ColumnGroup("One layer · locker scenes", [shares, gap])])
+    return sp.Figure("r1_dan_split", vocab()).add(t)
+
+
+# ---- r4_pointer: another entity's lens part, against a probe's subspace ---------------------------------------------
+R4 = (("swap", "swap", "another entity's own passage", "lens"),
+      ("neutral", "neutral_pts", "one neutral sentence about another entity", "lens"),
+      ("noown", "noown_pts", "without another entity's own-word directions", "lens"),
+      ("rot", "rot_pts", "rotated", "control"))  # fmt: skip
+
+
+def r4_pointer() -> sp.Figure:
+    """Answers moved to another entity's fact: its lens part swapped in from its own passage, from one neutral sentence
+    about it, without its own-word directions, rotated (grey), and a probe's subspace that reads the fact (slate); the
+    paired difference neutral sentence − own passage beside."""
+    sub = {m: f"{WS._ptr_n(ZK[m])} items" for m in TWIN if WS._ptr_n(ZK[m])}
+    cols = []
+    for cond, key, header, role in R4:
+        cells = {}
+        for m in TWIN:
+            c = D.b(f"ptr.{ZK[m]}.{key}")
+            cells[m] = (est(c, f"{cond}.{ZK[m]}", key=f"ptr.{ZK[m]}.{key}", label=True) if c
+                        else sp.Missing("no run"))  # fmt: skip
+        cols.append(sp.DotColumn(header, "moved", (-8, 96), (0, 40, 80),
+                                 series=[sp.Series(role, cells, control="rotated" if role == "control" else None)]))  # fmt: skip
+    probe = {}
+    for m in TWIN:
+        c = D.b(f"probe.{ZK[m]}.probe_pts")
+        probe[m] = (est(c, f"probe.{ZK[m]}", key=f"probe.{ZK[m]}.probe_pts", label=True) if c
+                    else sp.Missing("no run"))  # fmt: skip
+    cols.append(sp.DotColumn("a probe's subspace", "moved", (-8, 96), (0, 40, 80),
+                             series=[sp.Series("neutral", probe)]))  # fmt: skip
+
+    def diff(m):
+        key = f"ptr.{ZK[m]}.neutral_minus_swap"
+        d = D.b(key)
+        return sp.Est(d[0], d[1], d[2], key=key) if d else sp.Missing("no run")
+
+    cols.append(sp.TextColumn("neutral sentence − own passage", "moved_difference", {m: diff(m) for m in TWIN},
+                              unit_title=False))  # fmt: skip
+    t = sp.DotTable(TWIN, cols, row_sub=sub, note="another entity: one of the same kind · answers moved to its fact")
+    return sp.Figure("r4_pointer", vocab()).add(t)
+
+
+# ---- f5_atoms: what the lens part decodes to --------------------------------------------------------------------------
+ATOMS = "52 A: share of the rebuilt energy, "
+
+
+def f5_atoms() -> sp.Figure:
+    """Of the lens part's 25 directions, the share of the rebuilt energy by the word each decodes to: the old and the new
+    bridge word (both the lens part, named in grey lane words), an answer word (brick); another scene word and no
+    scene word as numbers beside (Dan, 7 Nov: no new roles)."""
+    models = [m for m in DAN if D.s(m, ATOMS + "the old bridge word")]
+    lens, answer, other, none_ = {}, {}, {}, {}
+    for m in models:
+        k = ZK[m]
+        for lane, q in (("old", "the old bridge word"), ("new", "the new bridge word")):
+            lens[(m, lane)] = est(need(D.s(m, ATOMS + q), m), f"atoms.{k}", key=f"f5.{lane}.{k}", label=True)
+        answer[(m, "answer")] = est(need(D.s(m, ATOMS + "an answer word"), m), f"atoms.{k}", key=f"f5.answer.{k}",
+                                    label=True)  # fmt: skip
+        other[(m, "old")] = est(need(D.s(m, ATOMS + "another scene word or its class"), m), f"atoms.{k}",
+                                key=f"f5.other_scene.{k}")  # fmt: skip
+        none_[(m, "old")] = est(need(D.s(m, ATOMS + "no scene word"), m), f"atoms.{k}", key=f"f5.no_scene.{k}")
+    col = sp.DotColumn("share of the rebuilt energy", "rebuilt", (-0.03, 1.05), (0, 0.5, 1),
+                       series=[sp.Series("lens", lens), sp.Series("answer", answer, word="answer word")])  # fmt: skip
+    t = sp.DotTable(models, [col, sp.TextColumn("another scene word", "rebuilt", other, unit_title=False),
+                             sp.TextColumn("no scene word", "rebuilt", none_, unit_title=False)],
+                    lanes=[sp.Lane("old", "old bridge word"), sp.Lane("new", "new bridge word"),
+                           sp.Lane("answer", "answer word")],
+                    note="of the lens part's 25 directions, by the word each decodes to")  # fmt: skip
+    return sp.Figure("f5_atoms", vocab()).add(t)
+
+
+# ---- f6_address: read, remove, swap, rebuild ---------------------------------------------------------------------------
+def f6_address() -> sp.Figure:
+    """The address in four columns: read by the locker probe, taken out, swapped, and rebuilt by 25 lens directions
+    (the write-up's Fig. 8a and 8b side by side)."""
+    a, b = WB.fig08a_address_read_remove(), WB.fig08b_address_swap_lens()
+    t = sp.DotTable(DAN, [*a.blocks[0].columns, *b.blocks[0].columns])
+    return sp.Figure("f6_address", vocab()).add(t)
+
+
+# ---- f11_monitor: the address at the last token -------------------------------------------------------------------------
+def f11_monitor() -> sp.Figure:
+    """The locker probe's accuracy for the address at the last token with only the lens part kept (25 or 100 lens
+    directions), against a random part of the same energy and the full state (grey)."""
+    q = "the address at the last token, main test, {} lens directions: "
+    models = [m for m in DAN if D.s(m, q.format(25) + "the J++ part")]
+    cols = []
+    for n in (25, 100):
+        lens, rand, full = {}, {}, {}
+        for m in models:
+            k = ZK[m]
+            lens[m] = est(need(D.s(m, q.format(n) + "the J++ part"), m), f"monitor.{k}", key=f"f11.lens.{n}.{k}")
+            rand[m] = est(need(D.s(m, q.format(n) + "a random part (same energy)"), m), f"monitor.{k}",
+                          key=f"f11.random.{n}.{k}", interval=False)  # fmt: skip
+            full[m] = est(need(D.s(m, q.format(n) + "the full state"), m), f"monitor.{k}", key=f"f11.full.{n}.{k}",
+                          interval=False)  # fmt: skip
+        # two grey dots in one row could not be told apart: the full state (the figkit figure's black tick) is a number
+        # beside, with the lens part's (a label between three marks crosses one)
+        dots = sp.DotColumn("probe accuracy", "probe_accuracy", (0.4, 1.02), (0.5, 0.75, 1),
+                            series=[sp.Series("control", rand, control="energy-matched random"),
+                                    sp.Series("lens", lens)],
+                            connect=("control", "lens"))  # fmt: skip
+        cols += [sp.ColumnGroup(f"{n} lens directions", [
+            dots, sp.TextColumn("lens part", "probe_accuracy", lens, role="lens", unit_title=False),
+            sp.TextColumn("the full state", "probe_accuracy", full, unit_title=False)]), sp.Gutter()]  # fmt: skip
+    t = sp.DotTable(models, cols[:-1], note="the locker probe's accuracy for the address at the last token")
+    return sp.Figure("f11_monitor", vocab()).add(t)
+
+
+# ---- f10_sentence_order: where the locker sentence sits -----------------------------------------------------------------
+def f10_sentence_order() -> sp.Figure:
+    """The lookups switched by the whole change with the locker sentence before or after the pick (ours); then the post
+    hoc two-by-two: the changed prompt's sentence before or after, with the original sentence first or after."""
+    models = [m for m in DAN if D.s(m, CF.ORDER_Q.format("before the pick"), "fig03")]
+    lanes = (("first", "before"), ("after", "after"))
+    main = {}
+    for m in models:
+        k = ZK[m]
+        for lane, when in lanes:
+            main[(m, lane)] = est(need(D.s(m, CF.ORDER_Q.format(f"{when} the pick"), "fig03"), m), f"order.{k}",
+                                  key=f"f10.order.{lane}.{k}", label=True)  # fmt: skip
+    cols = [sp.DotColumn("lookups switched", "lookups_switched", (0, 1.05), (0, 0.5, 1),
+                         series=[sp.Series("lookup", main)])]  # fmt: skip
+    for orig, header in (("before", "original locker first"), ("after", "original locker after")):
+        cells = {}
+        for m in models:
+            k = ZK[m]
+            for lane, when in lanes:
+                c = D.s(m, CF.BOTH_Q.format(orig, when), "fig03")
+                if c:
+                    cells[(m, lane)] = est(c, f"both.{orig}.{k}", key=f"f10.both.{orig}.{lane}.{k}", label=True)
+                elif lane == "first":
+                    cells[(m, lane)] = sp.Missing("no run")
+        cols.append(sp.DotColumn(header, "lookups_switched", (-0.2, 1.3), (0, 0.5, 1),
+                                 series=[sp.Series("lookup", cells)]))  # fmt: skip
+    t = sp.DotTable(models, cols, lanes=[sp.Lane("first", "sentence before the pick"),
+                                         sp.Lane("after", "sentence after the pick")])  # fmt: skip
+    return sp.Figure("f10_sentence_order", vocab()).add(t)
+
+
+# ---- t12_two_by_two: both operations on both datasets ---------------------------------------------------------------------
+LIGHTNING = "nemotron-3.5-lightning"
+
+
+def t12_two_by_two() -> sp.Figure:
+    """Both operations on both datasets in one unit, recall − lookup as a share lost: one layer (ours) and a band of
+    layers (Zach's), on locker scenes and on fact passages; grey, the same gap with a same-size control."""
+    cols = []
+    for j, (header, q, qc) in enumerate(DF.TWO_BY_TWO):
+        gap, ctl = {}, {}
+        for m in DAN:
+            k = ZK[m]
+            v, c = D.s(m, q), D.s(m, qc)
+            if not v:
+                why = ("too few switches" if j == 1 and D.s(m, DF.SWITCHES) else
+                       "below gate" if j == 2 and m == LIGHTNING else "no run")  # fmt: skip
+                gap[m] = sp.Missing(why)
+                continue
+            cell = f"t12.{j}.{k}"
+            gap[m] = est(v, cell, key=f"t12.{j}.{k}", label=True)
+            if c:
+                ctl[m] = est(c, cell, key=f"t12.{j}.control.{k}")
+        control = "rotated" if j == 3 else "a random part"
+        cols.append(sp.DotColumn(header.capitalize(), "gap_effect", (-0.25, 1.35), DF.XTICKS,
+                                 series=[sp.Series("control", ctl, control=control), sp.Series("recall", gap)]))  # fmt: skip
+    t = sp.DotTable(DAN, [sp.ColumnGroup("One layer", cols[:2]), sp.Gutter(), sp.ColumnGroup("Band of layers", cols[2:])])
+    return sp.Figure("t12_two_by_two", vocab()).add(t)
+
+
+FIGS = {**{fid: _alias(fid) for fid in ALIAS}, "r1_dan_split": r1_dan_split, "r4_pointer": r4_pointer,
+        "f5_atoms": f5_atoms, "f11_monitor": f11_monitor, "f10_sentence_order": f10_sentence_order,
+        "t12_two_by_two": t12_two_by_two}  # fmt: skip
+# Declared but refused by styles-plot 0.1.4 strict (stays on figkit): f6_address (the write-up's fig08a columns: a
+# value label set beside its own dot across the connector, SP601, as fig08a).
+BLOCKED = {"f6_address": f6_address}
+# Left on figkit: f3_nine_models (a second same-role estimate in one row: Bolt at 100 directions, the 122B scored by
+# probability), r5_routes (stack whiskers), p0b_tools (a schematic of coloured grid cells, as the write-up's fig03).
+
+
+DEPTH = REPO / "figures" / "depth"
+DIR = {"r1_dan_split": DEPTH, "t12_two_by_two": DEPTH}  # the depth README's own figures; the rest: figures/readme
+
+
+def build(ids=None, out: Path | None = None, figs=None, dirs=None) -> list[str]:
+    """Save each figure strict for the README target, into its set's folder (or `out`); returns the failures (a
+    failed figure writes nothing)."""
+    figs, dirs = figs or FIGS, DIR if dirs is None else dirs
+    failed = []
+    for fid in ids or figs:
+        try:
+            sp.save(figs[fid](), (out or dirs.get(fid, OUT)) / f"{fid}.png", target=TARGET)
+            print(f"ok    {fid}")
+        except (sp.StyleError, sp.BuildError, ValueError) as e:
+            failed.append(fid)
+            print(f"FAIL  {fid}\n{e}")
+    return failed
+
+
+def write_order(readme: Path, folder: Path) -> Path:
+    """The contact sheet's order: the figures of `folder` in the order the README embeds them (the rest follow)."""
+    rel = folder.relative_to(REPO).as_posix()
+    names = re.findall(rf"{re.escape(rel)}/([\w/.-]+?)\.png", readme.read_text())
+    path = folder / "order.txt"
+    names = [n for n in dict.fromkeys(names) if not n.startswith("contact_sheet")]  # a sheet is not on itself
+    path.write_text("".join(f"{n}\n" for n in names))
+    return path
+
+
+if __name__ == "__main__":
+    sys.exit(1 if build(sys.argv[1:] or None) else 0)

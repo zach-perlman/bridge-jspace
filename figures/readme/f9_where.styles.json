@@ -1,0 +1,477 @@
+{
+ "styles_plot": "0.1.4",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "8fe1656cd5ecb1632fdba5856f3917d55bd1e44e67042e5421014828b4b54596"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "eb4118e02adaf9936d6f46f7689ba2ed9ba06d3ec5e93b746e76ebdc1e81f179"
+ },
+ "figure": "f9_where",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "e900dc0de3f6662da08ae2cd9899de9bd0655f69df562526c4213a5b04016c7e",
+  "dpi": 160
+ },
+ "roles": [
+  "recall"
+ ],
+ "controls": [
+  "rotated"
+ ],
+ "cells": {
+  "late.0.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "late.0.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "late.0.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "late.0.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "late.1.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "late.1.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "late.1.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "late.1.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "late.2.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "late.2.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "late.2.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "late.2.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "mid.0.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "mid.0.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "mid.0.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "mid.1.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "mid.1.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "mid.1.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "mid.2.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "mid.2.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "mid.2.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "mid.0.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "mid.0.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "mid.0.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "mid.0.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "mid.0.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "mid.0.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "mid.1.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "mid.1.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "mid.1.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "mid.1.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "mid.1.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "mid.1.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "mid.2.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "mid.2.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "mid.2.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "mid.2.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "mid.2.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "mid.2.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "late.0.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "late.0.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "late.0.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "late.0.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "late.0.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "late.0.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "late.0.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "late.0.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "late.1.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "late.1.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "late.1.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "late.1.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "late.1.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "late.1.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "late.1.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "late.1.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "late.2.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "late.2.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "late.2.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "late.2.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "late.2.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "late.2.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "late.2.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "late.2.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "grey: rotated",
+  "whiskers: 95% interval"
+ ],
+ "numbers": {
+  "pos.q9.all.all": "42.6",
+  "pos.q27.all.all": "50.9",
+  "pos.nl.all.all": "53.1",
+  "pos.q9.all.bridge": "33.6",
+  "pos.q27.all.bridge": "29.7",
+  "pos.nl.all.bridge": "19.9",
+  "pos.q9.all.question": "6.2",
+  "pos.q27.all.question": "10.7",
+  "pos.nl.all.question": "22.7",
+  "late.q9.all": "53.1",
+  "late.q27.all": "50.0",
+  "ko.mu.mk": "59.9",
+  "late.nl.all": "61.6",
+  "late.q9.bridge": "0.2",
+  "late.q27.bridge": "2.9",
+  "pos.mu.bridge": "1.8",
+  "late.nl.bridge": "0.5",
+  "late.q9.question": "52.6",
+  "late.q27.question": "47.1",
+  "pos.mu.question": "59.3",
+  "late.nl.question": "52.6"
+ },
+ "problems": []
+}

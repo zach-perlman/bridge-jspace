@@ -41,7 +41,7 @@ word = "neutral"
 meaning = "a method of no role (a probe's subspace)"
 
 [controls]
-names = ["rotated", "logit lens", "PCA", "a random part", "energy-matched random", "a random vector", "layout-only probe", "10 random heads", "no change", "random lens directions", "the whole state swapped in"]
+names = ["rotated", "logit lens", "PCA", "a random part", "energy-matched random", "a random vector", "layout-only probe", "10 random heads", "no change", "random lens directions", "the whole state swapped in", "the full state"]
 
 [key]
 tick = "the largest same-size control"
@@ -210,8 +210,21 @@ quantity = "pairs"
 format = "count"
 cue = false
 
+# README t12: both operations on both datasets, one unit (depth_figs.two_by_two)
+[units.gap_effect]
+title = "gap: recall − lookup (effect share)"
+quantity = "gap"
+format = "share"
+
 [terms]
 canonical = [
+    # the README set (figkit/readme_sp.py)
+    "a probe's subspace",
+    "old bridge word", "new bridge word", "answer word", "another scene word", "no scene word",
+    "of the lens part's 25 directions, by the word each decodes to",
+    "the locker probe's accuracy for the address at the last token",
+    "original locker first", "original locker after", "lookups switched",
+    "One layer", "Band of layers", "probe accuracy",
     "Band of layers \u00b7 fact passages",
     "Fact passages",
     "Locker scenes",

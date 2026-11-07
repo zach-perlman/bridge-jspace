@@ -25,6 +25,7 @@ from bridge_jspace.figkit import writeup_appendix as WP
 from bridge_jspace.figkit import writeup_claims as WC
 from bridge_jspace.figkit import writeup_figs as W
 from bridge_jspace.figkit import writeup_intro as WI
+from bridge_jspace.figkit import readme_sp as RS
 from bridge_jspace.figkit import writeup_sp as SP
 from bridge_jspace.figkit import writeup_v2 as W2
 from bridge_jspace.figkit.build import page_sheet
@@ -80,6 +81,9 @@ CLAIMS = {  # the alt text in the root README (scripts/readme_root.py)
     "p0b_tools": "Three tools, one target: the lens part at the bridge.",
 }
 assert set(CLAIMS) == set(TARGET["readme"])
+# the styles-plot figures (figkit/readme_sp.py) are not built here
+TARGET["readme"] = [i for i in TARGET["readme"] if i not in RS.FIGS]
+TARGET["depth"] = [i for i in TARGET["depth"] if i not in RS.FIGS]
 
 PROBLEMS: list[str] = []
 

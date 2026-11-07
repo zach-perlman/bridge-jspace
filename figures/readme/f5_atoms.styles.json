@@ -1,0 +1,199 @@
+{
+ "styles_plot": "0.1.4",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "8fe1656cd5ecb1632fdba5856f3917d55bd1e44e67042e5421014828b4b54596"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "eb4118e02adaf9936d6f46f7689ba2ed9ba06d3ec5e93b746e76ebdc1e81f179"
+ },
+ "figure": "f5_atoms",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "227a172c899eda600744303b49ce05f20515e54377e83848df3102176e84a5d3",
+  "dpi": 160
+ },
+ "roles": [
+  "answer",
+  "lens"
+ ],
+ "controls": [],
+ "cells": {
+  "atoms.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "atoms.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "atoms.q122": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "atoms.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "atoms.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "answer",
+   "cell": "atoms.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "answer",
+   "cell": "atoms.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "answer",
+   "cell": "atoms.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "answer",
+   "cell": "atoms.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "answer",
+   "cell": "atoms.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "○ post hoc"
+ ],
+ "numbers": {
+  "f5.other_scene.q9": "0.01",
+  "f5.other_scene.q27": "0.01",
+  "f5.other_scene.mu": "0.02",
+  "f5.other_scene.nl": "0.01",
+  "f5.other_scene.q122": "0.01",
+  "f5.no_scene.q9": "0.77",
+  "f5.no_scene.q27": "0.77",
+  "f5.no_scene.mu": "0.61",
+  "f5.no_scene.nl": "0.79",
+  "f5.no_scene.q122": "0.69",
+  "f5.old.q9": "0.11",
+  "f5.new.q9": "0.11",
+  "f5.answer.q9": "0.00",
+  "f5.old.q27": "0.10",
+  "f5.new.q27": "0.11",
+  "f5.answer.q27": "0.00",
+  "f5.old.mu": "0.18",
+  "f5.new.mu": "0.19",
+  "f5.answer.mu": "0.00",
+  "f5.old.nl": "0.09",
+  "f5.new.nl": "0.11",
+  "f5.answer.nl": "0.00",
+  "f5.old.q122": "0.15",
+  "f5.new.q122": "0.15",
+  "f5.answer.q122": "0.00"
+ },
+ "problems": []
+}

@@ -188,8 +188,43 @@ def key() -> list[dict]:
                                                                                           "layer.q27")]  # fmt: skip
 
 
+def readme_set(writeup: list[dict]) -> list[dict]:
+    """The root README's figures (figkit/readme_sp.py). A README figure that draws a write-up figure (readme_sp.ALIAS)
+    takes its rows under the README's id, without the "not claimed" tags: the README's figkit figures never printed
+    them (presentation unchanged; listed as a disagreement). The others keep the hollow rule their figkit builder drew,
+    cited."""
+    from bridge_jspace.figkit.readme_sp import ALIAS
+
+    src = "src/bridge_jspace/figkit/"
+    out = []
+    for fid, wid in ALIAS.items():
+        rs = [r for r in writeup if r["figure"] == wid]
+        if any(r["tag"] for r in rs):
+            DISAGREEMENTS.append(f"{fid} (README copy of {wid}): the write-up tags {', '.join(r['cell'] for r in rs if r['tag'])} "
+                                 "'not claimed'; the README's figkit figure printed no tag. The README copy keeps no tag.")  # fmt: skip
+        out += [{**r, "figure": fid, "tag": "", "source": f"{r['source']} (as {wid}, drawn for README.md)"} for r in rs]
+    for m, _ in MODELS:
+        k = SHORT[m]
+        out.append(by_hollow("r1_dan_split", f"layer.{k}", m, what="one layer, the conflict test"))
+        out.append(by_hollow("f5_atoms", f"atoms.{k}", m, what="the lens part's atoms (deck_figs.f_atoms)"))
+        out.append(by_hollow("f11_monitor", f"monitor.{k}", m, what="the address at the last token (deck_figs.f_monitor)"))
+        out.append(by_hollow("f10_sentence_order", f"order.{k}", m, what="sentence order (claim_figs.f_sentence_order)"))
+        for orig in ("before", "after"):
+            out.append(post_hoc("f10_sentence_order", f"both.{orig}.{k}", "the two-by-two of both orders",
+                                f"{src}claim_figs.py f_sentence_order (hollow=True)"))  # fmt: skip
+        for j in range(4):
+            out.append(by_hollow("t12_two_by_two", f"t12.{j}.{k}", m, what="both operations on both datasets"))
+    for m in TWIN:
+        k = SHORT[m]
+        for cond in ("swap", "neutral", "noown", "rot", "probe"):
+            out.append(fixed("r4_pointer", f"{cond}.{k}", "the pointer runs and the probe's subspace",
+                             f"{src}exemplars.py r4_pointer"))  # fmt: skip
+    return out
+
+
 def rows() -> list[dict]:
-    return [*key(), *fig01(), *fig04(), *fig09(), *fig12(), *appB_f17(), *styles_plot_port()]
+    writeup = [*key(), *fig01(), *fig04(), *fig09(), *fig12(), *appB_f17(), *styles_plot_port()]
+    return [*writeup, *readme_set(writeup)]
 
 
 if __name__ == "__main__":

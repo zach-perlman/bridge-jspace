@@ -1,0 +1,158 @@
+{
+ "styles_plot": "0.1.4",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "8fe1656cd5ecb1632fdba5856f3917d55bd1e44e67042e5421014828b4b54596"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "eb4118e02adaf9936d6f46f7689ba2ed9ba06d3ec5e93b746e76ebdc1e81f179"
+ },
+ "figure": "f8_directions",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "3e626bb0ad8451f6726491967a153f15f0dd08585f54a59c0c062af4050a177d",
+  "dpi": 160
+ },
+ "roles": [
+  "lookup"
+ ],
+ "controls": [],
+ "cells": {
+  "dirs.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "dirs.q122": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "dirs.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "dirs.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "grey band: within 0.10 of a random part",
+  "whiskers: 95% interval"
+ ],
+ "numbers": {
+  "f8.dirs.25.q9": "−0.02",
+  "f8.dirs.25.q27": "0.12",
+  "f8.dirs.25.mu": "−0.10",
+  "f8.dirs.25.q122": "0.00",
+  "f8.dirs.50.q9": "−0.03",
+  "f8.dirs.50.q27": "0.30",
+  "f8.dirs.50.mu": "−0.01",
+  "f8.dirs.50.q122": "−0.02",
+  "f8.dirs.100.q9": "−0.08",
+  "f8.dirs.100.q27": "0.60",
+  "f8.dirs.100.mu": "0.00",
+  "f8.dirs.100.q122": "−0.12"
+ },
+ "problems": []
+}
