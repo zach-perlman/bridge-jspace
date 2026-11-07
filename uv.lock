@@ -121,7 +121,7 @@ requires-dist = [
     { name = "python-dotenv", specifier = ">=1.0" },
     { name = "pyyaml", specifier = ">=6.0" },
     { name = "scipy", specifier = "==1.18.1" },
-    { name = "styles-plot", git = "https://github.com/danorel/styles-plot?rev=v0.1.8" },
+    { name = "styles-plot", git = "https://github.com/danorel/styles-plot?rev=v0.1.9" },
     { name = "torch", marker = "sys_platform != 'linux'", specifier = "==2.11.0" },
     { name = "torch", marker = "sys_platform == 'linux'", specifier = "==2.11.0", index = "https://download.pytorch.org/whl/cu128" },
     { name = "tqdm", specifier = ">=4.66" },
@@ -1727,8 +1727,8 @@ wheels = [
 
 [[package]]
 name = "styles-plot"
-version = "0.1.8"
-source = { git = "https://github.com/danorel/styles-plot?rev=v0.1.8#a3d615809d3b8f3f2244ae2eafcefd6f57fa33a6" }
+version = "0.1.9"
+source = { git = "https://github.com/danorel/styles-plot?rev=v0.1.9#c0c8e17c3c4bbb6d589659e3435aafd45100e053" }
 dependencies = [
     { name = "matplotlib" },
     { name = "numpy" },

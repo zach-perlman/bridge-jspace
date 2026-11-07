@@ -15,6 +15,7 @@ import styles_plot as sp
 from bridge_jspace.figkit import data as D
 from bridge_jspace.figkit import depth_sp_b as DB
 from bridge_jspace.figkit import depth_sp_c as DC
+from bridge_jspace.figkit import depth_sp_d as DD
 from bridge_jspace.figkit import readme_sp as RS
 from bridge_jspace.figkit.writeup_sp_base import REPO, ZK, est, need, vocab
 
@@ -23,12 +24,14 @@ DAN = [m for m, _ in D.DAN]
 
 # depth id -> the write-up figure it draws (registry rows copied, as readme_sp.ALIAS)
 ALIAS = {"fig13_attention": "appB_f17_attention", "fig09b_six_lockers": "appB_f19_six_lockers",
-         "fig24_two_codes": "appB_f14_two_codes"}  # fmt: skip
+         "fig24_two_codes": "appB_f14_two_codes",
+         # the depth README's Fig. 3: panels A and B are the write-up's Fig. 9, panel C its appendix B f15 (too tall as one)
+         "fig03_order": "fig09_order", "fig03c_link_layers": "appB_f15_link_crossover"}  # fmt: skip
 
 
 def path(fid: str):
     """Where a depth figure is written (one place, for the folder layout to come)."""
-    return (OUT / "supp" if fid in DB.SUPP | DC.SUPP else OUT) / f"{fid}.png"
+    return (OUT / "supp" if fid in DB.SUPP | DC.SUPP | DD.SUPP else OUT) / f"{fid}.png"
 
 
 def _alias(fid: str):
@@ -379,7 +382,7 @@ def fig14_learned() -> sp.Figure:
 FIGS = {**{fid: _alias(fid) for fid in ALIAS}, "fig01b_settings": fig01b_settings, "fig01c_zeroing": fig01c_zeroing,
         "fig02_specificity": fig02_specificity, "fig05b_identity_outside": fig05b_identity_outside,
         "fig05c_described_bridge": fig05c_described_bridge, "fig07c_probe_errors": fig07c_probe_errors,
-        "fig09d_chain": fig09d_chain, "fig21_code_tool": fig21_code_tool, "fig14_learned": fig14_learned, **DB.FIGS, **DC.FIGS}  # fmt: skip
+        "fig09d_chain": fig09d_chain, "fig21_code_tool": fig21_code_tool, "fig14_learned": fig14_learned, **DB.FIGS, **DC.FIGS, **DD.FIGS}  # fmt: skip
 
 
 def build(ids=None) -> list[str]:

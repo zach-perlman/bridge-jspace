@@ -48,6 +48,7 @@ tick = "the largest same-size control"
 band = "within 0.10 of a random part"
 
 [key.bands]
+gate = "layers that pass the gate (the whole change switches at least 0.30 of the lookups)"
 random_vectors = "the range of 200 random vectors"
 
 [intervals]
@@ -409,8 +410,53 @@ title = "extra drop without the lens part (share)"
 quantity = "extra drop"
 format = "share"
 
+[units.depth_share_y]
+title = "share (0-1)"
+quantity = "share"
+format = "share"
+
+[units.overlap]
+title = "the address's overlap between neighbouring windows (mean cos²)"
+quantity = "overlap"
+format = "share"
+
+[units.probe_moved]
+title = "probe moved toward the changed item's attribute (share)"
+quantity = "moved toward the changed item"
+format = "share"
+
+[units.accuracy_drop_share]
+title = "accuracy drop (share)"
+quantity = "accuracy drop"
+format = "share"
+
 [terms]
 canonical = [
+    "identity route: the item's own locker; position route: the locker now at the item's old place; value: the new number",
+    "Δ: the bridge word's state in the changed prompt minus the original's, at one layer",
+    "added at one layer",
+    "both questions read this same patched state",
+    "changed prompt",
+    "identity route",
+    "original prompt + Δ",
+    "original prompt",
+    "original → after the patch",
+    "position route",
+    "the two picks swap",
+    "value",
+    "copy at L's share of the switches",
+    "mean overlap, every pair of window layers",
+    "the bridge word, early layers",
+    "the bridge word, late layers",
+    "the person word, late layers",
+    "the item's own tokens",
+    "copied at every locker-sentence token",
+    "every locker-sentence token",
+    "the locker probe",
+    "the number only",
+    "the other locker-sentence tokens",
+    "the period only",
+    "MLP outputs replaced by their mean",
     "rebuilt by 25 lens directions",
     "random draws' 95th percentile",
     "the lookup's subspace",

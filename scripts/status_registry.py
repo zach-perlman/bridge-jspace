@@ -253,7 +253,8 @@ DEPTH_FIGS = {"fig08a_address_read_remove", "fig08b_address_swap_lens", "f6_addr
               "s03_order_split", "s08b_pointer_moves_and_neutral_sentence", "fig09c_formation", "fig10e_second_route",
               "s05a_routes_taken_out", "s05b_routes_kept", "s03e_cumulative", "fig16a_dose_lens", "fig16b_dose_rest",
               "s12_das_muse", "fig10c_binding", "fig10c2_binding_added", "fig10d_heads", "s07_recall_follows_swap",
-              "s07b_lens_readout", "fig02b_k_curve", "fig02c_k_routes"}  # fmt: skip
+              "s07b_lens_readout", "fig02b_k_curve", "fig02c_k_routes", "fig03b_layers", "s03d_link_copy_variants",
+              "fig06_depth", "fig06d_depth_more", "fig06c_address_depth", "fig10b_enrichment"}  # fmt: skip
 DEPTH_PREFIX = (("t12_two_by_two", "t12.0."), ("t12_two_by_two", "t12.1."))
 
 
@@ -396,6 +397,34 @@ def depth_set_c() -> list[dict]:
         for fid, arms in (("s05a_routes_taken_out", S05_ARMS[:5]), ("s05b_routes_kept", S05_ARMS[5:])):
             for arm, _label in arms:
                 out.append(by_hollow(fid, f"routes.{arm}.{k}", m, lowered=True, what="the routes test's arms"))
+    return out
+
+
+def depth_set_d() -> list[dict]:
+    """The depth README's sweeps (figkit/depth_sp_d.py): 45q's cells fixed in advance and its layer sweeps post hoc
+    (as appB_f15: curve_figs.f_link_crossover drew them open); 47.8 fixed in advance, Lightning and the 122B after the
+    data (their gates chosen after: hollow() with the lowered gate); 48.2 fixed in advance; D4 under the rule its
+    builder states (scripts/story_b47c.py build_depth), not dated there: listed."""
+    from bridge_jspace.figkit.depth_sp_d import S03D
+
+    src, cv = "scripts/readme_story_figures.py", "src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)"
+    out = []
+    for m, _ in MODELS:
+        k = SHORT[m]
+        for arm in ("a", "c", "d"):
+            out.append(fixed("fig03b_layers", f"arm.{arm}.{k}", "rule 45q's cells fixed in advance", f"{src} f03b_layers"))
+        for tag in ("bridge", "copy"):
+            out.append(post_hoc("fig03b_layers", f"sweep.{tag}.{k}", "the layer sweep", cv))
+        out.append(fixed("s03d_link_copy_variants", f"arm.c.{k}", "rule 45q's arm c at L", f"{src} s03d_q"))
+        for key, *_ in S03D:
+            out.append(post_hoc("s03d_link_copy_variants", f"sweep.{key}.{k}", "the layer sweep", cv))
+        for fid in ("fig06_depth", "fig06d_depth_more"):
+            out.append(by_hollow(fid, f"depth.{k}", m, lowered=True, what="47.8, by depth"))
+        out.append(fixed("fig06c_address_depth", f"overlap.{k}", "D4, under its stated rule",
+                         "scripts/story_b47c.py build_depth"))  # fmt: skip
+        out.append(fixed("fig10b_enrichment", f"enrich.{k}", "48.2, set before its data", "scripts/story_b48.py "
+                         "build_enrichment"))  # fmt: skip
+    UNCLEAR.add("fig06c_address_depth: D4's rule is stated in its builder (story_b47c.build_depth), not dated there")
     return out
 
 
@@ -564,7 +593,7 @@ def rows() -> list[dict]:
     writeup += fig05_split(writeup) + f14_split(writeup)
     readme = readme_set(writeup)
     return lightning([*writeup, *readme, *depth_set(writeup), *depth_set_b(), *depth_set_c(),
-                      *breadth_set(readme)])
+                      *depth_set_d(), *breadth_set(readme)])
 
 
 if __name__ == "__main__":

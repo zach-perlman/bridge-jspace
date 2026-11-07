@@ -1,0 +1,55 @@
+{
+ "styles_plot": "0.1.9",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "30f6a7908e0ab350b3ffdd11c1fccc545f075c1581d3d4c9eaae350aee2b1987"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "96c257c390bdd0e0f9716035874534ec13862fa57beca46f1be35e29802a0b1b"
+ },
+ "figure": "fig06c_address_depth",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "3098c4f6d63a7f5493648c067086c2cc8e2fb3f6de2d86bfcd1c2ac1eea96acd",
+  "dpi": 160
+ },
+ "roles": [
+  "address"
+ ],
+ "controls": [],
+ "cells": {
+  "overlap.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "overlap.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "line",
+   "role": "address",
+   "cell": "overlap.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "address",
+   "cell": "overlap.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ ],
+ "key": [],
+ "numbers": {
+  "f06c.mean.q9": "0.28",
+  "f06c.mean.mu": "0.21"
+ },
+ "problems": []
+}

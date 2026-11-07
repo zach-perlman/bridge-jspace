@@ -547,6 +547,41 @@ fig24_two_codes,address.nl,post_hoc,claimed,,"the two removals, every cell post 
 fig24_two_codes,lens.nl,post_hoc,claimed,,"the two removals, every cell post hoc: the figkit figure drew it hollow (post hoc)","src/bridge_jspace/figkit/writeup_claims.py appB_f14_two_codes (as appB_f14_two_codes, drawn for docs/depth)"
 fig24_two_codes,address.q122,post_hoc,claimed,,"the two removals, every cell post hoc: the figkit figure drew it hollow (post hoc)","src/bridge_jspace/figkit/writeup_claims.py appB_f14_two_codes (as appB_f14_two_codes, drawn for docs/depth)"
 fig24_two_codes,lens.q122,post_hoc,claimed,,"the two removals, every cell post hoc: the figkit figure drew it hollow (post hoc)","src/bridge_jspace/figkit/writeup_claims.py appB_f14_two_codes (as appB_f14_two_codes, drawn for docs/depth)"
+fig03_order,locker.first.q9,fixed_in_advance,claimed,,sentence order: fixed in advance for qwen3.5-9b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig09_order, drawn for docs/depth)"
+fig03_order,locker.after.q9,fixed_in_advance,claimed,,sentence order: fixed in advance for qwen3.5-9b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig09_order, drawn for docs/depth)"
+fig03_order,facts.first.q9,fixed_in_advance,claimed,,sentence order: fixed in advance for qwen3.5-9b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig09_order, drawn for docs/depth)"
+fig03_order,facts.after.q9,fixed_in_advance,claimed,,sentence order: fixed in advance for qwen3.5-9b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig09_order, drawn for docs/depth)"
+fig03_order,locker.first.q27,fixed_in_advance,claimed,,sentence order: fixed in advance for qwen3.6-27b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig09_order, drawn for docs/depth)"
+fig03_order,locker.after.q27,fixed_in_advance,claimed,,sentence order: fixed in advance for qwen3.6-27b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig09_order, drawn for docs/depth)"
+fig03_order,facts.first.q27,fixed_in_advance,claimed,,sentence order: fixed in advance for qwen3.6-27b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig09_order, drawn for docs/depth)"
+fig03_order,facts.after.q27,fixed_in_advance,claimed,,sentence order: fixed in advance for qwen3.6-27b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig09_order, drawn for docs/depth)"
+fig03_order,locker.first.mu,fixed_in_advance,claimed,,sentence order: fixed in advance for muse-glimmer-30b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig09_order, drawn for docs/depth)"
+fig03_order,locker.after.mu,fixed_in_advance,claimed,,sentence order: fixed in advance for muse-glimmer-30b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig09_order, drawn for docs/depth)"
+fig03_order,facts.first.mu,fixed_in_advance,claimed,,sentence order: fixed in advance for muse-glimmer-30b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig09_order, drawn for docs/depth)"
+fig03_order,facts.after.mu,fixed_in_advance,claimed,,sentence order: fixed in advance for muse-glimmer-30b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig09_order, drawn for docs/depth)"
+fig03_order,locker.first.nl,post_hoc,claimed,,sentence order: post hoc for nemotron-3.5-lightning,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig09_order, drawn for docs/depth)"
+fig03_order,locker.after.nl,post_hoc,claimed,,sentence order: post hoc for nemotron-3.5-lightning,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig09_order, drawn for docs/depth)"
+fig03_order,facts.first.nl,post_hoc,claimed,,sentence order: post hoc for nemotron-3.5-lightning,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig09_order, drawn for docs/depth)"
+fig03_order,facts.after.nl,post_hoc,claimed,,sentence order: post hoc for nemotron-3.5-lightning,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig09_order, drawn for docs/depth)"
+fig03_order,locker.first.q122,fixed_in_advance,claimed,,sentence order: fixed in advance for qwen3.5-122b-a10b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig09_order, drawn for docs/depth)"
+fig03_order,locker.after.q122,fixed_in_advance,claimed,,sentence order: fixed in advance for qwen3.5-122b-a10b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig09_order, drawn for docs/depth)"
+fig03_order,facts.first.q122,fixed_in_advance,claimed,,sentence order: fixed in advance for qwen3.5-122b-a10b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig09_order, drawn for docs/depth)"
+fig03_order,facts.after.q122,fixed_in_advance,claimed,,sentence order: fixed in advance for qwen3.5-122b-a10b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig09_order, drawn for docs/depth)"
+fig03c_link_layers,arm.a.q9,fixed_in_advance,claimed,,rule 45q's cells fixed in advance: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/curve_figs.py f_link_crossover (as appB_f15_link_crossover, drawn for docs/depth)"
+fig03c_link_layers,arm.c.q9,fixed_in_advance,claimed,,rule 45q's cells fixed in advance: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/curve_figs.py f_link_crossover (as appB_f15_link_crossover, drawn for docs/depth)"
+fig03c_link_layers,arm.d.q9,fixed_in_advance,claimed,,rule 45q's cells fixed in advance: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/curve_figs.py f_link_crossover (as appB_f15_link_crossover, drawn for docs/depth)"
+fig03c_link_layers,sweep.bridge.q9,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),"src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks) (as appB_f15_link_crossover, drawn for docs/depth)"
+fig03c_link_layers,sweep.copy.q9,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),"src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks) (as appB_f15_link_crossover, drawn for docs/depth)"
+fig03c_link_layers,arm.a.q27,fixed_in_advance,claimed,,rule 45q's cells fixed in advance: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/curve_figs.py f_link_crossover (as appB_f15_link_crossover, drawn for docs/depth)"
+fig03c_link_layers,arm.c.q27,fixed_in_advance,claimed,,rule 45q's cells fixed in advance: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/curve_figs.py f_link_crossover (as appB_f15_link_crossover, drawn for docs/depth)"
+fig03c_link_layers,arm.d.q27,fixed_in_advance,claimed,,rule 45q's cells fixed in advance: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/curve_figs.py f_link_crossover (as appB_f15_link_crossover, drawn for docs/depth)"
+fig03c_link_layers,sweep.bridge.q27,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),"src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks) (as appB_f15_link_crossover, drawn for docs/depth)"
+fig03c_link_layers,sweep.copy.q27,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),"src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks) (as appB_f15_link_crossover, drawn for docs/depth)"
+fig03c_link_layers,arm.a.mu,fixed_in_advance,claimed,,rule 45q's cells fixed in advance: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/curve_figs.py f_link_crossover (as appB_f15_link_crossover, drawn for docs/depth)"
+fig03c_link_layers,arm.c.mu,fixed_in_advance,claimed,,rule 45q's cells fixed in advance: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/curve_figs.py f_link_crossover (as appB_f15_link_crossover, drawn for docs/depth)"
+fig03c_link_layers,arm.d.mu,fixed_in_advance,claimed,,rule 45q's cells fixed in advance: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/curve_figs.py f_link_crossover (as appB_f15_link_crossover, drawn for docs/depth)"
+fig03c_link_layers,sweep.bridge.mu,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),"src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks) (as appB_f15_link_crossover, drawn for docs/depth)"
+fig03c_link_layers,sweep.copy.mu,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),"src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks) (as appB_f15_link_crossover, drawn for docs/depth)"
 fig01b_settings,ld.q9,post_hoc,claimed,,"the split in another setting, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f01b_settings
 fig01b_settings,clean.q9,fixed_in_advance,claimed,,the clean one-pick scenes (45m): the figkit figure drew no mark hollow,scripts/readme_story_figures.py f01b_settings
 fig01b_settings,varied.q9,post_hoc,claimed,,"the split in another setting, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f01b_settings
@@ -912,6 +947,81 @@ s05b_routes_kept,routes.keep_alf.q122,post_hoc,claimed,,the routes test's arms: 
 s05b_routes_kept,routes.keep_alf_rand.q122,post_hoc,claimed,,the routes test's arms: post hoc for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
 s05b_routes_kept,routes.keep_jpp.q122,post_hoc,claimed,,the routes test's arms: post hoc for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
 s05b_routes_kept,routes.keep_jpp_rand.q122,post_hoc,claimed,,the routes test's arms: post hoc for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig03b_layers,arm.a.q9,fixed_in_advance,claimed,,rule 45q's cells fixed in advance: the figkit figure drew no mark hollow,scripts/readme_story_figures.py f03b_layers
+fig03b_layers,arm.c.q9,fixed_in_advance,claimed,,rule 45q's cells fixed in advance: the figkit figure drew no mark hollow,scripts/readme_story_figures.py f03b_layers
+fig03b_layers,arm.d.q9,fixed_in_advance,claimed,,rule 45q's cells fixed in advance: the figkit figure drew no mark hollow,scripts/readme_story_figures.py f03b_layers
+fig03b_layers,sweep.bridge.q9,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+fig03b_layers,sweep.copy.q9,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+s03d_link_copy_variants,arm.c.q9,fixed_in_advance,claimed,,rule 45q's arm c at L: the figkit figure drew no mark hollow,scripts/readme_story_figures.py s03d_q
+s03d_link_copy_variants,sweep.every.q9,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+s03d_link_copy_variants,sweep.item.q9,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+s03d_link_copy_variants,sweep.rest.q9,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+s03d_link_copy_variants,sweep.number.q9,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+s03d_link_copy_variants,sweep.period.q9,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+fig06_depth,depth.q9,fixed_in_advance,claimed,,"47.8, by depth: fixed in advance for qwen3.5-9b",src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig06d_depth_more,depth.q9,fixed_in_advance,claimed,,"47.8, by depth: fixed in advance for qwen3.5-9b",src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig06c_address_depth,overlap.q9,fixed_in_advance,claimed,,"D4, under its stated rule: the figkit figure drew no mark hollow",scripts/story_b47c.py build_depth
+fig10b_enrichment,enrich.q9,fixed_in_advance,claimed,,"48.2, set before its data: the figkit figure drew no mark hollow",scripts/story_b48.py build_enrichment
+fig03b_layers,arm.a.q27,fixed_in_advance,claimed,,rule 45q's cells fixed in advance: the figkit figure drew no mark hollow,scripts/readme_story_figures.py f03b_layers
+fig03b_layers,arm.c.q27,fixed_in_advance,claimed,,rule 45q's cells fixed in advance: the figkit figure drew no mark hollow,scripts/readme_story_figures.py f03b_layers
+fig03b_layers,arm.d.q27,fixed_in_advance,claimed,,rule 45q's cells fixed in advance: the figkit figure drew no mark hollow,scripts/readme_story_figures.py f03b_layers
+fig03b_layers,sweep.bridge.q27,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+fig03b_layers,sweep.copy.q27,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+s03d_link_copy_variants,arm.c.q27,fixed_in_advance,claimed,,rule 45q's arm c at L: the figkit figure drew no mark hollow,scripts/readme_story_figures.py s03d_q
+s03d_link_copy_variants,sweep.every.q27,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+s03d_link_copy_variants,sweep.item.q27,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+s03d_link_copy_variants,sweep.rest.q27,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+s03d_link_copy_variants,sweep.number.q27,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+s03d_link_copy_variants,sweep.period.q27,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+fig06_depth,depth.q27,fixed_in_advance,claimed,,"47.8, by depth: fixed in advance for qwen3.6-27b",src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig06d_depth_more,depth.q27,fixed_in_advance,claimed,,"47.8, by depth: fixed in advance for qwen3.6-27b",src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig06c_address_depth,overlap.q27,fixed_in_advance,claimed,,"D4, under its stated rule: the figkit figure drew no mark hollow",scripts/story_b47c.py build_depth
+fig10b_enrichment,enrich.q27,fixed_in_advance,claimed,,"48.2, set before its data: the figkit figure drew no mark hollow",scripts/story_b48.py build_enrichment
+fig03b_layers,arm.a.mu,fixed_in_advance,claimed,,rule 45q's cells fixed in advance: the figkit figure drew no mark hollow,scripts/readme_story_figures.py f03b_layers
+fig03b_layers,arm.c.mu,fixed_in_advance,claimed,,rule 45q's cells fixed in advance: the figkit figure drew no mark hollow,scripts/readme_story_figures.py f03b_layers
+fig03b_layers,arm.d.mu,fixed_in_advance,claimed,,rule 45q's cells fixed in advance: the figkit figure drew no mark hollow,scripts/readme_story_figures.py f03b_layers
+fig03b_layers,sweep.bridge.mu,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+fig03b_layers,sweep.copy.mu,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+s03d_link_copy_variants,arm.c.mu,fixed_in_advance,claimed,,rule 45q's arm c at L: the figkit figure drew no mark hollow,scripts/readme_story_figures.py s03d_q
+s03d_link_copy_variants,sweep.every.mu,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+s03d_link_copy_variants,sweep.item.mu,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+s03d_link_copy_variants,sweep.rest.mu,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+s03d_link_copy_variants,sweep.number.mu,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+s03d_link_copy_variants,sweep.period.mu,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+fig06_depth,depth.mu,fixed_in_advance,claimed,,"47.8, by depth: fixed in advance for muse-glimmer-30b",src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig06d_depth_more,depth.mu,fixed_in_advance,claimed,,"47.8, by depth: fixed in advance for muse-glimmer-30b",src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig06c_address_depth,overlap.mu,fixed_in_advance,claimed,,"D4, under its stated rule: the figkit figure drew no mark hollow",scripts/story_b47c.py build_depth
+fig10b_enrichment,enrich.mu,fixed_in_advance,claimed,,"48.2, set before its data: the figkit figure drew no mark hollow",scripts/story_b48.py build_enrichment
+fig03b_layers,arm.a.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig03b_layers,arm.c.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig03b_layers,arm.d.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig03b_layers,sweep.bridge.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig03b_layers,sweep.copy.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s03d_link_copy_variants,arm.c.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s03d_link_copy_variants,sweep.every.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s03d_link_copy_variants,sweep.item.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s03d_link_copy_variants,sweep.rest.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s03d_link_copy_variants,sweep.number.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s03d_link_copy_variants,sweep.period.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig06_depth,depth.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig06d_depth_more,depth.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig06c_address_depth,overlap.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig10b_enrichment,enrich.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig03b_layers,arm.a.q122,fixed_in_advance,claimed,,rule 45q's cells fixed in advance: the figkit figure drew no mark hollow,scripts/readme_story_figures.py f03b_layers
+fig03b_layers,arm.c.q122,fixed_in_advance,claimed,,rule 45q's cells fixed in advance: the figkit figure drew no mark hollow,scripts/readme_story_figures.py f03b_layers
+fig03b_layers,arm.d.q122,fixed_in_advance,claimed,,rule 45q's cells fixed in advance: the figkit figure drew no mark hollow,scripts/readme_story_figures.py f03b_layers
+fig03b_layers,sweep.bridge.q122,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+fig03b_layers,sweep.copy.q122,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+s03d_link_copy_variants,arm.c.q122,fixed_in_advance,claimed,,rule 45q's arm c at L: the figkit figure drew no mark hollow,scripts/readme_story_figures.py s03d_q
+s03d_link_copy_variants,sweep.every.q122,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+s03d_link_copy_variants,sweep.item.q122,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+s03d_link_copy_variants,sweep.rest.q122,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+s03d_link_copy_variants,sweep.number.q122,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+s03d_link_copy_variants,sweep.period.q122,post_hoc,claimed,,the layer sweep: the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/curve_figs.py f_link_crossover (open marks)
+fig06_depth,depth.q122,post_hoc,claimed,,"47.8, by depth: post hoc for qwen3.5-122b-a10b",src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig06d_depth_more,depth.q122,post_hoc,claimed,,"47.8, by depth: post hoc for qwen3.5-122b-a10b",src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig06c_address_depth,overlap.q122,fixed_in_advance,claimed,,"D4, under its stated rule: the figkit figure drew no mark hollow",scripts/story_b47c.py build_depth
+fig10b_enrichment,enrich.q122,fixed_in_advance,claimed,,"48.2, set before its data: the figkit figure drew no mark hollow",scripts/story_b48.py build_enrichment
 breadth_fig06_pointer,swap.q9,fixed_in_advance,claimed,,the pointer runs and the probe's subspace: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/exemplars.py r4_pointer (as r4_pointer, drawn for docs/breadth)"
 breadth_fig06_pointer,neutral.q9,fixed_in_advance,claimed,,the pointer runs and the probe's subspace: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/exemplars.py r4_pointer (as r4_pointer, drawn for docs/breadth)"
 breadth_fig06_pointer,noown.q9,fixed_in_advance,claimed,,the pointer runs and the probe's subspace: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/exemplars.py r4_pointer (as r4_pointer, drawn for docs/breadth)"
