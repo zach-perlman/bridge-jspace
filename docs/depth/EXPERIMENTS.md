@@ -1,14 +1,14 @@
 # Experiments ledger (depth)
 
-*Every opened test of the depth report, on four models, in the README's order: what was asked, what the rule fixed in advance said on each model, and where the README uses it.*
+*Every opened test of the depth report, on five models (the 122B where its source files hold a verdict), in the README's order: what was asked, what the rule fixed in advance said on each model, and where the README uses it.*
 
 ## In one minute
 
-- **What it holds:** 59 test cards in the README's Parts I-VI, today's batch 53 results among them, on five models (the 27B, Lightning, the 9B, Muse, and the 122B, FP8, where it has a verdict), each tagged by how the README uses it; one check, one withdrawn card and the one-model rows. VERIFIED.md (human recomputation) is not filled for any card; † marks what is not in the hand-checked sample (How to read).
+- **What it holds:** 63 sections in the README's Parts I-VI (the test cards, one check, one withdrawn card and one batch not completed in the sprint; counted by scripts/check_ledger.py), batch 53 (29 Oct) among them, on five models (the 9B, the 27B, Muse, Lightning, and the 122B, FP8, where it has a verdict), each tagged by how the README uses it; the one-model rows. VERIFIED.md (human recomputation) is not filled for any card; † marks what is not in the hand-checked sample (How to read).
 - **The lookup goes around the lens part on every model run:** on Lightning at L14 it is blocked at 0.03 [-0.01, 0.08]<!-- src: results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.md \| 0.45 :: 0.03 [-0.01, 0.08] --> of its switches beyond a random part while the recall is blocked at 0.34 [0.25, 0.44]<!-- src: results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.md \| 0.94 :: 0.34 [0.25, 0.44] -->; on the 122B at L33, 0.00 [-0.06, 0.06]<!-- src: results/x0_necessity/qwen35_122b_x0_necessity_r2/verdict-20261024T171509Z/verdict.md \| 33 :: PP :: 0.00 [-0.06, 0.06] --> against 0.32 [0.22, 0.41]<!-- src: results/x0_necessity/qwen35_122b_x0_necessity_r2/verdict-20261024T171509Z/verdict.md \| 33 :: PM :: 0.32 [0.22, 0.41] --> ([conflict test](#lightning-conflict)). It reads an address a probe finds at the bridge word ([probe](#probe)) and a swap at dose 2 moves ([swap](#swap)); the swap's rule fixed in advance (dose 1) said no on every model. At the last token a probe on the lens part reads that address worse than random directions of the same energy, on all four models it ran on: the address is under-represented in the lens directions ([53.2](#b53-2)).
 - **The recall follows the item, not its answer:** the answer control finds the item, or the answer word not read, on every model it ran on ([51.12](#t51-12)); pulled two ways by the lens part and the address, every model reads "both", the 27B and Muse barely ([53.6](#b53-6)).
 - **Question order:** a small order effect on the 27B (lower bound +0.01<!-- src: results/x53_2x2/x53_2x2-20261029T113335Z/verdict.md \| Paired difference (Dan 11:25) :: +0.01 -->, of the order of the 122B's rerun noise), none on the 122B; the other three missed the question-first gate ([53.1](#b53-1)).
-- **Open after today:** near the output the last-token test is uninformative ([53.3](#b53-3), [53.3b](#b53-3b)); the pre-specified identity code says no on the 9B and the 27B and in between on Muse ([53.8](#b53-8)); two attention blocks carry part of Lightning's lookup, in between ([53.4](#b53-4)).
+- **Open questions:** near the output the last-token test is uninformative ([53.3](#b53-3), [53.3b](#b53-3b)); the pre-specified identity code says no on the 9B and the 27B and in between on Muse ([53.8](#b53-8)); two attention blocks carry part of Lightning's lookup, in between ([53.4](#b53-4)).
 - **Withdrawn and rechecked:** Zach's described bridge is withdrawn ([Z2](#z2)); his named passages with made-up facts split on the 9B, also without the 60 passages that state the bridge's true value ([Z1](#z1)).
 
 **Which test ran on which model, and what its rule said.** One table per Part, a row per test card, in the README's order; "in part" covers in between or in part; "–": not tested on that model (not run, not designed, or below its gate: the coverage table below says which). Lightning ○: its gate chosen after the 60-scene pre-check; ○ in a cell: post hoc (the 122B's gate lowered to 0.75, or its lookup-only gate, Dan 30 Oct). The 122B's cells from its coverage runs (FP8; MoE, ~10B active; L33), the agent's reading †.
@@ -1246,7 +1246,7 @@ New in this ledger:
   - Dan (12:10b), verbatim: tool output as prose (JSON is covered by x0b_v2), and the bridge ~250 tokens later in the tool format, not separated from the format (47.16's distance robustness beside). The probe only shows the address is readable; the routes test decides whether the lookup uses it.
   - In condition C1 (two picks swap) in tool output a random part of the address's share already cuts position to 0.06 [0.03, 0.08]<!-- src: results/x6_routes/x53_7_routes-20261029T122509Z/verdict.md \| Qwen3.5-9B :: tool :: C1 :: without a random part (the address's share) :: 0.06 [0.03, 0.08] --> on the 9B and 0.02 [0.01, 0.04]<!-- src: results/x6_routes/x53_7_routes-20261029T122509Z/verdict.md \| Qwen3.6-27B :: tool :: C1 :: without a random part (the address's share) :: 0.02 [0.01, 0.04] --> on the 27B: there the removal cannot tell the address from a random part.
   - Adapted design: the lookup-only gate replaces X0's two-reader gate; the recall's rates are descriptive. The 27B's probes and the 9B tool probe pass either gate or were computed after the decision; the 9B code probe is not tested (hollow: its gate was changed after the data, Dan 12:25).
-  - U is carried over from prose, not refit in code or tool output (Dan 13:15 asked): the address fit on prose scenes is the one removed and added. The monitor on the 27B is running; the CH2 code-pointer add-on (descriptive) is left out.
+  - U is carried over from prose, not refit in code or tool output (Dan 13:15 asked): the address fit on prose scenes is the one removed and added. The monitor on the 27B was not completed in the sprint; the CH2 code-pointer add-on (descriptive) is left out.
   - Exploratory (batch 53): no prediction.
 
 ## Part IV. Where and when the link is made
@@ -2158,14 +2158,14 @@ Dan 18:20 (jobs/c3/batch53.yaml coverage_122b_1820, decision_470_1845): Qwen3.5-
   - **52 B, the answer map** (`x52_answermap_122b`; [verdict](../../results/x52_answer_map/x52cov-20261030T045919Z/verdict.md)): the lookup's answer readable at the last token (best L44) and writing it there does not switch it to the swapped-in answer; the recall's answer not readable there, and writing it switches it.
   - **Not run** (decisions_0205 item 2): 47.7 (c) and 45d (need the 122B's 45d / P_cf refit on varied scenes); 51.3 DAS (needs a clean-design source decision, as Lightning's); 53.8 (its script has no coverage path); 47.11 (no single script).
 
-## Running or sealed
+## Not completed in the sprint, or sealed
 
 Box times UTC, from `make queue-stats QUEUE=all` at 00:06 UTC on 29 Oct (low-high ends of the queue's estimate); the Lightning lanes follow batch 52 amendment 3.
 
-### Batch 52 C: the rest of the coverage grid (running) <a id="b52-c"></a>
+### Batch 52 C: the rest of the coverage grid (not completed in the sprint) <a id="b52-c"></a>
 
 - **Question.** Fill the coverage table's missing cells on the 27B, Lightning, 9B and Muse.
-- **Status.** Running: the 27B anatomy full grid (`jobs/c3/x47_8_27b.yaml`), the 27B token map (`jobs/c3/x47_d1_27b.yaml`), the 27B ladder steps 3-6 (`jobs/c3/x52_ladder_27b_a.yaml`), the 27B six lockers (`jobs/c3/x47_2_27b_r3.yaml`), the Muse ladder with step 6 inside Zach's band (`jobs/c3/x52_ladder_muse_r2.yaml`); Lightning's lanes per amendment 3 (the probe, routes, swap and lens readout now on speedup). Bolt: out of scope, only a J-lens exists, no J++ lens.
+- **Status.** Not completed in the sprint: the 27B anatomy full grid (`jobs/c3/x47_8_27b.yaml`), the 27B token map (`jobs/c3/x47_d1_27b.yaml`), the 27B ladder steps 3-6 (`jobs/c3/x52_ladder_27b_a.yaml`), the 27B six lockers (`jobs/c3/x47_2_27b_r3.yaml`), the Muse ladder with step 6 inside Zach's band (`jobs/c3/x52_ladder_muse_r2.yaml`); Lightning's lanes per amendment 3 (the probe, routes, swap and lens readout now on speedup). Bolt: out of scope, only a J-lens exists, no J++ lens.
 - **Where used.** The coverage table above.
 
 ## Appendix A. Flagged for Dan <a id="flagged"></a>
@@ -2303,7 +2303,7 @@ As of the matrix at 12:20 UTC (13:20 Paris; 8e2ef0cb: 47.15's row renamed "One q
 | DAS by position (49.x das_pos) | ✗ <sup>54</sup> | ✗ <sup>54</sup> | ✓ | ✗ <sup>54</sup> |
 | [Answer-direction control on Zach's Z2 (51.12 Z2)](#z2) | ✓ | ✗ <sup>42</sup> | ✓ | ✗ <sup>28</sup> |
 
-✓ done, ◐ partial, ○ below the model's gate (not tested; a below-gate run is exploratory), – not tested (including missing, running or queued), ✗ not designed for that model; a number points to the matrix's note for that cell, listed under the table.
+✓ done, ◐ partial, ○ below the model's gate (not tested; a below-gate run is exploratory), – not tested (including missing, not completed or queued), ✗ not designed for that model; a number points to the matrix's note for that cell, listed under the table.
 
 1. not confirmed (lookup 0.14 > 0.10; recall 0.74)
 2. decided at L14; 3 arms at all 13 swept layers

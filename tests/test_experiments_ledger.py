@@ -110,7 +110,7 @@ def test_the_ledger_follows_the_readme_order():
                      "## Run on one model only (one line each)",
                      "## Withdrawn",
                      '## The 122B coverage, night 29-30 Oct (coverage, not hand-checked) <a id="cov-122b-night"></a>',
-                     "## Running or sealed",
+                     "## Not completed in the sprint, or sealed",
                      '## Appendix A. Flagged for Dan <a id="flagged"></a>',
                      '## Appendix B. README changes waiting for Dan <a id="readme-changes"></a>',
                      '## Appendix C. Coverage table <a id="coverage"></a>',

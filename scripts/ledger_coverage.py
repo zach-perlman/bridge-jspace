@@ -196,7 +196,7 @@ def heatmap_cells() -> list[tuple[str, str, str, list[tuple[str, str]]]]:
 SYMBOL = {"done": "✓", "partial": "◐", "below gate": "○", "not tested": "–", "missing": "–", "running": "–",
           "queued": "–", "not designed": "✗"}  # fmt: skip
 LEGEND = ("✓ done, ◐ partial, ○ below the model's gate (not tested; a below-gate run is exploratory), – not tested "
-          "(including missing, running or queued), ✗ not designed for that model; a number points to the matrix's note "
+          "(including missing, not completed or queued), ✗ not designed for that model; a number points to the matrix's note "
           "for that cell, listed under the table.")  # fmt: skip
 PART_TITLE = {"I": "Part I. The two readers", "II": "Part II. Identity", "III": "Part III. The address",
               "IV": "Part IV. Where and when", "V": "Part V. Other datasets", "VI": "Part VI. What did not hold",

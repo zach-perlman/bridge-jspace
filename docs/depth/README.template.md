@@ -457,7 +457,7 @@ Hand-checked on a sample: 46 items across views a-g (5-10 per view, fixed in adv
   - The lookup's answer digit at the last token is read from almost any part of the state, the lens part included; at the bridge word the digit is not there.
   - The positive controls work: at the bridge word the lens part carries the recall's answer on the four models with both cells.
 - **Caveats.**
-  - Pending hand-check: today's run, unverified until hand-checked; no prediction.
+  - † the 29 Oct run; no prediction.
   - The energy rule was set after the first labels had been written, so it reads "post hoc"; the brief's rule and Dan's wording for "random reads it too" were fixed before.
   - Three readings the verdict flags: "random is under 0.8" taken at every layer; the energy rule's "while" (at some layer where the full state reaches 0.8) and "within" (at every layer); and how the energy-matched size is chosen (the lens part's median share of the state's energy, times the state's width, as the first columns of the same random frame).
   - The labels are read over every sampled layer; the figure and the table show one layer, where the full state peaks.
@@ -630,7 +630,7 @@ Hand-checked on a sample: 46 items across views a-g (5-10 per view, fixed in adv
   - Carried over every layer up to L, the fact-after lookups follow the lens part on his passages; his layout gives the lookup little or no position route.
   - Both operations point the same way on both datasets: the recall depends on the lens directions more than the lookup does.
 - **Caveats.**
-  - The recheck is today's, run on CPU on the stored run, the rule unchanged.
+  - The recheck is the 29 Oct run: on CPU, on the stored run, the rule unchanged.
   - Made-up facts, 9B (post hoc): in 23 of 200 passages the lookup's changed answer is the true value of the original bridge (sukiyaki: Japan; France: Europe). Without them the lookup is -0.04 [-0.12, 0.05] (all passages -0.05 [-0.13, 0.03]), the recall 0.55 [0.46, 0.64] (0.59 [0.51, 0.67]) and the gap 0.59 [0.46, 0.72] (0.64 [0.51, 0.76]); the split still holds<!-- src: results/z1p_checks/20261030T222158Z/tables.json | F4 -->.
   - Made-up facts, 9B (post hoc): in 54 of 200 passages the recall's changed answer stands in its own passage, as another entity's value; its original answer never does. Without those 54 the recall is 0.60 [0.50, 0.70], the lookup -0.02 [-0.13, 0.09] and the gap 0.62 [0.47, 0.78]<!-- src: results/z1p_checks/20261030T222158Z/tables.json | F4b -->.
   - Muse's lookup switches under the whole change on too few of his passages to read its effect, with true facts and with made-up facts ({{dp|fig12|muse|our removal, his passages: lookup switches under the whole change}} and {{dp|cards|muse|Z1-P: lookups switched by the whole change}} of {{dp|catalogue|muse|Zach's passages, named bridge: passages used}}); Muse's and Lightning's made-up-fact gates are just under 0.80, so their numbers there are descriptive only (hollow).

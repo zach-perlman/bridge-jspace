@@ -4,7 +4,7 @@ well formed:
 - every repo path it cites exists in the checkout;
 - every entry (a '### ' heading) carries a unique stable anchor, and every internal link resolves;
 - every card has the README Part I fields in order (Question, Why we asked, Data, Method, Rule fixed in advance,
-  Result, Read, Caveats); an entry still running ('running)' in its heading) is a stub: Question, Status, Where used
+  Result, Read, Caveats); an entry not completed in the sprint ('not completed in the sprint)' or 'running)' in its heading) is a stub: Question, Status, Where used
   (batch 53's stubs quote their rule between the question and the status);
 - every card's first line is its status tag (Dan's restructure brief, 29 Oct 08:55): `in README`, `changes README` or
   `ledger only`, then optionally `below gate: <models>`, then optionally the italic "Used in" text;
@@ -85,7 +85,7 @@ def problems(text: str, repo: Path = REPO) -> list[str]:
             out.append(f"no anchor: {head}")
         else:
             anchors.append(m.group(1))
-        stub = bool(re.search(r"\brunning\)", head))
+        stub = bool(re.search(r"\b(?:running|not completed in the sprint)\)", head))
         want = STUB_FIELDS if stub else FIELDS
         names = STUB_RULE_FIELDS if stub else FIELDS
         found = re.findall(r"^- \*\*(" + "|".join(re.escape(f) for f in names) + r")\.\*\*", body, re.M)
