@@ -33,8 +33,6 @@
 
 <details><summary>Key numbers per claim</summary>
 
-*Grades: **A**, a rule fixed in advance held on at least three models with a specificity control and a variant design; **B**, on two models, or three with one operation, or descriptive on three with a random null.*
-
 | # | Claim | Models | Grade | Key numbers |
 |---|---|---|---|---|
 | 1 | The recall follows the lens part of the bridge word; the lookup follows the rest | 9B, 27B, Muse, Lightning, 122B (the 122B's varied scenes: mixed) | **A** (27B partial) | recall 0.50<!-- src: docs/depth/x0_numbers.json \| rc_excess_9b --> / 0.74<!-- src: docs/depth/x0_numbers.json \| rc_excess_27b --> / 0.75<!-- src: docs/depth/x0_numbers.json \| rc_excess_muse --> / 0.34<!-- src: data/figures/depth/data.csv \| conflict: recall, switches lost beyond a random part --> ○ / 0.32<!-- src: docs/depth/x0_numbers.json \| rc_excess_122b -->; lookup −0.03<!-- src: docs/depth/x0_numbers.json \| lk_excess_9b --> / 0.14<!-- src: docs/depth/x0_numbers.json \| lk_excess_27b --> / −0.10<!-- src: docs/depth/x0_numbers.json \| lk_excess_muse --> / 0.03<!-- src: data/figures/depth/data.csv \| conflict: lookup, switches lost beyond a random part --> ○ / 0.00<!-- src: docs/depth/x0_numbers.json \| lk_excess_122b -->. Limits: on the full carrier, fact-after lookups follow the lens (0.41<!-- src: data/figures/depth/data.csv \| 51.7: fact-after lookups, full carrier: switches lost beyond a random part -->-0.51<!-- src: data/figures/depth/data.csv \| 51.7: fact-after lookups, full carrier: switches lost beyond a random part -->); on Zach's true-fact passages the 9B's and 27B's lookups follow it (0.26<!-- src: data/figures/depth/data.csv \| Z1: lookup, switches lost beyond a random part --> / 0.28<!-- src: data/figures/depth/data.csv \| Z1: lookup, switches lost beyond a random part -->); on his made-up-fact passages the split holds on the 9B, the 27B is in between (Part V); with the question before the scene the 27B's lookup follows it a little more, the 122B's not (Part I †) |
@@ -59,7 +57,7 @@ Weaker results are in Part VI, dropped readings under "Tested and dropped"; † 
 **Status.**
 
 - **Models.** Five models: Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), Nemotron 3.5 Lightning 30B-A3B (a third family, a Mamba-attention hybrid) and Qwen3.5-122B-A10B (FP8; MoE, ~10B active) where it ran; Nemotron 3.5 Bolt is out of scope: no J++ lens exists for it.
-- **Runs.** As of 29 Oct 2026, built at aad79f8b from the run files.
+- **Runs.** As of 29 Oct 2026, built at cc8fd5dd from the run files.
 - **Hand-check.** Hand-checked on a sample: 46 items across views a-g (5-10 per view, fixed in advance), all consistent; 6 issues and 6 observations logged in [docs/review/handcheck_findings.md](../review/handcheck_findings.md), none changes a headline claim.<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g --> VERIFIED.md (human recomputation) not yet filled.
 - **Marks.** ○: post hoc (Lightning everywhere, the 122B where its gate was lowered); †: not in the hand-checked sample (the last-token conflict test, the identity-and-address test, the 122B's coverage runs). See [How to read this page](#how-to-read-this-page).
 
@@ -113,6 +111,10 @@ Every removal and every addition is matched by the same operation on a random pa
 - **Identity route**: the lookup names the item's own locker; **position route**: the locker now at the item's old place; **value**: the new number.
 - **The address**: four directions at the bridge word that code where the item's locker sentence sits (Part III).
 - **Rules** are quoted as committed, internal metric names replaced by these terms; "post hoc" marks a rule or gate set after the results were seen.
+
+**Grades**: **A**, a rule fixed in advance held on at least three models with a specificity control and a variant design; **B**, on two models, or three with one operation, or descriptive on three with a random null. The grade of each claim is in the table under [In one minute](#in-one-minute).
+
+![The figures' grammar: each colour's role, the marks, the controls' grey, and one row of the main split read aloud](../../figures/writeup/00_key.png)
 
 **Reading the figures**:
 

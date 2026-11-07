@@ -17,8 +17,6 @@
 
 <details><summary>Key numbers per claim</summary>
 
-*Grades: **A**, a rule fixed in advance held on at least three models with a specificity control and a variant design; **B**, on two models, or three with one operation, or descriptive on three with a random null.*
-
 | # | Claim | Models | Grade | Key numbers |
 |---|---|---|---|---|
 | 1 | The recall follows the lens part of the bridge word; the lookup follows the rest | 9B, 27B, Muse, Lightning, 122B (the 122B's varied scenes: mixed) | **A** (27B partial) | recall {{pt|rc_excess_9b}} / {{pt|rc_excess_27b}} / {{pt|rc_excess_muse}} / {{dp|cards|nemotron-3.5-lightning|conflict: recall, switches lost beyond a random part}} ○ / {{pt|rc_excess_122b}}; lookup {{pt|lk_excess_9b}} / {{pt|lk_excess_27b}} / {{pt|lk_excess_muse}} / {{dp|cards|nemotron-3.5-lightning|conflict: lookup, switches lost beyond a random part}} ○ / {{pt|lk_excess_122b}}. Limits: on the full carrier, fact-after lookups follow the lens ({{dp|cards|nemotron-3.5-lightning|51.7: fact-after lookups, full carrier: switches lost beyond a random part}}-{{dp|cards|9b|51.7: fact-after lookups, full carrier: switches lost beyond a random part}}); on Zach's true-fact passages the 9B's and 27B's lookups follow it ({{dp|cards|9b|Z1: lookup, switches lost beyond a random part}} / {{dp|cards|27b|Z1: lookup, switches lost beyond a random part}}); on his made-up-fact passages the split holds on the 9B, the 27B is in between (Part V); with the question before the scene the 27B's lookup follows it a little more, the 122B's not (Part I †) |
@@ -97,6 +95,10 @@ Every removal and every addition is matched by the same operation on a random pa
 - **Identity route**: the lookup names the item's own locker; **position route**: the locker now at the item's old place; **value**: the new number.
 - **The address**: four directions at the bridge word that code where the item's locker sentence sits (Part III).
 - **Rules** are quoted as committed, internal metric names replaced by these terms; "post hoc" marks a rule or gate set after the results were seen.
+
+**Grades**: **A**, a rule fixed in advance held on at least three models with a specificity control and a variant design; **B**, on two models, or three with one operation, or descriptive on three with a random null. The grade of each claim is in the table under [In one minute](#in-one-minute).
+
+![The figures' grammar: each colour's role, the marks, the controls' grey, and one row of the main split read aloud](figures/writeup/00_key.png)
 
 **Reading the figures**:
 
