@@ -382,7 +382,58 @@ def figure_texts(layout: dict[str, dict] | None = None) -> list[tuple[str, str]]
     return texts
 
 
+# The LessWrong write-up's figures (brief 6 Nov, rule 6): the post's terms only. No people's names, no internal ids
+# (x47, note 62, jsuite_v4, amendment, cand2), "lookup" not "stated", "swap" not "write" for the address.
+WRITEUP_RETIRED = {
+    "a person's name": r"\b(?:Zach|Dan)\b",
+    "experiment id": r"\bx\d{2}(?:\.\d+)?\b",
+    "note number": r"(?i)\bnotes? \d+",
+    "suite id": r"(?i)\bjsuite",
+    "amendment": r"(?i)\bamendments?\b",
+    "candidate id": r"(?i)\bcand\d",
+    "stated": r"(?i)\bstated\b",
+    "write": r"(?i)\b(?:write|writes|writing|written|wrote)\b",
+}
+
+
+def writeup_texts() -> list[tuple[str, str]]:
+    """Every text the write-up's figures draw, by figure: figkit.tables' writeup target built into a temporary folder
+    (figures/writeup/ is not touched), each saved figure's texts caught on the way out."""
+    from matplotlib.figure import Figure
+    from matplotlib.text import Text
+
+    from bridge_jspace.figkit import tables as TB
+
+    texts: list[tuple[str, str]] = []
+    save = Figure.savefig
+
+    def grab(fig, fname, *args, **kwargs):
+        texts.extend((Path(str(fname)).stem, t.get_text()) for t in fig.findobj(Text) if t.get_text().strip())
+        return save(fig, fname, *args, **kwargs)
+
+    out = TB.OUT["writeup"]
+    with tempfile.TemporaryDirectory() as tmp:
+        try:
+            Figure.savefig = grab  # type: ignore[method-assign]
+            TB.OUT["writeup"] = Path(tmp)
+            TB.build("writeup")
+        finally:
+            Figure.savefig, TB.OUT["writeup"] = save, out  # type: ignore[method-assign]
+    return texts
+
+
+def writeup_main() -> int:
+    texts = writeup_texts()
+    hits = [(w, t, term) for w, t in texts for term, rx in {**RETIRED, **WRITEUP_RETIRED}.items() if re.search(rx, t)]
+    for where, text, term in hits:
+        print(f"{where}: {term!r} in {text!r}")
+    print(f"check_figure_terms --writeup: {len(hits)} banned term(s) in {len({w for w, _ in texts})} figure(s)")
+    return 1 if hits else 0
+
+
 def main(argv: list[str] | None = None) -> int:
+    if "--writeup" in (sys.argv[1:] if argv is None else argv):
+        return writeup_main()
     joint = joint_figure_texts()
     layout: dict[str, dict] = {}
     drawn = figure_texts(layout)

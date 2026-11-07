@@ -95,7 +95,7 @@ def _hex(c) -> str | None:
         return None
 
 
-def table_problems(fig, name: str, need_xlabel: bool = False, need_cue: bool = False) -> list[str]:
+def table_problems(fig, name: str, need_xlabel: bool = False, need_cue: bool = False, min_pt: float = 0.0) -> list[str]:
     """The table style's lint (morning brief 30 Oct, Section 4; review v3 G1, G2, G4, G6): rotated text, overlapping
     texts, text off the figure, legends, markers other than "o", hatch, red or green, a suptitle, an image taller than
     1.2x its width, banned words, a model name outside the set, a panel with no data; a hollow mark without the key
@@ -118,6 +118,8 @@ def table_problems(fig, name: str, need_xlabel: bool = False, need_cue: bool = F
         s = t.get_text()
         if t.get_rotation() not in (0, 0.0):
             out.append(f"{name}: rotated text {s[:25]!r}")
+        if t.get_fontsize() < min_pt - 1e-6:
+            out.append(f"{name}: text under {min_pt:g} pt {s[:25]!r}")
         if LOSS_WORDS.search(s) and not LOSS_OK.search(s):
             out.append(f"{name}: the word loss in {s[:25]!r}")
         if any(b in s.lower() for b in TABLE_BANNED):
@@ -172,3 +174,25 @@ def table_problems(fig, name: str, need_xlabel: bool = False, need_cue: bool = F
     if hollow and "post hoc" not in key_words:
         out.append(f"{name}: a hollow mark without the key item 'post hoc'")
     return sorted(set(out))
+
+
+def png_problems(path, width: int = 1600, aspect: tuple[float, float] = (1.4, 2.6)) -> list[str]:
+    """A saved write-up PNG: exactly `width` px wide, width:height inside `aspect`, opaque white background (the
+    corners and any alpha)."""
+    import numpy as np
+    from PIL import Image
+
+    im = Image.open(path)
+    w, h = im.size
+    name = getattr(path, "name", str(path))
+    out = []
+    if w != width:
+        out.append(f"{name}: {w} px wide, not {width}")
+    if not aspect[0] <= w / h <= aspect[1]:
+        out.append(f"{name}: aspect {w / h:.2f}:1 outside {aspect[0]}-{aspect[1]}")
+    a = np.asarray(im.convert("RGBA"))
+    if (a[..., 3] < 255).any():
+        out.append(f"{name}: transparent pixels")
+    if any(tuple(a[y, x, :3]) != (255, 255, 255) for y in (0, -1) for x in (0, -1)):
+        out.append(f"{name}: background not white at a corner")
+    return out

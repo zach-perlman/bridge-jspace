@@ -4,6 +4,7 @@ target.
 uv run python -m bridge_jspace.figkit.tables                   # the root README's, figures/readme/ (160 dpi)
 uv run python -m bridge_jspace.figkit.tables --target slide    # the same, figures/slides/ (200 dpi)
 uv run python -m bridge_jspace.figkit.tables --target depth    # docs/depth/README.md's, figures/depth/ (160 dpi)
+uv run python -m bridge_jspace.figkit.tables --target writeup  # the LessWrong post's, figures/writeup/ (8 in, 200 dpi)
 """
 
 from __future__ import annotations
@@ -18,20 +19,26 @@ from bridge_jspace.figkit import depth_figs as DF
 from bridge_jspace.figkit import dottable as T
 from bridge_jspace.figkit import exemplars as X
 from bridge_jspace.figkit import lint
+from bridge_jspace.figkit import writeup_figs as W
 from bridge_jspace.figkit.build import page_sheet
 from bridge_jspace.figkit.data import REPO
+from bridge_jspace.figkit.theme import WRITEUP, WRITEUP_ASPECT
 
-OUT = {"readme": REPO / "figures" / "readme", "slide": REPO / "figures" / "slides", "depth": REPO / "figures" / "depth"}
-DPI = {"readme": 160, "slide": 200, "depth": 160}
+OUT = {"readme": REPO / "figures" / "readme", "slide": REPO / "figures" / "slides", "depth": REPO / "figures" / "depth",
+       "writeup": REPO / "figures" / "writeup"}  # fmt: skip
+DPI = {"readme": 160, "slide": 200, "depth": 160, "writeup": WRITEUP.dpi}
 FIGS = {"r1_c1_split": X.r1_split, "r3_last_token": X.r3_last_token,
         "r4_pointer": X.r4_pointer, "r5_routes": X.r5_routes, "f2_controls": F.f_controls, "f2_main": F.f_main, "f3_nine_models": F.f_nine,
         "f5_atoms": F.f_atoms, "f6_address": F.f_address, "f8_directions": F.f_directions, "f8_facts": F.f_facts,
         "f9_where": F.f_where, "f10_sentence_order": CF.f_sentence_order, "f10a_order_main": CF.f_order_main, "f10b_order_2x2": CF.f_order_2x2, "f15_link_crossover": CV.f_link_crossover, "f13b_depth_curves": CV.f_depth_curves, "f13c_depth_curves_all": CV.f_depth_curves_all, "f16_ladder": CV.f_ladder, "f17_attention": CV.f_attention, "f18_code_tool": CF.f_code_tool, "f19_six_lockers": CF.f_six_lockers, "f6a_address_read_removed": lambda: F.f_address("read_removed"), "f6b_address_swap_lens": lambda: F.f_address("swap_lens"), "f13_depth_anatomy": CF.f_depth, "f14_two_codes": CF.f_two_codes, "f11_monitor": F.f_monitor, "f12_order": F.f_order, "r1_dan_split": X.r1_dan_split,
-        "t12_two_by_two": DF.two_by_two, "p0a_datasets": DF.datasets, "p0b_tools": DF.tools}  # fmt: skip
+        "t12_two_by_two": DF.two_by_two, "p0a_datasets": DF.datasets, "p0b_tools": DF.tools,
+        **W.FIGS}  # fmt: skip
 DEPTH = ("r1_dan_split", "f5_atoms", "f12_order", "f6_address", "r5_routes", "f11_monitor", "r3_last_token", "t12_two_by_two")
-TARGET = {"readme": [i for i in FIGS if i not in ("r1_dan_split", "t12_two_by_two", "f2_main", "f10a_order_main", "f10b_order_2x2", "f6a_address_read_removed", "f6b_address_swap_lens", "f15_link_crossover", "f13b_depth_curves", "f13c_depth_curves_all", "f16_ladder", "f17_attention", "f18_code_tool", "f19_six_lockers")], "depth": list(DEPTH)}
+TARGET = {"readme": [i for i in FIGS if i not in W.FIGS and i not in ("r1_dan_split", "t12_two_by_two", "f2_main", "f10a_order_main", "f10b_order_2x2", "f6a_address_read_removed", "f6b_address_swap_lens", "f15_link_crossover", "f13b_depth_curves", "f13c_depth_curves_all", "f16_ladder", "f17_attention", "f18_code_tool", "f19_six_lockers")], "depth": list(DEPTH)}
 # p0a_datasets: the root README's datasets figure (Dan 30 Oct: the table style, no title inside)
 TARGET["slide"] = [*(i for i in TARGET["readme"] if i != "f10_sentence_order"), "f2_main", "f10a_order_main", "f10b_order_2x2", "f6a_address_read_removed", "f6b_address_swap_lens", "f15_link_crossover", "f13b_depth_curves", "f13c_depth_curves_all", "f16_ladder", "f17_attention", "f18_code_tool", "f19_six_lockers"]  # f2_main: the deck's one-panel f2 (Dan 30 Oct), slides only; f2_controls is its appendix
+# the LessWrong post's figures in post order; the file names are fixed (the post embeds figures/writeup/<id>.png)
+TARGET["writeup"] = list(W.FIGS)
 
 CLAIMS = {  # the alt text in the root README (scripts/readme_root.py)
     "r1_c1_split": "Taking the lens part out breaks recalled answers, not lookup ones",
@@ -58,25 +65,38 @@ assert set(CLAIMS) == set(TARGET["readme"])
 PROBLEMS: list[str] = []
 
 
-def _check(fig, path) -> None:
-    PROBLEMS.extend(lint.table_problems(fig, Path(path).stem, need_xlabel=True, need_cue=True))
+MIN_PT = {"writeup": WRITEUP.label}  # the write-up's floor: nothing under 11 pt
 
 
 def build(target: str, ids: list[str] | None = None) -> list[str]:
-    T.BEFORE_SAVE = _check
+    min_pt = MIN_PT.get(target, 0.0)
+    T.BEFORE_SAVE = lambda fig, path: PROBLEMS.extend(
+        lint.table_problems(fig, Path(path).stem, need_xlabel=True, need_cue=True, min_pt=min_pt))
     out = OUT[target]
     out.mkdir(parents=True, exist_ok=True)
     X.OUT, F.DPI = str(out), DPI[target]
     CF.OUT, CF.DPI = str(out), DPI[target]
     CV.OUT, CV.DPI = str(out), DPI[target]
+    W.OUT = str(out)
     CV.PROBLEMS.clear()
+    W.PROBLEMS.clear()
+    fs = dict(T.FS)
+    if target == "writeup":
+        T.FS.update(W.FS)
     done = []
-    for i in TARGET[target]:
-        if ids and not any(i.startswith(x) for x in ids):
-            continue
-        FIGS[i]()
-        done.append(i)
+    try:
+        for i in TARGET[target]:
+            if ids and not any(i.startswith(x) for x in ids):
+                continue
+            FIGS[i]()
+            done.append(i)
+            if target == "writeup":
+                PROBLEMS.extend(lint.png_problems(out / f"{i}.png", round(W.WIDTH * DPI[target]), WRITEUP_ASPECT))
+    finally:
+        T.FS.clear()
+        T.FS.update(fs)
     PROBLEMS.extend(CV.PROBLEMS)
+    PROBLEMS.extend(W.PROBLEMS)
     return done
 
 
@@ -89,4 +109,10 @@ if __name__ == "__main__":
         print("wrote", OUT[a.target] / f"{i}.png")
     print("\n".join(PROBLEMS) or "lint: clean")
     if not a.ids:
-        page_sheet([OUT[a.target] / f"{i}.png" for i in TARGET[a.target]], OUT[a.target] / "contact_sheet_tables.png")
+        pngs = [OUT[a.target] / f"{i}.png" for i in TARGET[a.target]]
+        if a.target == "writeup":  # the post's column: every figure at 720 px, in post order
+            page_sheet(pngs, OUT[a.target] / "contact_sheet.png", width=720)
+        else:
+            page_sheet(pngs, OUT[a.target] / "contact_sheet_tables.png")
+    if a.target == "writeup" and PROBLEMS:
+        raise SystemExit(1)

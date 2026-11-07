@@ -8,6 +8,7 @@ from every allowed colour (anti-aliased edges between two palette colours stay i
 
 uv run python scripts/check_style.py            # the three READMEs, one line per figure, exit 1 on a failure
 uv run python scripts/check_style.py --report   # the same, never failing (a breadth figure is Zach's until redrawn)
+uv run python scripts/check_style.py --writeup  # the LessWrong post's figures (figures/writeup/*.png)
 """
 
 from __future__ import annotations
@@ -72,11 +73,13 @@ def off_palette(png: Path) -> tuple[float, str, int]:
 def main(argv: list[str]) -> int:
     report = "--report" in argv
     failed = 0
-    for name, readme in READMES.items():
-        if not readme.exists():
-            continue
-        print(f"== {name}: {readme.relative_to(REPO)}")
-        for png in figures(readme):
+    if "--writeup" in argv:  # the LessWrong post's figures: every PNG in figures/writeup/ but the contact sheet
+        groups = {"writeup": sorted(p for p in (REPO / "figures" / "writeup").glob("*.png") if "contact_sheet" not in p.name)}
+    else:
+        groups = {name: figures(readme) for name, readme in READMES.items() if readme.exists()}
+    for name, pngs in groups.items():
+        print(f"== {name}")
+        for png in pngs:
             if not png.exists():
                 print(f"   MISSING {png.relative_to(REPO)}")
                 failed += 1

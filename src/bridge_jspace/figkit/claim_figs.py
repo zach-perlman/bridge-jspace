@@ -207,7 +207,7 @@ def f_order_main() -> None:
             rows,
             [
                 Col(4.85, "Locker scenes", "", lanes(locker), (-0.2, 1.15), [0, 0.5, 1], xlabel="lookups switched (share)", cue="→ more switched"),
-                Col(4.85, "Zach's fact passages", "", lanes(zach), (-0.2, 1.15), [0, 0.5, 1], xlabel="lookups switched (share)", cue="→ more switched"),
+                Col(4.85, "Fact passages", "", lanes(zach), (-0.2, 1.15), [0, 0.5, 1], xlabel="lookups switched (share)", cue="→ more switched"),
             ],
             label_w=1.55,
             labels=False,

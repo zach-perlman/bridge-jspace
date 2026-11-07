@@ -34,4 +34,9 @@ class Theme:
 README = Theme("readme", title=True)
 SLIDE = replace(Theme("slide"), axis=14, tick=13, label=13, value=12, dpi=200,
                 sizes={"full": (12.3, 5.3), "half": (6.0, 5.3), "third": (4.0, 5.3)})  # fmt: skip
-THEMES = {"readme": README, "slide": SLIDE}
+# the LessWrong post's column (~720 px shown): 8.0 in at 200 dpi = 1600 px, nothing under 11 pt, no title (the caption
+# lives in the post), opaque white (the site has a dark mode)
+WRITEUP = replace(Theme("writeup"), axis=12, tick=11, label=11, value=11, dpi=200, sizes={"full": (8.0, 4.4)})
+WRITEUP_HEIGHT = (2.6, 5.5)  # inches: the range a "full" figure's height may take
+WRITEUP_ASPECT = (1.4, 2.6)  # width : height
+THEMES = {"readme": README, "slide": SLIDE}  # build.py's spec targets; the write-up is built by figkit/tables.py only

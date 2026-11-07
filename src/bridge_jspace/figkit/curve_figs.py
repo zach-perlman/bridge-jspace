@@ -166,7 +166,7 @@ def f_depth_curves_all() -> None:
 
 
 # ---- f16: claim 1's ladder -------------------------------------------------------------------------------------------------
-RUNG_LABEL = {1: "one\nlayer", 2: "L to\nL+3", 3: "+ earlier\nmention", 4: "+ the\nquestion", 5: "every\ntoken\nL to L+3", 6: "Zach's lens\ndirections"}
+RUNG_LABEL = {1: "one\nlayer", 2: "L to\nL+3", 3: "+ earlier\nmention", 4: "+ the\nquestion", 5: "every\ntoken\nL to L+3", 6: "the band\ntest's\ndirections"}
 RUNG_X = {1: 1.0, 2: 2.0, 3: 3.0, 4: 4.2, 5: 5.35, 6: 6.55}  # rungs 3-5 a little apart for their labels; rung 6 (Zach's definition) stands a little apart
 OWN = "the random part's own cost (kept with none minus kept with the random part)"
 

@@ -1,4 +1,4 @@
-.PHONY: readme figures-kit install fmt lint typecheck test test-model check run data-report review-serve review-export review-summary review-verified verify-checks verify-independent verify-pack examples-render examples-serve enqueue queue-status queue-pull queue-worker queue-cancel queue-stats autonomy autonomy-status autonomy-off
+.PHONY: readme figures-kit figures-writeup install fmt lint typecheck test test-model check run data-report review-serve review-export review-summary review-verified verify-checks verify-independent verify-pack examples-render examples-serve enqueue queue-status queue-pull queue-worker queue-cancel queue-stats autonomy autonomy-status autonomy-off
 
 # make run CONFIG=scripts/exp10_lens_sanity/config.yaml ARGS="model=configs/models/qwen3.6-27b.yaml"
 run:                ## experiment in a detached tmux session, log in log/
@@ -122,6 +122,12 @@ figures-kit:        ## the setup figures (p0a, p0b) and the table figures for th
 	uv run python -m bridge_jspace.figkit.build --target slide
 	uv run python -m bridge_jspace.figkit.build --target readme
 	uv run python -m bridge_jspace.figkit.tables --target slide
+
+figures-writeup:    ## the LessWrong post's figures (figures/writeup/, 1600 px) with their contact sheet and checks
+	uv run python -m bridge_jspace.figkit.tables --target writeup
+	uv run python scripts/check_style.py --writeup
+	uv run python scripts/check_figure_terms.py --writeup
+	uv run pytest -q tests/test_writeup_figures.py
 
 readme: figures-kit ## both READMEs from their templates (root: docs/readme/, depth: docs/depth/), figures and contact sheets
 	uv run python -m bridge_jspace.figkit.tables --target readme

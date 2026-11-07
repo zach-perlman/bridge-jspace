@@ -33,6 +33,10 @@ SUBTITLE_H = 0.32  # the figure-wide subtitle over the column titles
 CUE_H = 0.24  # the direction cue under an axis title (Dan 30 Oct: say which way is "more" on every axis)
 CUE_OFFSET = 43  # points below the axis: under the ticks and the axis title
 HOLLOW = {"seen": False}  # set by dot(hollow=True) and a hollow row: the figure then carries "○ post hoc" (G1)
+# font sizes (pt) of every text the kit draws; a target may override them (the write-up's theme: nothing under 11 pt)
+FS_DEFAULT = {"name": 13, "title": 13, "sub": 11.5, "rowsub": 11, "subrow": 11.5, "hollow": 12, "xlabel": 11.5,
+              "cue": 10.5, "key": 11.5, "text": 12.5, "value": 11.5, "head": 12, "small": 10.5}  # fmt: skip
+FS = dict(FS_DEFAULT)
 
 
 @dataclass
@@ -72,6 +76,12 @@ class Table:
     head: float = HEAD_H  # header height (inches); raise it for group titles above the column titles
     group: int = 1  # rows per zebra stripe (two rows of one model share a stripe)
     subtitle: str = ""  # one grey line over the whole figure (what a row or a dot means), above the column titles
+    row_h: float | None = None  # inches per row (None: the module's ROW_H at draw time, which some figures patch)
+    foot: float | None = None  # inches under the axes, before the axis titles (None: FOOT_H)
+    title_top: float | None = None  # column titles this far from the top (inches); None: under the head's default slot
+    sub_lift: bool = False  # text columns follow a row's name up when the row has a grey sub-line under it; the
+    # sub-line, which then runs under the panels, gets the row's background so grid lines do not cross it
+    hollow_key: bool = True  # False: a stacked panel whose figure carries "○ post hoc" in another panel's key
 
     def render(self, path: str, dpi: int = 160) -> None:
         """Draw twice: a dry run finds out whether a hollow mark is used, then the real figure carries the key item
@@ -79,7 +89,7 @@ class Table:
         HOLLOW["seen"] = False
         self._draw(None, dpi, self.key)
         key = [list(r) for r in self._key_rows(self.key)]
-        if HOLLOW["seen"] and not any(m == "○" for r in key for m, _, _ in r):
+        if self.hollow_key and HOLLOW["seen"] and not any(m == "○" for r in key for m, _, _ in r):
             (key[-1] if key else key.append([]) or key[-1]).append(("○", INK, "post hoc"))
         self._draw(path, dpi, key)
 
@@ -93,10 +103,11 @@ class Table:
         head = self.head + (SUBTITLE_H if self.subtitle else 0.0)
         lab = LABEL_ROW if self.labels else 0.12
         width = self.label_w + sum(c.width for c in self.cols) + self.pad * (len(self.cols) + 1)
-        body = n * ROW_H + lab
+        rh = ROW_H if self.row_h is None else self.row_h
+        body = n * rh + lab
         xlab = (XLAB_H if any(c.xlabel for c in self.cols) else 0.0) + (CUE_H if any(c.cue for c in self.cols) else 0.0)
         key_rows = self._key_rows(key)
-        height = head + body + FOOT_H + xlab + (KEY_H + 0.3 * (len(key_rows) - 1) if key_rows else 0)
+        height = head + body + (FOOT_H if self.foot is None else self.foot) + xlab + (KEY_H + 0.3 * (len(key_rows) - 1) if key_rows else 0)
         fig = plt.figure(figsize=(width, height), dpi=dpi)
         fy = lambda inch_from_top: 1 - inch_from_top / height  # noqa: E731
         fx = lambda inch: inch / width  # noqa: E731
@@ -105,50 +116,45 @@ class Table:
         if self.zebra:  # stripes across the whole table, behind everything
             for i in range(n):
                 if (i // self.group) % 2 == 0:
-                    fig.patches.append(Rectangle((0, fy(top + (i + 1) * ROW_H)), 1, ROW_H / height,
+                    fig.patches.append(Rectangle((0, fy(top + (i + 1) * rh)), 1, rh / height,
                                                  transform=fig.transFigure, color=ZEBRA, zorder=-5))  # fmt: skip
         for i, r in enumerate(self.rows):  # row labels
-            y = fy(top + (i + 0.5) * ROW_H)
+            y = fy(top + (i + 0.5) * rh)
             if not r.name and r.sub:  # a sub-row of a group (S6): its short label alone, indented, grey
-                fig.text(fx(0.3), y, r.sub, ha="left", va="center", fontsize=11.5, color=MUTED)
+                fig.text(fx(0.3), y, r.sub, ha="left", va="center", fontsize=FS["subrow"], color=MUTED)
                 continue
             dy = 0.09 if r.sub else 0
-            t = fig.text(fx(0.12), y + dy / height * 1.0, r.name, ha="left", va="center", fontsize=13,
+            t = fig.text(fx(0.12), y + dy / height * 1.0, r.name, ha="left", va="center", fontsize=FS["name"],
                          weight="bold", color=INK)  # fmt: skip
             if r.hollow:
                 HOLLOW["seen"] = True
                 fig.canvas.draw()
                 bb = t.get_window_extent()
                 fig.text(bb.x1 / fig.bbox.width + fx(0.06), y + dy / height, "○", ha="left", va="center",
-                         fontsize=12, color=MUTED)  # fmt: skip
+                         fontsize=FS["hollow"], color=MUTED)  # fmt: skip
             if r.sub:
-                fig.text(fx(0.12), y - 0.17 / height, r.sub, ha="left", va="center", fontsize=11, color=MUTED)
+                box = {"boxstyle": "square,pad=0.1", "facecolor": ZEBRA if (i // self.group) % 2 == 0 and self.zebra
+                       else "white", "edgecolor": "none"} if self.sub_lift else None  # fmt: skip
+                fig.text(fx(0.12), y - 0.17 / height, r.sub, ha="left", va="center", fontsize=FS["rowsub"], color=MUTED,
+                         bbox=box, zorder=5)  # fmt: skip
 
         if self.subtitle:
-            fig.text(fx(0.12), fy(0.1), self.subtitle, ha="left", va="top", fontsize=11.5, color=MUTED)
+            fig.text(fx(0.12), fy(0.1), self.subtitle, ha="left", va="top", fontsize=FS["sub"], color=MUTED)
+        title_y = 0.22 + head - HEAD_H if self.title_top is None else self.title_top
         x = self.label_w + self.pad
         for c in self.cols:
             if c.title:
-                fig.text(
-                    fx(x),
-                    fy(0.22 + head - HEAD_H),
-                    c.title,
-                    ha="left",
-                    va="top",
-                    fontsize=13,
-                    weight="bold",
-                    color=INK,
-                )
+                fig.text(fx(x), fy(title_y), c.title, ha="left", va="top", fontsize=FS["title"], weight="bold", color=INK)
             if c.sub:
-                fig.text(fx(x), fy(0.52 + head - HEAD_H), c.sub, ha="left", va="top", fontsize=11.5, color=MUTED)
+                fig.text(fx(x), fy(title_y + 0.30), c.sub, ha="left", va="top", fontsize=FS["sub"], color=MUTED)
             if c.text:
                 for i, r in enumerate(self.rows):
-                    y = fy(top + (i + 0.5) * ROW_H)
+                    y = fy(top + (i + 0.5) * rh - (0.09 if self.sub_lift and r.name and r.sub else 0))
                     rich(fig, fx(x + (c.width if c.align == "right" else 0)), y, c.draw(i, r), ha=c.align)
             else:
-                ax = fig.add_axes((fx(x), fy(top + n * ROW_H), fx(c.width), (n * ROW_H + lab) / height))
+                ax = fig.add_axes((fx(x), fy(top + n * rh), fx(c.width), (n * rh + lab) / height))
                 ax.set_zorder(1)
-                ax.set_ylim(n - 0.5, -0.5 - lab / ROW_H)
+                ax.set_ylim(n - 0.5, -0.5 - lab / rh)
                 ax.set_xlim(*c.xlim)
                 for s in ("left", "right", "top"):
                     ax.spines[s].set_visible(False)
@@ -159,10 +165,10 @@ class Table:
                     ax.set_xticks(c.xticks, [c.xfmt.format(t) for t in c.xticks])
                 ax.tick_params(axis="x", length=3, color=FAINT, pad=4)
                 if c.xlabel:
-                    ax.set_xlabel(c.xlabel, fontsize=11.5, color=MUTED, labelpad=3)
+                    ax.set_xlabel(c.xlabel, fontsize=FS["xlabel"], color=MUTED, labelpad=3)
                 if c.cue:
                     ax.annotate(c.cue, (0.5, 0), xycoords="axes fraction", xytext=(0, -CUE_OFFSET),
-                                textcoords="offset points", ha="center", va="top", fontsize=10.5, color=MUTED,
+                                textcoords="offset points", ha="center", va="top", fontsize=FS["cue"], color=MUTED,
                                 annotation_clip=False)  # fmt: skip
                     ax._cue = c.cue  # the table lint (figkit/lint.py) requires one per panel
                 for t in ax.get_xticks():
@@ -179,7 +185,7 @@ class Table:
                     (mark + " " if mark else "", col, "normal"),
                     (words, MUTED, "normal"),
                 ]
-            rich(fig, fx(0.12), fy(height - 0.24 - 0.3 * (len(key_rows) - 1 - ri)), parts, size=11.5)
+            rich(fig, fx(0.12), fy(height - 0.24 - 0.3 * (len(key_rows) - 1 - ri)), parts, size=FS["key"])
         for f in self.extra:
             f(fig)
         if path is not None:
@@ -189,8 +195,9 @@ class Table:
         plt.close(fig)
 
 
-def rich(fig, x, y, parts, ha="left", size=12.5):
+def rich(fig, x, y, parts, ha="left", size=None):
     """Coloured words side by side, e.g. [("0.53", INK, "bold"), (" [0.42, 0.61]", MUTED, "normal")]."""
+    size = FS["text"] if size is None else size
     fig.canvas.draw()
     texts, w = [], 0.0
     for s, col, wt in parts:
@@ -223,7 +230,7 @@ def dot(ax, x, y, color, hollow=False, size=9.5, cell=None, value=None, vfmt="{:
             textcoords="offset points",
             ha="left" if vside == "right" else "right",
             va="center",
-            fontsize=11.5,
+            fontsize=FS["value"],
             color=color if color != C["control"] else MUTED,
             annotation_clip=False,
             zorder=6,
@@ -249,7 +256,7 @@ def under(ax, x, word):
         textcoords="offset points",
         ha="center",
         va="top",
-        fontsize=10.5,
+        fontsize=FS["small"],
         color=MUTED,
         annotation_clip=False,
     )
@@ -262,17 +269,17 @@ def connector(ax, a, b, y):
 def head_label(ax, x, text, color, ha="center", weight="bold"):
     """A direct label above the first row: the coloured word that replaces a legend entry."""
     top = ax.get_ylim()[1]
-    ax.text(x, -0.5 + 0.55 * (top + 0.5), text, ha=ha, va="center", fontsize=12, color=color, weight=weight)
+    ax.text(x, -0.5 + 0.55 * (top + 0.5), text, ha=ha, va="center", fontsize=FS["head"], color=color, weight=weight)
 
 
 def band(ax, lo, hi, n, word=None):
     ax.add_patch(Rectangle((lo, -0.5), hi - lo, n, color=BAND, zorder=0.5, lw=0))
     if word:
-        ax.text((lo + hi) / 2, n - 0.5 - 0.12, word, ha="center", va="bottom", fontsize=10.5, color=MUTED, zorder=1)
+        ax.text((lo + hi) / 2, n - 0.5 - 0.12, word, ha="center", va="bottom", fontsize=FS["small"], color=MUTED, zorder=1)
 
 
 def vrule(ax, x, n, word=None, ha="left"):
     ax.plot([x, x], [n - 0.5, -0.5], color="#8C8C8C", ls=(0, (4, 3)), lw=1.1, zorder=1)
     if word:
         ax.text(x + (0.01 if ha == "left" else -0.01) * (ax.get_xlim()[1] - ax.get_xlim()[0]), n - 0.5 - 0.1, word,
-                ha=ha, va="bottom", fontsize=10.5, color=MUTED)  # fmt: skip
+                ha=ha, va="bottom", fontsize=FS["small"], color=MUTED)  # fmt: skip
