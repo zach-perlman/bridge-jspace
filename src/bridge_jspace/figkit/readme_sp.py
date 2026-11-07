@@ -230,8 +230,8 @@ def t12_two_by_two() -> sp.Figure:
 FIGS = {**{fid: _alias(fid) for fid in ALIAS}, "r1_dan_split": r1_dan_split, "r4_pointer": r4_pointer,
         "f5_atoms": f5_atoms, "f11_monitor": f11_monitor, "f10_sentence_order": f10_sentence_order,
         "t12_two_by_two": t12_two_by_two}  # fmt: skip
-# Declared but refused by styles-plot 0.1.4 strict (stays on figkit): f6_address (the write-up's fig08a columns: a
-# value label set beside its own dot across the connector, SP601, as fig08a).
+# Declared but refused by styles-plot 0.1.5 strict (stays on figkit): f6_address (at the readme width the colour words
+# 'address swap' and 'a change of item' overlap in one strip; value labels on a mark and across lines).
 BLOCKED = {"f6_address": f6_address}
 # Left on figkit: f3_nine_models (a second same-role estimate in one row: Bolt at 100 directions, the 122B scored by
 # probability), r5_routes (stack whiskers), p0b_tools (a schematic of coloured grid cells, as the write-up's fig03).

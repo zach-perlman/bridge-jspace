@@ -517,7 +517,7 @@ def fig00_schematic() -> sp.Figure:
                sp.Words(x + 0.12, ry + 0.97, [(answer, role)], verbatim=True)]  # fmt: skip
     lookup_x, recall_x = readers[0][1] + rw / 2, readers[1][1] + rw / 2
     el += [sp.Arrow((sx, part_y["identity"]), (lookup_x - 0.6, ry), role="identity", label="identity"),
-           sp.Arrow((sx, part_y["address"]), (lookup_x + 0.9, ry), role="address", label="address"),
+           sp.Arrow((sx + 0.35, sy + sh), (lookup_x + 1.0, ry), role="address", label="address"),
            sp.Arrow((sx + sw, part_y["lens"]), (recall_x, ry), role="lens", label="lens part")]  # fmt: skip
     return sp.Figure("fig00_schematic", vocab(), direct_labels=True).add(sp.Schematic(ry + rh + 0.15, el))
 
@@ -591,13 +591,13 @@ def fig03_tools() -> sp.Figure:
     return sp.Figure("fig03_tools", vocab(), direct_labels=True).add(sp.Schematic(y + 0.25, el))
 
 
-# Declared, but styles-plot 0.1.4 refuses them in strict mode (they stay on figkit until a decision):
+# Declared, but styles-plot refuses them in strict mode (they stay on figkit until a decision):
 # fig05 (two five-panel tables: 0.80 wide : high, under the post's 1.0; labels cross lines), appB_f14 (two five-row
 # tables: 0.98), fig03 (a schematic of coloured grid cells: direct labels want a word beside every coloured cell),
-# fig08a and fig10 (0.1.4 sets a value label beside its own dot across the connector or on the next mark, SP601;
-# they built strict on 0.1.3).
+# fig10 (0.1.5: a left label is set past every mark of its row, onto the grey control; Lightning's 'descriptive' tag and its
+# 'no energy-matched control' note overlap on the row's second line).
 BLOCKED = {"fig05_controls": fig05_controls, "appB_f14_two_codes": appB_f14_two_codes, "fig03_tools": fig03_tools,
-           "fig08a_address_read_remove": fig08a_address_read_remove, "fig10_answer_span": fig10_answer_span}  # fmt: skip
+           "fig10_answer_span": fig10_answer_span}
 # Not declared (the grammar has no form for them yet): fig06 and appB_f18 (a second same-role estimate in one row),
 # fig07 (stack whiskers), appB_f5 (stack segments that are not roles), appB_f15 (sweep points with their own
 # intervals off the line values).
@@ -605,4 +605,4 @@ FIGS = {"fig00_schematic": fig00_schematic, "fig02_datasets": fig02_datasets,
         "fig08b_address_swap_lens": fig08b_address_swap_lens, "fig11_orthogonal": fig11_orthogonal,
         "fig13_last_token": fig13_last_token, "figA1_agents": figA1_agents, "appB_f9_where": appB_f9_where,
         "appB_f12_order": appB_f12_order, "appB_f8_facts": appB_f8_facts, "appB_f8_directions": appB_f8_directions,
-        "appB_f19_six_lockers": appB_f19_six_lockers}  # fmt: skip
+        "appB_f19_six_lockers": appB_f19_six_lockers, "fig08a_address_read_remove": fig08a_address_read_remove}  # fmt: skip

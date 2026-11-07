@@ -58,7 +58,7 @@ explicit = true
 torch = [{ index = "pytorch-cu128", marker = "sys_platform == 'linux'" }]
 # Not on PyPI; pinned to the same commit as data/probe_swap.json and data/lens_eval_multihop.json.
 jlens = { git = "https://github.com/anthropics/jacobian-lens", rev = "581d398613e5602a5af361e1c34d3a92ea82ba8e" }
-styles-plot = { git = "https://github.com/danorel/styles-plot", rev = "v0.1.4" }
+styles-plot = { git = "https://github.com/danorel/styles-plot", rev = "v0.1.5" }
 
 [tool.ruff]
 line-length = 120

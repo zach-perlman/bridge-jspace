@@ -322,6 +322,26 @@ f2_controls,band.nl,fixed_in_advance,,"Lightning's breadth test, registered befo
 f2_controls,layer.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
 f2_controls,band.q122,post_hoc,,the band test on this model was run after the data (as Fig. 1),"src/bridge_jspace/figkit/writeup_figs.py fig05_controls zach_post_hoc (as fig05_controls, drawn for README.md)"
 f2_controls,layer.q122,fixed_in_advance,,"one layer, the earlier same-size runs: the figkit figure drew no mark hollow","src/bridge_jspace/figkit/writeup_figs.py fig05_controls (as fig05_controls, drawn for README.md)"
+f6_address,probe.q9,fixed_in_advance,,the locker probe: fixed in advance for qwen3.5-9b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig08a_address_read_remove, drawn for README.md)"
+f6_address,remove.q9,fixed_in_advance,,the address removed: fixed in advance for qwen3.5-9b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=True) (as fig08a_address_read_remove, drawn for README.md)"
+f6_address,swap.q9,fixed_in_advance,,the address swap: fixed in advance for qwen3.5-9b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=True) (as fig08b_address_swap_lens, drawn for README.md)"
+f6_address,lens.q9,fixed_in_advance,,the lens rebuild: fixed in advance for qwen3.5-9b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=True) (as fig08b_address_swap_lens, drawn for README.md)"
+f6_address,probe.q27,fixed_in_advance,,the locker probe: fixed in advance for qwen3.6-27b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig08a_address_read_remove, drawn for README.md)"
+f6_address,remove.q27,fixed_in_advance,,the address removed: fixed in advance for qwen3.6-27b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=True) (as fig08a_address_read_remove, drawn for README.md)"
+f6_address,swap.q27,fixed_in_advance,,the address swap: fixed in advance for qwen3.6-27b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=True) (as fig08b_address_swap_lens, drawn for README.md)"
+f6_address,lens.q27,fixed_in_advance,,the lens rebuild: fixed in advance for qwen3.6-27b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=True) (as fig08b_address_swap_lens, drawn for README.md)"
+f6_address,probe.mu,fixed_in_advance,,the locker probe: fixed in advance for muse-glimmer-30b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig08a_address_read_remove, drawn for README.md)"
+f6_address,remove.mu,fixed_in_advance,,the address removed: fixed in advance for muse-glimmer-30b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=True) (as fig08a_address_read_remove, drawn for README.md)"
+f6_address,swap.mu,fixed_in_advance,,the address swap: fixed in advance for muse-glimmer-30b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=True) (as fig08b_address_swap_lens, drawn for README.md)"
+f6_address,lens.mu,fixed_in_advance,,the lens rebuild: fixed in advance for muse-glimmer-30b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=True) (as fig08b_address_swap_lens, drawn for README.md)"
+f6_address,probe.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+f6_address,remove.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+f6_address,swap.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+f6_address,lens.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+f6_address,probe.q122,fixed_in_advance,,the locker probe: fixed in advance for qwen3.5-122b-a10b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig08a_address_read_remove, drawn for README.md)"
+f6_address,remove.q122,post_hoc,,the address removed: post hoc for qwen3.5-122b-a10b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=True) (as fig08a_address_read_remove, drawn for README.md)"
+f6_address,swap.q122,post_hoc,,the address swap: post hoc for qwen3.5-122b-a10b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=True) (as fig08b_address_swap_lens, drawn for README.md)"
+f6_address,lens.q122,post_hoc,,the lens rebuild: post hoc for qwen3.5-122b-a10b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=True) (as fig08b_address_swap_lens, drawn for README.md)"
 r1_dan_split,layer.q9,fixed_in_advance,,"one layer, the conflict test: fixed in advance for qwen3.5-9b",src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 f5_atoms,atoms.q9,fixed_in_advance,,the lens part's atoms (deck_figs.f_atoms): fixed in advance for qwen3.5-9b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 f11_monitor,monitor.q9,fixed_in_advance,,the address at the last token (deck_figs.f_monitor): fixed in advance for qwen3.5-9b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)

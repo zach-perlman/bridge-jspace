@@ -196,6 +196,9 @@ def readme_set(writeup: list[dict]) -> list[dict]:
             DISAGREEMENTS.append(f"{fid} (README copy of {wid}): the write-up tags {', '.join(r['cell'] for r in rs if r['tag'])} "
                                  "'not claimed'; the README's figkit figure printed no tag. The README copy keeps no tag.")  # fmt: skip
         out += [{**r, "figure": fid, "tag": "", "source": f"{r['source']} (as {wid}, drawn for README.md)"} for r in rs]
+    # f6_address: the write-up's Fig. 8a and 8b side by side (their cells and statuses)
+    out += [{**r, "figure": "f6_address", "source": f"{r['source']} (as {r['figure']}, drawn for README.md)"}
+            for r in writeup if r["figure"] in ("fig08a_address_read_remove", "fig08b_address_swap_lens")]  # fmt: skip
     for m, _ in MODELS:
         k = SHORT[m]
         out.append(by_hollow("r1_dan_split", f"layer.{k}", m, what="one layer, the conflict test"))
