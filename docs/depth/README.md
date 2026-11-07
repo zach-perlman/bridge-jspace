@@ -57,7 +57,7 @@ Weaker results are in Part VI, dropped readings under "Tested and dropped"; † 
 **Status.**
 
 - **Models.** Five models: Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), Nemotron 3.5 Lightning 30B-A3B (a third family, a Mamba-attention hybrid) and Qwen3.5-122B-A10B (FP8; MoE, ~10B active) where it ran; Nemotron 3.5 Bolt is out of scope: no J++ lens exists for it.
-- **Runs.** As of 29 Oct 2026, built at 9397623d from the run files.
+- **Runs.** As of 29 Oct 2026, built at 4aee32db from the run files.
 - **Hand-check.** Hand-checked on a sample: 46 items across views a-g (5-10 per view, fixed in advance), all consistent; 6 issues and 6 observations logged in [docs/review/handcheck_findings.md](../review/handcheck_findings.md), none changes a headline claim.<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g --> VERIFIED.md (human recomputation) not yet filled.
 - **Marks.** ○: post hoc (Lightning everywhere, the 122B where its gate was lowered); †: not in the hand-checked sample (the last-token conflict test, the identity-and-address test, the 122B's coverage runs). See [How to read this page](#how-to-read-this-page).
 
@@ -764,7 +764,67 @@ Models bind entities to attributes in context (Feng & Steinhardt 2023) and track
 
 ## Appendix A. Links
 
-Every number on this page carries a source comment into data/figures/depth/data.csv or docs/depth/x0_numbers.json; where things live: run files under results/, job specs under jobs/c3/, scripts under scripts/. All figures on one page: [the contact sheet](../../figures/depth/_sheets/contact_sheet.png). Supplementary figures: [every scene set](../../figures/depth/s01_split_all_scene_sets.png), [the settings](../../figures/depth/11_settings.png), [every part](../../figures/depth/s02_parts_all.png), [parts of the same size](../../figures/depth/12_specificity.png), [the 27B with more directions](../../figures/depth/13_k_curve.png) · [2](../../figures/depth/14_k_routes.png), [the dose curves](../../figures/depth/16_dose_lens.png) · [2](../../figures/depth/17_dose_rest.png), [a described bridge](../../figures/depth/19_described_bridge.png), [the order split with every model](../../figures/depth/s03_order_split.png), [the layer sweep](../../figures/depth/20_layers.png), the link copy variants ([9B](../../figures/depth/s04_link_copy_variants.png), [27B](../../figures/depth/s05_link_copy_27b.png), [Muse](../../figures/depth/s06_link_copy_muse.png)), [the address across depth](../../figures/depth/21_address_depth.png), [the recall follows the swap](../../figures/depth/s08_recall_follows_swap.png), [the lens readout of the swap](../../figures/depth/s09_lens_readout.png), [the lookup's errors](../../figures/depth/22_probe_errors.png), [the first locker](../../figures/depth/23_first_locker.png), [the first sentence and the moves](../../figures/depth/s10_pointer_moves_and_neutral_sentence.png), [the routes test drawn large](../../figures/depth/s11_routes_design.png), [every routes arm](../../figures/depth/s12_routes_taken_out.png) · [2](../../figures/depth/s13_routes_kept.png), [the blocked pick sentence](../../figures/depth/24_formation.png), [chained addresses](../../figures/depth/25_chain.png), [what is left of the route](../../figures/depth/26_what_is_left.png), [attribute probe and MLPs](../../figures/depth/27_enrichment.png), [binding](../../figures/depth/28_binding.png) · [2](../../figures/depth/29_binding_added.png), [heads](../../figures/depth/30_heads.png), [second route](../../figures/depth/31_second_route.png), [the mechanism tests](../../figures/depth/10_mechanisms.png), [attention follows the swapped address](../../figures/depth/32_attention.png), [learned subspaces](../../figures/depth/33_learned.png), [Muse's learned subspaces](../../figures/depth/s14_das_muse.png), [the transfer on every model](../../figures/depth/34_transfer.png). Earlier figures: figures/archive/status_2026-10-25/.
+Every number on this page carries a source comment into data/figures/depth/data.csv or docs/depth/x0_numbers.json; where things live: run files under results/, job specs under jobs/c3/, scripts under scripts/. All figures on one page: [the contact sheet](../../figures/depth/_sheets/contact_sheet.png).
+
+| Figure | Claim / card | What it shows |
+|---|---|---|
+| `depth/01_setup.png` | [The question and the setup](#the-question-and-the-setup) | One prompt, two questions about the same bridge word |
+| `writeup/00_key.png` | [How to read this page](#how-to-read-this-page) | The figures' grammar: each colour's role, the marks, the controls' grey, and one row of the main split read aloud |
+| `depth/02_one_layer_split.png` | claim 1 · [In a conflict, which part of the bridge word does each reader follow?](#in-a-conflict-which-part-of-the-bridge-word-does-each-reader-follow) | The recall follows the lens part of the bridge word; the lookup mostly does not |
+| `depth/15_zeroing.png` | claim 2 · [In a conflict, which part of the bridge word does each reader follow?](#in-a-conflict-which-part-of-the-bridge-word-does-each-reader-follow) | At one layer the recall keeps its answers without the lens part: it has other copies |
+| `depth/36_earlier_mention.png` | claim 3 · [In a conflict, which part of the bridge word does each reader follow?](#in-a-conflict-which-part-of-the-bridge-word-does-each-reader-follow) | The recall also reads the lens part at the item's earlier mention |
+| `readme/05_atoms.png` | [What do the lens part's 25 directions stand for?](#what-do-the-lens-parts-25-directions-stand-for) | The lens part's directions: the bridge words, almost never the answer |
+| `readme/16_order.png` | [Does asking the question before the scene change how the lookup uses the lens part?](#does-asking-the-question-before-the-scene-change-how-the-lookup-uses-the-lens-part) | Question first, one model's lookup leans more on the lens part |
+| `readme/08_routes.png` | claim 4 · [Which route does the lookup take: the item's identity, its locker's position, or the number?](#which-route-does-the-lookup-take-the-items-identity-its-lockers-position-or-the-number) | Every model's lookup takes identity or position, never the value |
+| `depth/18_identity_outside.png` | claim 5 · [Which route does the lookup take: the item's identity, its locker's position, or the number?](#which-route-does-the-lookup-take-the-items-identity-its-lockers-position-or-the-number) | The lookup's identity survives taking out the lens's next directions |
+| `readme/06_address_read_remove.png` | claim 6 · [Can the address be read, removed, added and swapped?](#can-the-address-be-read-removed-added-and-swapped) | A probe reads the address, and removing it takes the position route away |
+| `depth/37_address_added_alone.png` | claim 7 · [Can the address be read, removed, added and swapped?](#can-the-address-be-read-removed-added-and-swapped) | Added alone, the address brings position answers back, except on the 27B |
+| `depth/03_six_lockers.png` | claim 8 · [Can the address be read, removed, added and swapped?](#can-the-address-be-read-removed-added-and-swapped) | With six lockers, swaps between given lockers work on most pairs; no shift moves the lookup one locker on |
+| `readme/07_address_swap_lens.png` | claim 9 · [Can the lens read the address?](#can-the-lens-read-the-address) | The swapped-in address moves the lookup but reads through the lens like a random vector |
+| `readme/11_monitor.png` | [Can a monitor on the lens part read the address where the lookup uses it?](#can-a-monitor-on-the-lens-part-read-the-address-where-the-lookup-uses-it) | The lens part holds less of the address than random parts of its energy |
+| `readme/12_last_token.png` | [At the last token, is the bridge entity in the lens part of the state, and does the model use it there?](#at-the-last-token-is-the-bridge-entity-in-the-lens-part-of-the-state-and-does-the-model-use-it-there) | The recall's entity at the last token: readable through the lens, not used |
+| `depth/05_order.png` | claim 10 · [Does the bridge word redirect the lookup only when its locker sentence came first?](#does-the-bridge-word-redirect-the-lookup-only-when-its-locker-sentence-came-first) | With the locker sentence first, the bridge word switches the lookup; after the pick, far less |
+| `depth/06_link_layers.png` | claim 10 · [Does the bridge word redirect the lookup only when its locker sentence came first?](#does-the-bridge-word-redirect-the-lookup-only-when-its-locker-sentence-came-first) | After the pick, the change copied into the locker sentences switches the lookup, layer by layer |
+| `depth/s07_cumulative.png` | claim 11 · [Does the bridge word redirect the lookup only when its locker sentence came first?](#does-the-bridge-word-redirect-the-lookup-only-when-its-locker-sentence-came-first) | Where each reader's switches are carried: the bridge word at L, before L, after L, elsewhere |
+| `depth/07_depth.png` | claim 12 · [Is the address readable before the lookup uses it, on every model?](#is-the-address-readable-before-the-lookup-uses-it-on-every-model) | On the 9B, 27B and Muse the address is readable before the lookup uses it |
+| `depth/08_depth_more.png` | claim 12 · [Is the address readable before the lookup uses it, on every model?](#is-the-address-readable-before-the-lookup-uses-it-on-every-model) | On Lightning and the 122B too, the address is readable before the lookup uses it |
+| `depth/09_two_by_two.png` | [Does the split hold on the fact passages, and do the breadth track's operation and ours agree?](#does-the-split-hold-on-the-fact-passages-and-do-the-breadth-tracks-operation-and-ours-agree) | Both operations, both datasets, one direction |
+| [`depth/s01_split_all_scene_sets.png`](../../figures/depth/s01_split_all_scene_sets.png) | supplementary | every scene set |
+| [`depth/11_settings.png`](../../figures/depth/11_settings.png) | supplementary | the settings |
+| [`depth/s02_parts_all.png`](../../figures/depth/s02_parts_all.png) | supplementary | every part |
+| [`depth/12_specificity.png`](../../figures/depth/12_specificity.png) | supplementary | parts of the same size |
+| [`depth/13_k_curve.png`](../../figures/depth/13_k_curve.png) | supplementary | the 27B with more directions |
+| [`depth/14_k_routes.png`](../../figures/depth/14_k_routes.png) | supplementary | the 27B with more directions (part 2) |
+| [`depth/16_dose_lens.png`](../../figures/depth/16_dose_lens.png) | supplementary | the dose curves |
+| [`depth/17_dose_rest.png`](../../figures/depth/17_dose_rest.png) | supplementary | the dose curves (part 2) |
+| [`depth/19_described_bridge.png`](../../figures/depth/19_described_bridge.png) | supplementary | a described bridge |
+| [`depth/s03_order_split.png`](../../figures/depth/s03_order_split.png) | supplementary | the order split with every model |
+| [`depth/20_layers.png`](../../figures/depth/20_layers.png) | supplementary | the layer sweep |
+| [`depth/s04_link_copy_variants.png`](../../figures/depth/s04_link_copy_variants.png) | supplementary | the link copy variants, 9B |
+| [`depth/s05_link_copy_27b.png`](../../figures/depth/s05_link_copy_27b.png) | supplementary | the link copy variants, 27B |
+| [`depth/s06_link_copy_muse.png`](../../figures/depth/s06_link_copy_muse.png) | supplementary | the link copy variants, Muse |
+| [`depth/21_address_depth.png`](../../figures/depth/21_address_depth.png) | supplementary | the address across depth |
+| [`depth/s08_recall_follows_swap.png`](../../figures/depth/s08_recall_follows_swap.png) | supplementary | the recall follows the swap |
+| [`depth/s09_lens_readout.png`](../../figures/depth/s09_lens_readout.png) | supplementary | the lens readout of the swap |
+| [`depth/22_probe_errors.png`](../../figures/depth/22_probe_errors.png) | supplementary | the lookup's errors |
+| [`depth/23_first_locker.png`](../../figures/depth/23_first_locker.png) | supplementary | the first locker |
+| [`depth/s10_pointer_moves_and_neutral_sentence.png`](../../figures/depth/s10_pointer_moves_and_neutral_sentence.png) | supplementary | the first sentence and the moves |
+| [`depth/s11_routes_design.png`](../../figures/depth/s11_routes_design.png) | supplementary | the routes test drawn large |
+| [`depth/s12_routes_taken_out.png`](../../figures/depth/s12_routes_taken_out.png) | supplementary | every routes arm |
+| [`depth/s13_routes_kept.png`](../../figures/depth/s13_routes_kept.png) | supplementary | every routes arm (part 2) |
+| [`depth/24_formation.png`](../../figures/depth/24_formation.png) | supplementary | the blocked pick sentence |
+| [`depth/25_chain.png`](../../figures/depth/25_chain.png) | supplementary | chained addresses |
+| [`depth/26_what_is_left.png`](../../figures/depth/26_what_is_left.png) | supplementary | what is left of the route |
+| [`depth/27_enrichment.png`](../../figures/depth/27_enrichment.png) | supplementary | attribute probe and MLPs |
+| [`depth/28_binding.png`](../../figures/depth/28_binding.png) | supplementary | binding |
+| [`depth/29_binding_added.png`](../../figures/depth/29_binding_added.png) | supplementary | binding (part 2) |
+| [`depth/30_heads.png`](../../figures/depth/30_heads.png) | supplementary | heads |
+| [`depth/31_second_route.png`](../../figures/depth/31_second_route.png) | supplementary | second route |
+| [`depth/10_mechanisms.png`](../../figures/depth/10_mechanisms.png) | supplementary | the mechanism tests |
+| [`depth/32_attention.png`](../../figures/depth/32_attention.png) | supplementary | attention follows the swapped address |
+| [`depth/33_learned.png`](../../figures/depth/33_learned.png) | supplementary | learned subspaces |
+| [`depth/s14_das_muse.png`](../../figures/depth/s14_das_muse.png) | supplementary | Muse's learned subspaces |
+| [`depth/34_transfer.png`](../../figures/depth/34_transfer.png) | supplementary | the transfer on every model |
 
 ## Appendix B. Following the same scenes: the position route (post hoc)
 
