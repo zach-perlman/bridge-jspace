@@ -41,7 +41,7 @@ def test_a_set_holds_only_its_figures_its_index_meta_and_sheets(group):
     assert all(NAME.match(n) for n in pngs), sorted(n for n in pngs if not NAME.match(n))
     assert pngs == {f"{stem}.png" for stem in L.names(group).values()}
     meta = {p.name for p in (folder / "_meta").iterdir()}
-    assert meta == {f"{stem}.styles.json" for stem in L.names(group).values()} | {"order.txt"}
+    assert meta - {"captions.toml"} == {f"{stem}.styles.json" for stem in L.names(group).values()} | {"order.txt"}
     assert (folder / "_meta" / "order.txt").read_text().split() == [f"{s}.png" for s in L.names(group).values()]
     assert {p.name for p in (folder / "_sheets").iterdir()} == {"contact_sheet.png", "contact_sheet_gray.png"}
     assert not [p for p in folder.rglob("*") if p.is_dir() and p.name not in ("_meta", "_sheets")]

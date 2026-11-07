@@ -420,7 +420,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--out", default=str(PAGE.relative_to(REPO)), help="where to write the page, relative to the repo "
                     "root (default docs/depth/README.md); its relative links are rewritten to resolve from there")  # fmt: skip
     a = ap.parse_args(argv)
-    text = TEMPLATE.read_text()
+    from bridge_jspace.figkit.captions import expand
+
+    text = expand(TEMPLATE.read_text())  # one caption per figure (figures/<set>/_meta/captions.toml)
     grid = Path(a.grid).resolve() if a.grid else pinned_grid(text)
     out = REPO / a.out
     readme = relink(render(text, Book(grid)), out)

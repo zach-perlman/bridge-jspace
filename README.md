@@ -59,7 +59,7 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 
 ![Taking the lens part out breaks recalled answers, not lookup ones](figures/readme/02_main_split.png)
 
-*Rows are models. Left: accuracy drop (points) when the lens part is removed everywhere, for lookup and recall. Right: the share of switches blocked beyond a random part when it is removed from the patch. The gap columns are recall minus lookup, with the interval over bridge items; in brackets, the largest same-size control's gap.*
+*Rows are models. Left, band of layers (fact passages): each reader's accuracy drop in points when the lens part is removed everywhere, lookup and recall joined by a grey bar, and the gap, recall minus lookup, with its 95% interval over bridge items; grey tick: the largest same-size control's gap. Right, one layer (locker scenes): each reader's switches blocked beyond a random part when the lens part is removed from the patch, on the grey band (within 0.10 of a random part), and the gap with its 95% interval. Hollow (○): Muse 30B and Qwen 122B in the band test, Lightning in the one-layer test (post hoc). Lightning's one-layer gap is the difference of its two shares in the aggregate verdict: no per-item contrast was saved, so it has no interval. Items per model: the n column of docs/breadth/data.csv (band) and data/figures/depth/data.csv (one layer).<!-- src: plotstyle.toml | 95% interval; within 0.10 of a random part -->*
 
 - **Test.** Remove everywhere over a band of middle layers (fact passages), and remove from the patch at one layer (locker scenes).
 - **Result.**
@@ -83,7 +83,7 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 
 ![Another entity's lens part moves the recall from any context, a probe's subspace that reads the fact does not](figures/readme/04_pointer.png)
 
-*One panel per model. Each row is a different source of the swapped-in part; the dot is how many answers move to the other entity's fact, in points, with a 95% interval over bridge items. The neutral sentence beats the same-passage swap by +6.0 [3.3, 8.7] / +6.2 [3.2, 8.9] / +0.3 [−2.4, 3.2] points (27B / 9B / Lightning, paired on the same items)<!-- src: docs/breadth/data.csv | ptr.q27.neutral_minus_swap; ptr.q9.neutral_minus_swap; ptr.nl.neutral_minus_swap -->.*
+*Rows are models, with each run's items under the name; columns are the source of the part swapped in: another entity's own passage, one neutral sentence about that entity, the same without its own-word directions (lens part, teal), rotated (grey, a control) and a probe's subspace that reads the fact (slate). Each dot is the answers moved to the other entity's fact, in points, with its 95% interval over bridge items. The last column is the neutral sentence minus the own passage, paired on the same items: +6.2 [3.2, 8.9] / +6.0 [3.3, 8.7] / +0.3 [−2.4, 3.2] points (9B / 27B / Lightning)<!-- src: docs/breadth/data.csv | ptr.q9.neutral_minus_swap; ptr.q27.neutral_minus_swap; ptr.nl.neutral_minus_swap -->.*
 
 - **Test.** Swap another entity's lens part into the bridge, taken from its own passage, from one neutral sentence naming it, or with its name's own directions removed. Decompose the lens part into the vocabulary words it stands for. Compare what the lens shows at the bridge before a recall, before a lookup, and with no question asked (twin set).
 - **Result.**
@@ -100,7 +100,7 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 
 ![The lens part's 25 directions are the two bridge words, almost never the answer word](figures/readme/05_atoms.png)
 
-*What the lens directions stand for in the locker scenes: the share of their energy in the old bridge word, the new bridge word, and no word of the scene; right, the answer word's share.*
+*Per model three rows: the old bridge word, the new bridge word (the lens part, teal) and the answer word (brick): each one's share of the lens part's rebuilt energy, over its directions by the word each decodes to. Right: the shares in another scene word and in no scene word. Lightning hollow (○, post hoc).*
 
 ### Finding 3. Lookup runs on codes outside the lens: identity and address
 
@@ -134,13 +134,13 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 
 *Lookups switched by the whole change when the locker sentence comes first and when it comes after the pick, per model, and (post hoc, hollow ○) with the changed prompt's locker sentence before or after the pick, for each original order. Whiskers: 95% cluster-bootstrap intervals over bridge entities; n per cell in the depth README; Lightning ○ (gate chosen after its pre-check). The sentence order is view g of the hand-checked sample; the 2 × 2 is post hoc and was not hand-checked.*<!-- src: results/x0_order_2x2/20261030T224216Z/tables.json | qwen3.5-9b -->
 
-![Without the address the position route goes; without J++ the identity route turns to position (post hoc)](figures/readme/10_two_codes.png)
+![Without the address the position route goes; without the lens part the identity route turns to position (post hoc)](figures/readme/10_two_codes.png)
 
 *Post hoc, another item moved, lookup. Left: of the scenes on the position route, the share that leaves it without the address, against without a random part of the same size. Right: of the scenes on the identity route, the share that turns to the position without the lens part, against without a random part. Paired differences with 95% intervals (bootstrap over bridge entities); all hollow because post hoc; Lightning and the 122B have lowered or late gates. Not hand-checked.*<!-- src: results/c2_route_crosstab/20261030T212820Z/tables.json | qwen3.5-9b -->
 
 ![At the last token the lens part reads the address worse than a random part of the same energy](figures/readme/11_monitor.png)
 
-*A probe for the address at the last token, trained on the lens part (colour), on a random part of the same energy (grey) and on the full state (bar), for two sizes of the lens part.*
+*The locker probe's accuracy for the address at the last token, per model, for the lens part as used throughout (left) and with four times as many directions (right): the lens part (teal) against a random part of the same energy (grey), with 95% intervals; the lens part's value and interval, and the full state's accuracy, in their own columns. Lightning hollow (○, post hoc).<!-- src: plotstyle.toml | 95% interval; within 0.10 of a random part -->*
 
 ### Finding 4. Readable is not the same as used
 
@@ -148,7 +148,7 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 
 ![At the last token the lens reads the entity, and the answer does not go through it](figures/readme/12_last_token.png)
 
-*Rows are models. Left: how well a probe on the lens part reads the entity at the last token. Right: answers that switch when only the lens part is swapped, against the whole state.*
+*Per model, at the layer where the read peaks (under the name). Left: a probe's accuracy for the recall's entity on the lens part of the last token's state, with its 95% interval; dashed: chance. Right: the recalls switched when only the lens part is swapped in (teal) against the whole state swapped in (grey); the lens part's value in the last column. Lightning hollow (○, post hoc).<!-- src: plotstyle.toml | 95% interval; within 0.10 of a random part -->*
 
 - **Test.** At the last token, train a probe on the lens part to read the recall's entity, then swap only the lens part between prompts and compare with patching the whole state. Across nine models, compare whether the lens part is carried (the swap moves the answer) and needed (the removal costs it). In the twin set's conflict variant ("The club's notes say Achebe was Peruvian"), read the bridge when memory wins and when the passage wins.
 - **Result.**
@@ -189,7 +189,7 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 
 ![With the question before the scene, the 27B's lookup leans a little more on the lens part; the other models missed the gate](figures/readme/16_order.png)
 
-*The question-first cell passed its gate on the 27B and the 122B only. The rule was set after the 27B's cells. The breadth track's band measure on its twin set moves the 27B the other way (less reliance with the question first).*
+*Per model two rows, the question after the scene (the main test) and the question before it, in the same colours (lookup purple, recall black): switches blocked without the lens part beyond a random part, with 95% intervals; grey band: within 0.10 of a random part. Right: the lookup's difference, question before minus after, with its interval. "below gate (…)": the question-first scenes did not pass that model's gate; "can't tell": no difference without that cell. Hollow (○, post hoc): the 27B's cells and Lightning's. The question-first cell passed its gate on the 27B and the 122B only; the rule was set after the 27B's cells. The breadth track's band measure on its twin set moves the 27B the other way (less reliance with the question first).<!-- src: plotstyle.toml | 95% interval; within 0.10 of a random part -->*
 
 ## More results
 

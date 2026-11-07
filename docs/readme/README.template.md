@@ -39,7 +39,7 @@ A recent interpretability tool, the J++ lens, reads a language model's hidden st
 
 {{fig|p0b_tools}}
 
-*Three ways to test the lens part, each at the bridge.*
+{{caption|readme/01_tools}}
 
 - **Remove everywhere** (breadth): project the lens part out of every token across a band of middle layers, and count the answers that turn wrong. *Is it needed?*
 - **Remove from the patch** (depth): take the bridge word's state from a prompt where it names another item, add the difference to the original run at one layer without its lens part, and count the answers that no longer switch. *Does the change travel through it?*
@@ -58,7 +58,7 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 
 {{fig|r1_c1_split}}
 
-*Rows are models. Left: accuracy drop (points) when the lens part is removed everywhere, for lookup and recall. Right: the share of switches blocked beyond a random part when it is removed from the patch. The gap columns are recall minus lookup, with the interval over bridge items; in brackets, the largest same-size control's gap.*
+{{caption|readme/02_main_split}}
 
 - **Test.** Remove everywhere over a band of middle layers (fact passages), and remove from the patch at one layer (locker scenes).
 - **Result.**
@@ -74,7 +74,7 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 
 {{fig|f2_controls}}
 
-*Every control next to the lens part. Left: removed everywhere, in points. Right: removed from the patch, as a share of switches. Grey values are controls. The last column of each half is the lens part minus its largest same-size control, paired on the same items, with its interval.*
+{{caption|readme/03_controls}}
 
 ### Finding 2. The lens part holds what the bridge's words evoke
 
@@ -82,7 +82,7 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 
 {{fig|r4_pointer}}
 
-*One panel per model. Each row is a different source of the swapped-in part; the dot is how many answers move to the other entity's fact, in points, with a 95% interval over bridge items. The neutral sentence beats the same-passage swap by +6.0 [3.3, 8.7] / +6.2 [3.2, 8.9] / +0.3 [−2.4, 3.2] points (27B / 9B / Lightning, paired on the same items)<!-- src: docs/breadth/data.csv | ptr.q27.neutral_minus_swap; ptr.q9.neutral_minus_swap; ptr.nl.neutral_minus_swap -->.*
+{{caption|readme/04_pointer}}
 
 - **Test.** Swap another entity's lens part into the bridge, taken from its own passage, from one neutral sentence naming it, or with its name's own directions removed. Decompose the lens part into the vocabulary words it stands for. Compare what the lens shows at the bridge before a recall, before a lookup, and with no question asked (twin set).
 - **Result.**
@@ -99,7 +99,7 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 
 {{fig|f5_atoms}}
 
-*What the lens directions stand for in the locker scenes: the share of their energy in the old bridge word, the new bridge word, and no word of the scene; right, the answer word's share.*
+{{caption|readme/05_atoms}}
 
 ### Finding 3. Lookup runs on codes outside the lens: identity and address
 
@@ -109,7 +109,7 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 
 {{fig|f6b_address_swap_lens}}
 
-*Rows are models; columns are four tests of the address, each with its control in grey.*
+{{caption|readme/07_address_swap_lens}}
 
 - **Test.** Train a probe at the bridge word to read which locker sentence holds the item's locker. Remove the probe's directions from the patch. Write another locker's address in. Measure how much of that write the lens directions rebuild.
 - **Result.**
@@ -139,7 +139,7 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 
 {{fig|f11_monitor}}
 
-*A probe for the address at the last token, trained on the lens part (colour), on a random part of the same energy (grey) and on the full state (bar), for two sizes of the lens part.*
+{{caption|readme/11_monitor}}
 
 ### Finding 4. Readable is not the same as used
 
@@ -147,7 +147,7 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 
 {{fig|r3_last_token}}
 
-*Rows are models. Left: how well a probe on the lens part reads the entity at the last token. Right: answers that switch when only the lens part is swapped, against the whole state.*
+{{caption|readme/12_last_token}}
 
 - **Test.** At the last token, train a probe on the lens part to read the recall's entity, then swap only the lens part between prompts and compare with patching the whole state. Across nine models, compare whether the lens part is carried (the swap moves the answer) and needed (the removal costs it). In the twin set's conflict variant ("The club's notes say Achebe was Peruvian"), read the bridge when memory wins and when the passage wins.
 - **Result.**
@@ -162,7 +162,7 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 
 {{fig|f3_nine_models}}
 
-*Nine models. Carried: answers moved when another entity's lens part is written in. Needed: recall minus lookup points when it is removed. Right: the grade.*
+{{caption|readme/13_nine_models}}
 
 ## Where it does not hold
 
@@ -180,15 +180,15 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 
 {{fig|f8_directions}}
 
-*The 27B's lookup has more switches blocked beyond random as more lens directions are removed; the other models' does not. One point per model and number of directions, with an interval over bridge items from the conflict test; Lightning's cells say below gate.*
+{{caption|readme/14_directions}}
 
 {{fig|f8_facts}}
 
-*The lookup on passages with true and with made-up facts, per model; whiskers: intervals on the true-fact values (Muse: too few lookup switches, not drawn).*
+{{caption|readme/15_facts}}
 
 {{fig|f12_order}}
 
-*The question-first cell passed its gate on the 27B and the 122B only. The rule was set after the 27B's cells. The breadth track's band measure on its twin set moves the 27B the other way (less reliance with the question first).*
+{{caption|readme/16_order}}
 
 ## More results
 

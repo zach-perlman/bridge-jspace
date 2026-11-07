@@ -64,8 +64,8 @@ CLAIMS = {
     "r5_routes": "The patch moves the lookup by identity or by position, never by the value",
     "f10_sentence_order": "The bridge word redirects the lookup when the locker sentence came first; both orders matter "
                           "(post hoc)",
-    "f14_two_codes": "Without the address the position route goes; without J++ the identity route turns to position "
-                     "(post hoc)",
+    "f14_two_codes": "Without the address the position route goes; without the lens part the identity route turns to "
+                     "position (post hoc)",
     "f11_monitor": "At the last token the lens part reads the address worse than a random part of the same energy",
     "r3_last_token": "At the last token the lens reads the entity, and the answer does not go through it",
     "f3_nine_models": "Across nine models the lens part is carried, needed, or both: graded",
@@ -92,7 +92,9 @@ def build() -> str:
             return f"{S[(model, quantity)]:.2f}<!-- src: data/figures/depth/data.csv | {quantity} -->"
         return f"![{CLAIMS[arg]}]({L.path('readme', arg).relative_to(REPO).as_posix()})"
 
-    text = PH.sub(fill, TEMPLATE.read_text())
+    from bridge_jspace.figkit.captions import expand
+
+    text = PH.sub(fill, expand(TEMPLATE.read_text()))
     assert "{{" not in text, "an unknown placeholder is left"
     README.write_text(HEADER + text)
     return text
