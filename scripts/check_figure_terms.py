@@ -435,8 +435,37 @@ def writeup_main() -> int:
     return 1 if hits else 0
 
 
+EXAMPLES = REPO / "docs" / "writeup" / "examples.md"
+
+
+def examples_prose(text: str) -> list[tuple[int, str]]:
+    """docs/writeup/examples.md's prose, by line number: fenced blocks and inline code (verbatim prompts, model output,
+    paths and ids) removed, so only the words the write-up adds are checked."""
+    out, fence = [], None
+    for k, line in enumerate(text.splitlines(), 1):
+        m = re.match(r"^(`{3,})", line)
+        if m:
+            fence = None if fence and m.group(1).startswith(fence) else (fence or m.group(1))
+            continue
+        if fence is None:
+            out.append((k, re.sub(r"`[^`]*`", "", line)))
+    return out
+
+
+def examples_main() -> int:
+    terms = {**RETIRED, **WRITEUP_RETIRED}
+    hits = [(k, t, term) for k, t in examples_prose(EXAMPLES.read_text()) for term, rx in terms.items() if re.search(rx, t)]
+    for k, text, term in hits:
+        print(f"examples.md:{k}: {term!r} in {text.strip()[:80]!r}")
+    print(f"check_figure_terms --examples: {len(hits)} banned term(s) in the prose of {EXAMPLES.relative_to(REPO)}")
+    return 1 if hits else 0
+
+
 def main(argv: list[str] | None = None) -> int:
-    if "--writeup" in (sys.argv[1:] if argv is None else argv):
+    args = sys.argv[1:] if argv is None else argv
+    if "--examples" in args:
+        return examples_main()
+    if "--writeup" in args:
         return writeup_main()
     joint = joint_figure_texts()
     layout: dict[str, dict] = {}
