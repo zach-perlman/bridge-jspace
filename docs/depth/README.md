@@ -57,7 +57,7 @@ Weaker results are in Part VI, dropped readings under "Tested and dropped"; † 
 **Status.**
 
 - **Models.** Five models: Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), Nemotron 3.5 Lightning 30B-A3B (a third family, a Mamba-attention hybrid) and Qwen3.5-122B-A10B (FP8; MoE, ~10B active) where it ran; Nemotron 3.5 Bolt is out of scope: no J++ lens exists for it.
-- **Runs.** As of 29 Oct 2026, built at 9d93f887 from the run files.
+- **Runs.** As of 29 Oct 2026, built at 24fd8b97 from the run files.
 - **Hand-check.** Hand-checked on a sample: 46 items across views a-g (5-10 per view, fixed in advance), all consistent; 6 issues and 6 observations logged in [docs/review/handcheck_findings.md](../review/handcheck_findings.md), none changes a headline claim.<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g --> VERIFIED.md (human recomputation) not yet filled.
 - **Marks.** ○: post hoc (Lightning everywhere, the 122B where its gate was lowered); †: not in the hand-checked sample (the last-token conflict test, the identity-and-address test, the 122B's coverage runs). See [How to read this page](#how-to-read-this-page).
 
@@ -237,7 +237,7 @@ Following is not needing (claim 2): taken out of the changed prompt's own state 
 The recall also reads the item's earlier mention (claim 3): taking the lens part out there too blocks more of its switches than a random part of the same share, and taking out another item's lens part blocks none.
 
 ![The recall also reads the lens part at the item's earlier mention](../../figures/depth/36_earlier_mention.png)
-*Claim 3: the recall's switches blocked against the change at the bridge word alone (arm 1) when the new item's tokens at its earlier mention also lose their own lens part (left), and when another item's tokens lose theirs (right); grey tick: the same tokens losing a random part of the same share. Clean one-pick scenes with the item's locker sentence before the pick; whiskers 95% intervals; Lightning hollow ○ (below its gate, descriptive), the 122B hollow ○ (a coverage run, no prediction).*
+*Claim 3: the recall's switches blocked against the change at the bridge word alone (arm 1) when the new item's tokens at its earlier mention also have their own lens part removed (left), and when another item's tokens have theirs removed (right); grey tick: the same tokens with a random part of the same share removed. Clean one-pick scenes with the item's locker sentence before the pick; whiskers 95% intervals; Lightning hollow ○ (below its gate, descriptive), the 122B hollow ○ (a coverage run, no prediction).*
 
 - **Result.**
 

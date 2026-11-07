@@ -401,7 +401,7 @@ Test 45p · opened 27 Oct · status: rule fixed in advance · hand-check: not in
 
 ![The recall also reads the item at its earlier mention](../../figures/depth/36_earlier_mention.png)
 
-*Claim 3: the recall's switches blocked against the change at the bridge word alone (arm 1) when the new item's tokens at its earlier mention also lose their own lens part (left), and when another item's tokens lose theirs (right); grey tick: the same tokens losing a random part of the same share. Clean one-pick scenes with the item's locker sentence before the pick; whiskers 95% intervals; Lightning hollow ○ (below its gate, descriptive), the 122B hollow ○ (a coverage run, no prediction).*
+*Claim 3: the recall's switches blocked against the change at the bridge word alone (arm 1) when the new item's tokens at its earlier mention also have their own lens part removed (left), and when another item's tokens have theirs removed (right); grey tick: the same tokens with a random part of the same share removed. Clean one-pick scenes with the item's locker sentence before the pick; whiskers 95% intervals; Lightning hollow ○ (below its gate, descriptive), the 122B hollow ○ (a coverage run, no prediction).*
 
 - **Rule, fixed in advance.** "the recall reads the earlier mention if the recall's switch drop in (2) exceeds (3) by at least 0.2 and (4) by at least 0.15 (loss_k = 1 - S_k / S_1, point estimates), on at least 2 of 3 models; a model whose base edit switches fewer than 30 recalls is not tested."
 
