@@ -3,7 +3,7 @@
 
 *A controlled test of the J++ lens on two-step questions in open language models: what the lens reads at the middle entity of a question, and whether the model uses it.*
 
-**Danyil and Zach Perlman** · two-week research sprint, October 2026<!-- src: docs/depth/README.md | 29 Oct 2026 --> · **Status:** every number below comes from the sprint's run files and carries its source; Hand-checked on a sample: 46 items across views a-g (5-10 per view, fixed in advance), all consistent; 6 issues and 6 observations logged in [docs/review/handcheck_findings.md](docs/review/handcheck_findings.md), none changes a headline claim.<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g --> VERIFIED.md (human recomputation) not yet filled.
+**Danyil Orel and Zach Perlman** · two-week research sprint, October 2026<!-- src: docs/depth/README.md | 29 Oct 2026 --> · **Status:** every number is sourced from the run files (checked by tests); a 46-item hand-check changed no headline claim ([findings](docs/review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->; human recomputation (VERIFIED.md) not yet done.
 
 ## Summary
 
