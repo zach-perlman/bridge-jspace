@@ -172,7 +172,7 @@ def test_every_figure_takes_its_caption_from_the_store():
             want = f"{img.group(1)}/{img.group(2)}"
         else:
             continue
-        nxt = lines[i + 1] if i + 1 < len(lines) else ""
+        nxt = lines[i + 1].strip() if i + 1 < len(lines) else ""  # a figure inside a list item is indented
         if not nxt.startswith("{{caption|" + want + "}}"):
             bad.append(want)
     assert not bad, bad

@@ -294,7 +294,13 @@ Across nine models, whether the lens part is carried, needed, or both:
 ## Where it does not hold
 
 - **Longer chains: the cost does not simply follow the recalled hop.** Three-hop chains label each hop P (read) or M (recalled); the prediction: a chain needs the lens part when its last hop is recalled. Lightning meets it on every set; the 27B breaks it twice: P → P → M costs only {{bci|mod.q27.threehop.paper10.PPM-PPP}} points beyond the all-passage chain, on the second seed too ({{bci|mod2.q27.threehop.paper10.PPM-PPP}}), and M → M → P costs {{bci|mod.q27.threehop.paper10.MMP-PPP}}, which was not predicted. The 9B's chains cannot be read: its all-passage chain alone loses {{b|mod.q9.threehop.paper10.loss.PPP}} points. One model meeting the rule is not enough for a finding ([the chain figures](figures/breadth/10a1_beyond.png)).
-<!-- slot: the chains card (E3, figures/examples/) goes here, before the chain figure, once it builds -->
+  <details><summary>One real entity's three chains</summary>
+
+  ![One real entity, Qwen 27B: only the chain that ends in two recalls turns wrong, and only without the lens part](figures/examples/04_chains.png)
+
+  {{caption|examples/04_chains}}
+
+  </details>
 - **The 27B's lookup.** It leans on the lens part partly: 0.14 beyond random at 25 directions, 0.60 at 100<!-- src: docs/depth/x0_numbers.json | lk_excess_27b; lk_excess_k100_27b -->, while the 122B's stays at −0.12<!-- src: docs/depth/x0_numbers.json | lk_excess_k100_122b -->.
 - **Question order.** With the question before the scene, the 27B's lookup has {{s|qwen3.6-27b|the lookup, question before minus after (paired)}} more of its switches blocked without the lens part (95% interval from {{s|qwen3.6-27b|53.1: the lookup, question before minus after (paired): the interval's lower bound}}); the 122B's {{s|qwen3.5-122b-a10b|the lookup, question before minus after (paired)}}; on the twin set the 27B's lookup leans *less* on it, and the 9B's and Lightning's do not move. No general order effect.
 - **Passages whose fact the model already knows.** On true-fact passages the 9B's and 27B's lookups follow the lens part (0.26 / 0.28 beyond random)<!-- src: data/figures/depth/data.csv | Z1: lookup, switches lost beyond a random part -->: the model answers from memory even when the passage states the fact. With made-up facts the split returns on the 9B and the 122B.

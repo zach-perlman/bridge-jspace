@@ -89,10 +89,11 @@ def e1_locker_scene() -> sp.Figure:
         answers[r["reader"]][col] = {"A": f"{rd['answer']} (the {case['bridge']}'s)",
                                      "b": f"{rd['cf_answer']} (the {case['cf_bridge']}'s)"}.get(
             r["role"], f"neither {rd['answer']} nor {rd['cf_answer']}")  # fmt: skip
-    prompt = [*bold(case["context"], case["bridge"], at),
-              (f"  Lookup: {case['readers']['PP']['question']}  Recall: {case['readers']['PM']['question']}  "
-               f"The change: at layer {layer}, the bridge word's state comes from the same scene with "
-               f"{asked} picking the {case['cf_bridge']}.", None)]  # fmt: skip
+    prompt = [bold(case["context"], case["bridge"], at),
+              [("Lookup:", "lookup", True), (f" {case['readers']['PP']['question']}", None)],
+              [("Recall:", "recall", True), (f" {case['readers']['PM']['question']}", None)],
+              [("The change:", None, True), (f" at layer {layer}, the bridge word's state comes from the same scene "
+                                             f"with {asked} picking the {case['cf_bridge']}.", None)]]  # fmt: skip
     card = sp.Card(prompt=prompt, columns=columns,
                    rows=[sp.CardRow(*READER[r], answers[r]) for r in READER],
                    note=f"Picked by rule: the main test's first scene in its per-item file ({rel(DEPTH)}/outcomes.jsonl), "
@@ -125,17 +126,18 @@ def e2_fact_passage() -> sp.Figure:
     pk = scenes[pm["scene"]]["PK"]
     stated = [ln for ln in pk["context"].split("\n") if ln not in pm["context"].split("\n")]
     repo = json.loads((KO.parent / "manifest.json").read_text())["model"]["repo"]
-    parts: list[tuple] = []
+    passage: list[tuple] = []
     for ln in pk["context"].split("\n"):
         text = ln.removeprefix("- ")
         if ln in stated:
-            parts.append((text + " ", "lookup"))
+            passage.append((text + " ", "lookup"))
         elif pm["bridge"] in text:
-            parts += [*bold(text, pm["bridge"]), (" ", None)]
+            passage += [*bold(text, pm["bridge"]), (" ", None)]
         else:
-            parts.append((text + " ", None))
-    parts.append((f" The recall's passage is the same without the lines in the lookup's colour. Question (both): "
-                  f"{pk['question']}", None))  # fmt: skip
+            passage.append((text + " ", None))
+    parts = [passage,
+             [("Recall:", "recall", True), (" the same passage without the lines in the lookup's colour.", None)],
+             [("Question (both):", None, True), (f" {pk['question']}", None)]]  # fmt: skip
     answers: dict[str, dict[str, str]] = {"lookup": {}, "recall": {}}
     for r in rows:
         for item, reader in ((pk, "lookup"), (pm, "recall")):
@@ -163,12 +165,14 @@ LETTER = {"P": "read in the passage", "M": "recalled", "C": "computed"}
 def e3_chains() -> sp.Figure:
     items = jsonl(ITEMS)
     rows = jsonl(THREE)
-    have = {r["id"] for r in rows}
+    # eligible: answered right before any removal (the run has no gate of its own; its unedited accuracy is 98-100%)
+    right_before = {r["id"] for r in rows if r["condition"] == "none" and r["correct"]}
     groups: OrderedDict[str, dict] = OrderedDict()
     for i in items:
         if i["word"] in CHAINS:
             groups.setdefault(re.sub(r":(PPP|PMM|MPM)-", ":X-", i["scene"]), {})[i["word"]] = i
-    key, chain = next((k, g) for k, g in groups.items() if len(g) == len(CHAINS) and all(g[w]["id"] in have for w in g))
+    key, chain = next((k, g) for k, g in groups.items()
+                      if len(g) == len(CHAINS) and all(g[w]["id"] in right_before for w in g))  # fmt: skip
     repo = json.loads((THREE.parent / "manifest.json").read_text())["model"]["repo"]
     fig = sp.Figure("e3_chains", vocab(), direct_labels=True)
     for w in CHAINS:
@@ -178,12 +182,12 @@ def e3_chains() -> sp.Figure:
         ans = {col: _breadth_answer(r, it["answer"], repo) for r in rows if r["id"] == it["id"]
                for cond, col in BREADTH_ARMS if r["condition"] == cond}  # fmt: skip
         ctx = " ".join(ln.removeprefix("- ") for ln in it["context"].split("\n"))
-        prompt = [(f"{' → '.join(w)}: ", None, True), (f"{hops}. ", None), *bold(ctx, it["bridge"]),
-                  (f"  Question: {it['question']}", None)]  # fmt: skip
+        prompt = [[(f"{' → '.join(w)}:", None, True), (f" {hops}.", None)], bold(ctx, it["bridge"]),
+                  [("Question:", None, True), (f" {it['question']}", None)]]  # fmt: skip
         fig.add(sp.Card(prompt=prompt, columns=[c for _, c in BREADTH_ARMS],
                         rows=[sp.CardRow(reader, reader, ans)],
                         note=(f"Picked by rule: the first entity in {rel(ITEMS)} with all three chain types, each "
-                              f"passing the gate, Qwen 27B · {key} · item {it['id']}")))  # fmt: skip
+                              f"answered right before any removal, Qwen 27B · {key} · item {it['id']}")))  # fmt: skip
     return fig
 
 
@@ -209,10 +213,14 @@ def e4_routes() -> sp.Figure:
     cols = dict(ROUTE_ARMS)
     ans = {cols[r["arm"]]: said(r) for r in rows if r["scene"] == first and r["reader"] == "PP" and r["arm"] in cols}
     pred = [(f"{k} route: locker {case['expect'][k]}", ROUTE_ROLE[k]) for k in ("identity", "position", "value")]
-    prompt = [*bold(case["context"], case["bridge"]), (f"  Lookup: {rd['question']}  The change: the bridge word's "
-              f"state comes from the scene with another item moved: {case['cf_context']}  Predicted: ", None)]  # fmt: skip
+    predicted: list[tuple] = [("Predicted:", None, True), (" ", None)]
     for i, (text, role) in enumerate(pred):
-        prompt.append((text + (" · " if i < len(pred) - 1 else "."), role, True))
+        predicted.append((text + (" · " if i < len(pred) - 1 else "."), role, True))
+    prompt = [bold(case["context"], case["bridge"]),
+              [("Lookup:", "lookup", True), (f" {rd['question']}", None)],
+              [("The change:", None, True), (f" the bridge word's state comes from the scene with another item moved: "
+                                             f"{case['cf_context']}", None)],
+              predicted]  # fmt: skip
     card = sp.Card(prompt=prompt, columns=[c for _, c in ROUTE_ARMS], rows=[sp.CardRow("lookup", "lookup", ans)],
                    note=f"Picked by rule: the first scene of the routes test's 'another item moved' condition in "
                         f"{rel(ROUTES)}/outcomes.jsonl, Qwen 9B · item {first}")  # fmt: skip

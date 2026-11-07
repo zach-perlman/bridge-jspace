@@ -49,9 +49,8 @@ ORDER: dict[str, list[tuple[str, str]]] = {
         "fig01_needed", "fig02_datasets", "fig02b_datasets", "fig03a_robust", "fig03b_robust",
         "fig04_where", "fig05_carries", "fig07_lookup", "fig08_readable", "fig09_dose",
         "fig10a1_beyond", "fig10a2_beyond", "fig10b_beyond", "fig10c_beyond")],
-    # real items as images, picked by a stated rule (scripts/examples.py); the root README shows them
-    # e3_chains waits for styles-plot to exempt verbatim prompt text from the run-id check (SP403)
-    "examples": [("main", i) for i in ("e1_locker_scene", "e2_fact_passage", "e4_routes")],
+    # real items as images, picked by a stated rule (scripts/examples.py), in the root README's reading order
+    "examples": [("main", i) for i in ("e1_locker_scene", "e2_fact_passage", "e4_routes", "e3_chains")],
 }  # fmt: skip
 NUMBERED = {"writeup", "breadth"}  # sets whose document numbers its figures (figNN[a] → NN[a]_)
 _PREFIX = re.compile(r"^(?:fig(?P<n>\d+)(?P<x>[a-z]\d?)?|figA\d+|appB_f\d+[a-z]?|s\d+[a-z]?|f\d+[a-z]?|r\d+|t\d+|p\d+[a-z]?|e\d+)_")
