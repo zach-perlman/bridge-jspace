@@ -1,0 +1,192 @@
+{
+ "styles_plot": "0.1.5",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "efb2e523a3e494cd800d93afd61086cdcb2e5b7b9baba5175a7fa449772ee892"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "3d0af0622ff3a0b2de374dd9bd670ed73990518c0f4c43497e5faa5f19ce0814"
+ },
+ "figure": "fig09b_six_lockers",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "e0b6a23e15dba3efbdb7e64f0ea74022d5f329bb725005765fb87110fbc4f777",
+  "dpi": 160
+ },
+ "roles": [
+  "lookup"
+ ],
+ "controls": [
+  "a random vector"
+ ],
+ "cells": {
+  "six.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "six.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "six.q122": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "six.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "six.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "six.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "six.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "six.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "six.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "six.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "six.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "six.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "six.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "six.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "six.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "six.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "six.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "six.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "six.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "six.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "grey: a random vector",
+  "whiskers: the range over the five start lockers",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "f19.pairs_of.q9": "18 of 30",
+  "f19.pairs_of.q27": "13 of 30",
+  "f19.pairs_of.mu": "21 of 30",
+  "f19.pairs_of.nl": "21 of 30",
+  "f19.pairs_of.q122": "21 of 30",
+  "f19.shift.q9": "0.02",
+  "f19.shift.q9.interval": "[0.00, 0.04]",
+  "f19.shift.q27": "0.00",
+  "f19.shift.q27.interval": "[0.00, 0.02]",
+  "f19.shift.mu": "0.11",
+  "f19.shift.mu.interval": "[0.08, 0.18]",
+  "f19.shift.nl": "0.03",
+  "f19.shift.nl.interval": "[0.00, 0.06]",
+  "f19.shift.q122": "0.02",
+  "f19.shift.q122.interval": "[0.00, 0.04]"
+ },
+ "problems": []
+}

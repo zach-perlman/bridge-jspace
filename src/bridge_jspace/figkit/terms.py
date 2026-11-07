@@ -86,7 +86,7 @@ DESCRIPTIVE = "descriptive"
 NOT_CLAIMED = "not claimed: {}"
 NOT_CLAIMED_WHY = ("shared with the logit lens", "gone when scored by probability")
 MISSING = ("no run", "no comparable run", "below gate", "too few switches", "no interval", "source missing",
-           "no control run", "no energy-matched control", "can't tell")  # fmt: skip
+           "no control run", "no energy-matched control", "can't tell", "not tested")  # fmt: skip
 
 # ---- reference lines (C) -------------------------------------------------------------------------------------------------
 RULE_BAR = "bar fixed in advance: {}"
@@ -96,7 +96,7 @@ CHANCE = "chance"
 READERS = ("recall", "lookup")
 CONTROLS = ("rotated", "logit lens", "PCA", "a random part", "energy-matched random", "a random vector",
             "layout-only probe", "10 random heads", "no change", "random lens directions",
-            "the whole state swapped in", "the full state")  # fmt: skip
+            "the whole state swapped in", "the full state", "most common locker")  # fmt: skip
 CONDITIONS = (
     "lens part", "knock-out", "removed from the patch", "swapped in", "the whole change", "a change of item",
     "another entity", "switches blocked beyond random", "address", "identity", "position", "the number",

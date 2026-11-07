@@ -244,7 +244,9 @@ BREADTH = {  # (figure, cell prefix) -> the registration it cites
     ("fig04_twin_set", ""): TWIN_NOTES, ("fig10_answer_span", ""): TWIN_NOTES, ("fig11_orthogonal", ""): TWIN_NOTES,
 }  # fmt: skip
 DEPTH_FIGS = {"fig08a_address_read_remove", "fig08b_address_swap_lens", "f6_address", "fig13_last_token",
-              "r3_last_token", "r1_dan_split", "fig05b_controls_layer"}  # fmt: skip
+              "r3_last_token", "r1_dan_split", "fig05b_controls_layer", "fig01b_settings", "fig01c_zeroing",
+              "fig02_specificity", "fig05b_identity_outside", "fig05c_described_bridge", "fig07c_probe_errors",
+              "fig09d_chain"}  # fmt: skip
 DEPTH_PREFIX = (("t12_two_by_two", "t12.0."), ("t12_two_by_two", "t12.1."))
 
 
@@ -277,10 +279,43 @@ def lightning(rows_: list[dict]) -> list[dict]:
 UNCLEAR: set[str] = set()
 
 
+def depth_set(writeup: list[dict]) -> list[dict]:
+    """The depth README's dot tables (figkit/depth_sp.py): a write-up figure under the depth id takes its rows
+    (depth_sp.ALIAS); the others are fixed in advance where their test has a rule number set before the data (47.x,
+    45m), else after the data, as the story builders' docstrings say (scripts/readme_story_figures.py, story_b47a)."""
+    from bridge_jspace.figkit.depth_sp import ALIAS, PARTS02, PARTS05B, SETTINGS
+
+    rs_ = "scripts/readme_story_figures.py"
+    out = []
+    for fid, wid in ALIAS.items():
+        out += [{**r, "figure": fid, "tag": "", "source": f"{r['source']} (as {wid}, drawn for docs/depth)"}
+                for r in writeup if r["figure"] == wid]  # fmt: skip
+    for m, _ in MODELS:
+        k = SHORT[m]
+        for key, *_ in SETTINGS:
+            out.append(fixed("fig01b_settings", f"{key}.{k}", "the clean one-pick scenes (45m)", f"{rs_} f01b_settings")
+                       if key == "clean" else
+                       post_hoc("fig01b_settings", f"{key}.{k}", "the split in another setting, after the data",
+                                f"{rs_} f01b_settings"))  # fmt: skip
+        for key, *_ in PARTS02:
+            out.append(post_hoc("fig02_specificity", f"{key}.{k}", "the parts runs, after the data", f"{rs_} f02_specificity"))
+        for key, *_ in PARTS05B:
+            out.append(fixed("fig05b_identity_outside", f"{key}.{k}", "47.1, directions 26-100", "scripts/story_b47a.py")
+                       if key == "d26" else
+                       post_hoc("fig05b_identity_outside", f"{key}.{k}", "the parts runs, after the data",
+                                "scripts/story_b47a.py build_identity"))  # fmt: skip
+        for fid, cid, rule, src in (("fig01c_zeroing", "zero", "47.5", "story_b47a.py build_zero"),
+                                    ("fig05c_described_bridge", "described", "47.3", "story_b47a.py build_cue"),
+                                    ("fig07c_probe_errors", "errors", "47.13", "story_b47a.py build_errors"),
+                                    ("fig09d_chain", "hall", "47.14", "story_b47c.py build_chain")):  # fmt: skip
+            out.append(fixed(fid, f"{cid}.{k}", f"{rule}, set before its data", f"scripts/{src}"))
+    return out
+
+
 def rows() -> list[dict]:
     writeup = [*key(), *fig01(), *fig04(), *fig09(), *fig12(), *appB_f17(), *styles_plot_port()]
     writeup += fig05_split(writeup) + f14_split(writeup)
-    return lightning([*writeup, *readme_set(writeup)])
+    return lightning([*writeup, *readme_set(writeup), *depth_set(writeup)])
 
 
 if __name__ == "__main__":

@@ -1,0 +1,338 @@
+{
+ "styles_plot": "0.1.5",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "efb2e523a3e494cd800d93afd61086cdcb2e5b7b9baba5175a7fa449772ee892"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "3d0af0622ff3a0b2de374dd9bd670ed73990518c0f4c43497e5faa5f19ce0814"
+ },
+ "figure": "fig24_two_codes",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "ae6a41a94592a37e139d3da2eb05b41cbbe3b14914e2a3af044ba052512dc01f",
+  "dpi": 160
+ },
+ "roles": [
+  "address",
+  "lens"
+ ],
+ "controls": [
+  "a random part"
+ ],
+ "cells": {
+  "address.mu": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "address.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "address.q122": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "address.q27": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "address.q9": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "lens.mu": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "lens.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "lens.q122": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "lens.q27": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "lens.q9": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "address.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "address.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "address.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "address.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "address.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "address.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "address.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "address.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "address.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "address.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "address.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "address.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "address.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "address.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "address.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "lens.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "lens.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "lens.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "lens.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "lens.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "lens.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "lens.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "lens.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "lens.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "lens.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "lens.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "lens.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "lens.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "lens.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "lens.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  }
+ ],
+ "key": [
+  "grey: a random part",
+  "whiskers: 95% interval",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "f14.address.q9": "0.86",
+  "f14.address.q27": "0.84",
+  "f14.address.mu": "0.51",
+  "f14.address.nl": "0.81",
+  "f14.address.q122": "0.88",
+  "f14.address.diff.q9": "+0.80",
+  "f14.address.diff.q27": "+0.58",
+  "f14.address.diff.mu": "+0.48",
+  "f14.address.diff.nl": "+0.77",
+  "f14.address.diff.q122": "+0.76",
+  "f14.lens.q9": "0.24",
+  "f14.lens.q27": "0.18",
+  "f14.lens.mu": "0.06",
+  "f14.lens.nl": "0.17",
+  "f14.lens.q122": "0.14",
+  "f14.lens.diff.q9": "+0.12",
+  "f14.lens.diff.q27": "+0.18",
+  "f14.lens.diff.mu": "+0.03",
+  "f14.lens.diff.nl": "+0.08",
+  "f14.lens.diff.q122": "+0.11"
+ },
+ "problems": []
+}

@@ -41,7 +41,7 @@ word = "neutral"
 meaning = "a quantity of no role, such as a difference"
 
 [controls]
-names = ["rotated", "logit lens", "PCA", "a random part", "energy-matched random", "a random vector", "layout-only probe", "10 random heads", "no change", "random lens directions", "the whole state swapped in", "the full state"]
+names = ["rotated", "logit lens", "PCA", "a random part", "energy-matched random", "a random vector", "layout-only probe", "10 random heads", "no change", "random lens directions", "the whole state swapped in", "the full state", "most common locker"]
 
 [key]
 tick = "the largest same-size control"
@@ -210,6 +210,38 @@ quantity = "pairs"
 format = "count"
 cue = false
 
+# the depth set (figkit/depth_sp.py)
+[units.logit_shift]
+title = "share of the logit shift blocked"
+quantity = "logit shift blocked"
+format = "share"
+
+[units.kept]
+title = "share of answers kept"
+quantity = "answers kept"
+format = "share"
+
+[units.change_share]
+title = "share of the change"
+quantity = "share of the change"
+format = "share"
+cue = false
+
+[units.position_lost]
+title = "position answers cut beyond random (share)"
+quantity = "position answers cut"
+format = "share"
+
+[units.wrong]
+title = "share of the wrong answers"
+quantity = "wrong answers predicted"
+format = "share"
+
+[units.hall]
+title = "share of hall answers by position"
+quantity = "hall answers"
+format = "share"
+
 # README t12: both operations on both datasets, one unit (depth_figs.two_by_two)
 [units.gap_effect]
 title = "gap: recall − lookup (effect share)"
@@ -225,6 +257,12 @@ canonical = [
     "the locker probe's accuracy for the address at the last token",
     "original locker first", "original locker after", "lookups switched",
     "One layer", "Band of layers", "probe accuracy", "another entity's",
+    # the depth set (figkit/depth_sp.py)
+    "logit difference", "clean one-pick scenes", "varied scenes", "natural passages",
+    "recall's answers kept", "lookup's answers kept", "lens part", "PCA directions (same size)",
+    "logit-lens directions", "random lens directions", "lens directions 26–100", "without the lens part",
+    "position answers cut", "wrong answers' locker predicted", "given the layout", "lens's top item right",
+    "hall probe", "without the hall address", "only the hall address kept", "share of the change",
     "Band of layers \u00b7 fact passages",
     "Fact passages",
     "Locker scenes",
@@ -372,7 +410,7 @@ templates = [
     "unedited: {num}% right on every model",
     "read: on {entity}, the knock-out drops recall {num} points and lookup {num}; the gap is {num}, the largest same-size control's {num}",
 ]
-missing = ["no run", "no comparable run", "below gate", "too few switches", "no interval", "source missing", "no control run", "no energy-matched control", "can't tell"]
+missing = ["no run", "no comparable run", "below gate", "too few switches", "no interval", "source missing", "no control run", "no energy-matched control", "can't tell", "not tested"]
 not_claimed = ["shared with the logit lens", "gone when scored by probability"]
 
 [[terms.banned]]
