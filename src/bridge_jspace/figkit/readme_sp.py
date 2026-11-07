@@ -29,14 +29,15 @@ TWIN = WB.TWIN
 # README id -> the write-up figure it draws (the same cells and statuses, scripts/status_registry.py copies them)
 ALIAS = {"r3_last_token": "fig13_last_token", "f9_where": "appB_f9_where",
          "f8_facts": "appB_f8_facts", "f8_directions": "appB_f8_directions", "f12_order": "appB_f12_order",
-         "f14_two_codes": "appB_f14_two_codes", "f2_controls": "fig05_controls", "p0b_tools": "fig03_tools",
+         "f14_two_codes": "appB_f14_two_codes", "p0b_tools": "fig03_tools",
          "f3_nine_models": "fig06_nine_models", "r5_routes": "fig07_routes",
          # f6_address drawn as two figures: one table of four columns needs 2.99 in of colour words over a 2.19 in panel
          # (SP609; Dan, 7 Nov: lanes or split); the README embeds both where it embedded f6_address.png
          "f6a_address_read_remove": "fig08a_address_read_remove", "f6b_address_swap_lens": "fig08b_address_swap_lens"}  # fmt: skip
 WRITEUP = {**WS.FIGS, **WB.BLOCKED}
 # README figures drawn here from a write-up figure's cells (the registry copies that figure's rows under these ids)
-COPIES = {"r1_c1_split": "fig01_main_split", "r1_c1_gaps": "fig01_main_split"}
+COPIES = {"r1_c1_split": "fig01_main_split", "r1_c1_gaps": "fig01_main_split", "f2_controls": "fig05_controls",
+          "f2_controls_layer": "fig05_controls"}
 
 
 # laid out in inches: drawn for the README's width, not the post's (p0a_datasets is a markdown table in the README)
@@ -100,6 +101,71 @@ def r1_c1_gaps() -> sp.Figure:
     t = sp.DotTable(DAN, [sp.ColumnGroup(WS.BAND, [WS._band_columns(DAN)[1]]), sp.Gutter(),
                           sp.ColumnGroup(WS.LAYER, [layer_gap])])  # fmt: skip
     return sp.Figure("r1_c1_gaps", vocab()).add(t)
+
+
+# ---- f2_controls (+ f2_controls_layer): every control on the lens part's axis (README brief F3) -----------------------
+def _controls_table(models, lens, controls, unit, lim, ticks, diff, diff_unit, group, note) -> sp.DotTable:
+    """One axis: per model a lane for the lens part (teal, labelled) and one per same-size control (grey, its name on
+    the lane); the lens part − largest control difference printed on the lens part's lane."""
+    series = [sp.Series("lens", {(m, "lens"): c for m, c in lens.items()})]
+    for lane, name, cells in controls:
+        series.append(sp.Series("control", {(m, lane): c for m, c in cells.items()}, control=name))
+    col = sp.DotColumn(group, unit, lim, ticks, series=series)  # the lanes name the lens part and each control
+    text = sp.TextColumn("lens part − largest control", diff_unit, {(m, "lens"): diff(m) for m in models},
+                         unit_title=False)  # fmt: skip
+    lanes = [sp.Lane("lens", "lens part"), *(sp.Lane(lane, name) for lane, name, _ in controls)]
+    # the test names the panel; what is measured is in the caption (one line fewer: the aspect minimum)
+    return sp.DotTable(models, [col, text], lanes=lanes)
+
+
+def _cell(c, cell, key, label):
+    return sp.Missing("no run") if not c else est(c, cell, key=key, label=label, interval=label)
+
+
+def f2_controls() -> sp.Figure:
+    """The band test (fact passages): the recall − lookup gap under the lens part's removal and under each same-size
+    control's (rotated, logit lens, PCA), on one axis, and the difference lens part − largest control."""
+    band = {m: f"band.{ZK[m]}" for m in DAN}
+    lens = {m: _cell(WB._band_cell(m, "mk"), band[m], f"ko.{ZK[m]}.mk", True) for m in DAN}
+    controls = [(q, name, {m: _cell(WB._band_cell(m, q), band[m], f"ko.{ZK[m]}.{q}", False) for m in DAN})
+                for q, name in (("rot", "rotated"), ("u", "logit lens"), ("pc", "PCA"))]  # fmt: skip
+
+    def diff(m):
+        c = D.w(f"fig05.band_diff.{ZK[m]}")
+        return sp.Missing("source missing") if c is None else sp.Est(c[0], c[1], c[2], cell=band[m],
+                                                                      key=f"fig05.band_diff.{ZK[m]}")  # fmt: skip
+
+    t = _controls_table(DAN, lens, controls, "gap", (-4, 70), (0, 30, 60), diff, "gap_difference",
+                        "Band of layers · fact passages", "the recall − lookup gap under each removal")  # fmt: skip
+    return sp.Figure("f2_controls", vocab()).add(t)
+
+
+def f2_controls_layer() -> sp.Figure:
+    """The one-layer test (locker scenes, earlier runs with a same-size control): the recall's switches blocked beyond
+    a random part without the lens part and without each same-size control (PCA, logit lens, random lens directions),
+    on one axis, and the difference lens part − largest control."""
+    layer = {m: f"layer.{ZK[m]}" for m in DAN}
+    lens = {m: _cell(D.s(m, "J++ part: recall extra loss", "fig02"), layer[m], f"fig05.layer.lens.{ZK[m]}", True)
+            for m in DAN}  # fmt: skip
+    names = {"rand": "random lens directions"}
+    controls = [(k, names.get(k, name), {m: _cell(D.s(m, q, "fig02"), layer[m], f"fig05.layer.{k}.{ZK[m]}", False)
+                                         for m in DAN}) for k, name, q in D.LAYER_CTRL]  # fmt: skip
+
+    def diff(m):
+        top_ = D.layer_largest(m)
+        if not top_:
+            return sp.Missing("no run")
+        lens_c, key, _name, cell = top_
+        pair = D.b(f"f2.layer.{ZK[m]}.pca") if key == "pca" else None
+        if pair and pair[1] is not None:
+            return sp.Est(pair[0], pair[1], pair[2], cell=layer[m], key=f"f2.layer.{ZK[m]}.pca")
+        return sp.Est(need(lens_c, m)[0] - need(cell, m)[0], cell=layer[m], key=f"fig05.layer_diff.{ZK[m]}",
+                      note="no interval")  # fmt: skip
+
+    t = _controls_table(DAN, lens, controls, "switches", (-0.08, 1.0), (0, 0.5, 1), diff, "share_difference",
+                        "One layer · locker scenes",
+                        "the recall's switches blocked beyond random · earlier runs with a same-size control")  # fmt: skip
+    return sp.Figure("f2_controls_layer", vocab()).add(t)
 
 
 # ---- r1_dan_split: the one-layer test alone --------------------------------------------------------------------------
@@ -280,6 +346,7 @@ def t12_two_by_two() -> sp.Figure:
 
 
 FIGS = {**{fid: _alias(fid) for fid in ALIAS}, "r1_c1_split": r1_c1_split, "r1_c1_gaps": r1_c1_gaps,
+        "f2_controls": f2_controls, "f2_controls_layer": f2_controls_layer,
         "r1_dan_split": r1_dan_split, "r4_pointer": r4_pointer,
         "f5_atoms": f5_atoms, "f11_monitor": f11_monitor, "f10_sentence_order": f10_sentence_order,
         "t12_two_by_two": t12_two_by_two}  # fmt: skip

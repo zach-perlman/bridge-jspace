@@ -91,7 +91,13 @@ The gaps against their controls, model by model:
 
 ![Random, rotated, logit-lens and PCA directions cost far less than the lens part](figures/readme/03_controls.png)
 
-*Every control next to the lens part. Left: removed everywhere, in points. Right: removed from the patch, as a share of switches. Grey values are controls. The last column of each half is the lens part minus its largest same-size control, paired on the same items, with its interval.*
+*Band of layers (fact passages): the recall − lookup gap, in points, when the lens part is removed everywhere (teal, with its 95% interval over bridge items) and when a same-size control is removed instead (grey: a rotated part, the logit lens's top directions, the residual stream's top principal directions at the same norm), one lane each, on one axis. Right: the lens part minus its largest control, paired on the same items, with its interval. Hollow (○): post hoc (Muse 30B and Qwen 122B in the band test).<!-- src: plotstyle.toml | 95% interval -->*
+
+The same at one layer, where each control is removed from the patch instead of the lens part:
+
+![At one layer the lens part blocks more of the recall's switches than any same-size control on four models](figures/readme/03b_controls_layer.png)
+
+*One layer (locker scenes, the earlier runs with a same-size control): the recall's switches blocked beyond a random part when the lens part is removed from the patch (teal, with its 95% interval) and when a same-size control is removed instead (grey: PCA, the logit lens's directions, random lens directions), one lane each, on one axis. Right: the lens part minus its largest control; without a paired interval where only the aggregate was saved. Lightning: no run with a same-size control at one layer.<!-- src: plotstyle.toml | 95% interval -->*
 
 ### Finding 2. The lens part holds what the bridge's words evoke
 

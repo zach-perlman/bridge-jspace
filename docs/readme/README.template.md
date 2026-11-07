@@ -92,6 +92,12 @@ The gaps against their controls, model by model:
 
 {{caption|readme/03_controls}}
 
+The same at one layer, where each control is removed from the patch instead of the lens part:
+
+![At one layer the lens part blocks more of the recall's switches than any same-size control on four models](figures/readme/03b_controls_layer.png)
+
+{{caption|readme/03b_controls_layer}}
+
 ### Finding 2. The lens part holds what the bridge's words evoke
 
 **Claim.** At the bridge the lens reads what the entity's words evoke: its name or its remembered attributes. This works as a reference to the entity: written into another prompt it redirects recall to that entity, and it does so just as well when taken from one neutral sentence naming the entity. It is not the address the lookup uses (Finding 3), and not a fact computed for the question.

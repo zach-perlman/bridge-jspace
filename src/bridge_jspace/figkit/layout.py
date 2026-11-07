@@ -29,7 +29,7 @@ ORDER: dict[str, list[tuple[str, str]]] = {
                     "appB_f9_where", "appB_f12_order", "appB_f8_facts", "appB_f8_directions", "appB_f15_link_crossover",
                     "appB_f17_attention", "appB_f17b_heads", "appB_f18_code_tool", "appB_f19_six_lockers"))],
     "readme": [("main", i) for i in (
-        "p0b_tools", "r1_c1_split", "r1_c1_gaps", "f2_controls", "r4_pointer", "f5_atoms", "f6a_address_read_remove",
+        "p0b_tools", "r1_c1_split", "r1_c1_gaps", "f2_controls", "f2_controls_layer", "r4_pointer", "f5_atoms", "f6a_address_read_remove",
         "f6b_address_swap_lens", "r5_routes", "f10_sentence_order", "f14_two_codes", "f11_monitor", "r3_last_token",
         "f3_nine_models", "f8_directions", "f8_facts", "f12_order", "f9_where")],
     "depth": [*(("main", i) for i in (
@@ -58,7 +58,7 @@ _PREFIX = re.compile(r"^(?:fig(?P<n>\d+)(?P<x>[a-z]\d?)?|figA\d+|appB_f\d+[a-z]?
 
 
 # a figure that belongs to the one before it (a fold under it): the previous number with "b", so later numbers stay
-SUB = {"r1_c1_gaps"}
+SUB = {"r1_c1_gaps", "f2_controls_layer"}
 # short names the id would give badly (a person's name, an old claim code)
 STEM = {"r1_c1_split": "main_split", "r1_c1_gaps": "main_split_gaps", "r1_dan_split": "one_layer_split"}
 
