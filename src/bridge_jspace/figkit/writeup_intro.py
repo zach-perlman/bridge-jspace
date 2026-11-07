@@ -4,6 +4,8 @@ the same sources as their originals (depth_figs.py, exemplars.py); the originals
 
 from __future__ import annotations
 
+import csv
+
 import re
 
 import matplotlib.pyplot as plt
@@ -201,12 +203,24 @@ def fig12_pointer() -> None:
 
         return f
 
-    t = W.table(rows, [Col(1.86, n, "", panel(k), lim, [0, 40, 80], xlabel="points", cue="→ more follow D")
-                       for k, n in models], label_w=1.95, labels=False, row_h=0.56, skip_lines=(n_dots,), head=0.6, title_top=0.45,
+    def items(k):  # the pointer run's n (docs/breadth/data.csv, ptr.<k>.swap)
+        with (D.REPO / "docs/breadth/data.csv").open() as f:
+            n = next((r["n"] for r in csv.DictReader(f) if r["key"] == f"ptr.{k}.swap"), "")
+        return f"{n} items" if n else ""
+
+    t = W.table(rows, [Col(1.86, n, items(k), panel(k), lim, [0, 40, 80], xlabel="points", cue="→ more follow D")
+                       for k, n in models], label_w=1.95, labels=False, row_h=0.56, skip_lines=(n_dots,), head=1.15, title_top=0.75,
                 subtitle="D: another entity of the same kind · answers moved to D's fact",
                 key=[[("●", C["lens"], "the lens part, from D"), ("●", C["control"], "rotated control")],
                      [("●", C["neutral"], "a probe's subspace: supervised comparison"),
                       ("", MUTED, "whiskers: 95% interval")]])  # fmt: skip
+    # the pointer runs are not the swap run Fig. 6 pools: another item set, so their swap differs from Fig. 6's
+    def runs_note(fig):  # a second grey line under the subtitle
+        fig.text(0.12 / fig.get_figwidth(), 1 - 0.42 / fig.get_figheight(),
+                 "the pointer runs: a different item set from Fig. 6's swap", ha="left", va="top", fontsize=W.FS["sub"],
+                 color=MUTED)  # fmt: skip
+
+    t.extra.append(runs_note)
 
     def row_labels(fig):  # two-line labels in ink, regular weight (a bold name would not fit the column)
         top = t.head + T.SUBTITLE_H + 0.12

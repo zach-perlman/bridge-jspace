@@ -57,9 +57,10 @@ def fig06_nine_models() -> None:
             mk, ct = D.b(f"ko.{k}.mk"), S.ctrl(k)
             if ct is not None:
                 ax.plot([ct, ct], [i - 0.26, i + 0.26], color=C["control"], lw=2.4, zorder=3)
-            dot(ax, mk[0], i, C["recall"], cell=mk)
+            post_hoc = k in W.NOT_CLAIMED  # the band test's post hoc models (fig01, fig05): hollow in every arm
+            dot(ax, mk[0], i, C["recall"], post_hoc, cell=mk)
             if k == "q122":
-                dot(ax, D.b("ko.q122.soft")[0], i, C["control"], size=7)  # scored by probability (the key says so)
+                dot(ax, D.b("ko.q122.soft")[0], i, C["control"], post_hoc, size=7)  # scored by probability (the key)
             W.value(ax, mk[0], i, mk, C["recall"], "{:.0f}")
         head_label(ax, need_lim[1], "lens part taken out", C["recall"], ha="right")
 
@@ -115,7 +116,7 @@ def fig08a_address_read_remove() -> None:
             y = i - W.LIFT
             a, r = _removal_cells(m)
             connector(ax, a[0], r[0], y)
-            dot(ax, r[0], y, C["control"], size=8)
+            dot(ax, r[0], y, C["control"], D.hollow(m, True), size=8)  # a post hoc run is post hoc in every arm
             dot(ax, a[0], y, C["address"], D.hollow(m, True))
             W.value(ax, r[0], y, None, C["control"], "{:.2f}", i=i, size=8)
             # under its dot: beside it the value would cross the zero line or the connector
@@ -145,7 +146,7 @@ def fig08b_address_swap_lens() -> None:
             two = D.s(m, "lookup target share, mean over locker pairs, s = 2", "fig07")
             rnd = D.s(m, "lookup target share, random direction, s = 4", "fig07")
             connector(ax, rnd[0], two[0], i)
-            dot(ax, rnd[0], i, C["control"], size=8)
+            dot(ax, rnd[0], i, C["control"], D.hollow(m, True), size=8)  # a post hoc run is post hoc in every arm
             dot(ax, two[0], i, C["address"], D.hollow(m, True))
             W.value(ax, two[0], i, None, C["address"], "{:.2f}")
         head_label(ax, swap_lim[1], "address swap", C["address"], ha="right")

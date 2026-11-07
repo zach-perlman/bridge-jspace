@@ -334,9 +334,10 @@ TWIN_CONDS = (("paper10", "knock-out", None), ("paper10_rot", "rotated", C["cont
               ("paper10_keepA", "answer span kept", C["answer"]))  # fmt: skip
 
 
-def _missing(ax, i, xlim):
-    """'source missing' at the cell's right end, where no rule runs; its box the row's colour hides the grid lines."""
-    t = ax.text(xlim[1], i, "source missing", ha="right", va="center", fontsize=FS["small"], color=MUTED, zorder=6,
+def _missing(ax, i, xlim, why="source missing"):
+    """A cell's reason in grey (default 'source missing') at the cell's right end, where no rule runs; its box the
+    row's colour hides the grid lines."""
+    t = ax.text(xlim[1], i, why, ha="right", va="center", fontsize=FS["small"], color=MUTED, zorder=6,
                 bbox={"boxstyle": "square,pad=0.15", "facecolor": T.ZEBRA if round(i) % 2 == 0 else "white",
                       "edgecolor": "none"})  # fmt: skip
     t._masks_lines = True
@@ -606,7 +607,7 @@ def fig00_schematic() -> None:
         if weight == "bold":
             bridge = (bb.x0 + bb.x1) / 2 / fig.bbox.width
         x += bb.width / fig.bbox.width
-    fig.text(bridge, 0.80, "the bridge word", ha="center", va="center", fontsize=FS["small"], color=MUTED)
+    fig.text(bridge + 0.025, 0.79, "the bridge word", ha="left", va="center", fontsize=FS["small"], color=MUTED)
 
     sx0, sx1, sy0, sy1 = 0.40, 0.60, 0.38, 0.72  # the bridge word's state: its three parts
     box(sx0, sy0, sx1, sy1, T.FAINT)
@@ -617,7 +618,7 @@ def fig00_schematic() -> None:
         ys[word] = y
         fig.patches.append(Rectangle((sx0 + 0.02, y - 0.022), 0.022, 0.044, transform=fig.transFigure, color=col))
         fig.text(sx0 + 0.055, y, word, ha="left", va="center", fontsize=FS["text"], weight="bold", color=col)
-    arrow((bridge, 0.76), (sx1 - 0.03, sy1 + 0.005), MUTED, rad=-0.2)
+    arrow((bridge, 0.86), (sx1 - 0.03, sy1 + 0.005), MUTED, rad=-0.25)  # from the bold word itself
 
     for k, (name, col, question, answer) in enumerate(READERS):
         x0 = 0.03 if k == 0 else 0.67

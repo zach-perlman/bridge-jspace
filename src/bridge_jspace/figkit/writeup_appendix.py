@@ -196,8 +196,9 @@ def f8_facts() -> None:
         band(ax, -0.1, 0.1, len(W.DAN))
         for i, (m, _) in enumerate(W.DAN):
             tr, mu = D.s(m, q.format("true"), "ledger_zach_named"), D.s(m, q.format("made-up"), "ledger_zach_named")
-            if not tr or m == "muse-glimmer-30b":  # Muse: under 30 lookup switches (ledger_zach_named)
-                ax.text(-0.27, i, "–", ha="left", va="center", fontsize=FS["text"], color=MUTED)
+            if not tr or m == "muse-glimmer-30b":  # Muse: 25 lookup switches under the whole change, too few to read
+                # (results/x50_zach/z1-20261028T161649Z/z1.json, layer_results.26.lookup.switched_whole)
+                W._missing(ax, i, ax.get_xlim(), "too few switches" if tr else "no run")
                 continue
             if mu:
                 connector(ax, mu[0], tr[0], i)
