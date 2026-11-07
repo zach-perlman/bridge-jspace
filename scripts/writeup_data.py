@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import csv
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -182,7 +183,53 @@ def fig10_rows() -> list[dict]:
     return out
 
 
-BUILDERS = (fig04_rows, fig05_rows, fig10_rows, fig11_rows)
+# ---- figA1: the knock-out inside agent transcripts (notes 56c, 59, 65; the stored reader outputs) ---------------------
+ROLE = re.compile(r"^(\w+) \[[^,\]]+, (primary|confirmatory|descriptive)")
+
+
+def _roles(readings: list[str]) -> dict[str, str]:
+    """reading id -> its registered role, from the reader's lines ("G1 [qwen3.6-27b, descriptive (27B); ...]")."""
+    return {m.group(1): m.group(2) for r in readings if (m := ROLE.match(r))}
+
+
+def figA1_rows() -> list[dict]:
+    """Specific loss in points: the knock-out's loss minus a control's, paired by item, bridge-clustered 95% intervals.
+    copy (K instr_vis, printed beside K1: no registered reading of its own, so descriptive), pick (A1) and produce (G1)
+    against the rotated control (note 59); verify (note 65 V1, L_V) against the largest of the three controls'
+    losses, its bridge-clustered interval (ci_bridges; its item interval is stored beside); derive (hyp_vis, C1)
+    against rotated from note 56c, run on the 9B only: no row for the others (the figure says "source missing")."""
+    out = []
+    for model, p in TWIN_PREFIX.items():
+        k = SHORT[model]
+        src59 = f"{SD_READ}/{p}sd59_ko_test_v1_note59.json"
+        d59 = json.loads((REPO / src59).read_text())
+        roles = _roles(d59["readings"])
+        for col, key, role in (("copy", "K instr_vis", "descriptive"), ("pick", "A1", roles.get("A1", "")),
+                               ("produce", "G1", roles.get("G1", ""))):  # fmt: skip
+            e = d59["effects"][key]["paper10_rot"]
+            out.append(_row(f"figA1.{col}.{k}", "figA1_agents", model,
+                            f"{col}: specific loss vs rotated (paper10_rot); registered role: {role or 'none'}",
+                            e["value"], *e["ci"], n=e["n"], unit="points",
+                            source=f'{src59} effects["{key}"]["paper10_rot"] (scripts/nn_sd_ma1_read.py)'))  # fmt: skip
+        src65 = f"{SD_READ}/{p}sd65_ko_test_v1_note65.json"
+        d65 = json.loads((REPO / src65).read_text())
+        v = d65["V1"]
+        out.append(_row(f"figA1.verify.{k}", "figA1_agents", model,
+                        f"verify: specific loss vs the harshest control (largest control loss); registered role: "
+                        f"{d65['role']}; item interval {v['ci']}", v["L_V"], *v["ci_bridges"], n=v["n"], unit="points",
+                        source=f"{src65} V1.L_V, V1.ci_bridges (scripts/nn_sd65_read.py)"))  # fmt: skip
+        src56c = f"{SD_READ}/{p}sd56c_ko_test_v1_note56.json"
+        if (REPO / src56c).exists():
+            e = json.loads((REPO / src56c).read_text())["effects"]["hyp_vis spec loss paper10-vs-paper10_rot"]
+            out.append(_row(f"figA1.derive.{k}", "figA1_agents", model,
+                            "derive: specific loss vs rotated (paper10_rot); registered role: registered before the "
+                            "run (note 56c, amendments 80 + 81)",
+                            e["value"], *e["ci"], n=e["n"], unit="points",
+                            source=f'{src56c} effects["hyp_vis spec loss paper10-vs-paper10_rot"] (scripts/nn_sd_ma1_read.py)'))  # fmt: skip
+    return out
+
+
+BUILDERS = (fig04_rows, fig05_rows, fig10_rows, fig11_rows, figA1_rows)
 
 
 def rows() -> list[dict]:

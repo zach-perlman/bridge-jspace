@@ -61,6 +61,7 @@ class Col:
     xlabel: str = ""  # the axis title under the ticks, with the unit (G4)
     cue: str = ""  # one grey line under the axis title: which way is "more", at most six words ("→ depends more on the lens part")
     gutter: bool = False  # an empty white column between two halves of a table: the zebra stripes stop at it
+    zero: bool = True  # the solid zero line where the axis spans 0 (False: the panel draws its own, e.g. dashed)
 
 
 @dataclass
@@ -188,7 +189,7 @@ class Table:
                     ax._cue = c.cue  # the table lint (figkit/lint.py) requires one per panel
                 for t in ax.get_xticks():
                     ax.plot([t, t], [n - 0.5, -0.5], color=GRID, lw=0.8, zorder=0)
-                if c.xlim[0] < 0 < c.xlim[1]:
+                if c.zero and c.xlim[0] < 0 < c.xlim[1]:
                     ax.plot([0, 0], [n - 0.5, -0.5], color=MUTED, lw=0.9, zorder=1)
                 c.draw(ax, self.rows)
             x += c.width + self.pad

@@ -440,6 +440,59 @@ def fig11_orthogonal() -> None:
     t.render(f"{OUT}/fig11_orthogonal.png", dpi=DPI)
 
 
+# ---- Fig. A1: inside agent transcripts (notes 56c, 59, 65; figA1.*) -------------------------------------------------------
+AGENT_COLS = (("copy", "copy", "a given answer", "vs rotated (pts)"),
+              ("pick", "pick", "true of two", "vs rotated (pts)"),
+              ("verify", "verify", "Yes/No claim", "vs harshest (pts)"),
+              ("produce", "produce", "answer alone", "vs rotated (pts)"),
+              ("derive", "derive", "from a premise", "vs rotated (pts)"))  # fmt: skip
+
+
+def figA1_agents() -> None:
+    """Per task inside the agent transcripts, the knock-out's accuracy drop minus a control's (points, bridge-clustered
+    95%), one x scale for all five tasks. A cell whose registered reading is descriptive is grey and says so on its
+    lower line (grey, not hollow: hollow means post hoc only)."""
+    rows = [Row(n) for _, n in TWIN_MODELS]
+    lim = (-25, 70)
+
+    def role(key):
+        row = _quantities().get(key, "")
+        return "descriptive" if "registered role: descriptive" in row or "role: none" in row else ""
+
+    def task(col):
+        def f(ax, _r):
+            T.vrule(ax, 0, len(rows))
+            for i, (k, _) in enumerate(TWIN_MODELS):
+                key = f"figA1.{col}.{k}"
+                c = w(key)
+                if c is None:
+                    _missing(ax, i, lim)
+                    continue
+                word = role(key)
+                y = i - (LIFT if word else 0)
+                dot(ax, c[0], y, C["control"] if word else C["recall"], cell=c, value=c[0], vfmt="{:.1f}",
+                    vside="left" if c[0] > 25 else "right")  # fmt: skip
+                if word:
+                    ax.text(sum(lim) / 2, i + 0.27, word, ha="center", va="center", fontsize=FS["small"], color=MUTED)
+
+        return f
+
+    t = table(rows, [Col(1.3, title, sub, task(col), lim, [0, 30, 60], xlabel=xl, cue="→ needed more", zero=False)
+                     for col, title, sub, xl in AGENT_COLS], label_w=1.0,
+              key=[[("●", C["recall"], "the knock-out's accuracy drop minus a control's, 95% whiskers")],
+                   [("●", C["control"], "descriptive: no registered reading for this cell")]])  # fmt: skip
+    t.render(f"{OUT}/figA1_agents.png", dpi=DPI)
+
+
+@cache
+def _quantities() -> dict:
+    path = D.REPO / "data" / "figures" / "writeup" / "data.csv"
+    if not path.exists():
+        return {}
+    with path.open() as f:
+        return {r["key"]: r["quantity"] for r in csv.DictReader(f)}
+
+
 FIGS = {"fig01_main_split": fig01_main_split, "fig04_twin_set": fig04_twin_set,
         "fig05_controls": fig05_controls, "fig10_answer_span": fig10_answer_span,
-        "fig11_orthogonal": fig11_orthogonal}  # post order; fixed names  # fmt: skip
+        "fig11_orthogonal": fig11_orthogonal, "figA1_agents": figA1_agents}  # post order; fixed names  # fmt: skip
