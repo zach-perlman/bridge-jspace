@@ -1,0 +1,327 @@
+{
+ "styles_plot": "0.1.9",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "8b51746d2f7810ffebd0d5a1f25e1f4348da7e5b05b86b128b01ce3cd77e3c16"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "96c257c390bdd0e0f9716035874534ec13862fa57beca46f1be35e29802a0b1b"
+ },
+ "figure": "breadth_fig03b_robust",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "843b574fe4603c4d665e58702b4f6d564b80ce08c55430e088b38557417f98c3",
+  "dpi": 160
+ },
+ "roles": [
+  "neutral"
+ ],
+ "controls": [],
+ "cells": {
+  "never.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "never.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "never.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "robust.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "robust.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "robust.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "robust.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "never.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "never.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "never.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "whiskers: 95% interval"
+ ],
+ "numbers": {
+  "ko.q9.startP": "50.4",
+  "ko.q9.startT": "60.3",
+  "ko.q9.startM": "30.4",
+  "ko.q9.mk": "42.6",
+  "ko.q9.r2": "42.1",
+  "ko.q9.r3": "42.8",
+  "ko.q9.halfA": "41.5",
+  "ko.q9.halfB": "43.9",
+  "ko.q9.soft": "35.3",
+  "ko.q27.startP": "50.6",
+  "ko.q27.startT": "59.5",
+  "ko.q27.startM": "45.3",
+  "ko.q27.mk": "50.9",
+  "ko.q27.r2": "49.3",
+  "ko.q27.r3": "50.2",
+  "ko.q27.halfA": "55.6",
+  "ko.q27.halfB": "45.6",
+  "ko.q27.soft": "50.3",
+  "ko.nl.startP": "60.4",
+  "ko.nl.startT": "75.9",
+  "ko.nl.startM": "37.4",
+  "ko.nl.mk": "53.1",
+  "ko.nl.r2": "48.9",
+  "ko.nl.r3": "50.3",
+  "ko.nl.halfA": "51.7",
+  "ko.nl.halfB": "54.7",
+  "ko.nl.soft": "44.1",
+  "r.q9": "11.6",
+  "r.q27": "17.6",
+  "r.nl": "4.0"
+ },
+ "problems": []
+}

@@ -1,0 +1,248 @@
+{
+ "styles_plot": "0.1.9",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "8b51746d2f7810ffebd0d5a1f25e1f4348da7e5b05b86b128b01ce3cd77e3c16"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "96c257c390bdd0e0f9716035874534ec13862fa57beca46f1be35e29802a0b1b"
+ },
+ "figure": "fig08b_address_swap_lens",
+ "target": "post",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "0614b5c07230033e26a17ab2bcbe24c4fdb9379aef9646e7a4c5b7cb82eab738",
+  "dpi": 200
+ },
+ "roles": [
+  "address",
+  "identity"
+ ],
+ "controls": [
+  "a random vector"
+ ],
+ "cells": {
+  "lens.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "lens.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "lens.q122": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "lens.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "lens.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "swap.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "swap.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "swap.q122": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "swap.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "swap.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "swap.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "swap.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "swap.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "swap.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "swap.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "swap.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "swap.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "swap.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "swap.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "swap.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "lens.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "identity",
+   "cell": "lens.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "lens.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "identity",
+   "cell": "lens.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "lens.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "identity",
+   "cell": "lens.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "lens.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "identity",
+   "cell": "lens.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "lens.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "identity",
+   "cell": "lens.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  }
+ ],
+ "key": [
+  "grey band: the range of 200 random vectors",
+  "grey: a random vector",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "fig08b.swap.q9": "0.46",
+  "fig08b.swap.q27": "0.25",
+  "fig08b.swap.mu": "0.52",
+  "fig08b.swap.nl": "0.50",
+  "fig08b.swap.q122": "0.50",
+  "fig08b.item_z.q9": "20",
+  "fig08b.item_z.q27": "24",
+  "fig08b.item_z.mu": "16",
+  "fig08b.item_z.nl": "10",
+  "fig08b.item_z.q122": "14"
+ },
+ "problems": []
+}

@@ -499,7 +499,7 @@ def breadth_set(readme: list[dict]) -> list[dict]:
 
 def breadth_new() -> list[dict]:
     """Cells of the breadth figures drawn after e7f9a9d9: fig02 panel B, fig03's never-named table, fig05 panel B,
-    fig10a / fig10b / fig10c, fig00b."""
+    fig10a / fig10b / fig10c (the dataset counts, once fig00b, are a table in the breadth README)."""
     out = []
     for k, dss in OTHER_CELLS.items():  # fig02 panel B
         for ds in dss:
@@ -537,11 +537,6 @@ def breadth_new() -> list[dict]:
     # Amendment 19 calls Muse's part "descriptive, no rule" (Dan, 7 Nov: descriptive)
     out.append(row("breadth_fig10c_beyond", "gen.mu", "descriptive", "Muse's part of the spot-check: descriptive, no "
                    "rule (Amendment 19)", f"{A19}; Dan 7 Nov"))  # fmt: skip
-    for k in ("q27", "q122", "nb", "mi", "nl", "q9", "mu", "ds"):  # fig00b: eligibility counts (data, not a test)
-        out.append(row("breadth_fig00b_dataset", f"elig.{k}", "fixed_in_advance", "a count of the dataset and the "
-                       "model's competence run, not a test", "results/tasks_v2/<model>_competence; scripts/tasks_v2.py"))  # fmt: skip
-    out.append(row("breadth_fig00b_dataset", "relations", "fixed_in_advance", "a count of the dataset, not a test",
-                   "data/tasks_v2/jsuite_v2_test_chat/items.jsonl"))  # fmt: skip
     return out
 
 

@@ -19,6 +19,7 @@ from bridge_jspace.figkit import data as D
 from bridge_jspace.figkit import specs as S
 from bridge_jspace.figkit import terms as TM
 from bridge_jspace.figkit import writeup_figs as W
+from bridge_jspace.figkit import layout as L
 from bridge_jspace.figkit import writeup_sp_b, writeup_sp_c
 from bridge_jspace.figkit.writeup_sp_base import MODEL, REPO, ZK, est, need, vocab
 
@@ -276,30 +277,40 @@ FIGS.update(writeup_sp_b.FIGS)
 FIGS.update(writeup_sp_c.FIGS)
 
 
-def build(ids=None, out: Path = OUT) -> list[str]:
-    """Save each figure strict for the post; returns the failures (a failed figure writes nothing)."""
-    failed = []
-    for fid in ids or FIGS:
-        try:
-            sp.save(FIGS[fid](), out / f"{fid}.png", target=TARGET)
-            print(f"ok    {fid}")
-        except (sp.StyleError, sp.BuildError) as e:
-            failed.append(fid)
-            print(f"FAIL  {fid}\n{e}")
-    return failed
+# the post's sentence for each figure (the index's "what it shows"); the appendix: its builder's first sentence
+TAKEAWAY = {
+    "key": "How to read the figures: each colour's role, the marks, one row read aloud",
+    "fig00_schematic": "One bridge word, two readers",
+    "fig01_main_split": "Taking the lens part out breaks recalled answers, not lookup ones",
+    "fig02_datasets": "One question, two kinds of answer, two datasets",
+    "fig03_tools": "Three tools, one target: the lens part at the bridge",
+    "fig04_twin_set": "On matched twins the knock-out breaks the recall, the lookup much less",
+    "fig05a_controls_band": "Same-size removals cost a fraction of what the lens part costs (band of layers)",
+    "fig05b_controls_layer": "Same-size removals cost a fraction of what the lens part costs (one layer)",
+    "fig06_nine_models": "Carried and needed come apart across models",
+    "fig07_routes": "The lookup goes by identity or position, never by the number",
+    "fig08a_address_read_remove": "A probe reads the address; removing it stops position answers",
+    "fig08b_address_swap_lens": "Swapping the address moves the lookup; the lens does not rebuild it",
+    "fig09_order": "The bridge word moves the lookup only when the locker sentence came first",
+    "fig10_answer_span": "What recall loses is its answer's own directions",
+    "fig11_orthogonal": "Removals made orthogonal to the answers cannot see even the subject",
+    "fig12_pointer": "Another entity's lens part moves the recall, even from one neutral sentence",
+    "fig13_last_token": "At the last token the lens part reads the entity, yet a 1× swap barely moves the answer",
+    "figA1_agents": "Inside agent transcripts, copying and picking survive the knock-out; producing does not",
+}  # fmt: skip
 
 
-def write_order(out: Path = OUT) -> Path:
-    """The post's figure order (tables.WRITEUP_ORDER), one file name a line, for `styles-plot sheet --order`."""
-    from bridge_jspace.figkit.tables import WRITEUP_ORDER
+def shows() -> dict[str, str]:
+    """Each figure's line in the index: its takeaway, else its builder's first sentence."""
+    first = {fid: " ".join((f.__doc__ or "").split()).split(". ")[0].rstrip(".") for fid, f in FIGS.items()}
+    return {fid: TAKEAWAY.get(fid) or first[fid] for fid in FIGS}
 
-    path = out / "order.txt"
-    order = [j for i in WRITEUP_ORDER for j in (*writeup_sp_b.SPLIT.get(i, ()), i)]
-    path.write_text("".join(f"{i}.png\n" for i in order))
-    return path
+
+def build(ids=None) -> list[str]:
+    """Save each figure strict for the post into figures/writeup/ (numbered files, figkit/layout.py); returns the
+    failures (a failed figure writes nothing)."""
+    return L.build("writeup", FIGS, TARGET, ids, shows())
 
 
 if __name__ == "__main__":
-    failed = build(sys.argv[1:] or None)
-    write_order()
-    sys.exit(1 if failed else 0)
+    sys.exit(1 if build(sys.argv[1:] or None) else 0)

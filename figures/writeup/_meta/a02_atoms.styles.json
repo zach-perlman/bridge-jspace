@@ -1,0 +1,238 @@
+{
+ "styles_plot": "0.1.9",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "8b51746d2f7810ffebd0d5a1f25e1f4348da7e5b05b86b128b01ce3cd77e3c16"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "96c257c390bdd0e0f9716035874534ec13862fa57beca46f1be35e29802a0b1b"
+ },
+ "figure": "appB_f5_atoms",
+ "target": "post",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "341b4b0825da15a7d4abea5ddd878478184cd2ff770a07278dd590c47c920a6d",
+  "dpi": 200
+ },
+ "roles": [
+  "lens"
+ ],
+ "controls": [],
+ "cells": {
+  "atoms.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "atoms.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "atoms.q122": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "atoms.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "atoms.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atoms.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "○ post hoc"
+ ],
+ "numbers": {
+  "f5.answer.q9": "0.00",
+  "f5.answer.q27": "0.00",
+  "f5.answer.mu": "0.00",
+  "f5.answer.nl": "0.00",
+  "f5.answer.q122": "0.00",
+  "f5.old.q9": "0.11",
+  "f5.old.q27": "0.10",
+  "f5.old.mu": "0.18",
+  "f5.old.nl": "0.09",
+  "f5.old.q122": "0.15",
+  "f5.new.q9": "0.11",
+  "f5.new.q27": "0.11",
+  "f5.new.mu": "0.19",
+  "f5.new.nl": "0.11",
+  "f5.new.q122": "0.15",
+  "f5.other.q9": "0.01",
+  "f5.other.q27": "0.01",
+  "f5.other.mu": "0.02",
+  "f5.other.nl": "0.01",
+  "f5.other.q122": "0.01",
+  "f5.none.q9": "0.77",
+  "f5.none.q27": "0.77",
+  "f5.none.mu": "0.61",
+  "f5.none.nl": "0.79",
+  "f5.none.q122": "0.69"
+ },
+ "problems": []
+}

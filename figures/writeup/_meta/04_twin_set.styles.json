@@ -1,0 +1,351 @@
+{
+ "styles_plot": "0.1.9",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "8b51746d2f7810ffebd0d5a1f25e1f4348da7e5b05b86b128b01ce3cd77e3c16"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "96c257c390bdd0e0f9716035874534ec13862fa57beca46f1be35e29802a0b1b"
+ },
+ "figure": "fig04_twin_set",
+ "target": "post",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "9930839f562e92ce3848ea7458a03b61f4ea6305b8868e282a4243e2f6b7988b",
+  "dpi": 200
+ },
+ "roles": [
+  "answer",
+  "lookup",
+  "neutral",
+  "recall"
+ ],
+ "controls": [
+  "rotated"
+ ],
+ "cells": {
+  "gap.paper10.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "gap.paper10.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "gap.paper10.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "gap.paper10_rot.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "gap.paper10_rot.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "gap.paper10_rot.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "lookup.paper10.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "lookup.paper10.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "lookup.paper10.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "lookup.paper10_keepA.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "descriptive"
+  },
+  "lookup.paper10_keepA.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "descriptive"
+  },
+  "lookup.paper10_keepA.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "descriptive"
+  },
+  "lookup.paper10_rot.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "lookup.paper10_rot.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "lookup.paper10_rot.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "recall.paper10.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "recall.paper10.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "recall.paper10.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "recall.paper10_keepA.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "descriptive"
+  },
+  "recall.paper10_keepA.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "descriptive"
+  },
+  "recall.paper10_keepA.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "descriptive"
+  },
+  "recall.paper10_rot.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "recall.paper10_rot.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "recall.paper10_rot.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "recall.paper10.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "recall.paper10_rot.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "answer",
+   "cell": "recall.paper10_keepA.q9",
+   "timing": "fixed_in_advance",
+   "claim": "descriptive",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "recall.paper10.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "recall.paper10_rot.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "answer",
+   "cell": "recall.paper10_keepA.q27",
+   "timing": "fixed_in_advance",
+   "claim": "descriptive",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "recall.paper10.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "recall.paper10_rot.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "answer",
+   "cell": "recall.paper10_keepA.nl",
+   "timing": "fixed_in_advance",
+   "claim": "descriptive",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "lookup.paper10.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "lookup.paper10_rot.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "answer",
+   "cell": "lookup.paper10_keepA.q9",
+   "timing": "fixed_in_advance",
+   "claim": "descriptive",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "lookup.paper10.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "lookup.paper10_rot.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "answer",
+   "cell": "lookup.paper10_keepA.q27",
+   "timing": "fixed_in_advance",
+   "claim": "descriptive",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "lookup.paper10.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "lookup.paper10_rot.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "answer",
+   "cell": "lookup.paper10_keepA.nl",
+   "timing": "fixed_in_advance",
+   "claim": "descriptive",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gap.paper10.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "gap.paper10_rot.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gap.paper10.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "gap.paper10_rot.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gap.paper10.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "gap.paper10_rot.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "grey: rotated",
+  "whiskers: 95% interval"
+ ],
+ "numbers": {
+  "fig04.recall.paper10.q9": "37",
+  "fig04.recall.paper10_rot.q9": "94",
+  "fig04.recall.paper10_keepA.q9": "90",
+  "fig04.recall.paper10.q27": "22",
+  "fig04.recall.paper10_rot.q27": "91",
+  "fig04.recall.paper10_keepA.q27": "90",
+  "fig04.recall.paper10.nl": "40",
+  "fig04.recall.paper10_rot.nl": "92",
+  "fig04.recall.paper10_keepA.nl": "91",
+  "fig04.lookup.paper10.q9": "86",
+  "fig04.lookup.paper10_rot.q9": "93",
+  "fig04.lookup.paper10_keepA.q9": "96",
+  "fig04.lookup.paper10.q27": "81",
+  "fig04.lookup.paper10_rot.q27": "98",
+  "fig04.lookup.paper10_keepA.q27": "98",
+  "fig04.lookup.paper10.nl": "93",
+  "fig04.lookup.paper10_rot.nl": "94",
+  "fig04.lookup.paper10_keepA.nl": "97",
+  "fig04.gap.paper10.q9": "48.1",
+  "fig04.gap.paper10_rot.q9": "−1.3",
+  "fig04.gap.paper10.q27": "57.5",
+  "fig04.gap.paper10_rot.q27": "6.0",
+  "fig04.gap.paper10.nl": "52.2",
+  "fig04.gap.paper10_rot.nl": "1.5"
+ },
+ "problems": []
+}

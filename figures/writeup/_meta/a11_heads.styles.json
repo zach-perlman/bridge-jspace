@@ -1,0 +1,146 @@
+{
+ "styles_plot": "0.1.9",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "8b51746d2f7810ffebd0d5a1f25e1f4348da7e5b05b86b128b01ce3cd77e3c16"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "96c257c390bdd0e0f9716035874534ec13862fa57beca46f1be35e29802a0b1b"
+ },
+ "figure": "appB_f17b_heads",
+ "target": "post",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "db4f36536a1089abd0080ba3cb0295ec67fcd2799a07f7b4476c37d3c9963698",
+  "dpi": 200
+ },
+ "roles": [
+  "address"
+ ],
+ "controls": [
+  "10 random heads"
+ ],
+ "cells": {
+  "heads.random10.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "heads.random10.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "heads.random10.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "heads.random10.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "heads.top10.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "heads.top10.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "heads.top10.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "heads.top10.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "heads.random10.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "heads.top10.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "heads.random10.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "heads.top10.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "heads.random10.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "heads.top10.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "heads.random10.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "heads.top10.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  }
+ ],
+ "key": [
+  "grey: 10 random heads",
+  "whiskers: 95% interval",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "heads.top10.q9": "0.01",
+  "heads.top10.q9.interval": "[−0.07, 0.06]",
+  "heads.top10.q27": "0.21",
+  "heads.top10.q27.interval": "[0.05, 0.37]",
+  "heads.top10.mu": "0.21",
+  "heads.top10.mu.interval": "[0.11, 0.31]",
+  "heads.top10.nl": "0.04",
+  "heads.top10.nl.interval": "[0.01, 0.07]",
+  "heads.random10.q9": "−0.03",
+  "heads.random10.q27": "0.05",
+  "heads.random10.mu": "0.01",
+  "heads.random10.nl": "0.01",
+  "heads.bar": "0.50"
+ },
+ "problems": []
+}

@@ -18,15 +18,9 @@ from functools import cache
 import styles_plot as sp
 
 from bridge_jspace.figkit import data as D
+from bridge_jspace.figkit import layout as L
 from bridge_jspace.figkit import readme_sp as RS
 from bridge_jspace.figkit.writeup_sp_base import REPO, vocab
-
-OUT = REPO / "figures" / "breadth"
-
-
-def path(fid: str):
-    """Where a breadth figure is written (one place, for the folder layout to come)."""
-    return OUT / f"{fid}.png"
 
 
 def ids() -> dict[str, str]:
@@ -510,27 +504,6 @@ def fig10c_beyond() -> sp.Figure:
     return sp.Figure("breadth_fig10c_beyond", vocab()).add(t)
 
 
-# ---- fig00b: the dataset's counts (the schematic half is fig00a) ------------------------------------------------------
-def fig00b_dataset() -> sp.Figure:
-    """The test split's relations (items, bridges, distinct answers) and, per model, the eligible test items (every
-    part right unedited) by start and in all, as counts read from data.csv."""
-    v = vocab().with_entities("relations", [(r, r) for r in RELATIONS])
-    rel = [r for r in RELATIONS if b(f"data.rel.{r}.items")]
-    rel_cols = [sp.TextColumn(header, "items", {r: sp.Est(b(f"data.rel.{r}.{k}")[0], key=f"data.rel.{r}.{k}",
-                                                          cell="relations") for r in rel})
-                for k, header in (("items", "items"), ("bridges", "bridges"), ("answers", "answers"))]  # fmt: skip
-    t1 = sp.DotTable(rel, rel_cols, kind="relations", note="the test split's eight relations")
-    total = int(b("data.facts")[0])
-    rows = [(i, m) for i, m in ids().items() if b(f"elig.{i}")]
-    cols = [sp.TextColumn(f"start {st}", "items", {m: sp.Est(b(f"elig.{i}.{st}")[0], key=f"elig.{i}.{st}", cell=f"elig.{i}")
-                                                   for i, m in rows})
-            for st in "PMT"]  # fmt: skip
-    cols.append(sp.TextColumn("every start", "items", {m: sp.Count(int(b(f"elig.{i}")[0]), total, key=f"elig.{i}",
-                                                                   cell=f"elig.{i}") for i, m in rows}))  # fmt: skip
-    t2 = sp.DotTable([m for _i, m in rows], cols, note="eligible test items: every part right unedited")
-    return sp.Figure("breadth_fig00b_dataset", v).add(t1, t2)
-
-
 def _pointer():
     fig = RS.FIGS["r4_pointer"]()
     fig.id = "breadth_fig06_pointer"
@@ -541,11 +514,12 @@ FIGS = {"fig01_needed": fig01_needed, "fig03a_robust": fig03a_robust, "fig03b_ro
         "fig04_where": fig04_where, "fig05_carries": fig05_carries, "fig06_pointer": _pointer, "fig09_dose": fig09_dose,
         "fig02_datasets": fig02_datasets, "fig02b_datasets": fig02b_datasets, "fig10a1_beyond": fig10a1_beyond,
         "fig10a2_beyond": fig10a2_beyond, "fig10b_beyond": fig10b_beyond, "fig10c_beyond": fig10c_beyond,
-        "fig00b_dataset": fig00b_dataset, "fig07_lookup": fig07_lookup, "fig08_readable": fig08_readable}  # fmt: skip
+        "fig07_lookup": fig07_lookup, "fig08_readable": fig08_readable}  # fmt: skip
 
 
 def build(ids_=None) -> list[str]:
-    return RS.build(ids_, figs=FIGS, dirs={fid: path(fid).parent for fid in FIGS})
+    """Save the breadth set strict into figures/breadth/ (numbered files, figkit/layout.py). Returns the failures."""
+    return L.build("breadth", FIGS, RS.TARGET, ids_)
 
 
 if __name__ == "__main__":

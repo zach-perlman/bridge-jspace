@@ -572,6 +572,57 @@ def grid(rows: dict) -> str:
     return "\n".join(out)
 
 
+RELATIONS = ("countries", "languages", "people", "cities", "companies", "landmarks", "dishes", "animals")
+EXAMPLE = "j2:chat:facts:{}-L0-00635"  # the Mozart scene (people -> nationality, start M), as the old Fig. 0 showed it
+FINALS = (("K", "MK", "the fact is stated"), ("M", "MM", "recall: the answer is nowhere in the passage"),
+          ("A", "MA", "the answer word is present once, on another entity"),
+          ("N", "MN", "no relation sentences at all, so no lures"), ("P", "MP", "a new made-up fact is stated"))  # fmt: skip
+
+
+def load_rows() -> None:
+    """ROWS from the data.csv on disk (for rendering without the run files): a points value keeps its formatted
+    interval, other intervals print as stored."""
+    with (OUT / "data.csv").open() as fh:
+        for r in csv.DictReader(fh):
+            r["value"] = float(r["value"])
+            if r["unit"] == "points" and r["lo"] != "":
+                r["lo"], r["hi"] = float(r["lo"]), float(r["hi"])
+            ROWS.append(r)
+
+
+def example() -> str:
+    """One test scene across its finals, quoted from the dataset's items: the shared question, then each final's own
+    sentences and its answer."""
+    items = {}
+    for line in (ROOT / "data/tasks_v2/jsuite_v2_test_chat/items.jsonl").read_text().splitlines():
+        d = json.loads(line)
+        items[d["id"]] = d
+    ex = {w: items[EXAMPLE.format(w)] for _code, w, _gloss in FINALS}
+    sents = {w: [s.strip() for s in re.split(r"(?<=[.!?])\s+|\n", d["context"]) if s.strip()] for w, d in ex.items()}
+    shared = set.intersection(*(set(v) for v in sents.values()))
+    out = [f"> **Question (K, M, A, N):** \"{ex['MM']['question']}\"  ", f"> **Question (P):** \"{ex['MP']['question']}\"",
+           ">", "> The passage is the same in every final except its last-hop sentences:", ">"]  # fmt: skip
+    for code, w, gloss in FINALS:
+        own = " ".join(s for s in sents[w] if s not in shared) or "(none)"
+        out.append(f"> - **{code}** ({gloss}): *{own}* → **{ex[w]['answer']}**")
+    return "\n".join(out) + f"\n\n*Source: data/tasks_v2/jsuite_v2_test_chat/items.jsonl, {EXAMPLE.format('M?')}.*"
+
+
+def dataset(rows: dict) -> str:
+    """The test split's relations and, per model, its eligible test items (every part right unedited), as tables."""
+    rel = ["| relation | test items | bridges | distinct answers |", "|---|---|---|---|"]
+    for r in RELATIONS:
+        if f"data.rel.{r}.items" in rows:
+            rel.append(f"| {r} | " + " | ".join(fmt(rows[f"data.rel.{r}.{k}"]) for k in ("items", "bridges", "answers")) + " |")
+    total = fmt(rows["data.facts"])
+    el = ["| model | start P | start M | start T | every start |", "|---|---|---|---|---|"]
+    for m in V2:
+        if f"elig.{m}" in rows:
+            el.append(f"| {M[m][0]} | " + " | ".join(fmt(rows[f"elig.{m}.{s}"]) for s in "PMT")
+                      + f" | {fmt(rows[f'elig.{m}'])} of {total} |")  # fmt: skip
+    return "\n".join(rel) + "\n\n*Eligible test items: every part answered right unedited.*\n\n" + "\n".join(el)
+
+
 def render() -> None:
     rows = {r["key"]: r for r in ROWS}
     head = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True, cwd=ROOT).stdout.strip()
@@ -582,6 +633,10 @@ def render() -> None:
         kind, *rest = mo.group(1).split("|")
         if kind == "grid":
             return grid(rows)
+        if kind == "example":
+            return example()
+        if kind == "dataset":
+            return dataset(rows)
         if kind == "head":
             return head
         key = rest[0]
@@ -640,6 +695,10 @@ if __name__ == "__main__":
         collect_redraw()
         added = append_new_keys()
         print(f"data.csv: {len(added)} rows appended")
+        sys.exit(0)
+    if "--render" in sys.argv:  # the page from the data.csv on disk (no run files needed)
+        load_rows()
+        render()
         sys.exit(0)
     if "--copy-figures" in sys.argv:
         copy_figures()

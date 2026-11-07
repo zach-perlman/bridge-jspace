@@ -1,0 +1,364 @@
+{
+ "styles_plot": "0.1.9",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "8b51746d2f7810ffebd0d5a1f25e1f4348da7e5b05b86b128b01ce3cd77e3c16"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "96c257c390bdd0e0f9716035874534ec13862fa57beca46f1be35e29802a0b1b"
+ },
+ "figure": "f10_sentence_order",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "ac1568cec0ed4cf4516fa59437cb5390a1a61167b111338e06abfd494edf1757",
+  "dpi": 160
+ },
+ "roles": [
+  "lookup"
+ ],
+ "controls": [],
+ "cells": {
+  "both.after.mu": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "both.after.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "both.after.q122": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "both.after.q27": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "both.after.q9": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "both.before.mu": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "both.before.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "both.before.q122": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "both.before.q27": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "both.before.q9": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "order.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "order.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "order.q122": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "order.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "order.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "order.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "order.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "order.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "order.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "order.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "order.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "order.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "order.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "order.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "order.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "both.before.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "both.before.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "both.before.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "both.before.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "both.before.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "both.before.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "both.before.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "both.before.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "both.before.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "both.before.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "both.after.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "both.after.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "both.after.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "both.after.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "both.after.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "both.after.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "both.after.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "both.after.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "both.after.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "both.after.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  }
+ ],
+ "key": [
+  "whiskers: 95% interval",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "f10.order.first.q9": "0.86",
+  "f10.order.after.q9": "0.19",
+  "f10.order.first.q27": "0.76",
+  "f10.order.after.q27": "0.09",
+  "f10.order.first.mu": "0.65",
+  "f10.order.after.mu": "0.09",
+  "f10.order.first.nl": "0.86",
+  "f10.order.after.nl": "0.15",
+  "f10.order.first.q122": "0.89",
+  "f10.order.after.q122": "0.11",
+  "f10.both.before.first.q9": "0.96",
+  "f10.both.before.after.q9": "0.56",
+  "f10.both.before.first.q27": "0.96",
+  "f10.both.before.after.q27": "0.34",
+  "f10.both.before.first.mu": "0.81",
+  "f10.both.before.after.mu": "0.21",
+  "f10.both.before.first.nl": "0.98",
+  "f10.both.before.after.nl": "0.58",
+  "f10.both.before.first.q122": "0.96",
+  "f10.both.before.after.q122": "0.78",
+  "f10.both.after.first.q9": "0.47",
+  "f10.both.after.after.q9": "0.06",
+  "f10.both.after.first.q27": "0.21",
+  "f10.both.after.after.q27": "0.02",
+  "f10.both.after.first.mu": "0.26",
+  "f10.both.after.after.mu": "0.00",
+  "f10.both.after.first.nl": "0.36",
+  "f10.both.after.after.nl": "0.05",
+  "f10.both.after.first.q122": "0.36",
+  "f10.both.after.after.q122": "0.01"
+ },
+ "problems": []
+}

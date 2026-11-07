@@ -1,0 +1,415 @@
+{
+ "styles_plot": "0.1.9",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "8b51746d2f7810ffebd0d5a1f25e1f4348da7e5b05b86b128b01ce3cd77e3c16"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "96c257c390bdd0e0f9716035874534ec13862fa57beca46f1be35e29802a0b1b"
+ },
+ "figure": "breadth_fig10c_beyond",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "52a5963e8dc04f49b82923e6ebb4d62576e645458bcc06af4ae32b26af46c1d4",
+  "dpi": 160
+ },
+ "roles": [
+  "neutral"
+ ],
+ "controls": [],
+ "cells": {
+  "gen.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "descriptive"
+  },
+  "gen.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "gen.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "gen.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.mu",
+   "timing": "fixed_in_advance",
+   "claim": "descriptive",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.mu",
+   "timing": "fixed_in_advance",
+   "claim": "descriptive",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.mu",
+   "timing": "fixed_in_advance",
+   "claim": "descriptive",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.mu",
+   "timing": "fixed_in_advance",
+   "claim": "descriptive",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.mu",
+   "timing": "fixed_in_advance",
+   "claim": "descriptive",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.mu",
+   "timing": "fixed_in_advance",
+   "claim": "descriptive",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.mu",
+   "timing": "fixed_in_advance",
+   "claim": "descriptive",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.mu",
+   "timing": "fixed_in_advance",
+   "claim": "descriptive",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.mu",
+   "timing": "fixed_in_advance",
+   "claim": "descriptive",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.mu",
+   "timing": "fixed_in_advance",
+   "claim": "descriptive",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "gen.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [],
+ "numbers": {
+  "gen.q9.PM.n": "99",
+  "gen.q9.MM.n": "84",
+  "gen.q27.PM.n": "100",
+  "gen.q27.MM.n": "92",
+  "gen.mu.PM.n": "99",
+  "gen.mu.MM.n": "85",
+  "gen.nl.PM.n": "99",
+  "gen.nl.MM.n": "100",
+  "gen.q9.PM.right": "46",
+  "gen.q9.MM.right": "44",
+  "gen.q27.PM.right": "43",
+  "gen.q27.MM.right": "38",
+  "gen.mu.PM.right": "27",
+  "gen.mu.MM.right": "29",
+  "gen.nl.PM.right": "43",
+  "gen.nl.MM.right": "44",
+  "gen.q9.PM.lure": "17",
+  "gen.q9.MM.lure": "0",
+  "gen.q27.PM.lure": "39",
+  "gen.q27.MM.lure": "0",
+  "gen.mu.PM.lure": "13",
+  "gen.mu.MM.lure": "0",
+  "gen.nl.PM.lure": "19",
+  "gen.nl.MM.lure": "0",
+  "gen.q9.PM.other_cand": "28",
+  "gen.q9.MM.other_cand": "45",
+  "gen.q27.PM.other_cand": "15",
+  "gen.q27.MM.other_cand": "41",
+  "gen.mu.PM.other_cand": "0",
+  "gen.mu.MM.other_cand": "14",
+  "gen.nl.PM.other_cand": "20",
+  "gen.nl.MM.other_cand": "24",
+  "gen.q9.PM.other": "3",
+  "gen.q9.MM.other": "11",
+  "gen.q27.PM.other": "2",
+  "gen.q27.MM.other": "21",
+  "gen.mu.PM.other": "7",
+  "gen.mu.MM.other": "54",
+  "gen.nl.PM.other": "16",
+  "gen.nl.MM.other": "21",
+  "gen.q9.PM.bridge": "5",
+  "gen.q9.MM.bridge": "0",
+  "gen.q27.PM.bridge": "1",
+  "gen.q27.MM.bridge": "0",
+  "gen.mu.PM.bridge": "53",
+  "gen.mu.MM.bridge": "2",
+  "gen.nl.PM.bridge": "1",
+  "gen.nl.MM.bridge": "11"
+ },
+ "problems": []
+}

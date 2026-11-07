@@ -1,0 +1,189 @@
+{
+ "styles_plot": "0.1.9",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "8b51746d2f7810ffebd0d5a1f25e1f4348da7e5b05b86b128b01ce3cd77e3c16"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "96c257c390bdd0e0f9716035874534ec13862fa57beca46f1be35e29802a0b1b"
+ },
+ "figure": "fig07_routes",
+ "target": "post",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "383b2359a41ca6f1d48392383e6b333ffd856579df97c39d4d26c5a13bc21783",
+  "dpi": 200
+ },
+ "roles": [
+  "address",
+  "identity"
+ ],
+ "controls": [],
+ "cells": {
+  "routes.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "routes.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "routes.q122": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "routes.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "routes.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "segment",
+   "role": "identity",
+   "cell": "routes.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "segment",
+   "role": "address",
+   "cell": "routes.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "segment",
+   "role": "other",
+   "cell": "routes.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "segment",
+   "role": "identity",
+   "cell": "routes.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "segment",
+   "role": "address",
+   "cell": "routes.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "segment",
+   "role": "other",
+   "cell": "routes.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "segment",
+   "role": "identity",
+   "cell": "routes.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "segment",
+   "role": "address",
+   "cell": "routes.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "segment",
+   "role": "other",
+   "cell": "routes.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "segment",
+   "role": "identity",
+   "cell": "routes.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "segment",
+   "role": "address",
+   "cell": "routes.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "segment",
+   "role": "other",
+   "cell": "routes.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "segment",
+   "role": "identity",
+   "cell": "routes.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "segment",
+   "role": "address",
+   "cell": "routes.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "segment",
+   "role": "other",
+   "cell": "routes.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  }
+ ],
+ "key": [
+  "○ post hoc"
+ ],
+ "numbers": {
+  "routes.position.q9": "0.51",
+  "routes.position.q9.interval": "[0.46, 0.56]",
+  "routes.position.q27": "0.34",
+  "routes.position.q27.interval": "[0.28, 0.39]",
+  "routes.position.mu": "0.54",
+  "routes.position.mu.interval": "[0.49, 0.60]",
+  "routes.position.nl": "0.55",
+  "routes.position.nl.interval": "[0.49, 0.62]",
+  "routes.position.q122": "0.38",
+  "routes.position.q122.interval": "[0.33, 0.44]",
+  "routes.number.q9": "0.00",
+  "routes.number.q27": "0.00",
+  "routes.number.mu": "0.00",
+  "routes.number.nl": "0.00",
+  "routes.number.q122": "0.00"
+ },
+ "problems": []
+}

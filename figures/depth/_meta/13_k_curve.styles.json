@@ -1,0 +1,242 @@
+{
+ "styles_plot": "0.1.9",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "8b51746d2f7810ffebd0d5a1f25e1f4348da7e5b05b86b128b01ce3cd77e3c16"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "96c257c390bdd0e0f9716035874534ec13862fa57beca46f1be35e29802a0b1b"
+ },
+ "figure": "fig02b_k_curve",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "6bdb3f69da21bcdc54c8c2dd3bec1132b2d21ba576c8548662010dce9abefb3c",
+  "dpi": 160
+ },
+ "roles": [
+  "lookup",
+  "recall"
+ ],
+ "controls": [],
+ "cells": {
+  "kcurve.mu": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "kcurve.q122": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "kcurve.q27": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "kcurve.q9": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "kcurve.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "kcurve.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "kcurve.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "kcurve.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "kcurve.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "kcurve.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "kcurve.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "kcurve.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "kcurve.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "kcurve.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "kcurve.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "kcurve.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "kcurve.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "kcurve.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "kcurve.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "kcurve.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "kcurve.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "kcurve.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "kcurve.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "kcurve.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "kcurve.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "kcurve.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "kcurve.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "kcurve.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "all estimates post hoc",
+  "whiskers: 95% interval"
+ ],
+ "numbers": {},
+ "problems": []
+}

@@ -553,7 +553,7 @@ New in this ledger:
 - **Data.** Main test, 50 locker-first items per model (Lightning at L14, main test only); Zach's described passages, 50 per model (9B, 27B, Muse).
 - **Method.** Each of the 25 lens directions labelled by a word classifier (the bridge words with their spellings, the answer words, other classes); the share of the rebuilt energy per class, against a chance baseline.
 
-![The lens part holds the two bridge words, almost never the answer](../../figures/depth/f5_atoms.png)
+![The lens part holds the two bridge words, almost never the answer](../../figures/readme/05_atoms.png)
 *The README's figure: the lens part's rebuilt energy at the bridge word, by the word each of its 25 directions decodes to; right: the reader's answer word's share. Main test at L; Lightning tinted (○); the 122B at L33 (coverage, pending hand-check).*
 
 - **Rule, fixed in advance.** None: descriptive inventory, no rule.
@@ -782,7 +782,9 @@ New in this ledger:
 - **Data.** Every scene of the topic scenes, split by whether the item's locker sentence comes before or after the asked pick (see the table's n in the verdicts).
 - **Method.** Probes on the bridge word's state at L, cross-validated by bridge entity: the locker sentence's place, the answer digit and the bridge's identity; baselines: the majority class, the pick's sentence index, the visible layout.
 
-![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/depth/f6_address.png)
+![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/readme/06_address_read_remove.png)
+
+![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/readme/07_address_swap_lens.png)
 *The README's address figure; this card is its first column: the probe at the bridge word against the layout-only baseline (grey tick), locker before the pick. whiskers: 95% intervals; Lightning ○; the 122B ○ where its gate was lowered post hoc or lookup-only.*
 
 - **Rule, fixed in advance.** None: descriptive, added after the data (Dan, 24 Oct evening). The reading stated beside: "(b) high in locker-before with (a) at chance -> the word stores an address. Locker-after: the locker sentence follows the word, so the stratum is a control by construction." Lightning: a coverage run, no prediction.
@@ -812,7 +814,9 @@ New in this ledger:
 - **Data.** Routes scenes without a move, 300 per model, each swapped to two target lockers (600 swaps); Lightning at L14 (gate chosen after the 60-scene pre-check, ○).
 - **Method.** At the bridge word at L: the difference of two slot means, at one, two and four times its size; control: a random vector of the same size. Read: the lookup's answer (target locker, original, the third), and whether the recall's answer changes (the collateral).
 
-![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/depth/f6_address.png)
+![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/readme/06_address_read_remove.png)
+
+![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/readme/07_address_swap_lens.png)
 *The README's address figure; this card is its third column: lookups sent to the swapped-in locker at about a real change's size, against a random vector (grey). whiskers: 95% intervals; Lightning ○; the 122B ○ where its gate was lowered post hoc or lookup-only. The dose curves are in the verdicts.*
 
 - **Rule, fixed in advance.** "at s = 1 the target share minus the random direction's >= 0.15 with lower CI > 0; [...] among writes that move the lookup to another locker target / (target + third) >= 0.80, a model counting only with >= 30 such writes, fewer than two counting = can't tell; [...] target minus random >= 0.10 in each of the 6 (j, k) pairs" (jobs/c3/x8_a_9b.yaml; each over the 9B, the 27B, the 122B and Muse). Lightning: a coverage run on that rule, no prediction.
@@ -963,7 +967,9 @@ New in this ledger:
 - **Data.** Routes scenes, 100 items per model, each swapped to both other lockers (200 cases); null: 200 random vectors of the same size.
 - **Method.** At the bridge word at L, the swap h + 2 (mu_k - mu_j): (a) the best rank of a position word (first, second, third, 1, 2, 3, ...) in the lens readout; (b) the share the lens's 25 best directions rebuild; (c) how far the readout moves (KL). Positive control: an item change of the same size.
 
-![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/depth/f6_address.png)
+![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/readme/06_address_read_remove.png)
+
+![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/readme/07_address_swap_lens.png)
 *The README's address figure; this card is its fourth column: how far above 200 random vectors the lens's 25 directions rebuild the address swap and, as the positive control, an item change of the same size (z; grey band: the random vectors' range). whiskers: 95% intervals; Lightning ○; the 122B ○ where its gate was lowered post hoc or lookup-only.*
 
 - **Rule, fixed in advance.** Descriptive, with the reading fixed in advance: ""Not verbalizable": reconstruction at k = 25 within 2x the random null's share, no ordinal token in the top-20 beyond the null's 5th-percentile rank, and the KL under the write within the null's 95th percentile, on all three models." Lightning: a coverage run on that reading, no prediction.
@@ -995,7 +1001,7 @@ New in this ledger:
 - **Data.** The main test (400 rows, 43 to 45 bridge entities per model) and the JSON scenes (620 to 830 rows), the bridge word and the last token, every second layer; the 9B, the 27B, Muse and Lightning; the 122B running.
 - **Method.** Logistic probes (5 seeds of 5-fold CV, held-out entities) on the full state, on the lens part's coordinates (k = 25 and 100), on a random subspace of the same k, on a fixed lens subspace, and on an energy-matched random subspace (Dan 11:25, 13:15, before the verdict); the lens readout (top words) cited from 47.0, unchanged.
 
-![The address is decodable but under-represented in the lens directions](../../figures/depth/f11_monitor.png)
+![The address is decodable but under-represented in the lens directions](../../figures/readme/11_monitor.png)
 *The README's figure: probes for which locker sentence holds the bridge's locker at the last token, at the layer where the full state peaks: the lens part against a random part of the same energy (grey) and the full state (tick), with 25 and 100 lens directions. Whiskers: 95% intervals; Lightning ○. The bridge word and the JSON scenes: the table.*
 
 - **Rule, fixed in advance.** "Rule (verbatim): "J-space blind to X" if the J++ probe is within 0.10 of the random subspace at every layer while the full residual reaches >= 0.8 at some layer; "J-space carries X" if J++ >= 0.8 and >= 0.3 above random; else in between." (jobs/c3/batch53.yaml, 53.2; no prediction) Before scoring (Dan 11:25, 11:40, 13:15, verbatim in the verdict): the headline targets are the slot and the lookup's digit; "random reads it too" is worded "the address is linearly decodable from many subspaces, J++ included; the lens readout does not show it"; and "if J++ is >= 0.10 below the energy-matched random while the full state is >= 0.8, the label is "the address is under-represented in the lens directions" (stronger than blind)".
@@ -1387,7 +1393,9 @@ New in this ledger:
 - **Data.** Routes scenes (another item moved), locker first, the test half: 200 per model (27B 150, on its full grid: every 4th layer); the fit half for the per-layer refits and probes.
 - **Method.** At each sampled layer, the whole change and its parts (the lens part; the address part refit at that layer; the identity outside the lens), each added alone or taken out, against random parts of the same share; a slot probe at the bridge word. A layer counts only where the whole change switches 0.30 or more. D4: the angles between the address subspaces (and the identity subspaces) refit at every pair of layers in the probe's window.
 
-![The address is readable before the lookup uses it](../../figures/depth/fig06_depth.png)
+![The address is readable before the lookup uses it](../../figures/depth/07_depth.png)
+
+![The address is readable before the lookup uses it](../../figures/depth/08_depth_more.png)
 *Per model, one panel, x = the layer as a share of the model's depth: the locker probe's accuracy, the position answers under the whole change, the lookup's switches blocked without the J++ part beyond a random part; 95% intervals; faded: layers where the whole change switches under 0.30 (outside the gate); triangles: the address readable (probe at least 0.80) and the position answers begin (at least 0.20). The lookup barely needs the lens part at any layer (largest effect at most 0.2 except the 27B); the recall is not drawn. The 27B is its full grid, where rule (a) fails; Lightning and the 122B ○. The layer-by-layer anatomy with every clause is also in the supplementary figure.*
 
 - **Rule, fixed in advance.** "Define l_J = the first layer from which the lookup's extra drop without J++ stays <= 0.10; l_P = the first layer where the position share under the whole change is >= 0.20; l_probe = the first layer where the slot probe is >= 0.80. (a) "Handoff": l_P >= l_J [...] (b) "The address forms before it is used": l_probe <= l_P on every model [...] (c) "Identity leaves the lens": identity share with only-J++ is >= 0.5 at the earliest interpretable layer and <= 0.1 by L, while identity with only-I_l rises to >= 0.3 by L, on >= 2 of 3 models [...] (d) "Never the value, at any depth": value <= 0.05 at every interpretable layer." D4: "persistent if the mean cos^2 of the principal angles >= 0.5 across the window where the slot probe is >= 0.8; re-encoded if it drops below 0.2 between adjacent sampled layers." The 27B's full grid and Lightning: coverage runs on this rule, no prediction.
@@ -1452,7 +1460,7 @@ New in this ledger:
 - **Data.** Main test, the scenes whose locker sentences come first: 75 / 69 / 68 / 59<!-- src: results/x51_jread/x52_jread-20261029T005707Z/verdict.md \| n = 59 locker-first :: 59 --> (9B / 27B / Muse / Lightning; Lightning at L14, a coverage run on the same rule, no prediction).
 - **Method.** Read: a probe on the lens part of the state, layer by layer, against the full state and chance. Write: at the read peak, Zach's swap or the lens part of the change (gain up to 2), against a random part and his rotated control; the whole-state patch as reference.
 
-![At the last token the entity is in the lens, but the answer is not computed through it](../../figures/depth/r3_last_token.png)
+![At the last token the entity is in the lens, but the answer is not computed through it](../../figures/readme/12_last_token.png)
 *The README's figure: at the last token, per model, at the layer where the read peaks (under the name): left, the probe's accuracy for the recall's entity on the lens part, against chance (dashed); right, recalls that switch when the lens part is written in, against the whole-state patch (grey). Lightning ○. The lookup's cells: the table.*
 
 - **Rule, fixed in advance.** "read: through-the-lens probe >= 0.8 and lens top-5 >= 0.5 at some layer before the answer digit's layer, while the full-residual probe >= 0.9 there. write: at the layer of the read peak, his swap or the J++ part of the change (gain <= 2) switches >= 0.5 of what the whole-state patch switches at that layer, with the random part <= 0.10."

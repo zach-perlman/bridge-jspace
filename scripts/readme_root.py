@@ -5,10 +5,9 @@ Placeholders in docs/readme/README.template.md:
   {{b|key}}            docs/breadth/data.csv's value string for key, with its source comment
   {{x|key}}            docs/depth/x0_numbers.json's first number for key, with its source comment
   {{s|model|quantity}} data/figures/depth/data.csv's value (2 decimals), with its source comment
-  {{fig|id}}           the figure kit's README figure (figures/readme/<id>.png) under its claim as alt text
+  {{fig|id}}           the README set's figure (figures/readme/NN_<name>.png, figkit/layout.py) under its claim as alt text
 
-uv run python scripts/readme_root.py build      # README.md from the template (run `make readme` for figures + both)
-uv run python scripts/readme_root.py convert    # once: the template from the current README.md
+uv run python scripts/readme_root.py      # README.md from the template (run `make readme` for figures + both)
 """
 
 from __future__ import annotations
@@ -52,9 +51,33 @@ def story() -> dict[tuple[str, str], float]:
         return out
 
 
+# each README figure's claim, its alt text
+CLAIMS = {
+    "p0b_tools": "Three tools, one target: the lens part at the bridge.",
+    "r1_c1_split": "Taking the lens part out breaks recalled answers, not lookup ones",
+    "f2_controls": "Random, rotated, logit-lens and PCA directions cost far less than the lens part",
+    "r4_pointer": "Another entity's lens part moves the recall from any context, a probe's subspace that reads the fact "
+                  "does not",
+    "f5_atoms": "The lens part's 25 directions are the two bridge words, almost never the answer word",
+    "f6a_address_read_remove": "A probe reads the address, and removing the lens part leaves it",
+    "f6b_address_swap_lens": "A swap of the address moves the lookup; the lens misses it",
+    "r5_routes": "The patch moves the lookup by identity or by position, never by the value",
+    "f10_sentence_order": "The bridge word redirects the lookup when the locker sentence came first; both orders matter "
+                          "(post hoc)",
+    "f14_two_codes": "Without the address the position route goes; without J++ the identity route turns to position "
+                     "(post hoc)",
+    "f11_monitor": "At the last token the lens part reads the address worse than a random part of the same energy",
+    "r3_last_token": "At the last token the lens reads the entity, and the answer does not go through it",
+    "f3_nine_models": "Across nine models the lens part is carried, needed, or both: graded",
+    "f8_directions": "With more lens directions removed, the 27B's lookup has more switches blocked",
+    "f8_facts": "On passages whose fact the model knows, the lookup follows the lens part; with made-up facts, less so",
+    "f12_order": "With the question before the scene, the 27B's lookup leans a little more on the lens part; the other "
+                 "models missed the gate",
+}  # fmt: skip
+
+
 def build() -> str:
-    from bridge_jspace.figkit.specs import SPECS
-    from bridge_jspace.figkit.tables import CLAIMS
+    from bridge_jspace.figkit import layout as L
 
     B, X, S = breadth(), x0(), story()
 
@@ -67,54 +90,13 @@ def build() -> str:
         if kind == "s":
             model, quantity = arg.split("|", 1)
             return f"{S[(model, quantity)]:.2f}<!-- src: data/figures/depth/data.csv | {quantity} -->"
-        claim = CLAIMS[arg] if arg in CLAIMS else SPECS[arg]().claim
-        return f"![{claim}](figures/readme/{arg}.png)"
+        return f"![{CLAIMS[arg]}]({L.path('readme', arg).relative_to(REPO).as_posix()})"
 
     text = PH.sub(fill, TEMPLATE.read_text())
     assert "{{" not in text, "an unknown placeholder is left"
     README.write_text(HEADER + text)
-    from bridge_jspace.figkit.build import page_sheet
-
-    page_sheet(
-        [REPO / f for f in re.findall(r"\]\((figures/readme/[^)]+\.png)\)", text)],
-        REPO / "figures/readme/contact_sheet.png",
-    )
     return text
 
 
-def convert() -> None:
-    """The template from the current README: every single-key breadth / x0 number whose text equals what the
-    placeholder renders becomes the placeholder; deck figures become {{fig|id}}; everything else stays as written."""
-    B, X = breadth(), x0()
-    text = README.read_text().removeprefix(HEADER)
-    n = 0
-
-    def conv(m: re.Match) -> str:
-        """'a / b ○ / c<!-- src: file | k1; k2; k3 -->' -> one placeholder per number when every number matches."""
-        nonlocal n
-        group, src, keys = m.group(1), m.group(2), [k.strip() for k in m.group(3).split(";")]
-        nums = group.split(" / ")
-        table, tag = (B, "b") if src == "docs/breadth/data.csv" else (X, "x")
-        if len(nums) != len(keys) or any(table.get(k) != v.replace(" ○", "") for k, v in zip(keys, nums, strict=True)):
-            return m.group(0)
-        n += len(nums)
-        return " / ".join(
-            f"{{{{{tag}|{k}}}}}" + (" ○" if v.endswith(" ○") else "") for k, v in zip(keys, nums, strict=True)
-        )
-
-    num = r"[−-]?\d+\.\d+(?: ○)?"
-    text = re.sub(
-        rf"((?:{num} / )*{num})<!-- src: (docs/breadth/data\.csv|docs/x0_numbers\.json) \| ([^>]*?) -->", conv, text
-    )
-    swaps = {"figures/archive/deck/c1_controls.png": "p2a_controls_zach", "figures/archive/deck/c2_pointer.png": "p4a_pointer_zach",
-             "figures/archive/deck/c3_address.png": "p5a_probe", "figures/archive/deck/c4_readable.png": "p6_c4_readable",
-             "figures/archive/deck/c9_breaks.png": "p7_breaks", "figures/archive/deck/c0_setup_a.png": "p0a_datasets",
-             "figures/archive/deck/c0_setup_b.png": "p0b_tools"}  # fmt: skip
-    for path, fid in swaps.items():
-        text = re.sub(r"!\[[^\]]*\]\(" + re.escape(path) + r"\)", f"{{{{fig|{fid}}}}}", text)
-    TEMPLATE.write_text(text)
-    print(f"wrote {TEMPLATE.relative_to(REPO)}: {n} numbers as placeholders")
-
-
 if __name__ == "__main__":
-    {"build": lambda: print(f"wrote README.md ({len(build().splitlines())} lines)"), "convert": convert}[sys.argv[1]]()
+    print(f"wrote README.md ({len(build().splitlines())} lines)")

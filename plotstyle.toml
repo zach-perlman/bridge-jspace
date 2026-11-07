@@ -859,5 +859,9 @@ key = "olmo-3-7b"
 name = "Olmo-3 7B"
 id = "o7"
 
+# every figures/<set>/ keeps its sidecars under _meta/ (figkit/layout.py)
+[output]
+sidecar_dir = "_meta"
+
 [registry]
 path = "data/figures/status_sp.csv"

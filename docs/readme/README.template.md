@@ -107,7 +107,9 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 
 **Claim.** The lookup answers either by which item it is (its own locker) or by where its locker sat (the address); never by the number. Its position answers read the bridge through an *address*, a code for where the item's sentence sits in the prompt (a lookback pointer). A linear probe reads it, removing it stops lookups by position, swapping it redirects the lookup, and the lens cannot see it.
 
-{{fig|f6_address}}
+{{fig|f6a_address_read_remove}}
+
+{{fig|f6b_address_swap_lens}}
 
 *Rows are models; columns are four tests of the address, each with its control in grey.*
 
@@ -192,8 +194,8 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 
 ## More results
 
-- **Where in the network.** At middle layers the bridge's mention carries most of the need on the Qwens (Qwen 27B: 29.7 of 50.9 points from the mention alone); deeper, the question carries nearly all of it (47.1 of 50.0)<!-- src: docs/breadth/data.csv | pos.q27.all.bridge; pos.q27.all.all; late.q27.question; late.q27.all -->. [Figure](figures/readme/f9_where.png).
-- **Longer chains.** A three-hop chain needs the lens part when its last hop is recalled: Lightning's accuracy drops 36 to 60 points beyond an all-passage chain<!-- src: docs/breadth/README.md | Lightning's accuracy drops 36 to 60 points beyond an all-passage chain -->; when the last hop is read it drops −3 to +2<!-- src: docs/breadth/README.md | When the last hop is read it drops -3 to +2 -->, even if earlier hops were recalled. [Figure](figures/breadth/fig10_beyond.png).
+- **Where in the network.** At middle layers the bridge's mention carries most of the need on the Qwens (Qwen 27B: 29.7 of 50.9 points from the mention alone); deeper, the question carries nearly all of it (47.1 of 50.0)<!-- src: docs/breadth/data.csv | pos.q27.all.bridge; pos.q27.all.all; late.q27.question; late.q27.all -->. [Figure](figures/readme/17_where.png).
+- **Longer chains.** A three-hop chain needs the lens part when its last hop is recalled: Lightning's accuracy drops 36 to 60 points beyond an all-passage chain<!-- src: docs/breadth/README.md | Lightning's accuracy drops 36 to 60 points beyond an all-passage chain -->; when the last hop is read it drops −3 to +2<!-- src: docs/breadth/README.md | When the last hop is read it drops -3 to +2 -->, even if earlier hops were recalled. [Figure](figures/breadth/10a1_beyond.png) · [2](figures/breadth/10a2_beyond.png) · [3](figures/breadth/10b_beyond.png) · [4](figures/breadth/10c_beyond.png).
 - **Numbers computed from the passage.** Reporting a number computed by arithmetic costs nothing in all three models; a recalled number costs the Qwens +13 and +15 points<!-- src: docs/breadth/README.md | Reporting a number computed from the passage by arithmetic costs nothing in all three models; a recalled one costs the Qwens +13 and +15. -->.
 - **Mostly from pretraining.** The 9B base model shows +34 against the instruct model's +41 in the same format<!-- src: docs/breadth/README.md | The 9B base model gives +34 against the instruct model's +41 -->.
 - **The fact is fetched later.** At the answer position the lens first reads the entity's fact only after the band: layer 50 on the 27B, whose band ends at L40<!-- src: docs/breadth/README.md | layer 50 on the 27B (band ends at L40) -->; for a swapped entity it reads the new entity's fact at the same layers.

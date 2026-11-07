@@ -16,6 +16,7 @@ from bridge_jspace.figkit import data as D
 from bridge_jspace.figkit import depth_sp_b as DB
 from bridge_jspace.figkit import depth_sp_c as DC
 from bridge_jspace.figkit import depth_sp_d as DD
+from bridge_jspace.figkit import layout as L
 from bridge_jspace.figkit import readme_sp as RS
 from bridge_jspace.figkit.writeup_sp_base import REPO, ZK, est, need, vocab
 
@@ -27,11 +28,6 @@ ALIAS = {"fig13_attention": "appB_f17_attention", "fig09b_six_lockers": "appB_f1
          "fig24_two_codes": "appB_f14_two_codes",
          # the depth README's Fig. 3: panels A and B are the write-up's Fig. 9, panel C its appendix B f15 (too tall as one)
          "fig03_order": "fig09_order", "fig03c_link_layers": "appB_f15_link_crossover"}  # fmt: skip
-
-
-def path(fid: str):
-    """Where a depth figure is written (one place, for the folder layout to come)."""
-    return (OUT / "supp" if fid in DB.SUPP | DC.SUPP | DD.SUPP else OUT) / f"{fid}.png"
 
 
 def _alias(fid: str):
@@ -386,7 +382,10 @@ FIGS = {**{fid: _alias(fid) for fid in ALIAS}, "fig01b_settings": fig01b_setting
 
 
 def build(ids=None) -> list[str]:
-    return RS.build(ids, figs=FIGS, dirs={fid: path(fid).parent for fid in FIGS})
+    """Save the depth set strict into figures/depth/ (numbered files, figkit/layout.py), with the two figures
+    readme_sp declares for it. Returns the failures."""
+    figs = {**FIGS, "r1_dan_split": RS.FIGS["r1_dan_split"], "t12_two_by_two": RS.FIGS["t12_two_by_two"]}
+    return L.build("depth", figs, RS.TARGET, ids)
 
 
 if __name__ == "__main__":

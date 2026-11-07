@@ -1,0 +1,247 @@
+{
+ "styles_plot": "0.1.9",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "8b51746d2f7810ffebd0d5a1f25e1f4348da7e5b05b86b128b01ce3cd77e3c16"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "96c257c390bdd0e0f9716035874534ec13862fa57beca46f1be35e29802a0b1b"
+ },
+ "figure": "breadth_fig04_where",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "8cb42098f2ab51425af0b962d6b51933e325ab582897fdcb9fcd0560ab4868f6",
+  "dpi": 160
+ },
+ "roles": [
+  "neutral"
+ ],
+ "controls": [
+  "rotated"
+ ],
+ "cells": {
+  "pos.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "pos.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "pos.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "prof.mi": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "prof.nb": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "prof.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "prof.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "prof.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "line",
+   "role": "neutral",
+   "cell": "prof.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "control",
+   "cell": "prof.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "neutral",
+   "cell": "prof.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "control",
+   "cell": "prof.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "neutral",
+   "cell": "prof.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "control",
+   "cell": "prof.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "neutral",
+   "cell": "prof.mi",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "control",
+   "cell": "prof.mi",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "neutral",
+   "cell": "prof.nb",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "control",
+   "cell": "prof.nb",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "grey: rotated",
+  "shading: 95% interval",
+  "whiskers: 95% interval"
+ ],
+ "numbers": {
+  "pos.q9.all.all": "42.6",
+  "pos.q27.all.all": "50.9",
+  "pos.nl.all.all": "53.1",
+  "pos.q9.all.bridge": "33.6",
+  "pos.q27.all.bridge": "29.7",
+  "pos.nl.all.bridge": "19.9",
+  "pos.q9.all.context": "31.1",
+  "pos.q27.all.context": "26.3",
+  "pos.nl.all.context": "17.8",
+  "pos.q9.all.question": "6.2",
+  "pos.q27.all.question": "10.7",
+  "pos.nl.all.question": "22.7"
+ },
+ "problems": []
+}

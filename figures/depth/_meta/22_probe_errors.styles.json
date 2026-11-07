@@ -1,0 +1,110 @@
+{
+ "styles_plot": "0.1.9",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "8b51746d2f7810ffebd0d5a1f25e1f4348da7e5b05b86b128b01ce3cd77e3c16"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "96c257c390bdd0e0f9716035874534ec13862fa57beca46f1be35e29802a0b1b"
+ },
+ "figure": "fig07c_probe_errors",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "93a2c4edeb93cbf9ae83119668d189068649699d08e6bc8db141dbf20ed233e5",
+  "dpi": 160
+ },
+ "roles": [
+  "address"
+ ],
+ "controls": [
+  "most common locker"
+ ],
+ "cells": {
+  "errors.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "errors.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "errors.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "errors.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "errors.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "errors.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "errors.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "errors.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "errors.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  }
+ ],
+ "key": [
+  "grey: most common locker",
+  "whiskers: 95% interval",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "f07c.layout.q9": "0.16",
+  "f07c.layout.q9.interval": "[0.08, 0.24]",
+  "f07c.layout.mu": "0.03",
+  "f07c.layout.mu.interval": "[0.00, 0.09]",
+  "f07c.layout.nl": "0.11",
+  "f07c.layout.nl.interval": "[0.06, 0.17]",
+  "f07c.lens.q9": "1.00",
+  "f07c.lens.q9.interval": "[1.00, 1.00]",
+  "f07c.lens.nl": "1.00",
+  "f07c.lens.nl.interval": "[1.00, 1.00]",
+  "f07c.probe.q9": "0.07",
+  "f07c.probe.mu": "0.06",
+  "f07c.probe.nl": "0.05"
+ },
+ "problems": []
+}

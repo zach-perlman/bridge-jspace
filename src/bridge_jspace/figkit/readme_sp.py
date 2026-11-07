@@ -17,6 +17,7 @@ import styles_plot as sp
 from bridge_jspace.figkit import claim_figs as CF
 from bridge_jspace.figkit import data as D
 from bridge_jspace.figkit import depth_figs as DF
+from bridge_jspace.figkit import layout as L
 from bridge_jspace.figkit import specs as S
 from bridge_jspace.figkit import writeup_sp as WS
 from bridge_jspace.figkit import writeup_sp_b as WB
@@ -243,33 +244,12 @@ FIGS = {**{fid: _alias(fid) for fid in ALIAS}, "r1_dan_split": r1_dan_split, "r4
 BLOCKED = {"f6_address": f6_address}
 
 
-DEPTH = REPO / "figures" / "depth"
-DIR = {"r1_dan_split": DEPTH, "t12_two_by_two": DEPTH}  # the depth README's own figures; the rest: figures/readme
-
-
-def build(ids=None, out: Path | None = None, figs=None, dirs=None) -> list[str]:
-    """Save each figure strict for the README target, into its set's folder (or `out`); returns the failures (a
-    failed figure writes nothing)."""
-    figs, dirs = figs or FIGS, DIR if dirs is None else dirs
-    failed = []
-    for fid in ids or figs:
-        try:
-            sp.save(figs[fid](), (out or dirs.get(fid, OUT)) / f"{fid}.png", target=TARGET)
-            print(f"ok    {fid}")
-        except (sp.StyleError, sp.BuildError, ValueError) as e:
-            failed.append(fid)
-            print(f"FAIL  {fid}\n{e}")
-    return failed
-
-
-def write_order(readme: Path, folder: Path) -> Path:
-    """The contact sheet's order: the figures of `folder` in the order the README embeds them (the rest follow)."""
-    rel = folder.relative_to(REPO).as_posix()
-    names = re.findall(rf"{re.escape(rel)}/([\w/.-]+?)\.png", readme.read_text())
-    path = folder / "order.txt"
-    names = [n for n in dict.fromkeys(names) if not n.startswith("contact_sheet")]  # a sheet is not on itself
-    path.write_text("".join(f"{n}\n" for n in names))
-    return path
+def build(ids=None) -> list[str]:
+    """Save the README set strict into figures/readme/ (numbered files, figkit/layout.py); r1_dan_split and
+    t12_two_by_two belong to the depth set (depth_sp builds them). Returns the failures."""
+    # the README links f9_where as "Figure": its claim for the index
+    return L.build("readme", FIGS, TARGET, ids, {"f9_where": "Middle layers need the bridge's mention; deeper layers, "
+                                                              "the question"})  # fmt: skip
 
 
 if __name__ == "__main__":

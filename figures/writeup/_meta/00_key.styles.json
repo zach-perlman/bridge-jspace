@@ -1,0 +1,75 @@
+{
+ "styles_plot": "0.1.9",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "8b51746d2f7810ffebd0d5a1f25e1f4348da7e5b05b86b128b01ce3cd77e3c16"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "96c257c390bdd0e0f9716035874534ec13862fa57beca46f1be35e29802a0b1b"
+ },
+ "figure": "key",
+ "target": "post",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "659319bbef558f3101c71b815062329b91a22e70072096b27f30761587f97ed2",
+  "dpi": 200
+ },
+ "roles": [
+  "lookup",
+  "neutral",
+  "recall"
+ ],
+ "controls": [],
+ "cells": {
+  "band.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "band.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "band.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "band.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "grey band: within 0.10 of a random part",
+  "grey tick: the largest same-size control",
+  "grey: rotated · logit lens · PCA · a random part · energy-matched random · a random vector ·",
+  "layout-only probe · 10 random heads · no change · random lens directions · the whole state",
+  "rest swapped in · a control block · 2 × a random direction · 2 × the lens part · the null's cut ·",
+  "swapped in · the full state · most common locker · shuffled pairs · a random subspace · the",
+  "the null's median",
+  "whiskers: 95% interval",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "ko.q27.lostM": "53.5",
+  "ko.q27.lostK": "2.6",
+  "ko.q27.mk": "50.9",
+  "ko.q27.ctrl": "12.4"
+ },
+ "problems": []
+}

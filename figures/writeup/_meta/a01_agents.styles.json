@@ -1,0 +1,189 @@
+{
+ "styles_plot": "0.1.9",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "8b51746d2f7810ffebd0d5a1f25e1f4348da7e5b05b86b128b01ce3cd77e3c16"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "96c257c390bdd0e0f9716035874534ec13862fa57beca46f1be35e29802a0b1b"
+ },
+ "figure": "figA1_agents",
+ "target": "post",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "1f7736494697ecba107db3569f5012253b731aff3435b1cd3473849b37d9c8a8",
+  "dpi": 200
+ },
+ "roles": [
+  "recall"
+ ],
+ "controls": [],
+ "cells": {
+  "copy.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "descriptive"
+  },
+  "copy.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "descriptive"
+  },
+  "copy.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "descriptive"
+  },
+  "pick.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "pick.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "descriptive"
+  },
+  "pick.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "produce.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "produce.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "descriptive"
+  },
+  "produce.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "verify.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "verify.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "verify.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "copy.q9",
+   "timing": "fixed_in_advance",
+   "claim": "descriptive",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "copy.q27",
+   "timing": "fixed_in_advance",
+   "claim": "descriptive",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "copy.nl",
+   "timing": "fixed_in_advance",
+   "claim": "descriptive",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "pick.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "pick.q27",
+   "timing": "fixed_in_advance",
+   "claim": "descriptive",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "pick.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "verify.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "verify.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "verify.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "produce.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "produce.q27",
+   "timing": "fixed_in_advance",
+   "claim": "descriptive",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "produce.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "whiskers: 95% interval"
+ ],
+ "numbers": {
+  "figA1.copy.q9": "6.2",
+  "figA1.copy.q27": "0.6",
+  "figA1.copy.nl": "−0.2",
+  "figA1.pick.q9": "10.1",
+  "figA1.pick.q27": "4.5",
+  "figA1.pick.nl": "2.3",
+  "figA1.verify.q9": "−16.3",
+  "figA1.verify.q27": "3.8",
+  "figA1.verify.nl": "3.7",
+  "figA1.produce.q9": "35.7",
+  "figA1.produce.q27": "36.6",
+  "figA1.produce.nl": "50.8"
+ },
+ "problems": []
+}
