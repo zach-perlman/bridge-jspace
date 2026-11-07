@@ -150,10 +150,13 @@ readme: figures-kit ## both READMEs from their templates (root: docs/readme/, de
 	uv run python scripts/convert_status_registry.py
 	uv run python -m bridge_jspace.figkit.readme_sp
 	uv run python -m bridge_jspace.figkit.depth_sp
-	uv run python -c "from bridge_jspace.figkit import readme_sp as R; R.write_order(R.REPO / 'README.md', R.OUT); R.write_order(R.REPO / 'docs/depth/README.md', R.DEPTH)"
+	uv run python -m bridge_jspace.figkit.breadth_sp
+	uv run python -c "from bridge_jspace.figkit import readme_sp as R; R.write_order(R.REPO / 'README.md', R.OUT); R.write_order(R.REPO / 'docs/depth/README.md', R.DEPTH); R.write_order(R.REPO / 'docs/breadth/README.md', R.REPO / 'figures/breadth')"
 	-uv run styles-plot check figures/readme --vocab plotstyle.toml
 	-uv run styles-plot check figures/depth --vocab plotstyle.toml
+	-uv run styles-plot check figures/breadth --vocab plotstyle.toml
 	uv run styles-plot sheet figures/readme --order figures/readme/order.txt
 	uv run styles-plot sheet figures/depth --order figures/depth/order.txt
+	uv run styles-plot sheet figures/breadth --order figures/breadth/order.txt
 	uv run python scripts/check_style.py --report | tail -1
 	uv run pytest -q tests/test_readme_sources.py tests/test_readme_cards.py tests/test_readme_sp.py

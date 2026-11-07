@@ -97,7 +97,7 @@ READERS = ("recall", "lookup")
 CONTROLS = ("rotated", "logit lens", "PCA", "a random part", "energy-matched random", "a random vector",
             "layout-only probe", "10 random heads", "no change", "random lens directions",
             "the whole state swapped in", "the full state", "most common locker",
-            "shuffled pairs", "a random subspace")  # fmt: skip
+            "shuffled pairs", "a random subspace", "the rest swapped in")  # fmt: skip
 CONDITIONS = (
     "lens part", "knock-out", "removed from the patch", "swapped in", "the whole change", "a change of item",
     "another entity", "switches blocked beyond random", "address", "identity", "position", "the number",

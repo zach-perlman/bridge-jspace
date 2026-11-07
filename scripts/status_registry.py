@@ -358,10 +358,51 @@ def depth_set_b() -> list[dict]:
     return out
 
 
+BREADTH_FIGS = {"fig01_needed": ("mk", "lost"), "fig03_robust": ("robust",), "fig04_where": ("pos",),
+                "fig05_carries": ("swap",), "fig09_dose": ("dose",)}  # fmt: skip
+# per breadth model, the registration of its tests in Zach's preregistration (before that model's data); Muse 30B and
+# Qwen 122B: their band test post hoc, as the write-up's Fig. 1 (listed as a disagreement with Amendments 1 and 34)
+BREADTH_CITE = {
+    "q27": f"{PREREG} Amendment 33 (jsuite_v2: the 27B and 9B at their pre-registered bands, before any v2 run)",
+    "q9": f"{PREREG} Amendment 33 (jsuite_v2: the 27B and 9B at their pre-registered bands, before any v2 run)",
+    "ds": f"{PREREG} Amendment 39 (DeepSeek-V4-Flash and Ministral 3 14B on v2, before any non-Qwen run)",
+    "mi": f"{PREREG} Amendment 39 (DeepSeek-V4-Flash and Ministral 3 14B on v2, before any non-Qwen run)",
+    "nb": f"{PREREG} Amendment 40 note 1 (Nemotron 3.5 Bolt, before any Bolt run)",
+    "ol": f"{PREREG} Amendment 31 (OLMo-3 32B base with its published J++)",
+}
+
+
+def breadth_set(readme: list[dict]) -> list[dict]:
+    """The breadth README's figures (figkit/breadth_sp.py): a cell is fixed in advance where Zach's preregistration
+    registered that model's tests before its data (BREADTH_CITE; Lightning by lightning(), Amendment 45 note 2); Muse
+    30B and Qwen 122B post hoc as the write-up's Fig. 1. Which cells each amendment covers is per model, not checked
+    cell by cell (listed). fig06_pointer is the README's r4_pointer (its rows copied)."""
+    ids = [*SHORT.values(), "ds", "mi", "nb", "ol"]  # the breadth-only models' ids (plotstyle.toml)
+    out =[{**r, "figure": "fig06_pointer", "source": f"{r['source']} (as r4_pointer, drawn for docs/breadth)"}
+           for r in readme if r["figure"] == "r4_pointer"]  # fmt: skip
+    for fig, cids in BREADTH_FIGS.items():
+        UNCLEAR.add(f"{fig}: the amendments register each model's tests; this figure's cells are not listed one by one")
+        for k in ids:
+            for cid in cids:
+                cell = f"{cid}.{k}"
+                if k in ("mu", "q122"):
+                    out.append(row(fig, cell, "post_hoc", "this model's band test was run after the data (as the "
+                                   "write-up's Fig. 1)", "figures/writeup/README.md Fig. 1 row"))  # fmt: skip
+                    DISAGREEMENTS.append(f"{fig} {cell}: post hoc as the write-up's Fig. 1; {PREREG} Amendments 1 "
+                                         "(Muse) and 34 (the 122B) registered runs on these models")  # fmt: skip
+                elif k == "nl":
+                    out.append(row(fig, cell, "fixed_in_advance", "Lightning's breadth test", CHAIN))
+                else:
+                    out.append(row(fig, cell, "fixed_in_advance", "registered before this model's data",
+                                   BREADTH_CITE[k]))  # fmt: skip
+    return out
+
+
 def rows() -> list[dict]:
     writeup = [*key(), *fig01(), *fig04(), *fig09(), *fig12(), *appB_f17(), *styles_plot_port()]
     writeup += fig05_split(writeup) + f14_split(writeup)
-    return lightning([*writeup, *readme_set(writeup), *depth_set(writeup), *depth_set_b()])
+    readme = readme_set(writeup)
+    return lightning([*writeup, *readme, *depth_set(writeup), *depth_set_b(), *breadth_set(readme)])
 
 
 if __name__ == "__main__":

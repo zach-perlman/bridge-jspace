@@ -1,0 +1,153 @@
+{
+ "styles_plot": "0.1.5",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "dce4f14a4525db992923ce7090815ca7eba05c7fe4fdd66a9497e8252c92235f"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "47ae63dd06daecf9c09a21b1949a5713fead6236f3ccb68cb029877a3f798359"
+ },
+ "figure": "fig04_where",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "15ad4841ac885ca0526c7171a92d92a28db7c032aa33366f6b91b32de7cb989e",
+  "dpi": 160
+ },
+ "roles": [
+  "neutral"
+ ],
+ "controls": [],
+ "cells": {
+  "pos.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "pos.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "pos.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "whiskers: 95% interval"
+ ],
+ "numbers": {
+  "pos.q9.all.all": "42.6",
+  "pos.q27.all.all": "50.9",
+  "pos.nl.all.all": "53.1",
+  "pos.q9.all.bridge": "33.6",
+  "pos.q27.all.bridge": "29.7",
+  "pos.nl.all.bridge": "19.9",
+  "pos.q9.all.context": "31.1",
+  "pos.q27.all.context": "26.3",
+  "pos.nl.all.context": "17.8",
+  "pos.q9.all.question": "6.2",
+  "pos.q27.all.question": "10.7",
+  "pos.nl.all.question": "22.7"
+ },
+ "problems": []
+}

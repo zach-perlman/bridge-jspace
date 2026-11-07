@@ -711,3 +711,72 @@ s03_order_split,order.clean_before.q122,fixed_in_advance,,the clean one-pick sce
 s03_order_split,order.clean_after.q122,fixed_in_advance,,the clean one-pick scenes (45m): the figkit figure drew no mark hollow,scripts/readme_story_figures.py s03_order_split
 s08b_pointer_moves_and_neutral_sentence,moves.q122,post_hoc,,"supplementary to Fig. 8, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s08b_pointer_moves
 s08b_pointer_moves_and_neutral_sentence,shift.q122,post_hoc,,"supplementary to Fig. 8, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s08b_pointer_moves
+fig06_pointer,swap.q9,fixed_in_advance,,the pointer runs and the probe's subspace: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/exemplars.py r4_pointer (as r4_pointer, drawn for docs/breadth)"
+fig06_pointer,neutral.q9,fixed_in_advance,,the pointer runs and the probe's subspace: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/exemplars.py r4_pointer (as r4_pointer, drawn for docs/breadth)"
+fig06_pointer,noown.q9,fixed_in_advance,,the pointer runs and the probe's subspace: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/exemplars.py r4_pointer (as r4_pointer, drawn for docs/breadth)"
+fig06_pointer,rot.q9,fixed_in_advance,,the pointer runs and the probe's subspace: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/exemplars.py r4_pointer (as r4_pointer, drawn for docs/breadth)"
+fig06_pointer,probe.q9,fixed_in_advance,,the pointer runs and the probe's subspace: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/exemplars.py r4_pointer (as r4_pointer, drawn for docs/breadth)"
+fig06_pointer,swap.q27,fixed_in_advance,,the pointer runs and the probe's subspace: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/exemplars.py r4_pointer (as r4_pointer, drawn for docs/breadth)"
+fig06_pointer,neutral.q27,fixed_in_advance,,the pointer runs and the probe's subspace: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/exemplars.py r4_pointer (as r4_pointer, drawn for docs/breadth)"
+fig06_pointer,noown.q27,fixed_in_advance,,the pointer runs and the probe's subspace: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/exemplars.py r4_pointer (as r4_pointer, drawn for docs/breadth)"
+fig06_pointer,rot.q27,fixed_in_advance,,the pointer runs and the probe's subspace: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/exemplars.py r4_pointer (as r4_pointer, drawn for docs/breadth)"
+fig06_pointer,probe.q27,fixed_in_advance,,the pointer runs and the probe's subspace: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/exemplars.py r4_pointer (as r4_pointer, drawn for docs/breadth)"
+fig06_pointer,swap.nl,fixed_in_advance,,the pointer runs and the probe's subspace: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/exemplars.py r4_pointer (as r4_pointer, drawn for docs/breadth)"
+fig06_pointer,neutral.nl,fixed_in_advance,,the pointer runs and the probe's subspace: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/exemplars.py r4_pointer (as r4_pointer, drawn for docs/breadth)"
+fig06_pointer,noown.nl,fixed_in_advance,,the pointer runs and the probe's subspace: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/exemplars.py r4_pointer (as r4_pointer, drawn for docs/breadth)"
+fig06_pointer,rot.nl,fixed_in_advance,,the pointer runs and the probe's subspace: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/exemplars.py r4_pointer (as r4_pointer, drawn for docs/breadth)"
+fig06_pointer,probe.nl,fixed_in_advance,,the pointer runs and the probe's subspace: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/exemplars.py r4_pointer (as r4_pointer, drawn for docs/breadth)"
+fig01_needed,mk.q9,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 33 (jsuite_v2: the 27B and 9B at their pre-registered bands, before any v2 run)"
+fig01_needed,lost.q9,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 33 (jsuite_v2: the 27B and 9B at their pre-registered bands, before any v2 run)"
+fig01_needed,mk.q27,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 33 (jsuite_v2: the 27B and 9B at their pre-registered bands, before any v2 run)"
+fig01_needed,lost.q27,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 33 (jsuite_v2: the 27B and 9B at their pre-registered bands, before any v2 run)"
+fig01_needed,mk.mu,post_hoc,,this model's band test was run after the data (as the write-up's Fig. 1),figures/writeup/README.md Fig. 1 row
+fig01_needed,lost.mu,post_hoc,,this model's band test was run after the data (as the write-up's Fig. 1),figures/writeup/README.md Fig. 1 row
+fig01_needed,mk.nl,fixed_in_advance,,Lightning's breadth test,"docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit)"
+fig01_needed,lost.nl,fixed_in_advance,,Lightning's breadth test,"docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit)"
+fig01_needed,mk.q122,post_hoc,,this model's band test was run after the data (as the write-up's Fig. 1),figures/writeup/README.md Fig. 1 row
+fig01_needed,lost.q122,post_hoc,,this model's band test was run after the data (as the write-up's Fig. 1),figures/writeup/README.md Fig. 1 row
+fig01_needed,mk.ds,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 39 (DeepSeek-V4-Flash and Ministral 3 14B on v2, before any non-Qwen run)"
+fig01_needed,lost.ds,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 39 (DeepSeek-V4-Flash and Ministral 3 14B on v2, before any non-Qwen run)"
+fig01_needed,mk.mi,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 39 (DeepSeek-V4-Flash and Ministral 3 14B on v2, before any non-Qwen run)"
+fig01_needed,lost.mi,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 39 (DeepSeek-V4-Flash and Ministral 3 14B on v2, before any non-Qwen run)"
+fig01_needed,mk.nb,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 40 note 1 (Nemotron 3.5 Bolt, before any Bolt run)"
+fig01_needed,lost.nb,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 40 note 1 (Nemotron 3.5 Bolt, before any Bolt run)"
+fig01_needed,mk.ol,fixed_in_advance,,registered before this model's data,docs/breadth/prereg_replication_1022.md Amendment 31 (OLMo-3 32B base with its published J++)
+fig01_needed,lost.ol,fixed_in_advance,,registered before this model's data,docs/breadth/prereg_replication_1022.md Amendment 31 (OLMo-3 32B base with its published J++)
+fig03_robust,robust.q9,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 33 (jsuite_v2: the 27B and 9B at their pre-registered bands, before any v2 run)"
+fig03_robust,robust.q27,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 33 (jsuite_v2: the 27B and 9B at their pre-registered bands, before any v2 run)"
+fig03_robust,robust.mu,post_hoc,,this model's band test was run after the data (as the write-up's Fig. 1),figures/writeup/README.md Fig. 1 row
+fig03_robust,robust.nl,fixed_in_advance,,Lightning's breadth test,"docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit)"
+fig03_robust,robust.q122,post_hoc,,this model's band test was run after the data (as the write-up's Fig. 1),figures/writeup/README.md Fig. 1 row
+fig03_robust,robust.ds,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 39 (DeepSeek-V4-Flash and Ministral 3 14B on v2, before any non-Qwen run)"
+fig03_robust,robust.mi,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 39 (DeepSeek-V4-Flash and Ministral 3 14B on v2, before any non-Qwen run)"
+fig03_robust,robust.nb,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 40 note 1 (Nemotron 3.5 Bolt, before any Bolt run)"
+fig03_robust,robust.ol,fixed_in_advance,,registered before this model's data,docs/breadth/prereg_replication_1022.md Amendment 31 (OLMo-3 32B base with its published J++)
+fig04_where,pos.q9,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 33 (jsuite_v2: the 27B and 9B at their pre-registered bands, before any v2 run)"
+fig04_where,pos.q27,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 33 (jsuite_v2: the 27B and 9B at their pre-registered bands, before any v2 run)"
+fig04_where,pos.mu,post_hoc,,this model's band test was run after the data (as the write-up's Fig. 1),figures/writeup/README.md Fig. 1 row
+fig04_where,pos.nl,fixed_in_advance,,Lightning's breadth test,"docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit)"
+fig04_where,pos.q122,post_hoc,,this model's band test was run after the data (as the write-up's Fig. 1),figures/writeup/README.md Fig. 1 row
+fig04_where,pos.ds,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 39 (DeepSeek-V4-Flash and Ministral 3 14B on v2, before any non-Qwen run)"
+fig04_where,pos.mi,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 39 (DeepSeek-V4-Flash and Ministral 3 14B on v2, before any non-Qwen run)"
+fig04_where,pos.nb,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 40 note 1 (Nemotron 3.5 Bolt, before any Bolt run)"
+fig04_where,pos.ol,fixed_in_advance,,registered before this model's data,docs/breadth/prereg_replication_1022.md Amendment 31 (OLMo-3 32B base with its published J++)
+fig05_carries,swap.q9,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 33 (jsuite_v2: the 27B and 9B at their pre-registered bands, before any v2 run)"
+fig05_carries,swap.q27,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 33 (jsuite_v2: the 27B and 9B at their pre-registered bands, before any v2 run)"
+fig05_carries,swap.mu,post_hoc,,this model's band test was run after the data (as the write-up's Fig. 1),figures/writeup/README.md Fig. 1 row
+fig05_carries,swap.nl,fixed_in_advance,,Lightning's breadth test,"docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit)"
+fig05_carries,swap.q122,post_hoc,,this model's band test was run after the data (as the write-up's Fig. 1),figures/writeup/README.md Fig. 1 row
+fig05_carries,swap.ds,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 39 (DeepSeek-V4-Flash and Ministral 3 14B on v2, before any non-Qwen run)"
+fig05_carries,swap.mi,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 39 (DeepSeek-V4-Flash and Ministral 3 14B on v2, before any non-Qwen run)"
+fig05_carries,swap.nb,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 40 note 1 (Nemotron 3.5 Bolt, before any Bolt run)"
+fig05_carries,swap.ol,fixed_in_advance,,registered before this model's data,docs/breadth/prereg_replication_1022.md Amendment 31 (OLMo-3 32B base with its published J++)
+fig09_dose,dose.q9,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 33 (jsuite_v2: the 27B and 9B at their pre-registered bands, before any v2 run)"
+fig09_dose,dose.q27,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 33 (jsuite_v2: the 27B and 9B at their pre-registered bands, before any v2 run)"
+fig09_dose,dose.mu,post_hoc,,this model's band test was run after the data (as the write-up's Fig. 1),figures/writeup/README.md Fig. 1 row
+fig09_dose,dose.nl,fixed_in_advance,,Lightning's breadth test,"docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit)"
+fig09_dose,dose.q122,post_hoc,,this model's band test was run after the data (as the write-up's Fig. 1),figures/writeup/README.md Fig. 1 row
+fig09_dose,dose.ds,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 39 (DeepSeek-V4-Flash and Ministral 3 14B on v2, before any non-Qwen run)"
+fig09_dose,dose.mi,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 39 (DeepSeek-V4-Flash and Ministral 3 14B on v2, before any non-Qwen run)"
+fig09_dose,dose.nb,fixed_in_advance,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 40 note 1 (Nemotron 3.5 Bolt, before any Bolt run)"
+fig09_dose,dose.ol,fixed_in_advance,,registered before this model's data,docs/breadth/prereg_replication_1022.md Amendment 31 (OLMo-3 32B base with its published J++)

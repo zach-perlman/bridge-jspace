@@ -1,4 +1,4 @@
-"""The README and depth sets on styles-plot (figkit/readme_sp.py, depth_sp.py): every figure saves strict for the
+"""The README, depth and breadth sets on styles-plot (figkit/readme_sp.py, depth_sp.py, breadth_sp.py): every figure saves strict for the
 readme target, one data key prints one string across them and the write-up, and every README alias has its rows in the
 registry under the README's id."""
 
@@ -11,16 +11,12 @@ from collections import defaultdict
 import pytest
 import styles_plot as sp
 
+from bridge_jspace.figkit import breadth_sp as BS
+from bridge_jspace.figkit import depth_sp as DS
 from bridge_jspace.figkit import readme_sp as RS
 from scripts import convert_status_registry as CR
 
-SETS = {**RS.FIGS}
-try:  # batch B
-    from bridge_jspace.figkit import depth_sp as DS
-
-    SETS.update(DS.FIGS)
-except ImportError:  # pragma: no cover - before the depth set exists
-    pass
+SETS = {**RS.FIGS, **DS.FIGS, **BS.FIGS}
 
 
 @pytest.fixture(scope="module")

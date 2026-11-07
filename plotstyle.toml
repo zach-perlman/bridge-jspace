@@ -41,7 +41,7 @@ word = "neutral"
 meaning = "a quantity of no role, such as a difference"
 
 [controls]
-names = ["rotated", "logit lens", "PCA", "a random part", "energy-matched random", "a random vector", "layout-only probe", "10 random heads", "no change", "random lens directions", "the whole state swapped in", "the full state", "most common locker", "shuffled pairs", "a random subspace"]
+names = ["rotated", "logit lens", "PCA", "a random part", "energy-matched random", "a random vector", "layout-only probe", "10 random heads", "no change", "random lens directions", "the whole state swapped in", "the full state", "most common locker", "shuffled pairs", "a random subspace", "the rest swapped in"]
 
 [key]
 tick = "the largest same-size control"
@@ -303,6 +303,10 @@ format = "share"
 
 [terms]
 canonical = [
+    # the breadth set (figkit/breadth_sp.py)
+    "lens part knocked out", "accuracy drop under the lens part's top-10 knock-out, by where the answer is",
+    "every token", "the passage", "the bridge's mention", "the question", "another entity's lens part swapped in",
+    "lens part swapped in",
     # depth batch B, second part (figkit/depth_sp_b.py)
     "answers by identity", "by position", "code shift against no sentence",
     "no sentence", "a neutral sentence", "a pick naming the first-locker item", "a pick naming another locker item",
