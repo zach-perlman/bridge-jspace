@@ -99,7 +99,7 @@ def test_the_overview_heatmap_follows_the_cards():
 
 def test_the_ledger_follows_the_readme_order():
     """Dan's restructure brief (29 Oct 08:55): In one minute, How to read, the README's Parts I-VI (and How we checked),
-    Withdrawn, Run on one model only, then the Appendix."""
+    Withdrawn, Run on one model only, the pointer to the operations log (7 Nov), then the coverage table."""
     heads = [h for h in L.LEDGER.read_text().splitlines() if h.startswith("## ")]
     assert heads == ["## In one minute", "## How to read",
                      "## Part I. The two readers: lookup and recall",
@@ -109,12 +109,10 @@ def test_the_ledger_follows_the_readme_order():
                      "## Part VI. What did not hold", "## Also failed (one line each) <a id=\"also-failed\"></a>", "## How we checked",
                      "## Run on one model only (one line each)",
                      "## Withdrawn",
-                     '## The 122B coverage, night 29-30 Oct (coverage, not hand-checked) <a id="cov-122b-night"></a>',
-                     "## Not completed in the sprint, or sealed",
-                     '## Appendix A. Flagged for Dan <a id="flagged"></a>',
-                     '## Appendix B. README changes waiting for Dan <a id="readme-changes"></a>',
-                     '## Appendix C. Coverage table <a id="coverage"></a>',
-                     '## Appendix D. Figure checks <a id="figure-checks"></a>']  # fmt: skip
+                     # the sprint's operations (the 122B night, runs not completed, Appendices A, B and D) moved to
+                     # docs/review/ledger_ops_2026-10.md on 7 Nov (docs pass P3-1); one pointer section stays
+                     '## Operations during the sprint <a id="operations"></a>',
+                     '## Appendix C. Coverage table <a id="coverage"></a>']  # fmt: skip
 
 
 def test_the_checker_catches_failures():

@@ -6,8 +6,8 @@ well formed:
 - every card has the README Part I fields in order (Question, Why we asked, Data, Method, Rule fixed in advance,
   Result, Read, Caveats); an entry not completed in the sprint ('not completed in the sprint)' or 'running)' in its heading) is a stub: Question, Status, Where used
   (batch 53's stubs quote their rule between the question and the status);
-- every card's first line is its status tag (Dan's restructure brief, 29 Oct 08:55): `in README`, `changes README` or
-  `ledger only`, then optionally `below gate: <models>`, then optionally the italic "Used in" text;
+- every card's first line is its status tag (Dan's restructure brief, 29 Oct 08:55): `in README` or `ledger only`
+  (`changes README` retired 7 Nov with Appendix B), then optionally `below gate: <models>`, then optionally the italic "Used in" text;
 - every number's source comment resolves: `<value><!-- src: <path> | <part> :: ... :: <value> -->` (in a table row
   the separator is written `\\|`): the path exists, all parts stand on one line of that file, and the last part is the
   text right before the comment, so a number cannot drift from the file it was copied from;
@@ -38,7 +38,8 @@ STUB_RULE_FIELDS = ("Question", "Rule, fixed in advance", "Status", "Where used"
 PATH = re.compile(r"\b((?:results|docs|jobs|scripts|figures|tests|data)/[\w./-]*[\w/])")
 ANCHOR = re.compile(r'<a id="([a-z0-9-]+)"></a>\s*$')
 # the status tag line under a card's heading (Dan, 29 Oct 08:55)
-TAGS = ("in README", "changes README", "ledger only")
+# `changes README` retired on 7 Nov (docs pass P3-1): Appendix B moved to docs/review/ledger_ops_2026-10.md
+TAGS = ("in README", "ledger only")
 TAG_LINE = re.compile(r"^`(" + "|".join(TAGS) + r")`(?: `below gate: [^`]+`)?(?: \*Used in: [^*]+\*)?$")
 SRC = re.compile(r"<!-- src: ([^|\\]+?) \\?\| (.+?) -->")
 

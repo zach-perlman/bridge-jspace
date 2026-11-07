@@ -76,10 +76,11 @@ ANCHORS = {
 # (not run, not ported, running), X not designed for that model, G below the model's gate (Dan, 09:15: "not tested
 # (gate x < 0.80)", any numbers descriptive only). The words after the code are what the cell shows; each is the card's
 # own label or a shortening of it. Left out: Lightning's layer pick (a prerequisite, not a test), the 9B's clean reruns
-# (How we checked), the withdrawn card and the running stub; the three one-model rows have no card.
+# (How we checked) and the withdrawn card; the three one-model rows have no card. (The running stub b52-c moved to
+# docs/review/ledger_ops_2026-10.md on 7 Nov.)
 VERDICT_CODES = {"H": "holds", "B": "in between or in part", "F": "fails", "D": "descriptive, no rule",
                  "N": "not tested", "X": "not designed", "G": "below gate"}  # fmt: skip
-HEATMAP_LEFT_OUT = ("lightning-layer", "t49-5", "z2", "b52-c")
+HEATMAP_LEFT_OUT = ("lightning-layer", "t49-5", "z2")
 HEATMAP = (
     ("I", "lightning-conflict", "Conflict test, main test", ("B not confirmed", "H confirmed", "H confirmed",
                                                              "H confirmed")),
