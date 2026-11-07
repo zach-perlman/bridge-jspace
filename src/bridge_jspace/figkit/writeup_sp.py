@@ -76,7 +76,7 @@ def fig01_main_split() -> sp.Figure:
 # ---- Fig. 4: the twin set ----------------------------------------------------------------------------------------------
 LANES = (("paper10", None), ("paper10_rot", "control"), ("paper10_keepA", "answer"))
 # each lane's own colour word ("knock-out", "answer span kept") does not fit one line over a post-width accuracy panel
-# (SP606, styles-plot 0.1.3), so the lanes keep their roles' words
+# (SP606, by design), so the lanes keep their roles' words
 
 
 def fig04_twin_set() -> sp.Figure:

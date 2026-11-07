@@ -119,8 +119,7 @@ def fig08a_address_read_remove() -> sp.Figure:
         base[m] = est(b, f"probe.{k}", key=f"fig08a.layout.{k}", interval=False)
         a, r = (need(c, m) for c in _removal_cells(m))
         addr[m] = est(a, f"remove.{k}", key=f"fig08a.remove.{k}", label=True)
-        # one labelled series per row: two labels in a row collide (styles-plot 0.1.3), so the control's value is unprinted
-        rand[m] = est(r, f"remove.{k}", key=f"fig08a.random.{k}", interval=False)
+        rand[m] = est(r, f"remove.{k}", key=f"fig08a.random.{k}", label=True, interval=False)
     read = sp.DotColumn("probe accuracy at the bridge word", "probe_accuracy", (0.4, 1.03), (0.5, 0.75, 1),
                         series=[sp.Series("control", base, control="layout-only probe"),
                                 sp.Series("address", probe)])  # fmt: skip
@@ -128,6 +127,35 @@ def fig08a_address_read_remove() -> sp.Figure:
                           series=[sp.Series("control", rand, control="a random part"), sp.Series("address", addr)],
                           connect=("control", "address"))  # fmt: skip
     return sp.Figure("fig08a_address_read_remove", vocab()).add(sp.DotTable(DAN, [read, remove]))
+
+
+def fig08b_address_swap_lens() -> sp.Figure:
+    """Left: the lookups sent to the new locker by the address swap at 2x against a random direction at 4x (grey).
+    Right: how much of an address swap and of an item change 25 lens directions rebuild, as a z against 200 random
+    vectors (the grey band: theirs)."""
+    zq = "47.0 (b) share rebuilt by 25 lens directions: "
+    two, rnd, ptr, item = {}, {}, {}, {}
+    for m in DAN:
+        k = ZK[m]
+        two[m] = est(need(D.s(m, "lookup target share, mean over locker pairs, s = 2", "fig07"), m), f"swap.{k}",
+                     key=f"fig08b.swap.{k}", label=True)  # fmt: skip
+        rnd[m] = est(need(D.s(m, "lookup target share, random direction, s = 4", "fig07"), m), f"swap.{k}",
+                     key=f"fig08b.random.{k}", interval=False)  # fmt: skip
+        p, it = D.s(m, zq + "pointer: z", prefix=True), D.s(m, zq + "identity_mean: z", prefix=True)
+        if not p or not it:
+            ptr[m] = sp.Missing("no run")
+            continue
+        ptr[m] = est(p, f"lens.{k}", key=f"fig08b.address_z.{k}", interval=False)
+        item[m] = est(it, f"lens.{k}", key=f"fig08b.item_z.{k}", label=True, interval=False)
+    swap = sp.DotColumn("lookups sent to the new locker", "lookups", (-0.04, 0.68), (0, 0.25, 0.5),
+                        series=[sp.Series("control", rnd, control="a random vector"),
+                                sp.Series("address", two, word="address swap")],
+                        connect=("control", "address"))  # fmt: skip
+    lens = sp.DotColumn("lens rebuild", "z", (-2.5, 31), (0, 10, 20, 30),
+                        series=[sp.Series("address", ptr, word="address swap"),
+                                sp.Series("identity", item, word="a change of item")],
+                        connect=("address", "identity"), band=(-1, 1), band_name="random_vectors")  # fmt: skip
+    return sp.Figure("fig08b_address_swap_lens", vocab()).add(sp.DotTable(DAN, [swap, lens]))
 
 
 # ---- Fig. 10: the answer span --------------------------------------------------------------------------------------------
@@ -148,7 +176,7 @@ def fig10_answer_span() -> sp.Figure:
         if ctl is None:
             keep_ctrl[m] = sp.Missing("source missing")
         elif ctl[0] is not None:
-            keep_ctrl[m] = est(ctl, f"keep.{k}", key=f"fig10.keep_ctrl.{k}")  # unlabelled: see fig08a
+            keep_ctrl[m] = est(ctl, f"keep.{k}", key=f"fig10.keep_ctrl.{k}", label=True)
         else:  # the reading's label: neither random keep holds the kept span's energy
             keep_span[m] = sp.Est(span[0], span[1], span[2], cell=f"keep.{k}", key=f"fig10.keep_span.{k}", label=True,
                                   note="no energy-matched control") if span else keep_span[m]  # fmt: skip
@@ -201,10 +229,10 @@ def fig11_orthogonal() -> sp.Figure:
         c = W.w(f"fig11.clean_subspace.{k}")
         sub[m] = (sp.Missing("source missing") if c is None else
                   est(c, f"subspace.{k}", key=f"fig11.clean_subspace.{k}", label=True))  # fmt: skip
-    subspace = sp.DotColumn("data-built city subspace", "drop_beyond", (-6, 27), (0, 10, 20),
+    subspace = sp.DotColumn("data-built city subspace", "drop_beyond", (-10, 30), (0, 10, 20), width=2.3,
                             series=[sp.Series("neutral", sub)],
-                            rules=[sp.Rule(BAR11, f"bar fixed in advance: {v.format(BAR11, 'drop_beyond')}")])  # fmt: skip
-    t = sp.DotTable(TWIN, [one, subspace], note="one-hop question: “{city} is in the country of”")
+                            rules=[sp.Rule(BAR11, "bar fixed in advance: {}", unit="drop_beyond", key="fig11.bar")])  # fmt: skip
+    t = sp.DotTable(TWIN, [subspace, one], note="one-hop question: “{city} is in the country of”")
     return sp.Figure("fig11_orthogonal", v).add(t)
 
 
@@ -353,19 +381,18 @@ def appB_f12_order() -> sp.Figure:
             for when in ("after", "before"):
                 c = D.s(m, stem.format(when, reader))
                 if c:
-                    series[reader][(m, f"{reader}_{when}")] = est(c, f"{when}.{k}", key=f"f12.{reader}.{when}.{k}",
-                                                                   label=True)  # fmt: skip
-        if (m, "lookup_before") not in series["lookup"] and (g := D.s(m, gate)):
-            series["lookup"][(m, "lookup_before")] = sp.Missing(f"below gate ({v.format(g[0], 'switches')})")
+                    series[reader][(m, when)] = est(c, f"{when}.{k}", key=f"f12.{reader}.{when}.{k}", label=True)
+        if (m, "before") not in series["lookup"] and (g := D.s(m, gate)):
+            series["lookup"][(m, "before")] = sp.Missing(f"below gate ({v.format(g[0], 'switches')})")
         d = D.s(m, "the lookup, question before minus after (paired)")
-        diff[(m, "lookup_before")] = (sp.Est(d[0], d[1], d[2], cell=f"before.{k}", key=f"f12.diff.{k}") if d
+        diff[(m, "before")] = (est(d, f"before.{k}", key=f"f12.diff.{k}") if d
                                else sp.Missing("can't tell"))  # fmt: skip
-    col = sp.DotColumn("without the lens part", "switches", (-0.3, 0.95), (0, 0.5),
+    col = sp.DotColumn("without the lens part", "switches", (-0.3, 1.4), (0, 0.5, 1),
                        series=[sp.Series("lookup", series["lookup"]), sp.Series("recall", series["recall"])],
                        band=(-0.1, 0.1))  # fmt: skip
-    t = sp.DotTable(DAN, [col, sp.TextColumn("lookup: before − after", "share_difference", diff)],
-                    lanes=[sp.Lane(f"{r}_{w}", f"{r}: question {w} the scene") for r in ("lookup", "recall")
-                           for w in ("after", "before")])  # fmt: skip
+    before_after = sp.TextColumn("lookup: before − after", "share_difference", diff, unit_title=False)
+    t = sp.DotTable(DAN, [col, before_after], lanes=[sp.Lane("after", "question after the scene"),
+                                                     sp.Lane("before", "question before the scene")])  # fmt: skip
     return sp.Figure("appB_f12_order", v).add(t)
 
 
@@ -436,7 +463,7 @@ def appB_f19_six_lockers() -> sp.Figure:
     sent = sp.DotColumn("sent one locker on", "lookups", (-0.03, 0.42), (0, 0.25),
                         series=[sp.Series("control", rand, control="a random vector"), sp.Series("lookup", shift)],
                         rules=[sp.Rule(BAR19, "the 25% bar")])  # fmt: skip
-    # the values in text columns: a value label beside these dots hangs styles-plot 0.1.3's placement (see the report)
+    # the counts and the shift's mean [range] in text columns, beside the dots
     t = sp.DotTable(
         DAN,
         [
@@ -451,12 +478,12 @@ def appB_f19_six_lockers() -> sp.Figure:
 
 # ---- Fig. 0: one bridge word, two readers (a schematic, no numbers) ------------------------------------------------------
 def _width(text: str, bold: bool = False) -> float:
-    """A text's width in inches as the post target prints a schematic's words (value size, or role-word size bold)."""
+    """A text's width in inches as the post target prints a schematic sentence (value size; a bold part keeps it)."""
     from matplotlib.backends.backend_agg import RendererAgg
     from matplotlib.font_manager import FontProperties
 
     th = vocab().target("post")
-    size = th.sizes.role_word if bold else th.sizes.value
+    size = th.sizes.value
     prop = FontProperties(family=th.font, weight="bold" if bold else "normal", size=size)
     w, _h, _d = RendererAgg(10, 10, 72).get_text_width_height_descent(text, prop, ismath=False)
     return w / 72
@@ -475,9 +502,7 @@ def fig00_schematic() -> sp.Figure:
     readers = (("lookup", 0.2, "Which locker belongs to", "Eric's pick?", "→ 3, read in the scene"),
                ("recall", 8.0 - 0.2 - rw, "What is the atomic number", "of Eric's pick?", "→ 6, from memory"))  # fmt: skip
     el: list = [
-        sp.Words(x0, y0, [(scene[0], None)], verbatim=True),
-        sp.Words(x0 + _width(scene[0]), y0, [(scene[1], None)], verbatim=True, bold=True),
-        sp.Words(x0 + _width(scene[0]) + _width(scene[1], bold=True), y0, [(scene[2], None)], verbatim=True),
+        sp.Words(x0, y0, [(scene[0], None, False), (scene[1], None, True), (scene[2], None, False)], verbatim=True),
         sp.Words(bridge_x + 0.1, y0 + 0.35, [("the bridge word", None)]),
         sp.Arrow((bridge_x, y0 + 0.15), (sx + sw / 2, sy)),
         sp.Box(sx, sy, sw, sh),
@@ -491,21 +516,93 @@ def fig00_schematic() -> sp.Figure:
                sp.Words(x + 0.12, ry + 0.72, [(q2, None)], verbatim=True),
                sp.Words(x + 0.12, ry + 0.97, [(answer, role)], verbatim=True)]  # fmt: skip
     lookup_x, recall_x = readers[0][1] + rw / 2, readers[1][1] + rw / 2
-    # chrome arrows: each starts at its part's coloured word (a coloured arrow needs its word along it, SP703)
-    el += [sp.Arrow((sx, part_y["identity"]), (lookup_x, ry)), sp.Arrow((sx, part_y["address"]), (lookup_x + 0.3, ry)),
-           sp.Arrow((sx + sw, part_y["lens"]), (recall_x, ry))]  # fmt: skip
+    el += [sp.Arrow((sx, part_y["identity"]), (lookup_x - 0.6, ry), role="identity", label="identity"),
+           sp.Arrow((sx, part_y["address"]), (lookup_x + 0.9, ry), role="address", label="address"),
+           sp.Arrow((sx + sw, part_y["lens"]), (recall_x, ry), role="lens", label="lens part")]  # fmt: skip
     return sp.Figure("fig00_schematic", vocab(), direct_labels=True).add(sp.Schematic(ry + rh + 0.15, el))
 
 
-# Declared, but styles-plot 0.1.3 refuses them in strict mode (they stay on figkit until it can):
-# fig05 (a text cell's value and interval overlap falsely; a left label runs into the row labels; too tall), fig11
-# (three labelled series in one row collide), appB_f12 (text cell overlap; four lanes too tall), appB_f14 (two
-# five-row tables are 0.98 wide : high, under the post's 1.0).
-BLOCKED = {"fig05_controls": fig05_controls, "fig11_orthogonal": fig11_orthogonal, "appB_f12_order": appB_f12_order,
-           "appB_f14_two_codes": appB_f14_two_codes}  # fmt: skip
-# Not declared (the grammar or the library has no form for them yet): fig02, fig03 (schematics with mixed-weight
-# words and filled cells), fig06, fig07, fig08b, appB_f5, appB_f15, appB_f18: see the port report.
-FIGS = {"fig00_schematic": fig00_schematic, "fig08a_address_read_remove": fig08a_address_read_remove,
-        "fig10_answer_span": fig10_answer_span, "fig13_last_token": fig13_last_token, "figA1_agents": figA1_agents,
-        "appB_f9_where": appB_f9_where, "appB_f8_facts": appB_f8_facts, "appB_f8_directions": appB_f8_directions,
+def _sentence(x: float, y: float, parts) -> list:
+    """Verbatim prompt text with its bridge word in bold."""
+    return [sp.Words(x, y, [(text, None, bold) for text, bold in parts], verbatim=True)]
+
+
+# ---- Fig. 2: the datasets (a schematic of real prompts) ------------------------------------------------------------------
+def fig02_datasets() -> sp.Figure:
+    """The two kinds of prompt: the fact passages (question, the lookup's passage, the recall's) and the locker scenes
+    (scene, lookup question, recall question); the bridge in bold; each answer in its reader's colour, over its
+    source."""
+    rows = (  # (label, reader role or None, prompt lines [(text, bold)], answer, source)
+        ("Fact passages", None, [[("Question: ", False), ("The composer who wrote The Magic Flute", True)],
+                                 [("was of which nationality?", False)]], "", ""),
+        ("lookup", "lookup", [[("“… ", False), ("Mozart", True), (" was Austrian by birth. …”", False)]], "Austrian",
+         "in the passage"),
+        ("recall", "recall", [[("“… A reader asked a question about ", False), ("Mozart", True)],
+                              [("in the letters page. …”", False)]], "Austrian", "from memory"),
+        ("Locker scenes", None, [[("The locker of carbon is 3. The locker of helium is 5.", False)],
+                                 [("Eric picked ", False), ("carbon", True), (".", False)]], "", ""),
+        ("lookup", "lookup", [[("Which locker belongs to Eric's pick?", False)]], "3", "in the scene"),
+        ("recall", "recall", [[("What is the atomic number of Eric's pick?", False)]], "6", "from memory"),
+    )  # fmt: skip
+    x_label, x_prompt, x_answer, top, rh = 0.12, 1.55, 6.55, 0.75, 0.62
+    el: list = [sp.Words(x_prompt, 0.25, [("Prompt", None)], bold=True),
+                sp.Words(x_prompt, 0.52, [("the bridge in bold", None)]),
+                sp.Words(x_answer, 0.25, [("Answer", None)], bold=True),
+                sp.Words(x_answer, 0.52, [("and its source", None)])]  # fmt: skip
+    for i, (label, role, lines, answer, source) in enumerate(rows):
+        y0 = top + i * rh
+        line_y = (y0 + rh * 0.33, y0 + rh * 0.69)
+        el.append(sp.Words(x_label + (0.2 if role else 0), line_y[0], [(label, role)], bold=True))
+        for k, parts in enumerate(lines):
+            el += _sentence(x_prompt, line_y[k], parts)
+        if answer:
+            el += [sp.Words(x_answer, line_y[0], [(answer, role)], verbatim=True, bold=True),
+                   sp.Words(x_answer, line_y[1], [(source, None)])]  # fmt: skip
+    return sp.Figure("fig02_datasets", vocab(), direct_labels=True).add(sp.Schematic(top + rh * len(rows) + 0.1, el))
+
+
+# ---- Fig. 3: the tools (layers x tokens grids) ---------------------------------------------------------------------------
+def fig03_tools() -> sp.Figure:
+    """The three tools as grids (layers x tokens): a cell the tool changes is outlined in its colour and dotted (the lens
+    part teal, another entity's part blue); the bridge word's column is labelled."""
+    nl, nt, bridge, cell = 4, 7, 4, 0.27  # layers, tokens, the bridge word's token, a cell's side (in)
+    panels = (("remove everywhere", "a band of layers, every token", {(r, t) for r in (1, 2) for t in range(nt)}, "lens"),
+              ("removed from the patch", "one layer, the bridge word", {(2, bridge)}, "lens"),
+              ("swap", "the bridge word, over the band", {(1, bridge), (2, bridge)}, "identity"))  # fmt: skip
+    el: list = []
+    for k, (title, sub, cells, role) in enumerate(panels):
+        x0 = 0.12 + k * 2.66
+        gx, gy = x0 + 0.62, 0.95
+        el += [sp.Words(x0, 0.2, [(title, None)], bold=True), sp.Words(x0, 0.47, [(sub, None)]),
+               sp.Words(gx + bridge * cell - 0.08, gy - 0.14, [("bridge", None)]),
+               sp.Words(x0, gy + nl * cell / 2, [("layers", None)]),
+               sp.Words(gx + nt * cell / 2 - 0.25, gy + nl * cell + 0.2, [("tokens", None)])]  # fmt: skip
+        for r in range(nl):
+            for t in range(nt):
+                hit = (r, t) in cells
+                el.append(sp.Box(gx + t * cell + 0.015, gy + r * cell + 0.015, cell - 0.03, cell - 0.03,
+                                 role=role if hit else None))  # fmt: skip
+                if hit:
+                    el.append(sp.Mark(gx + (t + 0.5) * cell, gy + (r + 0.5) * cell, role))
+    y = 0.95 + nl * 0.27 + 0.55
+    el += [sp.Mark(0.2, y, "lens"), sp.Words(0.38, y, [("lens part removed", "lens")], bold=True),
+           sp.Mark(2.86, y, "identity"),
+           sp.Words(3.04, y, [("another entity's lens part swapped in", "identity")], bold=True)]  # fmt: skip
+    return sp.Figure("fig03_tools", vocab(), direct_labels=True).add(sp.Schematic(y + 0.25, el))
+
+
+# Declared, but styles-plot 0.1.4 refuses them in strict mode (they stay on figkit until a decision):
+# fig05 (two five-panel tables: 0.80 wide : high, under the post's 1.0; labels cross lines), appB_f14 (two five-row
+# tables: 0.98), fig03 (a schematic of coloured grid cells: direct labels want a word beside every coloured cell),
+# fig08a and fig10 (0.1.4 sets a value label beside its own dot across the connector or on the next mark, SP601;
+# they built strict on 0.1.3).
+BLOCKED = {"fig05_controls": fig05_controls, "appB_f14_two_codes": appB_f14_two_codes, "fig03_tools": fig03_tools,
+           "fig08a_address_read_remove": fig08a_address_read_remove, "fig10_answer_span": fig10_answer_span}  # fmt: skip
+# Not declared (the grammar has no form for them yet): fig06 and appB_f18 (a second same-role estimate in one row),
+# fig07 (stack whiskers), appB_f5 (stack segments that are not roles), appB_f15 (sweep points with their own
+# intervals off the line values).
+FIGS = {"fig00_schematic": fig00_schematic, "fig02_datasets": fig02_datasets,
+        "fig08b_address_swap_lens": fig08b_address_swap_lens, "fig11_orthogonal": fig11_orthogonal,
+        "fig13_last_token": fig13_last_token, "figA1_agents": figA1_agents, "appB_f9_where": appB_f9_where,
+        "appB_f12_order": appB_f12_order, "appB_f8_facts": appB_f8_facts, "appB_f8_directions": appB_f8_directions,
         "appB_f19_six_lockers": appB_f19_six_lockers}  # fmt: skip

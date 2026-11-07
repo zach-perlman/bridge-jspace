@@ -1,19 +1,19 @@
 {
- "styles_plot": "0.1.3",
+ "styles_plot": "0.1.4",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "7d16d14a2010e13081fb06de8329ab7b1a1341ee7efd50b4a13a97b9350c3b0c"
+  "sha256": "57e754780b6822dfe673d9bee1f943d24fa9b8be7127e8eae951f0ba14122093"
  },
  "registry": {
   "path": "data/figures/status_sp.csv",
-  "sha256": "6b4a173099a90d20e838f62277be93a09afa0bfc74468024adcebdd050e54992"
+  "sha256": "ccaa0d1a249eebab33efbbcf2fe71ede4df8c0d8856b96ab156db7caf8e4fc53"
  },
  "figure": "key",
  "target": "post",
  "mode": "strict",
  "publishable": true,
  "png": {
-  "sha256": "946af5c9bfb42ef8c2ef6355875ba8571197268f72a80f2e5fe0ae6141a97715",
+  "sha256": "46688cd406bbecd1ded7de92583d066071bdf0923809512d38844c8aa663dcf1",
   "dpi": 200
  },
  "roles": [
@@ -54,15 +54,14 @@
   }
  ],
  "key": [
-  "directions · the whole state swapped in",
-  "grey band: within 0.10 of a random",
+  "grey band: within 0.10 of a random part",
   "grey tick: the largest same-size control",
   "grey: rotated · logit lens · PCA · a random",
-  "heads · no change · random lens",
-  "part",
+  "heads · no change · random lens directions",
   "part · energy-matched random · a random",
   "vector · layout-only probe · 10 random",
   "whiskers: 95% interval",
+  "· the whole state swapped in",
   "○ post hoc"
  ],
  "numbers": {

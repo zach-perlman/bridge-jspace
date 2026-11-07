@@ -104,6 +104,8 @@ fig05_controls,band.q9,fixed_in_advance,claimed,,the band test: the figkit figur
 fig05_controls,layer.q9,fixed_in_advance,claimed,,"one layer, the earlier same-size runs: the figkit figure drew no mark hollow",src/bridge_jspace/figkit/writeup_figs.py fig05_controls
 fig08a_address_read_remove,probe.q9,fixed_in_advance,claimed,,the locker probe: fixed in advance for qwen3.5-9b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 fig08a_address_read_remove,remove.q9,fixed_in_advance,claimed,,the address removed: fixed in advance for qwen3.5-9b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig08b_address_swap_lens,swap.q9,fixed_in_advance,claimed,,the address swap: fixed in advance for qwen3.5-9b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig08b_address_swap_lens,lens.q9,fixed_in_advance,claimed,,the lens rebuild: fixed in advance for qwen3.5-9b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
 fig13_last_token,last.q9,fixed_in_advance,claimed,,the last token: fixed in advance for qwen3.5-9b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 appB_f8_facts,facts.q9,fixed_in_advance,claimed,,true and made-up facts: fixed in advance for qwen3.5-9b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 appB_f8_directions,dirs.q9,fixed_in_advance,claimed,,more lens directions: the figkit figure drew no mark hollow,src/bridge_jspace/figkit/writeup_appendix.py
@@ -116,6 +118,8 @@ fig05_controls,band.q27,fixed_in_advance,claimed,,the band test: the figkit figu
 fig05_controls,layer.q27,fixed_in_advance,claimed,,"one layer, the earlier same-size runs: the figkit figure drew no mark hollow",src/bridge_jspace/figkit/writeup_figs.py fig05_controls
 fig08a_address_read_remove,probe.q27,fixed_in_advance,claimed,,the locker probe: fixed in advance for qwen3.6-27b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 fig08a_address_read_remove,remove.q27,fixed_in_advance,claimed,,the address removed: fixed in advance for qwen3.6-27b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig08b_address_swap_lens,swap.q27,fixed_in_advance,claimed,,the address swap: fixed in advance for qwen3.6-27b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig08b_address_swap_lens,lens.q27,fixed_in_advance,claimed,,the lens rebuild: fixed in advance for qwen3.6-27b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
 fig13_last_token,last.q27,fixed_in_advance,claimed,,the last token: fixed in advance for qwen3.6-27b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 appB_f8_facts,facts.q27,fixed_in_advance,claimed,,true and made-up facts: fixed in advance for qwen3.6-27b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 appB_f8_directions,dirs.q27,fixed_in_advance,claimed,,more lens directions: the figkit figure drew no mark hollow,src/bridge_jspace/figkit/writeup_appendix.py
@@ -128,6 +132,8 @@ fig05_controls,band.mu,post_hoc,not_claimed,shared with the logit lens,the band 
 fig05_controls,layer.mu,fixed_in_advance,claimed,,"one layer, the earlier same-size runs: the figkit figure drew no mark hollow",src/bridge_jspace/figkit/writeup_figs.py fig05_controls
 fig08a_address_read_remove,probe.mu,fixed_in_advance,claimed,,the locker probe: fixed in advance for muse-glimmer-30b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 fig08a_address_read_remove,remove.mu,fixed_in_advance,claimed,,the address removed: fixed in advance for muse-glimmer-30b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig08b_address_swap_lens,swap.mu,fixed_in_advance,claimed,,the address swap: fixed in advance for muse-glimmer-30b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig08b_address_swap_lens,lens.mu,fixed_in_advance,claimed,,the lens rebuild: fixed in advance for muse-glimmer-30b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
 fig13_last_token,last.mu,fixed_in_advance,claimed,,the last token: fixed in advance for muse-glimmer-30b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 appB_f8_facts,facts.mu,fixed_in_advance,claimed,,true and made-up facts: fixed in advance for muse-glimmer-30b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 appB_f8_directions,dirs.mu,fixed_in_advance,claimed,,more lens directions: the figkit figure drew no mark hollow,src/bridge_jspace/figkit/writeup_appendix.py
@@ -140,6 +146,8 @@ fig05_controls,band.nl,fixed_in_advance,claimed,,the band test: the figkit figur
 fig05_controls,layer.nl,fixed_in_advance,claimed,,"one layer, the earlier same-size runs: the figkit figure drew no mark hollow",src/bridge_jspace/figkit/writeup_figs.py fig05_controls
 fig08a_address_read_remove,probe.nl,post_hoc,claimed,,the locker probe: post hoc for nemotron-3.5-lightning,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 fig08a_address_read_remove,remove.nl,post_hoc,claimed,,the address removed: post hoc for nemotron-3.5-lightning,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig08b_address_swap_lens,swap.nl,post_hoc,claimed,,the address swap: post hoc for nemotron-3.5-lightning,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig08b_address_swap_lens,lens.nl,post_hoc,claimed,,the lens rebuild: post hoc for nemotron-3.5-lightning,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
 fig13_last_token,last.nl,post_hoc,claimed,,the last token: post hoc for nemotron-3.5-lightning,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 appB_f8_facts,facts.nl,post_hoc,claimed,,true and made-up facts: post hoc for nemotron-3.5-lightning,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 appB_f8_directions,dirs.nl,fixed_in_advance,claimed,,more lens directions: the figkit figure drew no mark hollow,src/bridge_jspace/figkit/writeup_appendix.py
@@ -152,6 +160,8 @@ fig05_controls,band.q122,post_hoc,not_claimed,gone when scored by probability,th
 fig05_controls,layer.q122,fixed_in_advance,claimed,,"one layer, the earlier same-size runs: the figkit figure drew no mark hollow",src/bridge_jspace/figkit/writeup_figs.py fig05_controls
 fig08a_address_read_remove,probe.q122,fixed_in_advance,claimed,,the locker probe: fixed in advance for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 fig08a_address_read_remove,remove.q122,post_hoc,claimed,,the address removed: post hoc for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig08b_address_swap_lens,swap.q122,post_hoc,claimed,,the address swap: post hoc for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig08b_address_swap_lens,lens.q122,post_hoc,claimed,,the lens rebuild: post hoc for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
 fig13_last_token,last.q122,fixed_in_advance,claimed,,the last token: fixed in advance for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 appB_f8_facts,facts.q122,fixed_in_advance,claimed,,true and made-up facts: fixed in advance for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 appB_f8_directions,dirs.q122,fixed_in_advance,claimed,,more lens directions: the figkit figure drew no mark hollow,src/bridge_jspace/figkit/writeup_appendix.py

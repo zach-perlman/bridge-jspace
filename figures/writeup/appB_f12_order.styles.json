@@ -1,0 +1,194 @@
+{
+ "styles_plot": "0.1.4",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "57e754780b6822dfe673d9bee1f943d24fa9b8be7127e8eae951f0ba14122093"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "ccaa0d1a249eebab33efbbcf2fe71ede4df8c0d8856b96ab156db7caf8e4fc53"
+ },
+ "figure": "appB_f12_order",
+ "target": "post",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "d2140beadda4c44fe13bc7e2001d15c52b2f5ace27e6cd177326557467f8fe4b",
+  "dpi": 200
+ },
+ "roles": [
+  "lookup",
+  "recall"
+ ],
+ "controls": [],
+ "cells": {
+  "after.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "after.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "after.q122": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "after.q27": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "after.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "before.q122": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "before.q27": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "after.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "after.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "after.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "after.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "before.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "before.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "after.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "after.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "after.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "after.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "after.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "after.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "before.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "before.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "grey band: within 0.10 of a random part",
+  "whiskers: 95% interval",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "f12.diff.q27": "+0.11",
+  "f12.diff.q27.interval": "[0.01, 0.22]",
+  "f12.diff.q122": "−0.05",
+  "f12.diff.q122.interval": "[−0.17, 0.05]",
+  "f12.lookup.after.q9": "−0.05",
+  "f12.recall.after.q9": "0.50",
+  "f12.lookup.after.q27": "0.14",
+  "f12.recall.after.q27": "0.74",
+  "f12.lookup.before.q27": "0.22",
+  "f12.recall.before.q27": "0.56",
+  "f12.lookup.after.mu": "−0.10",
+  "f12.recall.after.mu": "0.76",
+  "f12.lookup.after.nl": "0.02",
+  "f12.recall.after.nl": "0.34",
+  "f12.lookup.after.q122": "0.01",
+  "f12.recall.after.q122": "0.27",
+  "f12.lookup.before.q122": "−0.03",
+  "f12.recall.before.q122": "0.31"
+ },
+ "problems": []
+}

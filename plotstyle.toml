@@ -47,6 +47,9 @@ names = ["rotated", "logit lens", "PCA", "a random part", "energy-matched random
 tick = "the largest same-size control"
 band = "within 0.10 of a random part"
 
+[key.bands]
+random_vectors = "the range of 200 random vectors"
+
 [intervals]
 ci95 = "95% interval"
 range = "the range over the five start lockers"
@@ -299,12 +302,37 @@ canonical = [
     "the lookup's switches blocked when more lens directions are removed",
     "without the lens part",
     "lookup: before − after",
+    "question after the scene",
+    "question before the scene",
+    "the city's J++ directions",
+    "the cleaned, data-built city subspace, beyond energy-matched random",
+    "the same, orthogonal to the answers",
+    "the answers' own J++ directions",
     "lookup: question after the scene",
     "lookup: question before the scene",
     "recall: question after the scene",
     "recall: question before the scene",
     "position-route scenes, without the address",
     "identity-route scenes, without the lens part",
+    "lookups sent to the new locker",
+    "lens rebuild",
+    "Prompt",
+    "Answer",
+    "the bridge in bold",
+    "and its source",
+    "in the passage",
+    "from memory",
+    "in the scene",
+    "remove everywhere",
+    "a band of layers, every token",
+    "one layer, the bridge word",
+    "swap",
+    "the bridge word, over the band",
+    "bridge",
+    "layers",
+    "tokens",
+    "lens part removed",
+    "another entity's lens part swapped in",
     "the bridge word",
     "its state",
     "Position-route scenes · without the address",

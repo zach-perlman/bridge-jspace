@@ -142,6 +142,8 @@ def styles_plot_port() -> list[dict]:
                                  "figkit/data.py hollow() says Lightning is post hoc everywhere. Kept as drawn.")
         out.append(by_hollow("fig08a_address_read_remove", f"probe.{k}", m, what="the locker probe"))
         out.append(by_hollow("fig08a_address_read_remove", f"remove.{k}", m, lowered=True, what="the address removed"))
+        out.append(by_hollow("fig08b_address_swap_lens", f"swap.{k}", m, lowered=True, what="the address swap"))
+        out.append(by_hollow("fig08b_address_swap_lens", f"lens.{k}", m, lowered=True, what="the lens rebuild"))
         out.append(by_hollow("fig13_last_token", f"last.{k}", m, what="the last token"))
         out.append(by_hollow("appB_f8_facts", f"facts.{k}", m, what="true and made-up facts"))
         out.append(fixed("appB_f8_directions", f"dirs.{k}", "more lens directions", f"{src}writeup_appendix.py"))
