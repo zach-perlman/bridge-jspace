@@ -77,7 +77,7 @@ The test split and, per model, the items it answers right unedited (the items ev
   bands); 15 start × final words; 5,370 test items. An item counts only if the model gets every part of it right
   unedited.
 - **The swap.** Replace the lens part (the span of the top-10 J++ directions) of the bridge's last token with another
-  entity's (D). **Transfer**: the share answering D's fact minus the share answering a third entity's.
+  entity's. **Transfer**: the share answering the other entity's fact minus the share answering a third entity's.
 - **Fixed in advance** = pre-registered in docs/breadth/prereg_replication_1022.md (amendments 1-57) before the run.
   **After the data** = chosen after seeing results. Brackets: 95% bootstrap over bridges.
 
@@ -85,10 +85,10 @@ The test split and, per model, the items it answers right unedited (the items ev
 
 ## 1. Recall needs the lens part; reading the stated fact does not
 
-Removing the lens part costs recalled answers far more than stated ones in three models from two families, and far
+Removing the lens part costs recalled answers far more than looked-up ones in three models from two families, and far
 more than any removal of the same size.
 
-![Removing the lens part (its 10 directions) breaks recalled facts, not stated ones, in three models from two families, far beyond the largest same-size control](../../figures/breadth/01_needed.png)
+![Removing the lens part (its 10 directions) breaks recalled facts, not looked-up ones, in three models from two families, far beyond the largest same-size control](../../figures/breadth/01_needed.png)
 
 {{caption|breadth/01_needed}}
 
@@ -295,12 +295,12 @@ looked up later. Decodable, carried and needed come apart.
   - Pasting the whole residual moves less in Lightning ({{v|swap.nl.paste}}), because it also overwrites position and
     binding.
 - **It is not just the answer token (Neel's linear answer swap).**
-  - Without D's answer direction, the swap is unchanged: {{v|ans.q27.swap_noans}} vs {{v|ans.q27.swap}} (27B) and
+  - Without the other entity's answer direction, the swap is unchanged: {{v|ans.q27.swap_noans}} vs {{v|ans.q27.swap}} (27B) and
     {{v|ans.q9.swap_noans}} vs {{v|ans.q9.swap}} (9B), on the PM final.
   - The answer direction alone moves {{v|ans.q27.swap_ans}}.
 - **It is a reference to the entity, whatever context it came from.**
-  - From one neutral sentence about D, the lens part moves the answer {{v|ptr.q27.neutral}}, {{v|ptr.q9.neutral}} and
-    {{v|ptr.nl.neutral}} times as much as from D's own passage. It holds on {{v|ptr.q27.rel_held}} of
+  - From one neutral sentence about the other entity, the lens part moves the answer {{v|ptr.q27.neutral}}, {{v|ptr.q9.neutral}} and
+    {{v|ptr.nl.neutral}} times as much as from that entity's own passage. It holds on {{v|ptr.q27.rel_held}} of
     {{v|ptr.q27.rel_read}} relations on the 27B.
   - Bolt, with 100 directions (amendment 55 note 1): {{v|ptr.nb.neutral}}, on {{v|ptr.nb.rel_held}} of
     {{v|ptr.nb.rel_read}} relations.
@@ -320,7 +320,7 @@ looked up later. Decodable, carried and needed come apart.
   - layer {{v|ptr.q27.lookup}} on the 27B (band ends at L40);
   - layer {{v|ptr.q9.lookup}} on the 9B (L16);
   - layer {{v|ptr.nl.lookup}} on Lightning (L33).
-  For a swapped entity it reads D's fact at the same layers.
+  For a swapped entity it reads the other entity's fact at the same layers.
 
 ![The fact appears at the answer position only after the band, for a swapped entity as for the original](../../figures/breadth/07_lookup.png)
 
@@ -368,7 +368,7 @@ Bolt and DeepSeek are weak, not spread out.
   The 27B keeps rising to 30 directions ({{v|dose.q27.k30}}).
   Muse (amendment 57 note 1) is specific at every K: at 10 directions the size-matched control costs
   {{v|dose.mu.k10.pc}} and the rotated one {{v|dose.mu.k10.rot}}, but the logit lens's own 10 directions cost {{v|dose.mu.k10.u}}.
-- **More directions add damage that is not specific.** Greedy answers hide it: the stated answer usually stays on top
+- **More directions add damage that is not specific.** Greedy answers hide it: the answer given in the passage usually stays on top
   while its probability drops a lot.
   - Lightning: stated facts drop {{a|dose.nl.k100.K}} points by greedy answer at 100 directions, but
     {{a|dose.nl.k100.sK}} by probability.
@@ -391,7 +391,7 @@ Bolt and DeepSeek are weak, not spread out.
   - Its lens part swap still carries the entity at 100 directions, as a context-free reference to the entity (Section 4). Bolt's mention
     holds the entity in J-space, but its recall does not depend on those directions more than on any same-size removal.
 
-- **DeepSeek is weak at every dose, not under-dosed** (amendment 56 D):
+- **DeepSeek is weak at every dose, not under-dosed** (amendment 56):
 
   | Directions | Lens part | Same size, top principal directions | Rotated |
   |---|---|---|---|
@@ -584,7 +584,7 @@ cannot see the subject.
 <details><summary>Method, controls and limits</summary>
 
 *The one-hop removals of the city and of the answers fixed in advance; the orthogonal removal post hoc on the 9B and
-27B; the data-built subspace registered (rule R1, bar 15 points)<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.q27 -->.*
+27B; the data-built subspace fixed in advance (rule R1, bar 15 points)<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.q27 -->.*
 
 - **One-hop question.** The city's lens directions cost {{wci|fig11.onehop.city.q9}} / {{wci|fig11.onehop.city.q27}} /
   {{wci|fig11.onehop.city.nl}} points (9B / 27B / Lightning), the answers' own directions
@@ -618,7 +618,7 @@ choose among given words need it much less.
 - **Verify** a claim, against the harshest control: {{wci|figA1.verify.q9}} / {{wci|figA1.verify.q27}} /
   {{wci|figA1.verify.nl}}.
 - **Copy** a given answer: {{wci|figA1.copy.q9}} / {{wci|figA1.copy.q27}} / {{wci|figA1.copy.nl}}.
-- **Status.** The registered roles differ by model and task (several cells descriptive); see the registry
+- **Status.** The roles fixed in advance differ by model and task (several cells descriptive); see the registry
   (data/figures/status.csv). The transcripts are not posted; their numbers are.
 
 </details>

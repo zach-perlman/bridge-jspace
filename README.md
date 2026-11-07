@@ -130,7 +130,7 @@ In plain terms: the recall needs and follows the few directions the lens reads a
 
 ![Random, rotated, logit-lens and PCA directions cost far less than the lens part](figures/readme/03_controls.png)
 
-*Band of layers (fact passages): the recall − lookup gap, in points, when the lens part is removed everywhere (teal, with its 95% interval over bridge items) and when a same-size control is removed instead (grey: a rotated part, the logit lens's top directions, the residual stream's top principal directions at the same norm), one lane each, on one axis. Right: the lens part minus its largest control, paired on the same items, with its interval. Hollow (○): post hoc (Muse 30B and Qwen 122B in the band test).<!-- src: plotstyle.toml | 95% interval -->*
+*Band of layers (fact passages): the recall − lookup gap, in points, when the lens part is removed everywhere (teal, with its 95% interval over bridge items) and when a same-size control is removed instead (grey: a rotated part, the logit lens's top directions, the residual stream's top principal directions at the same norm), one lane each, on one axis. Right: the lens part minus its largest control, paired on the same items, with its interval. The three models the post claims (Qwen 9B, Qwen 27B, Lightning); the two it does not claim are in the figure folded below it.<!-- src: plotstyle.toml | 95% interval -->*
 
 **Takeaway.** The directions the lens reads are on the causal path for producing a remembered word (needed over a band, followed at one layer), not for reading the prompt.
 
@@ -139,7 +139,7 @@ In plain terms: the recall needs and follows the few directions the lens reads a
 - **Claim.** At middle layers the recall goes through the directions the lens reads at the bridge: removed over a band of layers they break recalled answers, and at one layer the recall follows them when the patch's parts disagree. Lookup answers do neither.
 - **Test.** Remove everywhere over a band of middle layers (fact passages), and remove from the patch at one layer (locker scenes).
 - **Result.**
-  - Remove everywhere: the accuracy of recalled answers drops 42.6 / 50.9 / 53.1 points more than that of stated ones (Qwen 9B / Qwen 27B / Lightning)<!-- src: docs/breadth/data.csv | ko.q9.mk; ko.q27.mk; ko.nl.mk -->; the stated facts themselves drop 3, 5 and 4 points<!-- src: docs/breadth/README.md | Stated facts drop 3, 5 and 4 points -->.
+  - Remove everywhere: the accuracy of recalled answers drops 42.6 / 50.9 / 53.1 points more than that of looked-up ones (Qwen 9B / Qwen 27B / Lightning)<!-- src: docs/breadth/data.csv | ko.q9.mk; ko.q27.mk; ko.nl.mk -->; the stated facts themselves drop 3, 5 and 4 points<!-- src: docs/breadth/README.md | Stated facts drop 3, 5 and 4 points -->.
   - Remove from the patch: removing the lens part blocks 0.50 / 0.74 / 0.75 / 0.34 ○ / 0.32 of the recall's switches beyond random (9B / 27B / Muse / Lightning / 122B)<!-- src: docs/depth/x0_numbers.json | rc_excess_9b; rc_excess_27b; rc_excess_muse; rc_excess_122b --><!-- src: data/figures/depth/data.csv | conflict: recall, switches lost beyond a random part -->; the lookup −0.03 / 0.14 / −0.10 / 0.03 ○ / 0.00<!-- src: docs/depth/x0_numbers.json | lk_excess_9b; lk_excess_27b; lk_excess_muse; lk_excess_122b --><!-- src: data/figures/depth/data.csv | conflict: lookup, switches lost beyond a random part -->.
   - Where in the prompt (twin set): the recall's need is spread over the bridge's words. Removing the lens part only at the final token costs it almost nothing; only at the description or only at the mention costs more; the full effect needs all positions. The damage is upstream, so this is not the output being suppressed.
   - Say versus use (twin set, named people): when a remembered word is only used as a key to pick a line of the passage, removing the lens part costs no more than a random part of the same size; saying the same word costs much more.
@@ -159,6 +159,12 @@ The same at one layer, where each control is removed from the patch instead of t
 ![At one layer the lens part blocks more of the recall's switches than any same-size control on four models](figures/readme/03b_controls_layer.png)
 
 *One layer (locker scenes, the earlier runs with a same-size control): the recall's switches blocked beyond a random part when the lens part is removed from the patch (teal, with its 95% interval) and when a same-size control is removed instead (grey: PCA, the logit lens's directions, random lens directions), one lane each, on one axis. Right: the lens part minus its largest control; without a paired interval where only the aggregate was saved. Lightning: no run with a same-size control at one layer.<!-- src: plotstyle.toml | 95% interval -->*
+
+The band test's two models the post does not claim, Muse 30B and Qwen 122B (post hoc), each with the reason it is not claimed:
+
+![On Muse and the 122B the band-test gap is large, but shared with the logit lens on Muse and gone by probability on the 122B (post hoc)](figures/readme/03c_controls_more.png)
+
+*The same band test for Muse 30B and Qwen 122B, the two models the post does not claim; the grey tag under each says why (shared with the logit lens; gone when scored by the answer's probability). Every estimate here is post hoc, so the marks are filled and the key says so once. The 122B has no run of the PCA control.*
 
 </details>
 
@@ -249,7 +255,7 @@ In plain terms: removing only the directions of the answer does all of the remov
   - The cleaned subspace minus random: −0.8 [−2.0, 0.0]<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.q9 --> / 11.1 [3.0, 21.1]<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.q27 --> / 11.3 [6.6, 18.0]<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.nl --> points; on the 27B and Lightning the intervals cross the bar, on the 9B it is at zero.
 - **Controls.** A random keep of the same energy, orthogonal to the answers, undoes −0.11 [−0.25, 0.00]<!-- src: data/figures/writeup/data.csv | fig10.keep_ctrl.q9 --> / 0.02 [−0.06, 0.10]<!-- src: data/figures/writeup/data.csv | fig10.keep_ctrl.q27 --> (9B / 27B; Lightning has no random part matched in energy). Every answer-only removal is net of a random part of the same energy.
 - **Scope.** The twin set and the codename set, three models (9B, 27B, Lightning); the one-hop question on one relation. Items of these sets are not posted; the numbers are.
-- **Confidence.** Medium-high for "the damage is the answer's directions": the answer-only removal was fixed in advance and agrees on three models, and the keep (descriptive: a number under a label fixed in advance) agrees with it. Medium for "orthogonal removals cost nothing": one relation, and the orthogonal removal is post hoc on the 9B and 27B. The registered subspace test does not clear its bar on any model.
+- **Confidence.** Medium-high for "the damage is the answer's directions": the answer-only removal was fixed in advance and agrees on three models, and the keep (descriptive: a number under a label fixed in advance) agrees with it. Medium for "orthogonal removals cost nothing": one relation, and the orthogonal removal is post hoc on the 9B and 27B. The subspace test fixed in advance does not clear its bar on any model.
 - **Limits.** On Lightning the random part reached its target energy on only 0.29<!-- src: data/figures/writeup/data.csv | fig10.span_only_matched.v4.nl --> of the twin items and 0.02<!-- src: data/figures/writeup/data.csv | fig10.span_only_matched.codename.nl --> of the codename items, so its answer-only numbers are weaker evidence. One-token answers; the removal of Finding 1 only.
 
 Removals orthogonal to the answers, on a one-hop question about the subject:
@@ -386,7 +392,7 @@ Across nine models, whether the lens part is carried, needed, or both:
 
 <details><summary>Red-teaming and reusable pieces</summary>
 
-- **Red-teaming.** A shortcut found in one twin-set variant, and false values in the conflict variant that were too easy to reject, were fixed by rebuilding both sets, with the changes registered before any result was read.
+- **Red-teaming.** A shortcut found in one twin-set variant, and false values in the conflict variant that were too easy to reject, were fixed by rebuilding both sets, with the changes fixed in advance, before any result was read.
 - **Reusable pieces.** Matched recall/lookup datasets, J++ lens fits for models without a published lens ([results/lens_fit](results/lens_fit)), the scripts, and the pre-registered rules with every run logged.
 
 </details>

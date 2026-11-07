@@ -831,7 +831,7 @@ regex = true
 use = "answer span kept"
 
 [[terms.banned]]
-pattern = "\\bregistered\\b"
+pattern = "(?<![Pp]re-)\\bregistered\\b"
 regex = true
 use = "fixed in advance"
 
@@ -844,16 +844,29 @@ use = "points"
 pattern = "\\bstated\\b"
 regex = true
 use = "lookup"
+scope = "figures"  # on pages, a passage may state a fact; the reader is never "stated" (the next ban)
+
+[[terms.banned]]
+pattern = "\\bstated (?:ones?|answers?|readers?)\\b"
+regex = true
+use = "looked-up / the lookup's"
 
 [[terms.banned]]
 pattern = "\\b(?:write|writes|written|wrote)\\b"
 regex = true
 use = "swapped in"
+scope = "figures"  # figure labels say "swapped in"; prose may say written (code written, the answer written at the last token)
 
 [[terms.banned]]
 pattern = "\\b(?i:loss|lose|loses|lost|losing)\\b"
 regex = true
 use = "drop"
+
+# Dan, 8 Nov (Q3): "pointer" names two things (the address, the lens part); only inside a quote, glossed in brackets
+[[terms.banned]]
+pattern = "\\b(?i:pointers?)\\b"
+regex = true
+use = "the address, or the lens part (inside a quote: a bracketed gloss)"
 
 [[entities.models]]
 key = "qwen3.5-9b"

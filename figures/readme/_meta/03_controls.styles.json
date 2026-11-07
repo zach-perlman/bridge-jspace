@@ -2,11 +2,11 @@
  "styles_plot": "0.1.14",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "1d6a7eec03838cc71d12dcc3b66778f5a77b7b7f8cedb966bb56e92cec0f5954"
+  "sha256": "e45b07dc6ed809e941230b6b3d3c456cddb17336aa94b06b75da7bac37949df1"
  },
  "registry": {
   "path": "data/figures/status.csv",
-  "sha256": "3621bc13dcaa184116d28c991f7b53d9407de3fbc6e6eeb6c9b6d71966fbab4e"
+  "sha256": "d991f162df6abe9eb006520f736b40638bfc0ab1b5fc93b005b50f69e29572b3"
  },
  "figure": "f2_controls",
  "target": "readme",
@@ -14,7 +14,7 @@
  "publishable": true,
  "text_only": false,
  "png": {
-  "pixels_sha256": "1624ed310497101b12a5c1b5bd187beffa67ce1200d03f5abef0f39b8fa52fdb",
+  "pixels_sha256": "818e4258460ae69c2e4e2d95bc0d507725716311477ea036f29b86f660e8d04e",
   "dpi": 160
  },
  "roles": [
@@ -26,16 +26,8 @@
   "rotated"
  ],
  "cells": {
-  "band.mu": {
-   "timing": "post_hoc",
-   "claim": "claimed"
-  },
   "band.nl": {
    "timing": "fixed_in_advance",
-   "claim": "claimed"
-  },
-  "band.q122": {
-   "timing": "post_hoc",
    "claim": "claimed"
   },
   "band.q27": {
@@ -115,38 +107,6 @@
   {
    "kind": "dot",
    "role": "lens",
-   "cell": "band.mu",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "band.mu",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "band.mu",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "band.mu",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "lens",
    "cell": "band.nl",
    "timing": "fixed_in_advance",
    "claim": "claimed",
@@ -175,53 +135,22 @@
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "lens",
-   "cell": "band.q122",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "band.q122",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "band.q122",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
   }
  ],
  "key": [
   "grey: PCA · logit lens · rotated",
-  "whiskers: 95% interval",
-  "○ post hoc"
+  "whiskers: 95% interval"
  ],
  "numbers": {
   "fig05.band_diff.q9": "+35.4",
   "fig05.band_diff.q9.interval": "[29.3, 40.9]",
   "fig05.band_diff.q27": "+38.5",
   "fig05.band_diff.q27.interval": "[33.8, 43.3]",
-  "fig05.band_diff.mu": "+25.3",
-  "fig05.band_diff.mu.interval": "[20.3, 30.4]",
   "fig05.band_diff.nl": "+44.4",
   "fig05.band_diff.nl.interval": "[38.2, 49.8]",
-  "fig05.band_diff.q122": "+36.6",
-  "fig05.band_diff.q122.interval": "[31.7, 41.0]",
   "ko.q9.mk": "42.6",
   "ko.q27.mk": "50.9",
-  "ko.mu.mk": "59.9",
-  "ko.nl.mk": "53.1",
-  "ko.q122.mk": "48.5"
+  "ko.nl.mk": "53.1"
  },
  "problems": []
 }

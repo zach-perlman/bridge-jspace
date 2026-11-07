@@ -48,6 +48,18 @@ def test_a_set_holds_only_its_figures_its_index_meta_and_sheets(group):
 
 
 @pytest.mark.parametrize("group", list(L.ORDER))
+def test_every_set_has_one_caption_per_figure(group):
+    """Dan, 8 Nov (G2): figures/<set>/_meta/captions.toml in every set, one caption per figure and none left over."""
+    import tomllib
+
+    store = REPO / "figures" / group / "_meta" / "captions.toml"
+    assert store.exists(), f"{group}: no _meta/captions.toml"
+    captions = tomllib.loads(store.read_text())
+    assert set(captions) == set(L.names(group).values()), set(captions) ^ set(L.names(group).values())
+    assert all(isinstance(c, str) and c.strip() for c in captions.values())
+
+
+@pytest.mark.parametrize("group", list(L.ORDER))
 def test_the_index_lists_every_figure_in_order(group):
     text = (REPO / "figures" / group / "README.md").read_text()
     shown = re.findall(r'<img src="([^"]+)\.png"', text)

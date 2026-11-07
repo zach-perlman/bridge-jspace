@@ -4,7 +4,7 @@
 *When a model answers a two-step question about an entity, does it need the directions the J++ lens reads at that
 entity, does that depend on whether the final fact is recalled or stated, and in which models?*
 
-**Status:** every number is sourced from the run files (checked by tests); a 46-item hand-check changed no headline claim ([findings](../review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->; human recomputation (VERIFIED.md) not yet done. Built at bd43870f from the run files.
+**Status:** every number is sourced from the run files (checked by tests); a 46-item hand-check changed no headline claim ([findings](../review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->; human recomputation (VERIFIED.md) not yet done. Built at b56c9132 from the run files.
 
 ## In one minute
 
@@ -111,7 +111,7 @@ The test split and, per model, the items it answers right unedited (the items ev
   bands); 15 start × final words; 5,370 test items. An item counts only if the model gets every part of it right
   unedited.
 - **The swap.** Replace the lens part (the span of the top-10 J++ directions) of the bridge's last token with another
-  entity's (D). **Transfer**: the share answering D's fact minus the share answering a third entity's.
+  entity's. **Transfer**: the share answering the other entity's fact minus the share answering a third entity's.
 - **Fixed in advance** = pre-registered in docs/breadth/prereg_replication_1022.md (amendments 1-57) before the run.
   **After the data** = chosen after seeing results. Brackets: 95% bootstrap over bridges.
 
@@ -119,10 +119,10 @@ The test split and, per model, the items it answers right unedited (the items ev
 
 ## 1. Recall needs the lens part; reading the stated fact does not
 
-Removing the lens part costs recalled answers far more than stated ones in three models from two families, and far
+Removing the lens part costs recalled answers far more than looked-up ones in three models from two families, and far
 more than any removal of the same size.
 
-![Removing the lens part (its 10 directions) breaks recalled facts, not stated ones, in three models from two families, far beyond the largest same-size control](../../figures/breadth/01_needed.png)
+![Removing the lens part (its 10 directions) breaks recalled facts, not looked-up ones, in three models from two families, far beyond the largest same-size control](../../figures/breadth/01_needed.png)
 
 *Top: one row per model; each dot is the recall − lookup gap, in points, when the lens part's directions are removed at every token over the model's band (slate), with its 95% interval over bridges; grey tick: the gap of the largest same-size control (a rotated part, the logit lens's directions or the top principal directions). Hollow (○): post hoc (Muse 30B, Qwen 122B). Bottom, the three clearest models: answers turned wrong, in points, by final: the fact in the passage and a new made-up fact in the passage (lookup, purple), the answer word on another entity, nothing in the passage, and recall with lures present (recall, black); items per model: the n column of docs/breadth/data.csv.*
 
@@ -329,12 +329,12 @@ looked up later. Decodable, carried and needed come apart.
   - Pasting the whole residual moves less in Lightning (+14), because it also overwrites position and
     binding.
 - **It is not just the answer token (Neel's linear answer swap).**
-  - Without D's answer direction, the swap is unchanged: +66 vs +66 (27B) and
+  - Without the other entity's answer direction, the swap is unchanged: +66 vs +66 (27B) and
     +70 vs +69 (9B), on the PM final.
   - The answer direction alone moves +29.
 - **It is a reference to the entity, whatever context it came from.**
-  - From one neutral sentence about D, the lens part moves the answer 1.09, 1.10 and
-    1.01 times as much as from D's own passage. It holds on 8 of
+  - From one neutral sentence about the other entity, the lens part moves the answer 1.09, 1.10 and
+    1.01 times as much as from that entity's own passage. It holds on 8 of
     8 relations on the 27B.
   - Bolt, with 100 directions (amendment 55 note 1): 1.01, on 6 of
     6 relations.
@@ -354,7 +354,7 @@ looked up later. Decodable, carried and needed come apart.
   - layer 50 on the 27B (band ends at L40);
   - layer 23 on the 9B (L16);
   - layer 32 on Lightning (L33).
-  For a swapped entity it reads D's fact at the same layers.
+  For a swapped entity it reads the other entity's fact at the same layers.
 
 ![The fact appears at the answer position only after the band, for a swapped entity as for the original](../../figures/breadth/07_lookup.png)
 
@@ -402,7 +402,7 @@ Bolt and DeepSeek are weak, not spread out.
   The 27B keeps rising to 30 directions (+65).
   Muse (amendment 57 note 1) is specific at every K: at 10 directions the size-matched control costs
   +5 and the rotated one +3, but the logit lens's own 10 directions cost +36.
-- **More directions add damage that is not specific.** Greedy answers hide it: the stated answer usually stays on top
+- **More directions add damage that is not specific.** Greedy answers hide it: the answer given in the passage usually stays on top
   while its probability drops a lot.
   - Lightning: stated facts drop 4 points by greedy answer at 100 directions, but
     50 by probability.
@@ -425,7 +425,7 @@ Bolt and DeepSeek are weak, not spread out.
   - Its lens part swap still carries the entity at 100 directions, as a context-free reference to the entity (Section 4). Bolt's mention
     holds the entity in J-space, but its recall does not depend on those directions more than on any same-size removal.
 
-- **DeepSeek is weak at every dose, not under-dosed** (amendment 56 D):
+- **DeepSeek is weak at every dose, not under-dosed** (amendment 56):
 
   | Directions | Lens part | Same size, top principal directions | Rotated |
   |---|---|---|---|
@@ -618,7 +618,7 @@ cannot see the subject.
 <details><summary>Method, controls and limits</summary>
 
 *The one-hop removals of the city and of the answers fixed in advance; the orthogonal removal post hoc on the 9B and
-27B; the data-built subspace registered (rule R1, bar 15 points)<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.q27 -->.*
+27B; the data-built subspace fixed in advance (rule R1, bar 15 points)<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.q27 -->.*
 
 - **One-hop question.** The city's lens directions cost 41.5 [35.3, 47.3]<!-- src: data/figures/writeup/data.csv | fig11.onehop.city.q9 --> / 29.2 [24.3, 34.5]<!-- src: data/figures/writeup/data.csv | fig11.onehop.city.q27 --> /
   25.2 [21.3, 29.4]<!-- src: data/figures/writeup/data.csv | fig11.onehop.city.nl --> points (9B / 27B / Lightning), the answers' own directions
@@ -639,7 +639,7 @@ picking the true one of two or verifying a claim.
 
 ![Agents: removing the lens part costs producing an answer far more than picking or verifying one](../../figures/writeup/a01_agents.png)
 
-*Inside agent transcripts, one relation: the recall's answers turned wrong by the knock-out minus a control's, in points, when the step is to copy a given answer, pick the true one of two, verify a Yes/No claim, or produce the answer alone (minus the rotated control, or the harshest control for verify). Whiskers: 95% intervals; grey tags: cells read without a registered rule (descriptive). No transcript is quoted.<!-- src: plotstyle.toml | 95% interval -->*
+*Inside agent transcripts, one relation: the recall's answers turned wrong by the knock-out minus a control's, in points, when the step is to copy a given answer, pick the true one of two, verify a Yes/No claim, or produce the answer alone (minus the rotated control, or the harshest control for verify). Whiskers: 95% intervals; grey tags: cells read without a rule fixed in advance (descriptive). No transcript is quoted.<!-- src: plotstyle.toml | 95% interval -->*
 
 **Takeaway.** The recall's need for the lens part is a need to produce the remembered word; tasks that only check or
 choose among given words need it much less.
@@ -652,7 +652,7 @@ choose among given words need it much less.
 - **Verify** a claim, against the harshest control: −16.3 [−20.0, −11.8]<!-- src: data/figures/writeup/data.csv | figA1.verify.q9 --> / 3.8 [−1.9, 9.7]<!-- src: data/figures/writeup/data.csv | figA1.verify.q27 --> /
   3.7 [1.5, 6.0]<!-- src: data/figures/writeup/data.csv | figA1.verify.nl -->.
 - **Copy** a given answer: 6.2 [3.7, 9.4]<!-- src: data/figures/writeup/data.csv | figA1.copy.q9 --> / 0.6 [0.0, 1.7]<!-- src: data/figures/writeup/data.csv | figA1.copy.q27 --> / −0.2 [−1.5, 1.0]<!-- src: data/figures/writeup/data.csv | figA1.copy.nl -->.
-- **Status.** The registered roles differ by model and task (several cells descriptive); see the registry
+- **Status.** The roles fixed in advance differ by model and task (several cells descriptive); see the registry
   (data/figures/status.csv). The transcripts are not posted; their numbers are.
 
 </details>

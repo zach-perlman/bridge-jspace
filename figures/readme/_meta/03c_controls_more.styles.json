@@ -1,0 +1,110 @@
+{
+ "styles_plot": "0.1.14",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "e45b07dc6ed809e941230b6b3d3c456cddb17336aa94b06b75da7bac37949df1"
+ },
+ "registry": {
+  "path": "data/figures/status.csv",
+  "sha256": "d991f162df6abe9eb006520f736b40638bfc0ab1b5fc93b005b50f69e29572b3"
+ },
+ "figure": "f2_controls_more",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "text_only": false,
+ "png": {
+  "pixels_sha256": "12af6bf87ae2108d900421312492c8b2e3df23268bd79d7badce4528289f05f4",
+  "dpi": 160
+ },
+ "roles": [
+  "lens"
+ ],
+ "controls": [
+  "PCA",
+  "logit lens",
+  "rotated"
+ ],
+ "cells": {
+  "band.mu": {
+   "timing": "post_hoc",
+   "claim": "not_claimed"
+  },
+  "band.q122": {
+   "timing": "post_hoc",
+   "claim": "not_claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "band.mu",
+   "timing": "post_hoc",
+   "claim": "not_claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "band.mu",
+   "timing": "post_hoc",
+   "claim": "not_claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "band.mu",
+   "timing": "post_hoc",
+   "claim": "not_claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "band.mu",
+   "timing": "post_hoc",
+   "claim": "not_claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "band.q122",
+   "timing": "post_hoc",
+   "claim": "not_claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "band.q122",
+   "timing": "post_hoc",
+   "claim": "not_claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "band.q122",
+   "timing": "post_hoc",
+   "claim": "not_claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "all estimates post hoc",
+  "grey: PCA · logit lens · rotated",
+  "whiskers: 95% interval"
+ ],
+ "numbers": {
+  "fig05.band_diff.mu": "+25.3",
+  "fig05.band_diff.mu.interval": "[20.3, 30.4]",
+  "fig05.band_diff.q122": "+36.6",
+  "fig05.band_diff.q122.interval": "[31.7, 41.0]",
+  "ko.mu.mk": "59.9",
+  "ko.q122.mk": "48.5"
+ },
+ "problems": []
+}

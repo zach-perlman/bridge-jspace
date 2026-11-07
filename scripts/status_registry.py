@@ -183,20 +183,17 @@ def key() -> list[dict]:
 
 
 def readme_set(writeup: list[dict]) -> list[dict]:
-    """The root README's figures (figkit/readme_sp.py). A README figure that draws a write-up figure (readme_sp.ALIAS)
-    takes its rows under the README's id, without the "not claimed" tags: the README's figkit figures never printed
-    them (presentation unchanged; listed as a disagreement). The others keep the hollow rule their figkit builder drew,
-    cited."""
+    """The root README's figures (figkit/readme_sp.py). A README figure that draws a write-up figure (readme_sp.ALIAS,
+    COPIES) takes that figure's rows under the README's id, its "not claimed" tags included (Dan, 8 Nov, Q2a: the tags
+    mark the edge of the claim, so the two copies show the same statuses). The others keep the hollow rule their figkit
+    builder drew, cited."""
     from bridge_jspace.figkit.readme_sp import ALIAS, COPIES
 
     src = "src/bridge_jspace/figkit/"
     out = []
     for fid, wid in {**ALIAS, **COPIES}.items():
         rs = [r for r in writeup if r["figure"] == wid]
-        if any(r["tag"] for r in rs):
-            DISAGREEMENTS.append(f"{fid} (README copy of {wid}): the write-up tags {', '.join(r['cell'] for r in rs if r['tag'])} "
-                                 "'not claimed'; the README's figkit figure printed no tag. The README copy keeps no tag.")  # fmt: skip
-        out += [{**r, "figure": fid, "tag": "", "source": f"{r['source']} (as {wid}, drawn for README.md)"} for r in rs]
+        out += [{**r, "figure": fid, "source": f"{r['source']} (as {wid}, drawn for README.md)"} for r in rs]
     # f6_address: the write-up's Fig. 8a and 8b side by side (their cells and statuses)
     out += [{**r, "figure": "f6_address", "source": f"{r['source']} (as {r['figure']}, drawn for README.md)"}
             for r in writeup if r["figure"] in ("fig08a_address_read_remove", "fig08b_address_swap_lens")]  # fmt: skip
@@ -296,7 +293,7 @@ def depth_set(writeup: list[dict]) -> list[dict]:
     rs_ = "scripts/readme_story_figures.py"
     out = []
     for fid, wid in ALIAS.items():
-        out += [{**r, "figure": fid, "tag": "", "source": f"{r['source']} (as {wid}, drawn for docs/depth)"}
+        out += [{**r, "figure": fid, "source": f"{r['source']} (as {wid}, drawn for docs/depth)"}
                 for r in writeup if r["figure"] == wid]  # fmt: skip
     for m, _ in MODELS:
         k = SHORT[m]

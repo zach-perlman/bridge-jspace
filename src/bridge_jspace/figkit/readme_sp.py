@@ -37,7 +37,7 @@ ALIAS = {"r3_last_token": "fig13_last_token", "f9_where": "appB_f9_where",
 WRITEUP = {**WS.FIGS, **WB.BLOCKED}
 # README figures drawn here from a write-up figure's cells (the registry copies that figure's rows under these ids)
 COPIES = {"r1_c1_split": "fig01_main_split", "r1_c1_gaps": "fig01_main_split", "f2_controls": "fig05_controls",
-          "f2_controls_layer": "fig05_controls"}
+          "f2_controls_layer": "fig05_controls", "f2_controls_more": "fig05_controls"}
 
 
 # laid out in inches: drawn for the README's width, not the post's (p0a_datasets is a markdown table in the README)
@@ -122,12 +122,20 @@ def _cell(c, cell, key, label):
     return sp.Missing("no run") if not c else est(c, cell, key=key, label=label, interval=label)
 
 
-def f2_controls() -> sp.Figure:
+# the band test's models the post claims, and the two it does not (their "not claimed" tags; Dan, 8 Nov, Q2a): one
+# figure of all five is taller than the readme target allows, so the two not claimed sit in 03c, folded under it
+BAND_CLAIMED = [m for m in DAN if ZK[m] not in D.NOT_CLAIMED]
+BAND_NOT_CLAIMED = [m for m in DAN if ZK[m] in D.NOT_CLAIMED]
+
+
+def f2_controls(models=None, fid: str = "f2_controls") -> sp.Figure:
     """The band test (fact passages): the recall − lookup gap under the lens part's removal and under each same-size
-    control's (rotated, logit lens, PCA), on one axis, and the difference lens part − largest control."""
-    band = {m: f"band.{ZK[m]}" for m in DAN}
-    lens = {m: _cell(WB._band_cell(m, "mk"), band[m], f"ko.{ZK[m]}.mk", True) for m in DAN}
-    controls = [(q, name, {m: _cell(WB._band_cell(m, q), band[m], f"ko.{ZK[m]}.{q}", False) for m in DAN})
+    control's (rotated, logit lens, PCA), on one axis, and the difference lens part − largest control; the models the
+    post claims (f2_controls_more: the two it does not, with their tags)."""
+    models = models or BAND_CLAIMED
+    band = {m: f"band.{ZK[m]}" for m in models}
+    lens = {m: _cell(WB._band_cell(m, "mk"), band[m], f"ko.{ZK[m]}.mk", True) for m in models}
+    controls = [(q, name, {m: _cell(WB._band_cell(m, q), band[m], f"ko.{ZK[m]}.{q}", False) for m in models})
                 for q, name in (("rot", "rotated"), ("u", "logit lens"), ("pc", "PCA"))]  # fmt: skip
 
     def diff(m):
@@ -135,9 +143,13 @@ def f2_controls() -> sp.Figure:
         return sp.Missing("source missing") if c is None else sp.Est(c[0], c[1], c[2], cell=band[m],
                                                                       key=f"fig05.band_diff.{ZK[m]}")  # fmt: skip
 
-    t = _controls_table(DAN, lens, controls, "gap", (-4, 70), (0, 30, 60), diff, "gap_difference",
+    t = _controls_table(models, lens, controls, "gap", (-4, 70), (0, 30, 60), diff, "gap_difference",
                         "Band of layers · fact passages", "the recall − lookup gap under each removal")  # fmt: skip
-    return sp.Figure("f2_controls", vocab()).add(t)
+    return sp.Figure(fid, vocab()).add(t)
+
+
+def f2_controls_more() -> sp.Figure:
+    return f2_controls(BAND_NOT_CLAIMED, "f2_controls_more")
 
 
 def f2_controls_layer() -> sp.Figure:
@@ -341,7 +353,7 @@ def t12_two_by_two() -> sp.Figure:
 
 
 FIGS = {**{fid: _alias(fid) for fid in ALIAS}, "r1_c1_split": r1_c1_split, "r1_c1_gaps": r1_c1_gaps,
-        "f2_controls": f2_controls, "f2_controls_layer": f2_controls_layer,
+        "f2_controls": f2_controls, "f2_controls_layer": f2_controls_layer, "f2_controls_more": f2_controls_more,
         "r1_dan_split": r1_dan_split, "r4_pointer": r4_pointer,
         "f5_atoms": f5_atoms, "f11_monitor": f11_monitor, "f10_sentence_order": f10_sentence_order,
         "t12_two_by_two": t12_two_by_two}  # fmt: skip

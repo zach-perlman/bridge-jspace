@@ -141,6 +141,7 @@ readme:             ## the three READMEs from their templates (root, docs/depth,
 	uv run python scripts/depth_data_extra.py
 	uv run python scripts/readme_build.py
 	uv run python scripts/report_breadth.py --render
+	uv run python scripts/check_figure_terms.py
 	uv run python scripts/status_registry.py
 	uv run python -m bridge_jspace.figkit.readme_sp
 	uv run python -m bridge_jspace.figkit.depth_sp

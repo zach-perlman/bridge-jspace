@@ -167,18 +167,60 @@ def examples_main() -> int:
     return 1 if hits else 0
 
 
+PAGES = (ROOT_README, README_PAGE, REPO / "docs" / "breadth" / "README.md")
+IDS_ONLY = {k: RETIRED[k] for k in ("run id", "run stamp")}  # not words: ids in captions stay a check of their own
+
+
+def vocabulary_banned() -> list[tuple[str, re.Pattern]]:
+    """(the term to use, the pattern) for every banned variant in plotstyle.toml [[terms.banned]]: the one word list
+    the figures and these pages share (Dan, 8 Nov, Q3). A ban marked scope = "figures" binds figure labels only (prose
+    may say a passage states a fact, or that code was written); the patterns are compiled by styles-plot itself."""
+    import tomllib
+
+    import styles_plot as sp
+
+    toml = tomllib.loads((REPO / "plotstyle.toml").read_text())["terms"]["banned"]
+    banned = sp.load(REPO / "plotstyle.toml").banned
+    assert len(toml) == len(banned), "plotstyle.toml [[terms.banned]] and styles-plot's list differ"
+    return [(b.use, b.compiled) for t, b in zip(toml, banned, strict=True) if t.get("scope") != "figures"]
+
+
+def visible(text: str) -> str:
+    """A page's words as a reader sees them, less what quotes another text: HTML comments (source keys), code spans,
+    link targets and verbatim quotes ("...", “...”), which keep their words and carry a bracketed gloss instead."""
+    text = re.sub(r"<!--.*?-->", "", text, flags=re.S)
+    text = re.sub(r"`[^`]*`", "", text)
+    text = re.sub(r"(\]\()[^)]*\)", r"\1)", text)
+    text = re.sub(r"\"[^\"\n]*\"|“[^”\n]*”", "", text)
+    return re.sub(r"\[pointers?: [^\]]*\]", "", text)  # the gloss a quote carries ("[pointer: the address]")
+
+
+def vocabulary_hits() -> list[tuple[str, str, str]]:
+    """(where, line, the term to use) for every banned variant on the three READMEs' visible lines."""
+    banned = vocabulary_banned()
+    out = []
+    for page in PAGES:
+        if not page.exists():
+            continue
+        for i, line in enumerate(visible(page.read_text()).splitlines(), 1):
+            out += [(f"{page.relative_to(REPO)} l.{i}", line.strip(), use) for use, rx in banned if rx.search(line)]
+    return out
+
+
 def main(argv: list[str] | None = None) -> int:
     args = sys.argv[1:] if argv is None else argv
     if "--examples" in args:
         return examples_main()
-    hits = retired(caption_texts())
-    joint_hits = joint_retired(root_readme_texts())
+    word_hits = vocabulary_hits()
+    id_caption_hits = [(w, t, k) for w, t in caption_texts() for k, rx in IDS_ONLY.items() if re.search(rx, t)]
     id_hits = readme_ids(readme_body_lines(README_PAGE.read_text())) if README_PAGE.exists() else []
-    for where, text, term in hits + joint_hits + id_hits:
-        print(f"{where}: {term!r} in {text!r}")
-    print(f"check_figure_terms: {len(hits)} retired term(s) in the depth README's captions; {len(joint_hits)} "
-          f"joint-story term(s) in the root README; {len(id_hits)} internal id(s) in the depth README's body")  # fmt: skip
-    return 1 if hits or joint_hits or id_hits else 0
+    for where, text, use in word_hits:
+        print(f"{where}: use {use!r}: {text[:160]!r}")
+    for where, text, kind in id_caption_hits + id_hits:
+        print(f"{where}: {kind!r} in {text[:160]!r}")
+    print(f"check_figure_terms: {len(word_hits)} banned variant(s) of plotstyle.toml on the READMEs; "
+          f"{len(id_caption_hits) + len(id_hits)} internal id(s) in the depth README")  # fmt: skip
+    return 1 if word_hits or id_caption_hits or id_hits else 0
 
 
 if __name__ == "__main__":
