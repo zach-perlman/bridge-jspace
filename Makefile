@@ -138,6 +138,7 @@ writeup-examples:    ## the write-up's real prompts and answers per experiment (
 
 readme:             ## the three READMEs from their templates (root, docs/depth, docs/breadth), then their figure sets (styles-plot)
 	uv run python scripts/readme_root.py
+	uv run python scripts/depth_data_extra.py
 	uv run python scripts/readme_build.py
 	uv run python scripts/report_breadth.py --render
 	uv run python scripts/status_registry.py
