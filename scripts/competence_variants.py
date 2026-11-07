@@ -24,6 +24,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins  # noqa: E402
+from bridge_jspace.run_switches import switches  # noqa: E402
 from scripts import ablate_v2 as AV  # noqa: E402
 from scripts import suite_v1 as S  # noqa: E402
 from scripts import tasks_v2 as T  # noqa: E402
@@ -72,7 +73,7 @@ def main(args) -> None:
         seen: collections.Counter = collections.Counter()
         items = [it for it in items if (seen.update([it["word"]]) or seen[it["word"]] <= args.limit)]
     jobs = [(it, v, prompt(tok, it, v, args.set)) for it in items for v in args.variants]
-    (out_dir / "manifest.json").write_text(json.dumps({
+    (out_dir / "manifest.json").write_text(json.dumps({"switches": switches(),
         "run": args.name, "why": args.why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "git_commit": commit, "model": pins.model_pin(), "set": args.set, "words": args.words, "variants": args.variants,
         "n_items": len(items), "max_new_tokens": args.max_new, "batch": args.batch, "limit": args.limit, "read": "cand2",

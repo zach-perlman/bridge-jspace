@@ -36,6 +36,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins  # noqa: E402
 from bridge_jspace.ablate import K_PAPER, LensDictionary, first_token_logits, top_span_removal  # noqa: E402
+from bridge_jspace.run_switches import switches  # noqa: E402
 from scripts import ablate_v2 as AV  # noqa: E402
 from scripts import suite_v1 as S  # noqa: E402
 from scripts import tasks_v2 as T  # noqa: E402
@@ -71,7 +72,7 @@ def main(a) -> None:
     items = {it["id"]: it for it in T.load(a.tasks)}
     import os
 
-    (out / "manifest.json").write_text(json.dumps({
+    (out / "manifest.json").write_text(json.dumps({"switches": switches(),
         "run": a.name, "why": a.why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "git_commit": commit,
         "git_state": pins.git_state(), "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
         "band": AV.label(band), "condition": None if a.margin_only else "paper10", "k": K_PAPER, "positions": "all",

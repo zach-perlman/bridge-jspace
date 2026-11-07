@@ -31,6 +31,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins  # noqa: E402
 from bridge_jspace.model import _forward_hooks, load_model  # noqa: E402
+from bridge_jspace.run_switches import switches  # noqa: E402
 from scripts import jswap as JS  # noqa: E402
 from scripts.ablate_v2 import bridge_positions  # noqa: E402
 
@@ -83,7 +84,7 @@ def main(a) -> None:
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
     out_dir.mkdir(parents=True, exist_ok=True)
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
-    (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "why": a.why, "target": pins.TARGET, "model": pins.model_pin(), "set": a.set,
+    (out_dir / "manifest.json").write_text(json.dumps({"switches": switches(), "run": a.name, "why": a.why, "target": pins.TARGET, "model": pins.model_pin(), "set": a.set,
                                                        "competence": a.competence, "cv_h1": a.cv_h1, "readout": a.readout, "every": a.every,
                                                        "steps": a.steps, "seed": 0, "limit": a.limit, "extra_sets": a.extra_sets, "git_commit": commit, "git_state": pins.git_state()}, indent=2) + "\n")  # fmt: skip
     model = load_model()

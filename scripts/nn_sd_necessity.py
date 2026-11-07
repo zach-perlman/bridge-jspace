@@ -81,6 +81,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins, tokens  # noqa: E402
+from bridge_jspace.run_switches import switches  # noqa: E402
 from scripts import sd_prompts as SP  # noqa: E402
 
 RES = pins.RESULTS_DIR / "sd_necessity"
@@ -121,7 +122,7 @@ def own_positions(tok, text: str, spans: list[tuple[str, int, int]], fact: dict,
 
 def manifest_base(a, stage: str) -> dict:
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
-    return {"run": a.name, "stage": stage, "why": a.why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+    return {"switches": switches(), "run": a.name, "stage": stage, "why": a.why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "git_commit": commit, "git_state": pins.git_state(), "model": pins.model_pin(),
             "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "args": vars(a),
             "protocol": "Ni & Zou 2026 (arXiv 2610.02702 v2), ported from ziangni-sys/silent-dissent@fe78a9f (scripts/sd_prompts.py)"}  # fmt: skip

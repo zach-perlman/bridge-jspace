@@ -26,6 +26,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins  # noqa: E402
+from bridge_jspace.run_switches import switches  # noqa: E402
 from scripts import suite_v1 as S  # noqa: E402
 from scripts import tasks_v2 as T  # noqa: E402
 
@@ -52,7 +53,7 @@ def main(args) -> None:
         ids = S.ids(tok, T.render(tok, {**it, "_question": it["question"], "_kind": it["kind"]}))
         ids += S.ids(tok, " ") if it["kind"] == "digit" else []
         prompts.append((it, ids))
-    (out_dir / "manifest.json").write_text(json.dumps({
+    (out_dir / "manifest.json").write_text(json.dumps({"switches": switches(),
         "run": args.name, "why": args.why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "git_commit": commit, "model": pins.model_pin(), "set": args.set, "n_items": len(prompts),
         "max_new_tokens": args.max_new, "batch": args.batch, "limit": args.limit, "greedy": True,

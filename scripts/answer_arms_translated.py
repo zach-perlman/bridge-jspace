@@ -39,6 +39,7 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 sys.path.insert(0, str(REPO / "src"))
 from bridge_jspace import pins  # noqa: E402
+from bridge_jspace.run_switches import switches  # noqa: E402
 from scripts import answer_translation_check as T  # noqa: E402
 from scripts import x51_answer as A  # noqa: E402
 
@@ -200,7 +201,7 @@ def main() -> None:
     cases = X.read_jsonl(src / "cases.jsonl")
     items = [{k: v for k, v in c.items() if k != "tokens"} for c in cases]
     saved = X.read_jsonl(src / "outcomes.jsonl")
-    manifest = {
+    manifest = {"switches": switches(),
         "exp": "answer_arms_translated",
         "post_hoc": True,
         "model": target,

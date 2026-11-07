@@ -31,6 +31,7 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 sys.path.insert(0, str(REPO / "src"))
 from bridge_jspace import pins  # noqa: E402
+from bridge_jspace.run_switches import switches  # noqa: E402
 from scripts import atoms_multilingual as M  # noqa: E402
 from scripts import x51_answer as A  # noqa: E402
 
@@ -85,7 +86,7 @@ def main() -> None:
     cases = {c["key"]: c for c in A.X.read_jsonl(src / "cases.jsonl")}
     stored = {(r["key"], r["variant"]): r for r in A.X.read_jsonl(src / "readout.jsonl") if r["source"] == SOURCE}
     keys = list(PREFLIGHT_ITEMS[target]) if a.preflight else list(json.loads((src / "gate.json").read_text())["order"])
-    manifest = {"exp": "answer_translation_check", "model": target, "run": a.run, "layer": layer, "keys": len(keys), "preflight": a.preflight,
+    manifest = {"switches": switches(), "exp": "answer_translation_check", "model": target, "run": a.run, "layer": layer, "keys": len(keys), "preflight": a.preflight,
                 "reader": RECALL, "source": SOURCE, "not_read_rank": A.NOT_READ_RANK, "not_read_share": A.NOT_READ_SHARE,
                 "rules": "single-token translations only (4 spellings), no lone I/V/X; same layer, position, lens, rank function and top-50 threshold as 51.12",
                 "decision_rule": "flips <= 5% of items: translation does not change the verdict; > 5%: report only",

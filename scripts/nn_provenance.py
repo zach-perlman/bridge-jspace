@@ -64,6 +64,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins  # noqa: E402
+from bridge_jspace.run_switches import switches  # noqa: E402
 from scripts import jswap as JS  # noqa: E402
 from scripts import suite_v1 as S  # noqa: E402
 from scripts import tasks_v2 as T  # noqa: E402
@@ -360,7 +361,7 @@ def main(a) -> None:
         if len(ctl) == N_CTL_TOK:
             break
 
-    (out_dir / "manifest.json").write_text(json.dumps({
+    (out_dir / "manifest.json").write_text(json.dumps({"switches": switches(),
         "run": a.name, "why": a.why, "note": "prereg amendment 63 note 34 (the provenance probe)", "target": pins.TARGET,
         "model": pins.model_pin(), "lens": pins.FROZEN_LENS, "set": a.set, "competence": a.competence, "cv": a.cv,
         "band": band, "layers": layers, "time_course_layers": hooked, "every": EVERY, "sites": SITES, "limit": a.limit, "batch": a.batch,

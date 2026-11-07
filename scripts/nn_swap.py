@@ -120,6 +120,7 @@ from bridge_jspace import pins  # noqa: E402
 from bridge_jspace.ablate import LensDictionary, rotation, top_span_removal  # noqa: E402
 from bridge_jspace.lens import JLens  # noqa: E402
 from bridge_jspace.model import _forward_hooks, load_model  # noqa: E402
+from bridge_jspace.run_switches import switches  # noqa: E402
 from scripts import jswap as JS  # noqa: E402
 from scripts import suite_v1 as S  # noqa: E402
 from scripts import tasks_v2 as T  # noqa: E402
@@ -673,7 +674,7 @@ def main(a) -> None:
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     bands = [list(range(int(w.split("-")[0]), int(w.split("-")[1]) + 1)) for w in (a.sweep or [a.band])]
     conds = a.conds or (["insert_k10", "insert_k10_rand"] if a.sweep else conds_for(a.ks))
-    (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "why": a.why, "target": pins.TARGET, "model": pins.model_pin(), "lens": pins.FROZEN_LENS,
+    (out_dir / "manifest.json").write_text(json.dumps({"switches": switches(), "run": a.name, "why": a.why, "target": pins.TARGET, "model": pins.model_pin(), "lens": pins.FROZEN_LENS,
                                                        "bands": [f"{b[0]}-{b[-1]}" for b in bands], "set": a.set, "competence": a.competence, "words": a.words,
                                                        "site": a.site, "conditions": conds, "ks": a.ks, "sample_per_word": a.sample_per_word, "limit": a.limit,
                                                        "neutral": NEUTRAL, "seeds": {"items": "random.Random(item id)" if not a.seed else f"random.Random('{a.seed}:' + item id)",

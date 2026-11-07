@@ -24,6 +24,7 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 sys.path.insert(0, str(REPO / "src"))
 from bridge_jspace import pins  # noqa: E402
+from bridge_jspace.run_switches import switches  # noqa: E402
 from scripts import x0_necessity as X  # noqa: E402
 from scripts import x50_zach as Z  # noqa: E402
 
@@ -66,7 +67,7 @@ def main() -> Path:
         for r in X.read_jsonl(src / "outcomes.jsonl")
         if r["layer"] == la
     }
-    (out / "manifest.json").write_text(json.dumps({"exp": "z1p_fulldecode", "post_hoc": True, "model": target, "run": RUN, "layer": la, "short_token_max_chars": SHORT, "new_tokens": N_NEW,
+    (out / "manifest.json").write_text(json.dumps({"switches": switches(), "exp": "z1p_fulldecode", "post_hoc": True, "model": target, "run": RUN, "layer": la, "short_token_max_chars": SHORT, "new_tokens": N_NEW,
                                                    "rule": f"recompute the z1p numbers if more than {BAR:.0%} of the arm rows (flagged items x 4 arms) change label",
                                                    "written_utc": stamp}, indent=2) + "\n")  # fmt: skip
     R.warm_cusolver()

@@ -98,6 +98,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins  # noqa: E402
+from bridge_jspace.run_switches import switches  # noqa: E402
 
 EXP = "paper_ko_decomp"
 RES = pins.RESULTS_DIR / EXP
@@ -339,7 +340,7 @@ def run(a) -> None:
     assert not n55 or a.keep_band in bands55, "--keep-band must name one of --bands"
     sets = {s: load_set(s)[: a.limit or None] for s in a.sets}
     full = not a.limit
-    manifest = {
+    manifest = {"switches": switches(),
         "exp": EXP, "run": a.name, "why": a.why, "note": "prereg amendment 68 note 45", "target": target, "model": pins.model_pin(),
         "lens": {pins.FROZEN_LENS: list(pins.LENS_SOURCES[pins.FROZEN_LENS])},
         "data": {s: {"file": f"data/{({**DATA, **DATA_PO})[s][0]}", "sha256": ({**DATA, **DATA_PO})[s][1], "n_run": len(v)} for s, v in sets.items()},

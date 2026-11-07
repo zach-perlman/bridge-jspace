@@ -28,6 +28,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins  # noqa: E402
+from bridge_jspace.run_switches import switches  # noqa: E402
 from scripts import paper_swap_6b as S6  # noqa: E402
 from scripts import paper_swap_decomp as D  # noqa: E402
 
@@ -81,7 +82,7 @@ def main(a) -> None:
     names = names[: a.limit or None]
     prompt_end = prev_summary["gate"]["prompt_end"]
     out_dir.mkdir(parents=True, exist_ok=True)
-    manifest = {
+    manifest = {"switches": switches(),
         "exp": D.EXP, "run": a.name, "kind": "rerun_5r", "why": a.why, "note": "prereg amendment 67, note 39 arm 5R",
         "target": target, "model": pins.model_pin(), "lenses": {ln: list(pins.LENS_SOURCES[ln]) for ln in lenses},
         "prev_run": a.prev, "vocabulary_sha256": D.VOCAB_SHA256, "windows": [D.wname(s, e) for s, e, _ in wins],

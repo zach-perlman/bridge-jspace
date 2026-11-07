@@ -33,6 +33,8 @@ from pathlib import Path
 
 import numpy as np
 
+from bridge_jspace.run_switches import switches
+
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 sys.path.insert(0, str(REPO / "src"))
@@ -314,7 +316,7 @@ def main() -> Path:
     stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
     out = REPO / "results" / EXP / stamp
     out.mkdir(parents=True, exist_ok=False)
-    manifest = {"exp": EXP, "written_utc": stamp, "script": "scripts/atoms_multilingual.py", "inputs": [f"results/x52_atoms/{r}/labelled.jsonl" for r in REPORTS],
+    manifest = {"switches": switches(), "exp": EXP, "written_utc": stamp, "script": "scripts/atoms_multilingual.py", "inputs": [f"results/x52_atoms/{r}/labelled.jsonl" for r in REPORTS],
                 "runs": RUNS, "views": VIEWS, "classes": CLASS_TEXT, "languages": sorted({*CARDINAL, "Roman numeral", "digit"}),
                 "note": "CPU only; descriptive; the 51.12 verdicts are not rerun", "git": __import__("subprocess").run(["git", "rev-parse", "--short", "HEAD"], cwd=REPO, capture_output=True, text=True).stdout.strip()}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2))  # before the numbers (AGENTS.md)

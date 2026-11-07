@@ -55,6 +55,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins, tokens  # noqa: E402
+from bridge_jspace.run_switches import switches  # noqa: E402
 from scripts import nn_sd_necessity as NS  # noqa: E402
 from scripts import sd_prompts as SP  # noqa: E402
 
@@ -447,7 +448,7 @@ def stage_ko(a) -> None:
     read = [p for p in prompts if not p["collide"]]
     arms = Arms(model, F, spec)
     d = arms.d
-    manifest = {**NS.manifest_base(a, "ko"), "note": "prereg amendment 88 note 67 (sd stage)", "fit": a.fit, "fit_sha256": fit_sha,
+    manifest = {"switches": switches(), **NS.manifest_base(a, "ko"), "note": "prereg amendment 88 note 67 (sd stage)", "fit": a.fit, "fit_sha256": fit_sha,
                 "fit_log": F["log"], "fit_n_names": F["n_names"], "fit_n_classes": F["n_classes"], "templates": list(TEMPLATES),
                 "n_items": len(items), "n_prompts": len(prompts), "n_read": len(read), "items_collide": n_collide,
                 "edits": [[NS.band_label(b), cs] for b, cs in spec], "pos_from": "question",
@@ -520,7 +521,7 @@ def stage_v4(a) -> None:
         p["perp_forms"] = p["forms"]  # the relation's answer span A (note 37's forms)
     arms = Arms(model, F, spec)
     d = arms.d
-    manifest = {**NS.manifest_base(a, "v4"), "note": "prereg amendment 88 note 67 (v4 stage)", "fit": a.fit, "fit_sha256": fit_sha,
+    manifest = {"switches": switches(), **NS.manifest_base(a, "v4"), "note": "prereg amendment 88 note 67 (v4 stage)", "fit": a.fit, "fit_sha256": fit_sha,
                 "fit_log": F["log"], "fit_n_names": F["n_names"], "fit_n_classes": F["n_classes"], "templates": list(TEMPLATES),
                 "n_prompts": len(prompts), "by_word": dict(collections.Counter(p["family"] for p in prompts)),
                 "edits": [[NS.band_label(b), cs] for b, cs in spec], "pos_from": "question (ablate_v2.question_start)", "read": "cand2",

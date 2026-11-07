@@ -62,6 +62,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins  # noqa: E402
 from bridge_jspace.clamp import SwapClamp, near_parallel  # noqa: E402
+from bridge_jspace.run_switches import switches  # noqa: E402
 
 EXP = "paper_swap_decomp"
 RES = pins.RESULTS_DIR / EXP
@@ -345,7 +346,7 @@ def run(a) -> None:
     wins = windows_for(target, a.n_windows)
     lenses = LENSES.get(target, ("jpp",))
     layers_all = sorted({la for s, e, _ in wins for la in range(s, e + 1)})
-    manifest = {
+    manifest = {"switches": switches(),
         "exp": EXP, "run": a.name, "why": a.why, "note": "prereg amendment 65, note 39", "target": target,
         "model": pins.model_pin(), "lenses": {ln: list(pins.LENS_SOURCES[ln]) for ln in lenses},
         "items": {"file": "data/probe_swap.json", "sha256": pins.PROBE_SWAP_SHA256, "n_run": len(picked), "full": full},

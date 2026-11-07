@@ -42,6 +42,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins  # noqa: E402
+from bridge_jspace.run_switches import switches  # noqa: E402
 from scripts import paper_swap_decomp as D  # noqa: E402
 
 POOL = ("colour", "shape", "unit", "occupation", "weekday", "month", "number", "state_of_matter")
@@ -134,7 +135,7 @@ def overlap(a) -> None:
     device = "cuda" if torch.cuda.is_available() else "cpu"
     vocab = D.load_vocab()
     lens_name = "jpp"
-    manifest = {"exp": D.EXP, "run": a.name, "kind": "overlap", "note": "prereg amendment 65 second addendum, note 39", "target": target,
+    manifest = {"switches": switches(), "exp": D.EXP, "run": a.name, "kind": "overlap", "note": "prereg amendment 65 second addendum, note 39", "target": target,
                 "lens": {lens_name: list(pins.LENS_SOURCES[lens_name])}, "vocabulary_sha256": D.VOCAB_SHA256, "main_band": D.wname(*D.MAIN_BAND[target]),
                 "pool": list(POOL), "n_rand": N_RAND, "device": device, "command": " ".join(sys.argv), "git_state": pins.git_state(),
                 "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}  # fmt: skip
@@ -289,7 +290,7 @@ def rerun(a) -> None:
     names = names[: a.limit or None]
     prompt_end = prev_summary["gate"]["prompt_end"]
     out_dir.mkdir(parents=True, exist_ok=True)
-    manifest = {
+    manifest = {"switches": switches(),
         "exp": D.EXP, "run": a.name, "kind": "rerun_6b", "why": a.why, "note": "prereg amendment 65 second addendum, note 39",
         "target": target, "model": pins.model_pin(), "lenses": {ln: list(pins.LENS_SOURCES[ln]) for ln in lenses},
         "prev_run": a.prev, "overlap_run": a.overlap, "overlap_sha256": hashlib.sha256(ov_raw).hexdigest(),

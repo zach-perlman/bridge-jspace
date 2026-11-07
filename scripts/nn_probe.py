@@ -34,6 +34,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins  # noqa: E402
+from bridge_jspace.run_switches import switches  # noqa: E402
 
 RES = pins.RESULTS_DIR / "nn_probe"
 TRAIN_WORDS = ("MP", "MK", "MM", "MA", "MN", "MH", "MC", "MD", "ME", "MF", "MG", "WK", "WM", "WA", "WN")
@@ -54,7 +55,7 @@ def collect(a) -> None:
     model = load_model()
     tok = model.tokenizer
     layers = list(range(0, pins.TARGETS[pins.TARGET]["n_layers"], a.every))
-    (out / "manifest.json").write_text(json.dumps({"run": a.name, "target": pins.TARGET, "model": pins.model_pin(), "set": a.set, "competence": a.competence,
+    (out / "manifest.json").write_text(json.dumps({"switches": switches(), "run": a.name, "target": pins.TARGET, "model": pins.model_pin(), "set": a.set, "competence": a.competence,
                                                    "layers": layers, "train_words": TRAIN_WORDS, "per_description": a.per_description, "seed": "random.Random(0)",
                                                    "git_commit": commit, "git_state": pins.git_state()}, indent=2) + "\n")  # fmt: skip
     items = [json.loads(line) for line in (JS.DATA / a.set / "items.jsonl").read_text().splitlines()]

@@ -32,6 +32,7 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 sys.path.insert(0, str(REPO / "src"))
 from bridge_jspace import pins  # noqa: E402
+from bridge_jspace.run_switches import switches  # noqa: E402
 from scripts import answer_translation_check as T  # noqa: E402
 from scripts import x51_answer as A  # noqa: E402
 
@@ -103,7 +104,7 @@ def main() -> None:
     saved_dir = SAVED_ROOT / target / a.from_tag
     cases = X.read_jsonl(src / "cases.jsonl")
     items = [{k: v for k, v in c.items() if k != "tokens"} for c in cases]
-    manifest = {
+    manifest = {"switches": switches(),
         "exp": "answer_arms_krand",
         "post_hoc": True,
         "why": "rule (b) of answer_arms_translated lacked a size control (Dan's design error)",

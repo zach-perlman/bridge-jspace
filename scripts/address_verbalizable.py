@@ -41,6 +41,7 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 sys.path.insert(0, str(REPO / "src"))
 from bridge_jspace import pins  # noqa: E402
+from bridge_jspace.run_switches import switches  # noqa: E402
 from scripts import atoms_multilingual as M  # noqa: E402
 from scripts import x0_massmean as MM  # noqa: E402
 from scripts import x6_routes as R  # noqa: E402
@@ -327,7 +328,7 @@ def main() -> Path:
     stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
     out = REPO / "results" / EXP / stamp
     out.mkdir(parents=True, exist_ok=False)
-    manifest = {
+    manifest = {"switches": switches(),
         "exp": EXP,
         "written_utc": stamp,
         "script": "scripts/address_verbalizable.py",

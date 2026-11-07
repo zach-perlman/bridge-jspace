@@ -51,6 +51,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from bridge_jspace import pins  # noqa: E402
 from bridge_jspace.lens import JLens  # noqa: E402
 from bridge_jspace.model import _forward_hooks, load_model  # noqa: E402
+from bridge_jspace.run_switches import switches  # noqa: E402
 from scripts import jswap as JS  # noqa: E402
 from scripts import suite_v1 as S  # noqa: E402
 from scripts import tasks_v2 as T  # noqa: E402
@@ -100,7 +101,7 @@ def main(a) -> None:
     tok = model.tokenizer
     lens = JLens(model, pins.FROZEN_LENS)
     layers = sorted(la for la in (int(x) for x in lens.source_layers) if la % a.every == 0)
-    (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "target": pins.TARGET, "model": pins.model_pin(), "lens": pins.FROZEN_LENS, "set": a.set,
+    (out_dir / "manifest.json").write_text(json.dumps({"switches": switches(), "run": a.name, "target": pins.TARGET, "model": pins.model_pin(), "lens": pins.FROZEN_LENS, "set": a.set,
                                                        "competence": a.competence, "layers": layers, "items": a.items, "priming": a.priming, "topk": a.topk, "git_commit": commit, "git_state": pins.git_state()}, indent=2) + "\n")  # fmt: skip
     items = {json.loads(line)["id"]: json.loads(line) for line in (JS.DATA / a.set / "items.jsonl").read_text().splitlines()}
     if a.items == "v4":  # note 14: v4's gate, successes vs failures, the lookup (MP) and its recall twin (MM)

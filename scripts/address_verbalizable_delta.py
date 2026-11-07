@@ -22,6 +22,7 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 sys.path.insert(0, str(REPO / "src"))
 from bridge_jspace import pins  # noqa: E402
+from bridge_jspace.run_switches import switches  # noqa: E402
 from scripts import x0_massmean as MM  # noqa: E402
 from scripts import x6_routes as R  # noqa: E402
 from scripts import x8_write as W  # noqa: E402
@@ -49,7 +50,7 @@ def main() -> Path:
         if c["condition"] == "C2"
     }
     scenes = random.Random(SEED).sample(sorted(cases), N)
-    (out / "manifest.json").write_text(json.dumps({"exp": "address_verbalizable_delta", "post_hoc": True, "model": target, "layer": layer, "probe_states": states,
+    (out / "manifest.json").write_text(json.dumps({"switches": switches(), "exp": "address_verbalizable_delta", "post_hoc": True, "model": target, "layer": layer, "probe_states": states,
                                                    "routes_run": ROUTES[target], "scenes": scenes, "seed": SEED, "written_utc": stamp}, indent=2))  # fmt: skip
     alf = MM.subspaces(states)[0]["Alf"].astype(np.float32)
     R.warm_cusolver()

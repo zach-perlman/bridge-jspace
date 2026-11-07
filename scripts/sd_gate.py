@@ -30,6 +30,8 @@ import sys
 import time
 from pathlib import Path
 
+from bridge_jspace.run_switches import switches
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -142,7 +144,7 @@ def main(a) -> None:
     items = [json.loads(line) for line in (RES / a.items_run / "items.jsonl").read_text().splitlines()]
     if a.n and a.n < len(items):  # smoke: a seeded random subset
         items = random.Random(0).sample(items, a.n)
-    (out_dir / "manifest.json").write_text(json.dumps({**manifest_base(a, "gate"), "n_items": len(items), "generic": GENERIC,
+    (out_dir / "manifest.json").write_text(json.dumps({"switches": switches(), **manifest_base(a, "gate"), "n_items": len(items), "generic": GENERIC,
                                                        "direct": DIRECT, "prefix": SP.KNOWN_SHOTS}, indent=2) + "\n")  # fmt: skip
     model = load_model()
     t0 = time.time()
