@@ -41,7 +41,7 @@ word = "neutral"
 meaning = "a quantity of no role, such as a difference"
 
 [controls]
-names = ["rotated", "logit lens", "PCA", "a random part", "energy-matched random", "a random vector", "layout-only probe", "10 random heads", "no change", "random lens directions", "the whole state swapped in", "the full state", "most common locker", "shuffled pairs", "a random subspace", "the rest swapped in"]
+names = ["rotated", "logit lens", "PCA", "a random part", "energy-matched random", "a random vector", "layout-only probe", "10 random heads", "no change", "random lens directions", "the whole state swapped in", "the full state", "most common locker", "shuffled pairs", "a random subspace", "the rest swapped in", "a control block", "2 × a random direction", "2 × the lens part", "the null's cut", "the null's median"]
 
 [key]
 tick = "the largest same-size control"
@@ -353,8 +353,110 @@ title = "test items"
 format = "z"
 cue = false
 
+[units.lookup_answers]
+title = "share of the lookup's answers"
+quantity = "lookup answers"
+format = "share"
+
+[units.recall_answers]
+title = "share of the recall's answers"
+quantity = "recall answers"
+format = "share"
+
+[units.switch_terms]
+title = "share of the switches (a term may be negative)"
+quantity = "switches"
+format = "share"
+
+[units.switches_beyond]
+title = "switches beyond a random part of the same size (share)"
+quantity = "switches"
+format = "share"
+
+[units.own_switches]
+title = "share of the reader's switches"
+quantity = "switches"
+format = "share"
+
+[units.lens_share]
+title = "the lens part's share of the direction"
+quantity = "lens part share"
+format = "share"
+
+[units.sent_written]
+title = "share sent to the target item"
+quantity = "sent to the target item"
+format = "share"
+
+[units.passed]
+title = "what the head passes (median ||W_OV x|| / ||x||)"
+quantity = "passed"
+format = "share"
+
+[units.readout_rank]
+title = "rank in the lens readout, lower is nearer the top"
+quantity = "rank"
+format = "z"
+cue_word = "larger"
+
+[units.readout_kl]
+title = "KL divergence of the readout (median)"
+quantity = "KL divergence"
+format = "share"
+
+[units.extra_loss_share]
+title = "extra drop without the lens part (share)"
+quantity = "extra drop"
+format = "share"
+
 [terms]
 canonical = [
+    "rebuilt by 25 lens directions",
+    "random draws' 95th percentile",
+    "the lookup's subspace",
+    "the pick sentence's other tokens",
+    "the recall's subspace",
+    "the target locker's item",
+    "2 × random",
+    "KL of the readout",
+    "a shuffled subspace",
+    "at the item",
+    "at the number",
+    "every layer after L",
+    "lookups sent",
+    "outside the pick sentence",
+    "rank in the lens readout",
+    "recalls sent",
+    "the bridge word at L",
+    "the bridge word before L",
+    "the change",
+    "the changed item",
+    "the lens part",
+    "the pointer",
+    "a random part of the address's size only",
+    "without a random part of the address's size",
+    "a random part only",
+    "and a random vector",
+    "and the pointer swapped in",
+    "the address only",
+    "the clean one-pick scenes",
+    "the lens part only",
+    "the main test",
+    "the pick sentence blocked",
+    "the pointer swapped in only",
+    "the rest by itself",
+    "without a random part",
+    "other answers",
+    "the original answer",
+    "the rest",
+    "the third item",
+    "the lens part's share of the person direction",
+    "another item moved, without the lens part",
+    "the lens part by itself",
+    "the main test, extra drop without the lens part",
+    "the person direction added",
+    "the rest of the change by itself",
+    "who picked the item, read by a probe",
     # the write-up figures styles-plot 0.1.6 draws (figkit/writeup_sp_c.py): fig06, fig07, appB_f15
     "at 100 directions", "scored by probability", "by identity", "other", "when another item's locker moved",
     "at the bridge word", "copied into the locker sentences", "at the bridge word, at L", "copied, at L",
@@ -544,6 +646,10 @@ canonical = [
     "the 25% bar",
 ]
 templates = [
+    "{num} directions",
+    "strength {num}",
+    "k = {num}",
+    "dose {num}",
     "{num} items",
     "{num} lens directions",
     "layer {num}",

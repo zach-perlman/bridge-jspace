@@ -14,6 +14,7 @@ import styles_plot as sp
 
 from bridge_jspace.figkit import data as D
 from bridge_jspace.figkit import depth_sp_b as DB
+from bridge_jspace.figkit import depth_sp_c as DC
 from bridge_jspace.figkit import readme_sp as RS
 from bridge_jspace.figkit.writeup_sp_base import REPO, ZK, est, need, vocab
 
@@ -27,7 +28,7 @@ ALIAS = {"fig13_attention": "appB_f17_attention", "fig09b_six_lockers": "appB_f1
 
 def path(fid: str):
     """Where a depth figure is written (one place, for the folder layout to come)."""
-    return (OUT / "supp" if fid in DB.SUPP else OUT) / f"{fid}.png"
+    return (OUT / "supp" if fid in DB.SUPP | DC.SUPP else OUT) / f"{fid}.png"
 
 
 def _alias(fid: str):
@@ -378,7 +379,7 @@ def fig14_learned() -> sp.Figure:
 FIGS = {**{fid: _alias(fid) for fid in ALIAS}, "fig01b_settings": fig01b_settings, "fig01c_zeroing": fig01c_zeroing,
         "fig02_specificity": fig02_specificity, "fig05b_identity_outside": fig05b_identity_outside,
         "fig05c_described_bridge": fig05c_described_bridge, "fig07c_probe_errors": fig07c_probe_errors,
-        "fig09d_chain": fig09d_chain, "fig21_code_tool": fig21_code_tool, "fig14_learned": fig14_learned, **DB.FIGS}  # fmt: skip
+        "fig09d_chain": fig09d_chain, "fig21_code_tool": fig21_code_tool, "fig14_learned": fig14_learned, **DB.FIGS, **DC.FIGS}  # fmt: skip
 
 
 def build(ids=None) -> list[str]:

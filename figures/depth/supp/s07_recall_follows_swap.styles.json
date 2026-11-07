@@ -1,0 +1,158 @@
+{
+ "styles_plot": "0.1.8",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "a7dff76c9dca583b7604a881cb3e2cbc61d321745d8d532c08681eb6d481d1e9"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "1e6b06afa8357977a0a7572082a55adc0ceff39b77426b93057cbc7740ff6cdd"
+ },
+ "figure": "s07_recall_follows_swap",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "ee96fcda5cc32db6ab8d7d7af65142e662d28c95d403e75e9adfdb56cdffeecf",
+  "dpi": 160
+ },
+ "roles": [
+  "address",
+  "neutral"
+ ],
+ "controls": [],
+ "cells": {
+  "follows.mu": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "follows.q122": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "follows.q27": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "follows.q9": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "follows.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "follows.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "follows.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "follows.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "follows.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "follows.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "follows.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "follows.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "follows.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "follows.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "follows.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "follows.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  }
+ ],
+ "key": [
+  "○ post hoc"
+ ],
+ "numbers": {
+  "s07.written.q9": "0.80",
+  "s07.written.q27": "0.81",
+  "s07.written.mu": "0.44",
+  "s07.written.q122": "0.79",
+  "s07.third.q9": "0.15",
+  "s07.third.q27": "0.09",
+  "s07.third.mu": "0.25",
+  "s07.third.q122": "0.12",
+  "s07.other.q9": "0.05",
+  "s07.other.q27": "0.10",
+  "s07.other.mu": "0.31",
+  "s07.other.q122": "0.10"
+ },
+ "problems": []
+}

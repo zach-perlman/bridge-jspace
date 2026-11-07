@@ -1,19 +1,19 @@
 {
- "styles_plot": "0.1.7",
+ "styles_plot": "0.1.8",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "4cc8ef6e9052a94369bdd14108f242dd5bc0fd44f3b064d79bc88058d2847337"
+  "sha256": "a7dff76c9dca583b7604a881cb3e2cbc61d321745d8d532c08681eb6d481d1e9"
  },
  "registry": {
   "path": "data/figures/status_sp.csv",
-  "sha256": "5cf6cb98e209583921cbb8de2be6b5c2728462f4e6acaf91d5455ea5f7335fd9"
+  "sha256": "1e6b06afa8357977a0a7572082a55adc0ceff39b77426b93057cbc7740ff6cdd"
  },
  "figure": "appB_f12_order",
  "target": "post",
  "mode": "strict",
  "publishable": true,
  "png": {
-  "sha256": "202a8697ab7f22eb0a7a85ca608c8d5a12ae8a6583c7ff77ce2f5b72becdfd12",
+  "sha256": "86d03dd5110574a5d1c841ab5f8da515ae8324d3cdbbb44f3027c2e1308e857f",
   "dpi": 200
  },
  "roles": [
@@ -175,20 +175,20 @@
   "f12.diff.q27.interval": "[0.01, 0.22]",
   "f12.diff.q122": "−0.05",
   "f12.diff.q122.interval": "[−0.17, 0.05]",
-  "f12.lookup.after.q9": "−0.05",
   "f12.recall.after.q9": "0.50",
-  "f12.lookup.after.q27": "0.14",
+  "f12.lookup.after.q9": "−0.05",
   "f12.recall.after.q27": "0.74",
-  "f12.lookup.before.q27": "0.22",
+  "f12.lookup.after.q27": "0.14",
   "f12.recall.before.q27": "0.56",
-  "f12.lookup.after.mu": "−0.10",
+  "f12.lookup.before.q27": "0.22",
   "f12.recall.after.mu": "0.76",
-  "f12.lookup.after.nl": "0.02",
+  "f12.lookup.after.mu": "−0.10",
   "f12.recall.after.nl": "0.34",
-  "f12.lookup.after.q122": "0.01",
+  "f12.lookup.after.nl": "0.02",
   "f12.recall.after.q122": "0.27",
-  "f12.lookup.before.q122": "−0.03",
-  "f12.recall.before.q122": "0.31"
+  "f12.lookup.after.q122": "0.01",
+  "f12.recall.before.q122": "0.31",
+  "f12.lookup.before.q122": "−0.03"
  },
  "problems": []
 }

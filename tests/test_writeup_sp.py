@@ -74,15 +74,7 @@ def test_converted_registry_is_current_and_loads():
 
 
 # ---- the figures -----------------------------------------------------------------------------------------------------
-# styles-plot 0.1.7 regression (reported): the 27B's "0.61" is set left of its dot across the zero line though the
-# right side is free; fig05b built strict on 0.1.6 and its PNG is that build
-LIBRARY_REGRESSION = {"fig05b_controls_layer"}
-BUILT = [f for f in SP.FIGS if f not in LIBRARY_REGRESSION]
-
-
-@pytest.mark.xfail(strict=True, reason="styles-plot 0.1.7: left value label across the zero line (fig05b)")
-def test_fig05b_saves_strict(tmp_path):
-    sp.save(SP.FIGS["fig05b_controls_layer"](), tmp_path / "fig05b.png", target="post")
+BUILT = list(SP.FIGS)
 
 
 @pytest.fixture(scope="module")

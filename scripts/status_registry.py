@@ -250,7 +250,10 @@ DEPTH_FIGS = {"fig08a_address_read_remove", "fig08b_address_swap_lens", "f6_addr
               "fig02_specificity", "fig05b_identity_outside", "fig05c_described_bridge", "fig07c_probe_errors",
               "fig09d_chain", "fig21_code_tool", "fig14_learned", "fig08_first_locker", "fig09_transfer",
               "fig10_what_is_left", "fig15_mechanisms", "s01_split_all_scene_sets", "s02_parts_all",
-              "s03_order_split", "s08b_pointer_moves_and_neutral_sentence"}  # fmt: skip
+              "s03_order_split", "s08b_pointer_moves_and_neutral_sentence", "fig09c_formation", "fig10e_second_route",
+              "s05a_routes_taken_out", "s05b_routes_kept", "s03e_cumulative", "fig16a_dose_lens", "fig16b_dose_rest",
+              "s12_das_muse", "fig10c_binding", "fig10c2_binding_added", "fig10d_heads", "s07_recall_follows_swap",
+              "s07b_lens_readout", "fig02b_k_curve", "fig02c_k_routes"}  # fmt: skip
 DEPTH_PREFIX = (("t12_two_by_two", "t12.0."), ("t12_two_by_two", "t12.1."))
 
 
@@ -357,6 +360,42 @@ def depth_set_b() -> list[dict]:
         for cid in ("moves", "shift"):
             out.append(post_hoc("s08b_pointer_moves_and_neutral_sentence", f"{cid}.{k}", "supplementary to Fig. 8, "
                                 "after the data", f"{rs_} s08b_pointer_moves"))  # fmt: skip
+    return out
+
+
+def depth_set_c() -> list[dict]:
+    """The depth README's last figures (figkit/depth_sp_c.py): fixed in advance where the test has a rule number set
+    before its data (47.0, 47.4, 47.6, 48.1, 48.3, 48.4, 48.5, 51.1, 45k's routes arm), after the data where the story
+    builders say so (scripts/readme_story_figures.py s07_recall_follows_swap, f02b_k (a)); the routes test's arms as
+    the routes figures (hollow() with the lowered gate: the 122B's runs after the data)."""
+    from bridge_jspace.figkit.depth_sp_c import S03E_SETS, S05_ARMS
+
+    rs_, b48 = "scripts/readme_story_figures.py", "scripts/story_b48.py"
+    fixed_cells = (("fig09c_formation", "formation", "47.6 (b)", "scripts/story_b47b.py build_47_6"),
+                   ("fig10e_second_route", "route2", "48.5", f"{b48} build_second_route"),
+                   ("fig16a_dose_lens", "dose", "51.1 A", f"{rs_} fig16_dose"),
+                   ("fig16b_dose_rest", "dose", "51.1 B", f"{rs_} fig16_dose"),
+                   ("s12_das_muse", "learned", "48.1", f"{rs_} s12"),
+                   ("fig10c_binding", "binding", "48.3", f"{b48} build_binding"),
+                   ("fig10c2_binding_added", "binding", "48.3", f"{b48} build_binding"),
+                   ("fig10d_heads", "heads", "48.4", f"{b48} build_heads"),
+                   ("s07b_lens_readout", "readout", "47.0", f"{rs_} s07b_lens_readout"),
+                   ("fig02c_k_routes", "kcurve", "45k's routes test", f"{rs_} f02b_k (b)"))  # fmt: skip
+    out = []
+    for m, _ in MODELS:
+        k = SHORT[m]
+        for fid, cid, rule, src in fixed_cells:
+            out.append(fixed(fid, f"{cid}.{k}", f"{rule}, set before its data", src))
+        for s, _label in S03E_SETS:
+            out.append(fixed("s03e_cumulative", f"cumulative.{s}.{k}", "47.4, set before its data",
+                             "scripts/story_b47b.py SEGMENTS"))  # fmt: skip
+        out.append(post_hoc("s07_recall_follows_swap", f"follows.{k}", "supplementary to E6, after the data",
+                            f"{rs_} s07_recall_follows_swap"))  # fmt: skip
+        out.append(post_hoc("fig02b_k_curve", f"kcurve.{k}", "(a) the main test at 25, 50, 100 directions, after the "
+                            "data", f"{rs_} f02b_k (a)"))  # fmt: skip
+        for fid, arms in (("s05a_routes_taken_out", S05_ARMS[:5]), ("s05b_routes_kept", S05_ARMS[5:])):
+            for arm, _label in arms:
+                out.append(by_hollow(fid, f"routes.{arm}.{k}", m, lowered=True, what="the routes test's arms"))
     return out
 
 
@@ -524,7 +563,8 @@ def rows() -> list[dict]:
     writeup += unblocked_016(fig01(), depth_set(writeup) + depth_set_b())
     writeup += fig05_split(writeup) + f14_split(writeup)
     readme = readme_set(writeup)
-    return lightning([*writeup, *readme, *depth_set(writeup), *depth_set_b(), *breadth_set(readme)])
+    return lightning([*writeup, *readme, *depth_set(writeup), *depth_set_b(), *depth_set_c(),
+                      *breadth_set(readme)])
 
 
 if __name__ == "__main__":

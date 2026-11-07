@@ -1,19 +1,19 @@
 {
- "styles_plot": "0.1.7",
+ "styles_plot": "0.1.8",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "4cc8ef6e9052a94369bdd14108f242dd5bc0fd44f3b064d79bc88058d2847337"
+  "sha256": "a7dff76c9dca583b7604a881cb3e2cbc61d321745d8d532c08681eb6d481d1e9"
  },
  "registry": {
   "path": "data/figures/status_sp.csv",
-  "sha256": "5cf6cb98e209583921cbb8de2be6b5c2728462f4e6acaf91d5455ea5f7335fd9"
+  "sha256": "1e6b06afa8357977a0a7572082a55adc0ceff39b77426b93057cbc7740ff6cdd"
  },
  "figure": "fig08a_address_read_remove",
  "target": "post",
  "mode": "strict",
  "publishable": true,
  "png": {
-  "sha256": "d360c9d0123f6152392e0212bb5259246d1c9d1d3ad22efeac8e4829c5537ccb",
+  "sha256": "234def70d73dcac0f077158314fc731a8b8deed1791ec407a2312d7e9486f8d9",
   "dpi": 200
  },
  "roles": [
@@ -238,16 +238,16 @@
   "fig08a.probe.mu": "0.97",
   "fig08a.probe.nl": "0.85",
   "fig08a.probe.q122": "0.92",
-  "fig08a.remove.q9": "0.08",
   "fig08a.random.q9": "0.54",
-  "fig08a.remove.q27": "0.06",
+  "fig08a.remove.q9": "0.08",
   "fig08a.random.q27": "0.25",
-  "fig08a.remove.mu": "0.27",
+  "fig08a.remove.q27": "0.06",
   "fig08a.random.mu": "0.55",
-  "fig08a.remove.nl": "0.10",
+  "fig08a.remove.mu": "0.27",
   "fig08a.random.nl": "0.56",
-  "fig08a.remove.q122": "0.05",
-  "fig08a.random.q122": "0.36"
+  "fig08a.remove.nl": "0.10",
+  "fig08a.random.q122": "0.36",
+  "fig08a.remove.q122": "0.05"
  },
  "problems": []
 }

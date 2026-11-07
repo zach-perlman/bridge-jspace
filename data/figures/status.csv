@@ -797,6 +797,121 @@ s03_order_split,order.clean_before.q122,fixed_in_advance,,the clean one-pick sce
 s03_order_split,order.clean_after.q122,fixed_in_advance,,the clean one-pick scenes (45m): the figkit figure drew no mark hollow,scripts/readme_story_figures.py s03_order_split
 s08b_pointer_moves_and_neutral_sentence,moves.q122,post_hoc,,"supplementary to Fig. 8, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s08b_pointer_moves
 s08b_pointer_moves_and_neutral_sentence,shift.q122,post_hoc,,"supplementary to Fig. 8, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s08b_pointer_moves
+fig09c_formation,formation.q9,fixed_in_advance,,"47.6 (b), set before its data: the figkit figure drew no mark hollow",scripts/story_b47b.py build_47_6
+fig10e_second_route,route2.q9,fixed_in_advance,,"48.5, set before its data: the figkit figure drew no mark hollow",scripts/story_b48.py build_second_route
+fig16a_dose_lens,dose.q9,fixed_in_advance,,"51.1 A, set before its data: the figkit figure drew no mark hollow",scripts/readme_story_figures.py fig16_dose
+fig16b_dose_rest,dose.q9,fixed_in_advance,,"51.1 B, set before its data: the figkit figure drew no mark hollow",scripts/readme_story_figures.py fig16_dose
+s12_das_muse,learned.q9,fixed_in_advance,,"48.1, set before its data: the figkit figure drew no mark hollow",scripts/readme_story_figures.py s12
+fig10c_binding,binding.q9,fixed_in_advance,,"48.3, set before its data: the figkit figure drew no mark hollow",scripts/story_b48.py build_binding
+fig10c2_binding_added,binding.q9,fixed_in_advance,,"48.3, set before its data: the figkit figure drew no mark hollow",scripts/story_b48.py build_binding
+fig10d_heads,heads.q9,fixed_in_advance,,"48.4, set before its data: the figkit figure drew no mark hollow",scripts/story_b48.py build_heads
+s07b_lens_readout,readout.q9,fixed_in_advance,,"47.0, set before its data: the figkit figure drew no mark hollow",scripts/readme_story_figures.py s07b_lens_readout
+fig02c_k_routes,kcurve.q9,fixed_in_advance,,"45k's routes test, set before its data: the figkit figure drew no mark hollow",scripts/readme_story_figures.py f02b_k (b)
+s03e_cumulative,cumulative.main.q9,fixed_in_advance,,"47.4, set before its data: the figkit figure drew no mark hollow",scripts/story_b47b.py SEGMENTS
+s03e_cumulative,cumulative.clean.q9,fixed_in_advance,,"47.4, set before its data: the figkit figure drew no mark hollow",scripts/story_b47b.py SEGMENTS
+s07_recall_follows_swap,follows.q9,post_hoc,,"supplementary to E6, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s07_recall_follows_swap
+fig02b_k_curve,kcurve.q9,post_hoc,,"(a) the main test at 25, 50, 100 directions, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f02b_k (a)
+s05a_routes_taken_out,routes.whole.q9,fixed_in_advance,,the routes test's arms: fixed in advance for qwen3.5-9b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05a_routes_taken_out,routes.no_jpp.q9,fixed_in_advance,,the routes test's arms: fixed in advance for qwen3.5-9b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05a_routes_taken_out,routes.no_jpp_rand.q9,fixed_in_advance,,the routes test's arms: fixed in advance for qwen3.5-9b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05a_routes_taken_out,routes.no_alf.q9,fixed_in_advance,,the routes test's arms: fixed in advance for qwen3.5-9b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05a_routes_taken_out,routes.no_alf_rand.q9,fixed_in_advance,,the routes test's arms: fixed in advance for qwen3.5-9b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05b_routes_kept,routes.keep_alf.q9,fixed_in_advance,,the routes test's arms: fixed in advance for qwen3.5-9b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05b_routes_kept,routes.keep_alf_rand.q9,fixed_in_advance,,the routes test's arms: fixed in advance for qwen3.5-9b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05b_routes_kept,routes.keep_jpp.q9,fixed_in_advance,,the routes test's arms: fixed in advance for qwen3.5-9b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05b_routes_kept,routes.keep_jpp_rand.q9,fixed_in_advance,,the routes test's arms: fixed in advance for qwen3.5-9b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig09c_formation,formation.q27,fixed_in_advance,,"47.6 (b), set before its data: the figkit figure drew no mark hollow",scripts/story_b47b.py build_47_6
+fig10e_second_route,route2.q27,fixed_in_advance,,"48.5, set before its data: the figkit figure drew no mark hollow",scripts/story_b48.py build_second_route
+fig16a_dose_lens,dose.q27,fixed_in_advance,,"51.1 A, set before its data: the figkit figure drew no mark hollow",scripts/readme_story_figures.py fig16_dose
+fig16b_dose_rest,dose.q27,fixed_in_advance,,"51.1 B, set before its data: the figkit figure drew no mark hollow",scripts/readme_story_figures.py fig16_dose
+s12_das_muse,learned.q27,fixed_in_advance,,"48.1, set before its data: the figkit figure drew no mark hollow",scripts/readme_story_figures.py s12
+fig10c_binding,binding.q27,fixed_in_advance,,"48.3, set before its data: the figkit figure drew no mark hollow",scripts/story_b48.py build_binding
+fig10c2_binding_added,binding.q27,fixed_in_advance,,"48.3, set before its data: the figkit figure drew no mark hollow",scripts/story_b48.py build_binding
+fig10d_heads,heads.q27,fixed_in_advance,,"48.4, set before its data: the figkit figure drew no mark hollow",scripts/story_b48.py build_heads
+s07b_lens_readout,readout.q27,fixed_in_advance,,"47.0, set before its data: the figkit figure drew no mark hollow",scripts/readme_story_figures.py s07b_lens_readout
+fig02c_k_routes,kcurve.q27,fixed_in_advance,,"45k's routes test, set before its data: the figkit figure drew no mark hollow",scripts/readme_story_figures.py f02b_k (b)
+s03e_cumulative,cumulative.main.q27,fixed_in_advance,,"47.4, set before its data: the figkit figure drew no mark hollow",scripts/story_b47b.py SEGMENTS
+s03e_cumulative,cumulative.clean.q27,fixed_in_advance,,"47.4, set before its data: the figkit figure drew no mark hollow",scripts/story_b47b.py SEGMENTS
+s07_recall_follows_swap,follows.q27,post_hoc,,"supplementary to E6, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s07_recall_follows_swap
+fig02b_k_curve,kcurve.q27,post_hoc,,"(a) the main test at 25, 50, 100 directions, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f02b_k (a)
+s05a_routes_taken_out,routes.whole.q27,fixed_in_advance,,the routes test's arms: fixed in advance for qwen3.6-27b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05a_routes_taken_out,routes.no_jpp.q27,fixed_in_advance,,the routes test's arms: fixed in advance for qwen3.6-27b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05a_routes_taken_out,routes.no_jpp_rand.q27,fixed_in_advance,,the routes test's arms: fixed in advance for qwen3.6-27b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05a_routes_taken_out,routes.no_alf.q27,fixed_in_advance,,the routes test's arms: fixed in advance for qwen3.6-27b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05a_routes_taken_out,routes.no_alf_rand.q27,fixed_in_advance,,the routes test's arms: fixed in advance for qwen3.6-27b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05b_routes_kept,routes.keep_alf.q27,fixed_in_advance,,the routes test's arms: fixed in advance for qwen3.6-27b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05b_routes_kept,routes.keep_alf_rand.q27,fixed_in_advance,,the routes test's arms: fixed in advance for qwen3.6-27b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05b_routes_kept,routes.keep_jpp.q27,fixed_in_advance,,the routes test's arms: fixed in advance for qwen3.6-27b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05b_routes_kept,routes.keep_jpp_rand.q27,fixed_in_advance,,the routes test's arms: fixed in advance for qwen3.6-27b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig09c_formation,formation.mu,fixed_in_advance,,"47.6 (b), set before its data: the figkit figure drew no mark hollow",scripts/story_b47b.py build_47_6
+fig10e_second_route,route2.mu,fixed_in_advance,,"48.5, set before its data: the figkit figure drew no mark hollow",scripts/story_b48.py build_second_route
+fig16a_dose_lens,dose.mu,fixed_in_advance,,"51.1 A, set before its data: the figkit figure drew no mark hollow",scripts/readme_story_figures.py fig16_dose
+fig16b_dose_rest,dose.mu,fixed_in_advance,,"51.1 B, set before its data: the figkit figure drew no mark hollow",scripts/readme_story_figures.py fig16_dose
+s12_das_muse,learned.mu,fixed_in_advance,,"48.1, set before its data: the figkit figure drew no mark hollow",scripts/readme_story_figures.py s12
+fig10c_binding,binding.mu,fixed_in_advance,,"48.3, set before its data: the figkit figure drew no mark hollow",scripts/story_b48.py build_binding
+fig10c2_binding_added,binding.mu,fixed_in_advance,,"48.3, set before its data: the figkit figure drew no mark hollow",scripts/story_b48.py build_binding
+fig10d_heads,heads.mu,fixed_in_advance,,"48.4, set before its data: the figkit figure drew no mark hollow",scripts/story_b48.py build_heads
+s07b_lens_readout,readout.mu,fixed_in_advance,,"47.0, set before its data: the figkit figure drew no mark hollow",scripts/readme_story_figures.py s07b_lens_readout
+fig02c_k_routes,kcurve.mu,fixed_in_advance,,"45k's routes test, set before its data: the figkit figure drew no mark hollow",scripts/readme_story_figures.py f02b_k (b)
+s03e_cumulative,cumulative.main.mu,fixed_in_advance,,"47.4, set before its data: the figkit figure drew no mark hollow",scripts/story_b47b.py SEGMENTS
+s03e_cumulative,cumulative.clean.mu,fixed_in_advance,,"47.4, set before its data: the figkit figure drew no mark hollow",scripts/story_b47b.py SEGMENTS
+s07_recall_follows_swap,follows.mu,post_hoc,,"supplementary to E6, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s07_recall_follows_swap
+fig02b_k_curve,kcurve.mu,post_hoc,,"(a) the main test at 25, 50, 100 directions, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f02b_k (a)
+s05a_routes_taken_out,routes.whole.mu,fixed_in_advance,,the routes test's arms: fixed in advance for muse-glimmer-30b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05a_routes_taken_out,routes.no_jpp.mu,fixed_in_advance,,the routes test's arms: fixed in advance for muse-glimmer-30b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05a_routes_taken_out,routes.no_jpp_rand.mu,fixed_in_advance,,the routes test's arms: fixed in advance for muse-glimmer-30b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05a_routes_taken_out,routes.no_alf.mu,fixed_in_advance,,the routes test's arms: fixed in advance for muse-glimmer-30b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05a_routes_taken_out,routes.no_alf_rand.mu,fixed_in_advance,,the routes test's arms: fixed in advance for muse-glimmer-30b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05b_routes_kept,routes.keep_alf.mu,fixed_in_advance,,the routes test's arms: fixed in advance for muse-glimmer-30b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05b_routes_kept,routes.keep_alf_rand.mu,fixed_in_advance,,the routes test's arms: fixed in advance for muse-glimmer-30b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05b_routes_kept,routes.keep_jpp.mu,fixed_in_advance,,the routes test's arms: fixed in advance for muse-glimmer-30b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05b_routes_kept,routes.keep_jpp_rand.mu,fixed_in_advance,,the routes test's arms: fixed in advance for muse-glimmer-30b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig09c_formation,formation.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig10e_second_route,route2.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig16a_dose_lens,dose.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig16b_dose_rest,dose.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s12_das_muse,learned.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig10c_binding,binding.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig10c2_binding_added,binding.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig10d_heads,heads.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s07b_lens_readout,readout.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig02c_k_routes,kcurve.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s03e_cumulative,cumulative.main.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s03e_cumulative,cumulative.clean.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s07_recall_follows_swap,follows.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig02b_k_curve,kcurve.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s05a_routes_taken_out,routes.whole.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s05a_routes_taken_out,routes.no_jpp.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s05a_routes_taken_out,routes.no_jpp_rand.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s05a_routes_taken_out,routes.no_alf.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s05a_routes_taken_out,routes.no_alf_rand.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s05b_routes_kept,routes.keep_alf.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s05b_routes_kept,routes.keep_alf_rand.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s05b_routes_kept,routes.keep_jpp.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s05b_routes_kept,routes.keep_jpp_rand.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig09c_formation,formation.q122,fixed_in_advance,,"47.6 (b), set before its data: the figkit figure drew no mark hollow",scripts/story_b47b.py build_47_6
+fig10e_second_route,route2.q122,fixed_in_advance,,"48.5, set before its data: the figkit figure drew no mark hollow",scripts/story_b48.py build_second_route
+fig16a_dose_lens,dose.q122,fixed_in_advance,,"51.1 A, set before its data: the figkit figure drew no mark hollow",scripts/readme_story_figures.py fig16_dose
+fig16b_dose_rest,dose.q122,fixed_in_advance,,"51.1 B, set before its data: the figkit figure drew no mark hollow",scripts/readme_story_figures.py fig16_dose
+s12_das_muse,learned.q122,fixed_in_advance,,"48.1, set before its data: the figkit figure drew no mark hollow",scripts/readme_story_figures.py s12
+fig10c_binding,binding.q122,fixed_in_advance,,"48.3, set before its data: the figkit figure drew no mark hollow",scripts/story_b48.py build_binding
+fig10c2_binding_added,binding.q122,fixed_in_advance,,"48.3, set before its data: the figkit figure drew no mark hollow",scripts/story_b48.py build_binding
+fig10d_heads,heads.q122,fixed_in_advance,,"48.4, set before its data: the figkit figure drew no mark hollow",scripts/story_b48.py build_heads
+s07b_lens_readout,readout.q122,fixed_in_advance,,"47.0, set before its data: the figkit figure drew no mark hollow",scripts/readme_story_figures.py s07b_lens_readout
+fig02c_k_routes,kcurve.q122,fixed_in_advance,,"45k's routes test, set before its data: the figkit figure drew no mark hollow",scripts/readme_story_figures.py f02b_k (b)
+s03e_cumulative,cumulative.main.q122,fixed_in_advance,,"47.4, set before its data: the figkit figure drew no mark hollow",scripts/story_b47b.py SEGMENTS
+s03e_cumulative,cumulative.clean.q122,fixed_in_advance,,"47.4, set before its data: the figkit figure drew no mark hollow",scripts/story_b47b.py SEGMENTS
+s07_recall_follows_swap,follows.q122,post_hoc,,"supplementary to E6, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s07_recall_follows_swap
+fig02b_k_curve,kcurve.q122,post_hoc,,"(a) the main test at 25, 50, 100 directions, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f02b_k (a)
+s05a_routes_taken_out,routes.whole.q122,post_hoc,,the routes test's arms: post hoc for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05a_routes_taken_out,routes.no_jpp.q122,post_hoc,,the routes test's arms: post hoc for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05a_routes_taken_out,routes.no_jpp_rand.q122,post_hoc,,the routes test's arms: post hoc for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05a_routes_taken_out,routes.no_alf.q122,post_hoc,,the routes test's arms: post hoc for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05a_routes_taken_out,routes.no_alf_rand.q122,post_hoc,,the routes test's arms: post hoc for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05b_routes_kept,routes.keep_alf.q122,post_hoc,,the routes test's arms: post hoc for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05b_routes_kept,routes.keep_alf_rand.q122,post_hoc,,the routes test's arms: post hoc for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05b_routes_kept,routes.keep_jpp.q122,post_hoc,,the routes test's arms: post hoc for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+s05b_routes_kept,routes.keep_jpp_rand.q122,post_hoc,,the routes test's arms: post hoc for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
 breadth_fig06_pointer,swap.q9,fixed_in_advance,,the pointer runs and the probe's subspace: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/exemplars.py r4_pointer (as r4_pointer, drawn for docs/breadth)"
 breadth_fig06_pointer,neutral.q9,fixed_in_advance,,the pointer runs and the probe's subspace: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/exemplars.py r4_pointer (as r4_pointer, drawn for docs/breadth)"
 breadth_fig06_pointer,noown.q9,fixed_in_advance,,the pointer runs and the probe's subspace: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/exemplars.py r4_pointer (as r4_pointer, drawn for docs/breadth)"

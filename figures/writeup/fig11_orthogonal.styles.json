@@ -1,19 +1,19 @@
 {
- "styles_plot": "0.1.7",
+ "styles_plot": "0.1.8",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "4cc8ef6e9052a94369bdd14108f242dd5bc0fd44f3b064d79bc88058d2847337"
+  "sha256": "a7dff76c9dca583b7604a881cb3e2cbc61d321745d8d532c08681eb6d481d1e9"
  },
  "registry": {
   "path": "data/figures/status_sp.csv",
-  "sha256": "5cf6cb98e209583921cbb8de2be6b5c2728462f4e6acaf91d5455ea5f7335fd9"
+  "sha256": "1e6b06afa8357977a0a7572082a55adc0ceff39b77426b93057cbc7740ff6cdd"
  },
  "figure": "fig11_orthogonal",
  "target": "post",
  "mode": "strict",
  "publishable": true,
  "png": {
-  "sha256": "3df8cd6f04e4cea58eac333921411af15a4dcbe6b00f3ce87b3c1c8e1a621d1f",
+  "sha256": "f88454853890dcefaae3e524fd7c087e19b91f74b9416a8dbd15e9b895abb8ee",
   "dpi": 200
  },
  "roles": [
@@ -179,15 +179,15 @@
   "fig11.clean_subspace.q9": "−0.8",
   "fig11.clean_subspace.q27": "11.1",
   "fig11.clean_subspace.nl": "11.3",
-  "fig11.onehop.city_perp.q9": "0.4",
-  "fig11.onehop.city.q9": "41.5",
   "fig11.onehop.answers.q9": "59.3",
-  "fig11.onehop.city_perp.q27": "1.2",
-  "fig11.onehop.city.q27": "29.2",
+  "fig11.onehop.city.q9": "41.5",
+  "fig11.onehop.city_perp.q9": "0.4",
   "fig11.onehop.answers.q27": "60.9",
-  "fig11.onehop.city_perp.nl": "0.0",
+  "fig11.onehop.city.q27": "29.2",
+  "fig11.onehop.city_perp.q27": "1.2",
+  "fig11.onehop.answers.nl": "75.0",
   "fig11.onehop.city.nl": "25.2",
-  "fig11.onehop.answers.nl": "75.0"
+  "fig11.onehop.city_perp.nl": "0.0"
  },
  "problems": []
 }

@@ -1,19 +1,19 @@
 {
- "styles_plot": "0.1.7",
+ "styles_plot": "0.1.8",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "4cc8ef6e9052a94369bdd14108f242dd5bc0fd44f3b064d79bc88058d2847337"
+  "sha256": "a7dff76c9dca583b7604a881cb3e2cbc61d321745d8d532c08681eb6d481d1e9"
  },
  "registry": {
   "path": "data/figures/status_sp.csv",
-  "sha256": "5cf6cb98e209583921cbb8de2be6b5c2728462f4e6acaf91d5455ea5f7335fd9"
+  "sha256": "1e6b06afa8357977a0a7572082a55adc0ceff39b77426b93057cbc7740ff6cdd"
  },
  "figure": "fig10_answer_span",
  "target": "post",
  "mode": "strict",
  "publishable": true,
  "png": {
-  "sha256": "439706e05d2e1ee1e44be2e1f0190aadb948e314c247cd5d1d266a2c0df16fc3",
+  "sha256": "f17208b96b48cef591ed4837735bfc6626c90b168941b4697097b4cbcba7af1a",
   "dpi": 200
  },
  "roles": [
@@ -163,10 +163,10 @@
   "whiskers: 95% interval"
  ],
  "numbers": {
-  "fig10.keep_ctrl.q9": "−0.11",
   "fig10.keep_span.q9": "0.93",
-  "fig10.keep_ctrl.q27": "0.02",
+  "fig10.keep_ctrl.q9": "−0.11",
   "fig10.keep_span.q27": "0.95",
+  "fig10.keep_ctrl.q27": "0.02",
   "fig10.keep_span.nl": "0.91",
   "fig10.span_only.v4.q9": "1.04",
   "fig10.span_only.v4.q27": "1.02",
