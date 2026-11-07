@@ -230,7 +230,7 @@ def fig11_orthogonal() -> sp.Figure:
         sub[m] = (sp.Missing("source missing") if c is None else
                   est(c, f"subspace.{k}", key=f"fig11.clean_subspace.{k}", label=True))  # fmt: skip
     subspace = sp.DotColumn("data-built city subspace", "drop_beyond", (-10, 30), (0, 10, 20), width=2.3,
-                            series=[sp.Series("neutral", sub)],
+                            series=[sp.Series("neutral", sub, word="data-built city subspace")],
                             rules=[sp.Rule(BAR11, "bar fixed in advance: {}", unit="drop_beyond", key="fig11.bar")])  # fmt: skip
     t = sp.DotTable(TWIN, [subspace, one], note="one-hop question: “{city} is in the country of”")
     return sp.Figure("fig11_orthogonal", v).add(t)
@@ -641,13 +641,8 @@ def fig03_tools() -> sp.Figure:
 # Declared, but styles-plot refuses them in strict mode (they stay on figkit until a decision):
 # fig05 (two five-panel tables: 0.80 wide : high, under the post's 1.0; labels cross lines), appB_f14 (two five-row
 # tables: 0.98)
-# fig10 (0.1.5: a left label is set past every mark of its row, onto the grey control; Lightning's 'descriptive' tag and its
-# 'no energy-matched control' note overlap on the row's second line).
-BLOCKED = {"fig05_controls": fig05_controls, "appB_f14_two_codes": appB_f14_two_codes,
-           "fig10_answer_span": fig10_answer_span}
-# Not declared (the grammar has no form for them yet): fig06 and appB_f18 (a second same-role estimate in one row),
-# fig07 (stack whiskers), appB_f5 (stack segments that are not roles), appB_f15 (sweep points with their own
-# intervals off the line values).
+# fig05 and appB_f14 are drawn as their splits (SPLIT).
+BLOCKED = {"fig05_controls": fig05_controls, "appB_f14_two_codes": appB_f14_two_codes}
 FIGS = {"fig00_schematic": fig00_schematic, "fig02_datasets": fig02_datasets,
         "fig08b_address_swap_lens": fig08b_address_swap_lens, "fig11_orthogonal": fig11_orthogonal,
         "fig13_last_token": fig13_last_token, "figA1_agents": figA1_agents, "appB_f9_where": appB_f9_where,
@@ -655,7 +650,8 @@ FIGS = {"fig00_schematic": fig00_schematic, "fig02_datasets": fig02_datasets,
         "appB_f19_six_lockers": appB_f19_six_lockers, "fig08a_address_read_remove": fig08a_address_read_remove,
         "fig05a_controls_band": fig05a_controls_band, "fig05b_controls_layer": fig05b_controls_layer,
         "appB_f5_atoms": appB_f5_atoms, "appB_f14a_position_route": appB_f14a_position_route,
-        "appB_f14b_identity_route": appB_f14b_identity_route, "fig03_tools": fig03_tools}  # fmt: skip
+        "appB_f14b_identity_route": appB_f14b_identity_route, "fig03_tools": fig03_tools,
+        "fig10_answer_span": fig10_answer_span}  # fmt: skip
 # Fig. 5 is drawn as two new files; the post embeds both where it embedded fig05_controls.png
 SPLIT = {"fig05_controls": ("fig05a_controls_band", "fig05b_controls_layer"),
          "appB_f14_two_codes": ("appB_f14a_position_route", "appB_f14b_identity_route")}

@@ -30,7 +30,11 @@ TWIN = WB.TWIN
 # README id -> the write-up figure it draws (the same cells and statuses, scripts/status_registry.py copies them)
 ALIAS = {"r1_c1_split": "fig01_main_split", "r3_last_token": "fig13_last_token", "f9_where": "appB_f9_where",
          "f8_facts": "appB_f8_facts", "f8_directions": "appB_f8_directions", "f12_order": "appB_f12_order",
-         "f14_two_codes": "appB_f14_two_codes", "f2_controls": "fig05_controls", "p0a_datasets": "fig02_datasets", "p0b_tools": "fig03_tools"}  # fmt: skip
+         "f14_two_codes": "appB_f14_two_codes", "f2_controls": "fig05_controls", "p0a_datasets": "fig02_datasets", "p0b_tools": "fig03_tools",
+         "f3_nine_models": "fig06_nine_models", "r5_routes": "fig07_routes",
+         # f6_address drawn as two figures: one table of four columns needs 2.99 in of colour words over a 2.19 in panel
+         # (SP609; Dan, 7 Nov: lanes or split); the README embeds both where it embedded f6_address.png
+         "f6a_address_read_remove": "fig08a_address_read_remove", "f6b_address_swap_lens": "fig08b_address_swap_lens"}  # fmt: skip
 WRITEUP = {**WS.FIGS, **WB.BLOCKED}
 
 
@@ -55,7 +59,7 @@ def r1_dan_split() -> sp.Figure:
         connect=("lookup", "recall"), band=(-0.1, 0.1),
     )  # fmt: skip
     gap = sp.DotColumn("gap: recall − lookup", "gap_share", (-0.1, 1.1), (0, 0.5, 1),
-                       series=[sp.Series("neutral", {m: WS._layer_gap(m) for m in DAN})])  # fmt: skip
+                       series=[sp.Series("neutral", {m: WS._layer_gap(m) for m in DAN}, word=WS.GAP)])  # fmt: skip
     t = sp.DotTable(DAN, [sp.ColumnGroup("One layer · locker scenes", [shares, gap])])
     return sp.Figure("r1_dan_split", vocab()).add(t)
 
@@ -87,7 +91,7 @@ def r4_pointer() -> sp.Figure:
         probe[m] = (est(c, f"probe.{ZK[m]}", key=f"probe.{ZK[m]}.probe_pts", label=True) if c
                     else sp.Missing("no run"))  # fmt: skip
     cols.append(sp.DotColumn("a probe's subspace", "moved", (-8, 96), (0, 40, 80),
-                             series=[sp.Series("neutral", probe)]))  # fmt: skip
+                             series=[sp.Series("neutral", probe, word="a probe's subspace")]))  # fmt: skip
 
     def diff(m):
         key = f"ptr.{ZK[m]}.neutral_minus_swap"
@@ -221,8 +225,8 @@ def t12_two_by_two() -> sp.Figure:
             if c:
                 ctl[m] = est(c, cell, key=f"t12.{j}.control.{k}")
         control = "rotated" if j == 3 else "a random part"
-        cols.append(sp.DotColumn(header.capitalize(), "gap_effect", (-0.25, 1.35), DF.XTICKS,
-                                 series=[sp.Series("control", ctl, control=control), sp.Series("neutral", gap)]))  # fmt: skip
+        cols.append(sp.DotColumn(header.capitalize(), "gap_effect", (-0.25, 1.0), DF.XTICKS,
+                                 series=[sp.Series("control", ctl, control=control), sp.Series("neutral", gap, word=header.capitalize())]))  # fmt: skip
     t = sp.DotTable(DAN, [sp.ColumnGroup("One layer", cols[:2]), sp.Gutter(), sp.ColumnGroup("Band of layers", cols[2:])])
     return sp.Figure("t12_two_by_two", vocab()).add(t)
 
@@ -230,11 +234,8 @@ def t12_two_by_two() -> sp.Figure:
 FIGS = {**{fid: _alias(fid) for fid in ALIAS}, "r1_dan_split": r1_dan_split, "r4_pointer": r4_pointer,
         "f5_atoms": f5_atoms, "f11_monitor": f11_monitor, "f10_sentence_order": f10_sentence_order,
         "t12_two_by_two": t12_two_by_two}  # fmt: skip
-# Declared but refused by styles-plot 0.1.5 strict (stays on figkit): f6_address (at the readme width the colour words
-# 'address swap' and 'a change of item' overlap in one strip; value labels on a mark and across lines).
+# Declared but refused strict (SP609, see ALIAS): f6_address, drawn as f6a + f6b.
 BLOCKED = {"f6_address": f6_address}
-# Left on figkit: f3_nine_models (a second same-role estimate in one row: Bolt at 100 directions, the 122B scored by
-# probability), r5_routes (stack whiskers).
 
 
 DEPTH = REPO / "figures" / "depth"

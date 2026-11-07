@@ -242,8 +242,10 @@ BREADTH = {  # (figure, cell prefix) -> the registration it cites
     ("fig12_pointer", ""): CHAIN, ("r4_pointer", ""): CHAIN,
     ("t12_two_by_two", "t12.2."): CHAIN, ("t12_two_by_two", "t12.3."): CHAIN,
     ("fig04_twin_set", ""): TWIN_NOTES, ("fig10_answer_span", ""): TWIN_NOTES, ("fig11_orthogonal", ""): TWIN_NOTES,
+    ("fig06_nine_models", ""): CHAIN, ("f3_nine_models", ""): CHAIN,
 }  # fmt: skip
 DEPTH_FIGS = {"fig08a_address_read_remove", "fig08b_address_swap_lens", "f6_address", "fig13_last_token",
+              "f6a_address_read_remove", "f6b_address_swap_lens", "fig07_routes", "r5_routes", "appB_f18_code_tool",
               "r3_last_token", "r1_dan_split", "fig05b_controls_layer", "fig01b_settings", "fig01c_zeroing",
               "fig02_specificity", "fig05b_identity_outside", "fig05c_described_bridge", "fig07c_probe_errors",
               "fig09d_chain", "fig21_code_tool", "fig14_learned", "fig08_first_locker", "fig09_transfer",
@@ -462,8 +464,11 @@ def breadth_new() -> list[dict]:
                        "on Lightning", f"{PREREG} Amendment 15 (three-step natural chains, the 27B)"))  # fmt: skip
     UNCLEAR.add("breadth_fig10a1/a2_beyond three.nat3.nl: Amendment 15 registers natural three-hop chains before Lightning "
                 "was queued (Amendment 40); post hoc")  # fmt: skip
-    for k, cite in (("q27", A19), ("q9", A19), ("mu", A19), ("nl", A55)):  # fig10c
+    for k, cite in (("q27", A19), ("q9", A19), ("nl", A55)):  # fig10c
         out.append(row("breadth_fig10c_beyond", f"gen.{k}", "fixed_in_advance", "registered before the run", cite))
+    # Amendment 19 calls Muse's part "descriptive, no rule" (Dan, 7 Nov: descriptive)
+    out.append(row("breadth_fig10c_beyond", "gen.mu", "descriptive", "Muse's part of the spot-check: descriptive, no "
+                   "rule (Amendment 19)", f"{A19}; Dan 7 Nov"))  # fmt: skip
     for k in ("q27", "q122", "nb", "mi", "nl", "q9", "mu", "ds"):  # fig00b: eligibility counts (data, not a test)
         out.append(row("breadth_fig00b_dataset", f"elig.{k}", "fixed_in_advance", "a count of the dataset and the "
                        "model's competence run, not a test", "results/tasks_v2/<model>_competence; scripts/tasks_v2.py"))  # fmt: skip
@@ -472,8 +477,51 @@ def breadth_new() -> list[dict]:
     return out
 
 
+def unblocked_016(fig01_rows: list[dict], depth: list[dict]) -> list[dict]:
+    """The write-up figures styles-plot 0.1.6 draws (figkit/writeup_sp_c.py). fig06: the answers moved per model as
+    the breadth figures register them (BREADTH_CITE; Lightning by lightning()), the gap as Fig. 1's band test (its
+    rows; the breadth models per BREADTH_CITE), Bolt at 100 directions and the 122B scored by probability after the
+    data. fig07: the routes test is a depth test (hollow() with the lowered gate). appB_f15: the cells fixed in advance
+    (rule 45q's arms a, c, d) and the layer sweep, post hoc (the figkit figure drew it open). appB_f18: the depth
+    README's fig21 (its rows)."""
+    src = "src/bridge_jspace/figkit/"
+    f1 = {r["cell"]: r for r in fig01_rows}
+    out = []
+    for k in ("q9", "q27", "mu", "nl", "q122", "ds", "mi", "nb", "ol"):
+        if k in BREADTH_CITE:
+            out.append(row("fig06_nine_models", f"swap.{k}", "fixed_in_advance", "the swap, registered before this "
+                           "model's data", BREADTH_CITE[k]))  # fmt: skip
+        elif k == "nl":
+            out.append(row("fig06_nine_models", "swap.nl", "fixed_in_advance", "Lightning's swap", CHAIN))
+        if f"band.{k}" in f1:
+            r = f1[f"band.{k}"]
+            out.append({**r, "figure": "fig06_nine_models", "cell": f"gap.{k}", "source": f"{r['source']} (as Fig. 1)"})
+        else:
+            out.append(row("fig06_nine_models", f"gap.{k}", "fixed_in_advance", "the band test, registered before "
+                           "this model's data", BREADTH_CITE[k]))  # fmt: skip
+    for k in ("ds", "mi", "nb", "ol"):
+        UNCLEAR.add(f"fig06_nine_models swap.{k} / gap.{k}: the amendment registers the model's tests, not this cell")
+    out.append(post_hoc("fig06_nine_models", "swap100.nb", "Bolt at 100 directions, a second run after its data",
+                        f"{src}deck_figs.py f_nine (the small dot)"))  # fmt: skip
+    out.append(post_hoc("fig06_nine_models", "soft.q122", "the 122B scored by probability, after its data",
+                        f"{src}writeup_address.py fig06_nine_models (its grey dot, hollow)"))  # fmt: skip
+    for m, _ in MODELS:
+        out.append(by_hollow("fig07_routes", f"routes.{SHORT[m]}", m, lowered=True, what="the two routes"))
+    for k in ("q9", "q27", "mu"):
+        for arm in ("a", "c", "d"):
+            out.append(fixed("appB_f15_link_crossover", f"arm.{arm}.{k}", "rule 45q's cells fixed in advance",
+                             f"{src}curve_figs.py f_link_crossover"))  # fmt: skip
+        for tag in ("bridge", "copy"):
+            out.append(post_hoc("appB_f15_link_crossover", f"sweep.{tag}.{k}", "the layer sweep",
+                                f"{src}curve_figs.py f_link_crossover (open marks)"))  # fmt: skip
+    out += [{**r, "figure": "appB_f18_code_tool", "source": f"{r['source']} (as fig21_code_tool, drawn for the "
+             "write-up)"} for r in depth if r["figure"] == "fig21_code_tool"]  # fmt: skip
+    return out
+
+
 def rows() -> list[dict]:
     writeup = [*key(), *fig01(), *fig04(), *fig09(), *fig12(), *appB_f17(), *styles_plot_port()]
+    writeup += unblocked_016(fig01(), depth_set(writeup) + depth_set_b())
     writeup += fig05_split(writeup) + f14_split(writeup)
     readme = readme_set(writeup)
     return lightning([*writeup, *readme, *depth_set(writeup), *depth_set_b(), *breadth_set(readme)])

@@ -355,6 +355,10 @@ cue = false
 
 [terms]
 canonical = [
+    # the write-up figures styles-plot 0.1.6 draws (figkit/writeup_sp_c.py): fig06, fig07, appB_f15
+    "at 100 directions", "scored by probability", "by identity", "other", "when another item's locker moved",
+    "at the bridge word", "copied into the locker sentences", "at the bridge word, at L", "copied, at L",
+    "copied, at L/2",
     # the breadth set, second batch (figkit/breadth_sp.py): fig02 B, fig03, fig05 B, fig10a/b/c, fig00b
     "toy puzzles", "toy, data seed 2", "natural chains", "natplus", "suite v1", "suite v2",
     "other models on the datasets they ran", "bridge never named", "the answer's direction in the swapped lens part",

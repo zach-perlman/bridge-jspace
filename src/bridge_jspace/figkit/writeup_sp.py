@@ -19,12 +19,13 @@ from bridge_jspace.figkit import data as D
 from bridge_jspace.figkit import specs as S
 from bridge_jspace.figkit import terms as TM
 from bridge_jspace.figkit import writeup_figs as W
-from bridge_jspace.figkit import writeup_sp_b
+from bridge_jspace.figkit import writeup_sp_b, writeup_sp_c
 from bridge_jspace.figkit.writeup_sp_base import MODEL, REPO, ZK, est, need, vocab
 
 OUT = REPO / "figures" / "writeup"
 TARGET = "post"
 BAND, LAYER = "Band of layers · fact passages", "One layer · locker scenes"
+GAP = "gap: recall − lookup"
 
 
 # ---- Fig. 1: the main split --------------------------------------------------------------------------------------------
@@ -49,7 +50,7 @@ def _band_columns(models, label_gap=True) -> list:
     gap = sp.DotColumn(
         "gap: recall − lookup", "gap", (-4, 98), (0, 30, 60),
         series=[sp.Series("neutral", {m: est(D.b(f"ko.{ZK[m]}.mk"), f"band.{ZK[m]}", key=f"ko.{ZK[m]}.mk",
-                                            label=label_gap) for m in models})],
+                                            label=label_gap) for m in models}, word=GAP)],
         ticks={m: need(S.ctrl(ZK[m]), f"ctrl {m}") for m in models},
     )  # fmt: skip
     return [drop, gap]
@@ -68,7 +69,7 @@ def fig01_main_split() -> sp.Figure:
         connect=("lookup", "recall"), band=(-0.1, 0.1),
     )  # fmt: skip
     layer_gap = sp.DotColumn("gap: recall − lookup", "gap_share", (-0.1, 1.1), (0, 0.5, 1),
-                             series=[sp.Series("neutral", {m: _layer_gap(m) for m in models})])  # fmt: skip
+                             series=[sp.Series("neutral", {m: _layer_gap(m) for m in models}, word=GAP)])  # fmt: skip
     table = sp.DotTable(models, [sp.ColumnGroup(BAND, _band_columns(models)), sp.Gutter(),
                                  sp.ColumnGroup(LAYER, [shares, layer_gap])])  # fmt: skip
     return sp.Figure("fig01_main_split", vocab()).add(table)
@@ -94,7 +95,7 @@ def fig04_twin_set() -> sp.Figure:
         if nr and nl:
             sub[m] = f"{nr} / {nl} items"
 
-    def series(reader, conds, unit_key, data_key):
+    def series(reader, conds, unit_key, data_key, word=None):
         out = []
         for cond, role in conds:
             cells = {}
@@ -103,15 +104,17 @@ def fig04_twin_set() -> sp.Figure:
                 if c is not None:
                     cells[(m, cond)] = est(c, f"{unit_key}.{cond}.{ZK[m]}", key=data_key(cond, ZK[m]), label=True,
                                            interval=unit_key == "gap")  # fmt: skip
-            out.append(sp.Series(role or reader, cells, control="rotated" if role == "control" else None))
+            out.append(sp.Series(role or reader, cells, control="rotated" if role == "control" else None,
+                                 word=None if role else word))  # fmt: skip
         return out
 
     def accuracy(reader):
         return sp.DotColumn(f"{reader} twins", "accuracy", (-4, 106), (0, 50, 100),
                             series=series(reader, LANES, reader, lambda c, k: f"fig04.{reader}.{c}.{k}"))  # fmt: skip
 
-    gap = sp.DotColumn("gap: recall − lookup", "gap", (-12, 74), (0, 30, 60),
-                       series=series("neutral", LANES[:2], "gap", lambda c, k: f"fig04.gap.{c}.{k}"))  # fmt: skip
+    # the gap's header is its colour word (styles-plot 0.1.6: no word above the rows); wide enough for one line
+    gap = sp.DotColumn(GAP, "gap", (-12, 74), (0, 30, 60), width=2.3,
+                       series=series("neutral", LANES[:2], "gap", lambda c, k: f"fig04.gap.{c}.{k}", word=GAP))  # fmt: skip
     unedited = [c[0] for r in ("recall", "lookup") for m in models if (c := W.w(f"fig04.{r}.unedited.{ZK[m]}"))]
     note = ""
     if len(unedited) == 2 * len(models):  # "every model" only when every cell has its source
@@ -270,6 +273,7 @@ FIGS = {"key": key, "fig01_main_split": fig01_main_split, "fig04_twin_set": fig0
         "fig12_pointer": fig12_pointer, "appB_f17_attention": appB_f17_attention,
         "appB_f17b_heads": appB_f17b_heads}  # fmt: skip
 FIGS.update(writeup_sp_b.FIGS)
+FIGS.update(writeup_sp_c.FIGS)
 
 
 def build(ids=None, out: Path = OUT) -> list[str]:

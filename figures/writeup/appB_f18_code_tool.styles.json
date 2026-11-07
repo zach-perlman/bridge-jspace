@@ -1,0 +1,232 @@
+{
+ "styles_plot": "0.1.7",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "4cc8ef6e9052a94369bdd14108f242dd5bc0fd44f3b064d79bc88058d2847337"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "5cf6cb98e209583921cbb8de2be6b5c2728462f4e6acaf91d5455ea5f7335fd9"
+ },
+ "figure": "appB_f18_code_tool",
+ "target": "post",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "310ef7af37d20eabde74c9987bcc126183f6d613c2f46b98cf578af3028239ec",
+  "dpi": 200
+ },
+ "roles": [
+  "address"
+ ],
+ "controls": [
+  "a random part",
+  "layout-only probe"
+ ],
+ "cells": {
+  "code.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "code.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "code.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "code.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "code.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "code.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "code.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "code.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "code.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "code.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "code.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "code.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "code.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "code.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "code.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "code.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "code.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "code.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "code.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "code.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "code.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "code.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "code.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "code.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "grey: a random part · layout-only probe",
+  "whiskers: 95% interval"
+ ],
+ "numbers": {
+  "f21.tool.probe.q9": "0.97",
+  "f21.code.probe.q27": "0.95",
+  "f21.tool.probe.q27": "0.99",
+  "f21.code.no_alf.q9": "0.31",
+  "f21.tool.no_alf.q9": "0.09",
+  "f21.code.no_alf.q27": "0.09",
+  "f21.tool.no_alf.q27": "0.09",
+  "f21.code.keep_alf.q9": "0.03",
+  "f21.tool.keep_alf.q9": "0.08",
+  "f21.code.keep_alf.q27": "0.01",
+  "f21.tool.keep_alf.q27": "0.06"
+ },
+ "problems": []
+}

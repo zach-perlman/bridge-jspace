@@ -179,7 +179,7 @@ def fig05c_described_bridge() -> sp.Figure:
             pos[m] = est(p, f"described.{k}", key=f"f05c.position.{k}", label=True)
     cols = [reader_column("without the lens part", "switches", (-0.2, 0.75), (0, 0.25, 0.5), {"lookup": lk, "recall": rc}),
             sp.DotColumn("gap: recall − lookup", "gap_share", (-0.1, 0.7), (0, 0.25, 0.5),
-                         series=[sp.Series("neutral", gap)]),
+                         series=[sp.Series("neutral", gap, word="gap: recall − lookup")]),
             sp.DotColumn("position answers cut", "position_lost", (-0.02, 0.32), (0, 0.1, 0.2),
                          series=[sp.Series("address", pos)])]  # fmt: skip
     return sp.Figure("fig05c_described_bridge", vocab()).add(sp.DotTable(models, cols))
@@ -301,7 +301,7 @@ def fig21_code_tool() -> sp.Figure:
         sp.DotColumn(
             "locker probe",
             "probe_accuracy",
-            (0.4, 1.17),
+            (0.4, 1.03),
             (0.5, 0.75, 1),
             series=[sp.Series("control", base, control="layout-only probe"), sp.Series("address", probe)],
         )
@@ -356,7 +356,7 @@ def fig14_learned() -> sp.Figure:
         sp.DotColumn(
             "position switches carried",
             "carried",
-            (-0.05, 1.3),
+            (-0.05, 1.05),
             (0, 0.5, 1),
             series=[sp.Series("control", shuffled, control="shuffled pairs"), sp.Series("address", learned)],
         ),
