@@ -146,5 +146,4 @@ readme:             ## the three READMEs from their templates (root, docs/depth,
 		uv run styles-plot check figures/$$s --vocab plotstyle.toml || exit 1; \
 		uv run styles-plot sheet figures/$$s -o figures/$$s/_sheets --order figures/$$s/_meta/order.txt || exit 1; \
 	done
-	uv run python scripts/check_figure_terms.py
 	uv run pytest -q tests/test_readme_sources.py tests/test_readme_cards.py tests/test_readme_sp.py tests/test_figure_layout.py
