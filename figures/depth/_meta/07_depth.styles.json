@@ -14,7 +14,7 @@
  "publishable": true,
  "text_only": false,
  "png": {
-  "pixels_sha256": "ce368e9b90557d5312f679f4d26df1d83bf2b40a804f7a8e9d975a01d2a253f5",
+  "pixels_sha256": "f4c87abc21e81aa50b2c060ab44f5df8c8a939206d1e6f6c31bacc2cff4465d0",
   "dpi": 160
  },
  "roles": [
@@ -40,6 +40,27 @@
   {
    "kind": "line",
    "role": "address",
+   "cell": "depth.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "address",
+   "cell": "depth.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "lens",
+   "cell": "depth.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "address",
    "cell": "depth.q27",
    "timing": "fixed_in_advance",
    "claim": "claimed"
@@ -76,27 +97,6 @@
    "kind": "line",
    "role": "lens",
    "cell": "depth.mu",
-   "timing": "fixed_in_advance",
-   "claim": "claimed"
-  },
-  {
-   "kind": "line",
-   "role": "address",
-   "cell": "depth.q9",
-   "timing": "fixed_in_advance",
-   "claim": "claimed"
-  },
-  {
-   "kind": "line",
-   "role": "address",
-   "cell": "depth.q9",
-   "timing": "fixed_in_advance",
-   "claim": "claimed"
-  },
-  {
-   "kind": "line",
-   "role": "lens",
-   "cell": "depth.q9",
    "timing": "fixed_in_advance",
    "claim": "claimed"
   }

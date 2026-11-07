@@ -14,7 +14,7 @@
  "publishable": true,
  "text_only": false,
  "png": {
-  "pixels_sha256": "31155463b933e8479648adfd4a00d9e5517caa36eed5d379e09e7a40bf439c46",
+  "pixels_sha256": "fedb8c0a56b454071f6a774f41dac2c49da018a5c18bcd1d03630591330d754f",
   "dpi": 160
  },
  "roles": [
@@ -36,27 +36,6 @@
   {
    "kind": "line",
    "role": "address",
-   "cell": "depth.q122",
-   "timing": "post_hoc",
-   "claim": "claimed"
-  },
-  {
-   "kind": "line",
-   "role": "address",
-   "cell": "depth.q122",
-   "timing": "post_hoc",
-   "claim": "claimed"
-  },
-  {
-   "kind": "line",
-   "role": "lens",
-   "cell": "depth.q122",
-   "timing": "post_hoc",
-   "claim": "claimed"
-  },
-  {
-   "kind": "line",
-   "role": "address",
    "cell": "depth.nl",
    "timing": "post_hoc",
    "claim": "claimed"
@@ -72,6 +51,27 @@
    "kind": "line",
    "role": "lens",
    "cell": "depth.nl",
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "address",
+   "cell": "depth.q122",
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "address",
+   "cell": "depth.q122",
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "lens",
+   "cell": "depth.q122",
    "timing": "post_hoc",
    "claim": "claimed"
   }

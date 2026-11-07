@@ -182,19 +182,27 @@ def _fig06(fid: str, keep) -> sp.Figure:
         return min(min(min(ln.y) for ln in own), *(min(ln.band[0]) for ln in own if ln.band))
 
     # the models on one y range share one block with a gate window per row; a model whose interval runs far below 0
-    # outside its gate (Lightning) gets its own block, so every value is drawn without squashing the others
-    shallow = [m for m, _w in wins if low(m) >= -0.5]
-    if shallow:
-        figs.add(sp.Sweep(shallow, "depth_share", "depth_share_y", [ln for ln in lines if ln.row in shallow],
-                          windows={m: w for m, w in wins if m in shallow}, panel_h=0.9, ylim=(-0.04, 1.1),
+    # outside its gate (Lightning) gets its own block, so every value is drawn without squashing the others; blocks
+    # follow the model order (9B, 27B, Muse, Lightning, 122B)
+    def shallow_block(group):
+        figs.add(sp.Sweep(group, "depth_share", "depth_share_y", [ln for ln in lines if ln.row in group],
+                          windows={m: w for m, w in wins if m in group}, panel_h=0.9, ylim=(-0.04, 1.1),
                           yticks=(0, 0.5, 1), xlim=XLIM, xticks=XTICKS))  # fmt: skip
+
+    group: list[str] = []
     for m, w in wins:
-        if m in shallow:
-            continue
         lo = low(m)
+        if lo >= -0.5:
+            group.append(m)
+            continue
+        if group:
+            shallow_block(group)
+            group = []
         figs.add(sp.Sweep([m], "depth_share", "depth_share_y", [ln for ln in lines if ln.row == m], windows=w,
                           panel_h=1.5, ylim=(lo - 0.03, 1.1), yticks=(round(lo), 0, 1), xlim=XLIM,
                           xticks=XTICKS))  # fmt: skip
+    if group:
+        shallow_block(group)
     return figs
 
 

@@ -573,8 +573,13 @@ A swapped-in address moves the lookup, yet reads through the lens like a random 
 - **Method.** The lookup's switch under the change at the bridge word, by sentence order; on the fact passages, the fact sentence before vs after; with the locker after the pick, the change at the bridge word against the same change copied into the locker sentences, by layer. Post hoc, a 2 × 2 (Result): the original prompt's locker sentence before or after the pick, and the changed prompt's.
 - **Rule, fixed in advance.** None for the split (read after the data, descriptive); Zach's split and the copy test's arms were fixed in advance.
 
-![Locker after the pick: the link is made in the locker sentences](figures/depth/05_order.png) ![Locker after the pick: the link is made in the locker sentences](figures/depth/06_link_layers.png)
+![With the locker sentence first, the bridge word switches the lookup; after the pick, far less](figures/depth/05_order.png)
 {{caption|depth/05_order}}
+
+With the locker sentence after the pick, the link is made in the locker sentences: the change copied there switches the lookups the bridge word no longer does.
+
+![After the pick, the change copied into the locker sentences switches the lookup, layer by layer](figures/depth/06_link_layers.png)
+{{caption|depth/06_link_layers}}
 
 Where the switches are carried (claim 11): for the lookup almost all at the bridge word at L; the lookups the change at L misses, with the locker after the pick, were read from the bridge word before L ([the ledger card](docs/depth/EXPERIMENTS.md#t47-4)).
 
@@ -602,8 +607,13 @@ Where the switches are carried (claim 11): for the lookup almost all at the brid
 - **Method.** At each layer: the lookup's and the recall's switches blocked without the lens part beyond a random part; the position answers under the whole change when another item moves; the accuracy of a locker probe. Three marks per model: the layer where the probe reads the address, where position answers start, and the last layer the lookup needs the lens part.
 - **Rule, fixed in advance.** "(a) the handoff: the lookup's last layer needing the J++ part is no later than its first layer of position answers; (b) the address is readable before it is used; (d) the lookup never answers with the value."
 
-![The address is readable before the lookup uses it](figures/depth/07_depth.png) ![The address is readable before the lookup uses it](figures/depth/08_depth_more.png)
+![On the 9B, 27B and Muse the address is readable before the lookup uses it](figures/depth/07_depth.png)
 {{caption|depth/07_depth}}
+
+On Lightning and the 122B, whose gates were chosen after the data, the address is readable early too.
+
+![On Lightning and the 122B too, the address is readable before the lookup uses it](figures/depth/08_depth_more.png)
+{{caption|depth/08_depth_more}}
 
 - **Result.**
 

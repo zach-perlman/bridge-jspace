@@ -57,7 +57,7 @@ Weaker results are in Part VI, dropped readings under "Tested and dropped"; † 
 **Status.**
 
 - **Models.** Five models: Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), Nemotron 3.5 Lightning 30B-A3B (a third family, a Mamba-attention hybrid) and Qwen3.5-122B-A10B (FP8; MoE, ~10B active) where it ran; Nemotron 3.5 Bolt is out of scope: no J++ lens exists for it.
-- **Runs.** As of 29 Oct 2026, built at cbcd872e from the run files.
+- **Runs.** As of 29 Oct 2026, built at 9397623d from the run files.
 - **Hand-check.** Hand-checked on a sample: 46 items across views a-g (5-10 per view, fixed in advance), all consistent; 6 issues and 6 observations logged in [docs/review/handcheck_findings.md](../review/handcheck_findings.md), none changes a headline claim.<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g --> VERIFIED.md (human recomputation) not yet filled.
 - **Marks.** ○: post hoc (Lightning everywhere, the 122B where its gate was lowered); †: not in the hand-checked sample (the last-token conflict test, the identity-and-address test, the 122B's coverage runs). See [How to read this page](#how-to-read-this-page).
 
@@ -589,8 +589,13 @@ A swapped-in address moves the lookup, yet reads through the lens like a random 
 - **Method.** The lookup's switch under the change at the bridge word, by sentence order; on the fact passages, the fact sentence before vs after; with the locker after the pick, the change at the bridge word against the same change copied into the locker sentences, by layer. Post hoc, a 2 × 2 (Result): the original prompt's locker sentence before or after the pick, and the changed prompt's.
 - **Rule, fixed in advance.** None for the split (read after the data, descriptive); Zach's split and the copy test's arms were fixed in advance.
 
-![Locker after the pick: the link is made in the locker sentences](../../figures/depth/05_order.png) ![Locker after the pick: the link is made in the locker sentences](../../figures/depth/06_link_layers.png)
-*Lookups switched by the change at the bridge word, by sentence order (A: ours; B: the fact passages); by layer, the change at the bridge word against the change copied into the locker sentences (C). 95% intervals (cluster bootstrap over bridge entities), n per panel; Lightning hollow ○ (gate chosen after its pre-check); the 122B not run in B and (C). Panel A was hand-checked on a sample (view g); B and (C) were not. The post hoc 2 × 2 (both orders) is in the Result below and in the deck's f10b figure.*
+![With the locker sentence first, the bridge word switches the lookup; after the pick, far less](../../figures/depth/05_order.png)
+*Lookups switched by the change at the bridge word, with the item's locker (or fact) sentence before the pick and after it: the locker scenes (left) and the fact passages (right); whiskers 95% intervals; Lightning hollow ○ (its gate chosen after its pre-check); the 122B not run on the fact passages.*
+
+With the locker sentence after the pick, the link is made in the locker sentences: the change copied there switches the lookups the bridge word no longer does.
+
+![After the pick, the change copied into the locker sentences switches the lookup, layer by layer](../../figures/depth/06_link_layers.png)
+*With the locker sentence after the pick, by layer (x: the layer as a share of the model's depth): the lookups switched by the change at the bridge word and by the same change copied into the locker sentences, each line named at its end; dots: the cells fixed in advance, with their values; shading 95% intervals; the layer sweeps after the data (post hoc); the 9B, 27B and Muse.*
 
 Where the switches are carried (claim 11): for the lookup almost all at the bridge word at L; the lookups the change at L misses, with the locker after the pick, were read from the bridge word before L ([the ledger card](EXPERIMENTS.md#t47-4)).
 
@@ -618,8 +623,13 @@ Where the switches are carried (claim 11): for the lookup almost all at the brid
 - **Method.** At each layer: the lookup's and the recall's switches blocked without the lens part beyond a random part; the position answers under the whole change when another item moves; the accuracy of a locker probe. Three marks per model: the layer where the probe reads the address, where position answers start, and the last layer the lookup needs the lens part.
 - **Rule, fixed in advance.** "(a) the handoff: the lookup's last layer needing the J++ part is no later than its first layer of position answers; (b) the address is readable before it is used; (d) the lookup never answers with the value."
 
-![The address is readable before the lookup uses it](../../figures/depth/07_depth.png) ![The address is readable before the lookup uses it](../../figures/depth/08_depth_more.png)
-*Per model, one panel, x = the layer as a share of the model's depth (the layer under each tick): the locker probe's accuracy (grey), the position answers under the whole change (orange), the lookup's switches blocked without the lens part beyond a random part (purple); whiskers 95% intervals; faded: layers where the whole change switches under 0.30 (outside the gate); triangles on the top edge: the address readable (probe at least 0.80) and the position answers begin (at least 0.20). The lookup barely needs the lens part at any layer (largest effect at most 0.2 except the 27B). The 27B is its full grid, where the lookup's rule-(a) layer falls after the position answers begin; Lightning and the 122B hollow ○. The anatomy is not among the hand-checked views.*
+![On the 9B, 27B and Muse the address is readable before the lookup uses it](../../figures/depth/07_depth.png)
+*By depth (x: the layer as a share of the model's depth), on the three models whose gates were fixed in advance: the locker probe's accuracy and the position answers under the whole change when another item moves (orange, named at their ends), and the lookup's switches blocked without the lens part beyond a random part of the same size (teal); shading 95% intervals; grey band: the layers that pass the gate. The 9B in its own block: its interval runs below zero outside its gate.*
+
+On Lightning and the 122B, whose gates were chosen after the data, the address is readable early too.
+
+![On Lightning and the 122B too, the address is readable before the lookup uses it](../../figures/depth/08_depth_more.png)
+*As the figure above, on Lightning and the 122B, whose gates were chosen after the data (all estimates post hoc); Lightning in its own block: its interval runs far below zero outside its gate.*
 
 - **Result.**
 
