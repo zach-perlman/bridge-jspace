@@ -8,7 +8,9 @@ Built by `make figures-writeup`:
 
 Every figure is 8.0 in wide at 200 dpi: 1600 px, shown at about 720 px in the post's column. Width to height runs from 1.0 to 2.6 (Amendment 1). No text crosses an axis line, a zero line, a dashed rule or a whisker, and none comes within 4 pt of a marker (`figkit/lint.py` `crossings`); a note on a row's lower line masks the lines under it, so they stop there. The answer span is brick in every figure. Every dot-table row is at least 0.32 in tall, nothing is under 11 pt, the background is white, and there is no title inside the image. `contact_sheet.png` shows every figure at 720 px, in post order. Every number is read from a data file by code; nothing is typed.
 
-Status: UNVERIFIED. No figure here has been hand-checked against its run files yet.
+Status: UNVERIFIED. No figure here has been hand-checked against its run files yet; every figure stays UNVERIFIED until a person checks it against them.
+
+**Grammar v2 (7 Nov, [docs/shared/figure_style.md](../../docs/shared/figure_style.md)).** Redrawn so far (the pilot): `key.png` (new: the grammar on one image, for the post's "How to read the numbers"), `fig01_main_split`, `fig04_twin_set`, `fig09_order`, `fig12_pointer`, `appB_f17_attention` and `appB_f17b_heads` (new: the top 10 heads, split from f17 so both stay within the aspect range). They are drawn by `figkit/writeup_v2.py` through `figkit/grammar.py` (role-tagged marks, the status registry `data/figures/status.csv`, words from `figkit/terms.py`) and checked by `tests/test_figure_grammar.py`. The other figures are still v1. `contact_sheet_gray.png` is the grayscale contact sheet.
 
 | Post | File | Takeaway (the post's sentence, not drawn) | Data keys | Source files | Fixed in advance / post hoc | Hand-check |
 |---|---|---|---|---|---|---|

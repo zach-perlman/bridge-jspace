@@ -32,6 +32,7 @@ dev = [
     "pre-commit>=4.0",
     "ipykernel>=6.29",
     "pytest-xdist>=3.8.0",
+    "colorspacious>=1.1.2",
 ]
 
 [project.scripts]

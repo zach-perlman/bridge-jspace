@@ -32,6 +32,7 @@ XLAB_H = 0.30  # the axis titles under the ticks
 SUBTITLE_H = 0.32  # the figure-wide subtitle over the column titles
 CUE_H = 0.24  # the direction cue under an axis title (Dan 30 Oct: say which way is "more" on every axis)
 CUE_OFFSET = 43  # points below the axis: under the ticks and the axis title
+XLAB_2, CUE_2 = 0.2, 15  # an axis title's second line: inches of height, points the cues move down
 HOLLOW = {"seen": False}  # set by dot(hollow=True) and a hollow row: the figure then carries "○ post hoc" (G1)
 # font sizes (pt) of every text the kit draws; a target may override them (the write-up's theme: nothing under 11 pt)
 FS_DEFAULT = {"name": 13, "title": 13, "sub": 11.5, "rowsub": 11, "subrow": 11.5, "hollow": 12, "xlabel": 11.5,
@@ -95,8 +96,9 @@ class Table:
         """Draw twice: a dry run finds out whether a hollow mark is used, then the real figure carries the key item
         "○ post hoc" if it is (G1: a hollow mark always has its legend item)."""
         HOLLOW["seen"] = False
-        self._draw(None, dpi, self.key)
-        key = [list(r) for r in self._key_rows(self.key)]
+        built = callable(self.key)  # a key built from what the dry run drew (figkit/grammar.py key)
+        self._draw(None, dpi, [] if built else self.key)
+        key = [list(r) for r in self._key_rows(self.key() if built else self.key)]
         if self.hollow_key and HOLLOW["seen"] and not any(m == "○" for r in key for m, _, _ in r):
             (key[-1] if key else key.append([]) or key[-1]).append(("○", INK, "post hoc"))
         self._draw(path, dpi, key)
@@ -115,7 +117,9 @@ class Table:
         if rh < MIN_ROW_H - 1e-9:
             raise ValueError(f"row height {rh} in under the target's floor {MIN_ROW_H} in")
         body = n * rh + lab
+        two = any("\n" in c.xlabel for c in self.cols)  # an axis title on two lines: every cue of the table one line lower
         xlab = (XLAB_H if any(c.xlabel for c in self.cols) else 0.0) + (CUE_H if any(c.cue for c in self.cols) else 0.0)
+        xlab += XLAB_2 if two else 0.0
         key_rows = self._key_rows(key)
         height = head + body + (FOOT_H if self.foot is None else self.foot) + xlab + (KEY_H + 0.3 * (len(key_rows) - 1) if key_rows else 0)
         fig = plt.figure(figsize=(width, height), dpi=dpi)
@@ -189,7 +193,7 @@ class Table:
                 if c.xlabel:
                     ax.set_xlabel(c.xlabel, fontsize=FS["xlabel"], color=MUTED, labelpad=3)
                 if c.cue:
-                    ax.annotate(c.cue, (0.5, 0), xycoords="axes fraction", xytext=(0, -CUE_OFFSET),
+                    ax.annotate(c.cue, (0.5, 0), xycoords="axes fraction", xytext=(0, -CUE_OFFSET - (CUE_2 if two else 0)),
                                 textcoords="offset points", ha="center", va="top", fontsize=FS["cue"], color=MUTED,
                                 annotation_clip=False)  # fmt: skip
                     ax._cue = c.cue  # the table lint (figkit/lint.py) requires one per panel

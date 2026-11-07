@@ -128,7 +128,7 @@ figures-writeup:    ## the LessWrong post's figures (figures/writeup/, 1600 px) 
 	uv run python -m bridge_jspace.figkit.tables --target writeup
 	uv run python scripts/check_style.py --writeup
 	uv run python scripts/check_figure_terms.py --writeup
-	uv run pytest -q tests/test_writeup_figures.py
+	uv run pytest -q tests/test_writeup_figures.py tests/test_figure_grammar.py
 
 writeup-examples:    ## the write-up's real prompts and answers per experiment (docs/writeup/examples.md) and its checks
 	uv run python scripts/writeup_examples.py

@@ -18,12 +18,14 @@ from bridge_jspace.figkit import deck_figs as F
 from bridge_jspace.figkit import depth_figs as DF
 from bridge_jspace.figkit import dottable as T
 from bridge_jspace.figkit import exemplars as X
+from bridge_jspace.figkit import grammar as GR
 from bridge_jspace.figkit import lint
 from bridge_jspace.figkit import writeup_address as WA
 from bridge_jspace.figkit import writeup_appendix as WP
 from bridge_jspace.figkit import writeup_claims as WC
 from bridge_jspace.figkit import writeup_figs as W
 from bridge_jspace.figkit import writeup_intro as WI
+from bridge_jspace.figkit import writeup_v2 as W2
 from bridge_jspace.figkit.build import page_sheet
 from bridge_jspace.figkit.data import REPO
 from bridge_jspace.figkit.theme import WRITEUP, WRITEUP_ASPECT, WRITEUP_MIN_ROW
@@ -33,13 +35,13 @@ OUT = {"readme": REPO / "figures" / "readme", "slide": REPO / "figures" / "slide
 DPI = {"readme": 160, "slide": 200, "depth": 160, "writeup": WRITEUP.dpi}
 # the LessWrong post's figures in post order, then the appendix in the brief's order; the file names are fixed (the post
 # embeds figures/writeup/<id>.png)
-WRITEUP_MODULES = (W, WI, WA, WC, WP)
+WRITEUP_MODULES = (W, WI, WA, WC, WP, W2)  # W2 last: its grammar v2 figures replace the v1 ones of the same name
 _WFIGS = {k: v for m in WRITEUP_MODULES for k, v in m.FIGS.items()}
-WRITEUP_ORDER = ("fig00_schematic", "fig01_main_split", "fig02_datasets", "fig03_tools", "fig04_twin_set", "fig05_controls",
+WRITEUP_ORDER = ("key", "fig00_schematic", "fig01_main_split", "fig02_datasets", "fig03_tools", "fig04_twin_set", "fig05_controls",
                  "fig06_nine_models", "fig07_routes", "fig08a_address_read_remove", "fig08b_address_swap_lens",
                  "fig09_order", "fig10_answer_span", "fig11_orthogonal", "fig12_pointer", "fig13_last_token",
                  "figA1_agents", "appB_f5_atoms", "appB_f14_two_codes", "appB_f9_where", "appB_f12_order",
-                 "appB_f8_facts", "appB_f8_directions", "appB_f15_link_crossover", "appB_f17_attention",
+                 "appB_f8_facts", "appB_f8_directions", "appB_f15_link_crossover", "appB_f17_attention", "appB_f17b_heads",
                  "appB_f18_code_tool", "appB_f19_six_lockers")  # fmt: skip
 assert set(WRITEUP_ORDER) == set(_WFIGS), set(WRITEUP_ORDER) ^ set(_WFIGS)
 WRITEUP_FIGS = {k: _WFIGS[k] for k in WRITEUP_ORDER}
@@ -87,9 +89,15 @@ def build(target: str, ids: list[str] | None = None) -> list[str]:
     min_pt = MIN_PT.get(target, 0.0)
 
     def before_save(fig, path):
-        PROBLEMS.extend(lint.table_problems(fig, Path(path).stem, need_xlabel=True, need_cue=True, min_pt=min_pt))
+        axis = Path(path).stem != "key"  # the key figure's axes are illustrations of marks, not panels
+        probs = lint.table_problems(fig, Path(path).stem, need_xlabel=axis, need_cue=axis, min_pt=min_pt)
+        if GR.FIGURE["defer_key"]:  # an upper stacked panel: the last panel's key names its marks
+            probs = [p for p in probs if not p.endswith(W.HOLLOW_NO_KEY)]
+        PROBLEMS.extend(probs)
         if target == "writeup":  # text never crosses a line or a mark (the write-up's rule)
             PROBLEMS.extend(lint.crossings(fig, Path(path).stem))
+            if GR.FIGURE["id"] in W2.FIGS:  # grammar v2's meaning checks
+                PROBLEMS.extend(GR.check(fig, Path(path).stem))
 
     T.BEFORE_SAVE = before_save
     out = OUT[target]
@@ -111,6 +119,7 @@ def build(target: str, ids: list[str] | None = None) -> list[str]:
         for i in TARGET[target]:
             if ids and not any(i.startswith(x) for x in ids):
                 continue
+            GR.FIGURE["id"] = ""  # a v1 figure: no grammar v2 check unless it calls grammar.begin
             FIGS[i]()
             done.append(i)
             if target == "writeup":
@@ -135,8 +144,14 @@ if __name__ == "__main__":
     print("\n".join(PROBLEMS) or "lint: clean")
     if not a.ids:
         pngs = [OUT[a.target] / f"{i}.png" for i in TARGET[a.target]]
-        if a.target == "writeup":  # the post's column: every figure at 720 px, in post order
+        if a.target == "writeup":  # the post's column: every figure at 720 px, in post order; and in grayscale
+            from PIL import Image
+
             page_sheet(pngs, OUT[a.target] / "contact_sheet.png", width=720)
+            Image.open(OUT[a.target] / "contact_sheet.png").convert("L").save(OUT[a.target] / "contact_sheet_gray.png")
+            for fid, fails in sorted(GR.CVD.items()):  # check 8: reported with the numbers, never fixed silently
+                for kind, ra, rb, d, floor in fails:
+                    print(f"colour vision: {fid}: {ra}-{rb} under {kind}: CIEDE2000 {d} < {floor}")
         else:
             page_sheet(pngs, OUT[a.target] / "contact_sheet_tables.png")
     if a.target == "writeup" and PROBLEMS:

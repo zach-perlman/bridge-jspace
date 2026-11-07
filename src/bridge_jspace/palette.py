@@ -3,32 +3,33 @@ all README.md files). docs/shared/figure_style.md explains the logic; this modul
 (figkit/dottable.py), the depth story figures (scripts/story_style.py) and the audit of the embedded figures
 (scripts/check_style.py) all read it.
 
-A colour is a role, never a model or a panel. Black, purple, teal, orange and blue are the five roles a reader has to
-learn; grey is everything secondary; the other shades are variants of those roles or neutral roles of their own.
+A colour is a role, never a model, a panel or a variable (grammar v2, 7 Nov): one hue per role in ROLE; grey is a
+control and nothing else; a status (post hoc, descriptive, not claimed) is never a colour.
 """
 
 from __future__ import annotations
 
-# ---- roles: what is drawn ------------------------------------------------------------------------------------------
+# ---- roles: what is drawn (figure grammar v2, docs/shared/figure_style.md A) ---------------------------------------
+# one hue per role; a shade never encodes a variable (a second condition of a reader is its own column, named in words)
 ROLE = {
     "recall": "#2B2B2B",  # the recall reader, and what it loses
-    "lookup": "#6B5BD2",  # the lookup reader
-    "lens": "#1A9E8A",  # the lens part (the J++ part, the lens's directions)
-    "address": "#E08A1E",  # the address, and the position route (where an item's sentence sits)
-    "identity": "#3A7DC9",  # the identity route (which item it is), and an item change
-    "control": "#A8A8A8",  # a control or baseline: a random part, a rotated part, a layout-only probe; grey only
-    "other": "#D9D9D9",  # the remainder of a stack that is none of the above
+    "lookup": "#6B5BD2",  # the lookup reader, only
+    "lens": "#1A9E8A",  # the lens part (any J++ directions read at a word, the city's included)
+    "address": "#E08A1E",  # the address and the position route; anything measured under an address swap
+    "identity": "#3A7DC9",  # the identity route; a change of item
+    "answer": "#B8433A",  # the answer span, the answers' own directions, the answer word; never next to a green
+    "neutral": "#4A5F6A",  # a method that is none of the roles (a supervised probe's subspace, a data-built subspace)
+    "mention": "#8C6D46",  # the bridge's mention, only where rows or columns are places in the prompt
+    "question": "#B8689A",  # the question, only where rows or columns are places in the prompt
+    "control": "#A8A8A8",  # a control or baseline, and nothing else
+    "other": "#D9D9D9",  # the remainder of a 100% stack; chrome
 }
-# variants and neutral roles
-SHADE = {
-    "lookup_light": "#B8B0EA",  # a second condition of the lookup (made-up facts)
-    "lookup_dark": "#3F3489",  # a second condition of the lookup (question after the scene)
-    "neutral": "#4A5F6A",  # a method or quantity that is none of the roles (a supervised probe's subspace, the value)
-    "mention": "#8C6D46",  # the bridge's mention (a position in the prompt)
-    "question": "#B8689A",  # the question (a position in the prompt)
-    "recall_light": "#6E6E6E",  # the recall's second condition (question after the scene), a lighter black
-    "answer": "#B8433A",  # the answer word (the readout's, in the lens-readout figures); never next to a green
-}
+# v1's shades that encoded a variable (made-up facts, question order): grammar v2 deletes them. Only the builders of the
+# frozen deck (figures/slides/) and the v1 README builders (until they are redrawn) still read them; the v2 checks fail
+# on any of these hexes.
+LEGACY = {"lookup_light": "#B8B0EA", "lookup_dark": "#3F3489", "recall_light": "#6E6E6E"}
+# v1 name for the non-reader roles plus the legacy shades, kept so the v1 builders still import
+SHADE = {**{k: ROLE[k] for k in ("neutral", "mention", "question", "answer")}, **LEGACY}
 # text and chrome: three text levels (bold ink, ink, grey), grid, zebra stripes, the "within 0.10" band
 INK, MUTED, FAINT, GRID, ZEBRA, BAND = "#1A1A1A", "#6B6B6B", "#BDBDBD", "#E4E4E4", "#F5F5F5", "#E6E6E6"
 # greys that mean "secondary" (a darker control, a thin segment, a connector, a band); never a role
