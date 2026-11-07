@@ -614,7 +614,7 @@ choose among given words need it much less.
 <details><summary>Method, controls and limits</summary>
 
 - **Produce** the answer: {{wci|figA1.produce.q9}} / {{wci|figA1.produce.q27}} / {{wci|figA1.produce.nl}} points beyond
-  a rotated part (9B / 27B / Lightning; Lightning's cells post hoc ○).
+  a rotated part (9B / 27B / Lightning).
 - **Pick** the true one of two: {{wci|figA1.pick.q9}} / {{wci|figA1.pick.q27}} / {{wci|figA1.pick.nl}}.
 - **Verify** a claim, against the harshest control: {{wci|figA1.verify.q9}} / {{wci|figA1.verify.q27}} /
   {{wci|figA1.verify.nl}}.

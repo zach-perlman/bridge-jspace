@@ -72,7 +72,7 @@ CREDENCES = "docs/plans/credences.md"
 
 def credences() -> dict[str, str]:
     """key -> credence ("~85%") from the credences table."""
-    rows = re.findall(r"^\| (\w+) \| [^|]+ \| (~\d+%) \|$", (REPO / CREDENCES).read_text(), flags=re.M)
+    rows = re.findall(r"^\| (\w+) \| [^|]+ \| (~\d+%) \|", (REPO / CREDENCES).read_text(), flags=re.M)
     return dict(rows)
 
 

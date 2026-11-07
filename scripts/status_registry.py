@@ -262,6 +262,10 @@ _N62 = _reg("Note 62 ... 9B and Lightning primary", "2026-10-30T18:28:05Z", "res
             "2026-10-30T18:58:17Z")
 _N67 = _reg("Note 67 (as decided) ... 9B primary, Lightning confirmatory", "2026-10-30T19:39:34Z",
             "results/sd_necessity/nem35l_sd67_ko_test_v1", "2026-10-30T21:21:03Z")
+_N59 = _reg("Note 59: safety-relevant agent settings ... 9B test and dev primary, Lightning confirmatory",
+            "2026-10-30T17:20:51Z", "results/sd_necessity/nem35l_sd59_ko_test_v1", "2026-10-30T17:41:33Z")
+_N65 = _reg("Note 65 (as decided): generate vs verify a single claim ... 9B primary, Lightning confirmatory",
+            "2026-10-30T19:39:34Z", "results/sd_necessity/nem35l_sd65_ko_test_v1", "2026-10-30T20:53:52Z")
 Q2B = {  # (figure, cell prefix) -> the registration it rests on (every one committed before the run started)
     ("fig04_twin_set", "recall.paper10"): _N41, ("fig04_twin_set", "lookup.paper10"): _N41,
     ("fig04_twin_set", "gap."): _N41, ("fig10_answer_span", "keep."): _N41,
@@ -269,11 +273,11 @@ Q2B = {  # (figure, cell prefix) -> the registration it rests on (every one comm
     ("fig10_answer_span", "remove.codename."): _N68,
     ("fig11_orthogonal", "onehop.city."): _N62, ("fig11_orthogonal", "onehop.answers."): _N62,
     ("fig11_orthogonal", "subspace."): _N67,
+    # figA1 (Q2c reversed, Dan 8 Nov): the agent arms follow the same rule; copy / pick / produce read note 59's run,
+    # verify note 65's (data/figures/writeup/data.csv sources); copy stays descriptive (its registered role)
+    ("figA1_agents", "copy."): _N59, ("figA1_agents", "pick."): _N59, ("figA1_agents", "produce."): _N59,
+    ("figA1_agents", "verify."): _N65,
 }  # fmt: skip
-# figA1 (Q2c): Dan's decision is post hoc; the prereg does name Lightning for both agent tests before their runs
-Q2C = ("Note 59 ... Lightning confirmatory (first committed 2026-10-30T17:20:51Z; run nem35l_sd59 started "
-       "2026-10-30T17:41:33Z); Note 65 (as decided) ... Lightning confirmatory (2026-10-30T19:39:34Z; run nem35l_sd65 "
-       "started 2026-10-30T20:53:52Z)")  # fmt: skip
 DEPTH_FIGS = {"fig08a_address_read_remove", "fig08b_address_swap_lens", "f6_address", "fig13_last_token",
               "f6a_address_read_remove", "f6b_address_swap_lens", "fig07_routes", "r5_routes", "appB_f18_code_tool",
               "r3_last_token", "r1_dan_split", "fig05b_controls_layer", "fig01b_settings", "fig01c_zeroing",
@@ -310,12 +314,8 @@ def lightning(rows_: list[dict]) -> list[dict]:
         elif fig in DEPTH_FIGS or cell.startswith("layer.") or any(f == fig and cell.startswith(p) for f, p in DEPTH_PREFIX):
             r = {**r, "status": "post_hoc", "reason": "Lightning's depth test: after the data",
                  "source": "Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()"}  # fmt: skip
-        elif fig == "figA1_agents":
-            r = {**r, "status": "post_hoc", "reason": "Lightning's agent transcripts: post hoc (Dan, 8 Nov, Q2c)",
-                 "source": "Dan 8 Nov (Q2c)"}  # fmt: skip
-            DISAGREEMENTS.append(f"figA1_agents Lightning cells: post hoc by Dan's Q2c (premise: no amendment covers "
-                                 f"them), but {PREREG} names Lightning for both agent tests before their runs: {Q2C}. "
-                                 "By the Q2b rule they would be fixed in advance.")  # fmt: skip
+        elif fig == "figA1_agents":  # derive: no Lightning run of this arm, so the figure draws no mark
+            r = {**r, "reason": "no Lightning run of this arm; the figure draws no mark"}
         out.append(r)
     return out
 
