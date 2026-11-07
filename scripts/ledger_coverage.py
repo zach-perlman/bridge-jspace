@@ -243,7 +243,7 @@ def ordered_rows(m: dict) -> list[tuple[str | None, dict]]:
 # printed labels name the data set or the track, not a person (docs pass P3-6, 7 Nov); the matrix's row labels and the
 # HEATMAP labels stay as keys
 DISPLAY = (("Zach's passages", "the fact passages"), ("Zach's Z2", "the fact passages' Z2"),
-           ("on his passages", "on the fact passages"), ("his passages", "the fact passages"))  # fmt: skip
+           ("on his passages", "on the fact passages"), ("his passages", "the fact passages"), ("J++ part", "lens part"))  # fmt: skip
 
 
 def display(label: str) -> str:

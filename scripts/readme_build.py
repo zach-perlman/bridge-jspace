@@ -94,7 +94,8 @@ def word(c: RD.Cell) -> str:
 
 
 DATA_CSV = REPO / "data" / "figures" / "depth" / "data.csv"
-DATA_GLOSS = {"his passages": "[the fact passages]", "his layout": "[the fact passages' layout]"}
+DATA_GLOSS = {"his passages": "[the fact passages]", "his layout": "[the fact passages' layout]",
+              "the pointer": "[pointer: the address]"}  # fmt: skip
 MODEL_KEYS = {"9b": "qwen3.5-9b", "27b": "qwen3.6-27b", "122b": "qwen3.5-122b-a10b", "muse": "muse-glimmer-30b"}
 
 
@@ -401,8 +402,10 @@ def one(x: re.Match[str], book: Book) -> str:
     if kind in ("d", "dp"):  # a plotted number from data/figures/depth/data.csv
         r = book.data(*args)
         text = fmt_data(r, point=kind == "dp") + book.src(str(DATA_CSV.relative_to(REPO)), r["quantity"])
-        # a verdict word quoted from the data names a person's data set: gloss it after its source (docs pass P3-6)
-        return text + next((f" {g}" for k, g in DATA_GLOSS.items() if k in r["value"]), "")
+        # a verdict word quoted from the data that names a person's data set or says "pointer": quoted, and glossed
+        # after its source (docs pass P3-6)
+        gloss = next((g for k, g in DATA_GLOSS.items() if k in r["value"]), "")
+        return f'"{text}" {gloss}' if gloss else text
     if kind == "grid":
         return str(book.grid_dir.relative_to(REPO))
     raise ValueError(f"unknown marker {x.group(0)}")

@@ -106,7 +106,7 @@ Each hypothesis we committed to, with its verdict and source: [hypotheses ledger
   - C2′, a bridge is written only when a recall uses it: **held in part**.
   - C3, computed bridges sit in the workspace: **not tested in the final design**.
 - **Pre-registered checks.** The Olmo architecture prediction: **failed**. The Muse puzzle: **failed** on the dataset of record. Gemma 4 31B: untestable.
-- **Longshots.** A readout of the lookup's pointer that steers it: **held in part** (the address). The OLMo post-training ladder: **not tested in the final design**.
+- **Longshots.** A "pointer readout" [the address] that steers the lookup: **held in part**. The OLMo post-training ladder: **not tested in the final design**.
 
 ## What we did
 
@@ -168,7 +168,7 @@ In plain terms: the lens part is a reference to the entity: swapped into another
 
 ![Another entity's lens part moves the recall from any context, a probe's subspace that reads the fact does not](figures/readme/04_pointer.png)
 
-*Rows are the source of the part swapped in at the bridge: another entity's own passage, one neutral sentence about that entity, the same without its own-word directions (the lens part, teal), a probe's subspace that reads the fact (slate) and a rotated part (grey, a control). One panel per model on one shared axis; each dot is the answers moved to the other entity's fact, in points, with its 95% interval over bridge items; items per model: the pointer run's n in docs/breadth/data.csv. The neutral sentence minus the own passage, paired on the same items: 6.2<!-- src: docs/breadth/data.csv | ptr.q9.neutral_minus_swap --> / 6.0<!-- src: docs/breadth/data.csv | ptr.q27.neutral_minus_swap --> / 0.3<!-- src: docs/breadth/data.csv | ptr.nl.neutral_minus_swap --> points (9B / 27B / Lightning; intervals in the same file).*
+*Rows are the source of the part swapped in at the bridge: another entity's own passage, one neutral sentence about that entity, the same without its own-word directions (the lens part, teal), a probe's subspace that reads the fact (slate) and a rotated part (grey, a control). One panel per model on one shared axis; each dot is the answers moved to the other entity's fact, in points, with its 95% interval over bridge items; items per model: the swap run's n in docs/breadth/data.csv. The neutral sentence minus the own passage, paired on the same items: 6.2<!-- src: docs/breadth/data.csv | ptr.q9.neutral_minus_swap --> / 6.0<!-- src: docs/breadth/data.csv | ptr.q27.neutral_minus_swap --> / 0.3<!-- src: docs/breadth/data.csv | ptr.nl.neutral_minus_swap --> points (9B / 27B / Lightning; intervals in the same file).*
 
 **Takeaway.** A lens reading at an entity reports associations, primed by the words, before and regardless of the question. A misleading cue word in a description outranks the true attribute there, on all three models tested (twin set).
 
@@ -215,7 +215,7 @@ Over all scenes, per model:
 
 <details><summary>Method, controls and limits</summary>
 
-- **Claim.** The lookup answers either by which item it is (its own locker) or by where its locker sat (the address); never by the number. Its position answers read the bridge through an *address*, a code for where the item's sentence sits in the prompt (a lookback pointer, in Prakash et al.'s term). A linear probe reads it, removing it stops lookups by position, swapping it redirects the lookup, and the lens cannot see it.
+- **Claim.** The lookup answers either by which item it is (its own locker) or by where its locker sat (the address); never by the number. Its position answers read the bridge through an *address*, a code for where the item's sentence sits in the prompt (a "lookback pointer" [the address], in Prakash et al.'s term). A linear probe reads it, removing it stops lookups by position, swapping it redirects the lookup, and the lens cannot see it.
 - **Test.** Train a probe at the bridge word to read which locker sentence holds the item's locker. Remove the probe's directions from the patch. Write another locker's address in. Measure how much of that write the lens directions rebuild.
 - **Result.**
   - Routes: when another item moves, the lookup names the item's own locker in 0.48 / 0.66 / 0.44 / 0.44 ○ / 0.61 ○ of cases and follows the position in the rest; never the new number (9B / 27B / Muse / Lightning / 122B)<!-- src: data/figures/depth/data.csv | another item moved, whole: identity share; another item moved, whole: position share -->.
@@ -360,7 +360,7 @@ Across nine models, whether the lens part is carried, needed, or both:
 
 ## Related work and what is new
 
-- **What is not new.** The J-space paper already shows that removing the top lens directions hurts free-form recall and multi-step reasoning (Gurnee et al. 2026<!-- src: docs/shared/references.md | Gurnee et al. 2026 -->). Subject enrichment: Geva et al. 2023<!-- src: docs/shared/references.md | Geva, Bastings, Filippova and Globerson 2023 -->. Entities are bound in context (Feng & Steinhardt 2023) and found through lookback pointers (Prakash et al. 2025)<!-- src: docs/depth/README.md | (Feng & Steinhardt 2023); lookback pointers (Prakash et al. 2025) -->. Context-memory arbitration outside the verbalizable workspace (Kawada & Kellis 2026<!-- src: docs/shared/references.md | Kawada and Kellis 2026 -->).
+- **What is not new.** The J-space paper already shows that removing the top lens directions hurts free-form recall and multi-step reasoning (Gurnee et al. 2026<!-- src: docs/shared/references.md | Gurnee et al. 2026 -->). Subject enrichment: Geva et al. 2023<!-- src: docs/shared/references.md | Geva, Bastings, Filippova and Globerson 2023 -->. Entities are bound in context (Feng & Steinhardt 2023) and found through "lookback pointers" [addresses] (Prakash et al. 2025)<!-- src: docs/depth/README.md | (Feng & Steinhardt 2023); "lookback pointers" [addresses] (Prakash et al. 2025) -->. Context-memory arbitration outside the verbalizable workspace (Kawada & Kellis 2026<!-- src: docs/shared/references.md | Kawada and Kellis 2026 -->).
 - **What is new here.** Matched recall/lookup twins across nine models with three kinds of control, graded per model; where the recall's need sits; the address as the part the lens misses, in prose and structured data (in code and tool output readable and needed, exploratory, the 9B and the 27B); false positives and negatives of lens readings at entities. Methods we build on: the identity and position routes follow Gur-Arieh et al. (2025); the address uses mass-mean directions (Marks & Tegmark 2023); random parts answer Makelov et al. (2023)<!-- src: docs/depth/README.md | Gur-Arieh et al. (2025); (Marks & Tegmark 2023); Makelov et al. (2023) -->. Full list: [references](docs/shared/references.md).
 
 ## Repository guide
