@@ -16167,3 +16167,12 @@ numbers,,lk_order_before_lightning_n,85,,,,results/x0_necessity/nem35l_x52_confl
 numbers,,lk_order_after_lightning,15%,,,,results/x0_necessity/nem35l_x52_conflict/outcomes.jsonl
 numbers,,lk_order_after_lightning_k,17,,,,results/x0_necessity/nem35l_x52_conflict/outcomes.jsonl
 numbers,,lk_order_after_lightning_n,115,,,,results/x0_necessity/nem35l_x52_conflict/outcomes.jsonl
+cards,qwen3.5-9b,"answer arms: recall, the all-language shift beyond the same count of random directions (b_beyond_K_random)",-0.0244,-0.0609,0.011,200,runs/answer_arms_krand/qwen3.5-9b/krand/summary.json
+cards,qwen3.6-27b,"answer arms: recall, the all-language shift beyond the same count of random directions (b_beyond_K_random)",-0.0147,-0.0591,0.0346,200,runs/answer_arms_krand/qwen3.6-27b/krand_b8/summary.json
+cards,muse-glimmer-30b,"answer arms: recall, the all-language shift beyond the same count of random directions (b_beyond_K_random)",-0.0085,-0.0736,0.071,200,runs/answer_arms_krand/muse-glimmer-30b/krand/summary.json
+cards,qwen3.5-9b,"made-up facts F4, without the 23 passages: lookup, switches lost beyond a random part",-0.0357142857142857,-0.12068965517241392,0.04999999999999993,177,results/z1p_checks/20261030T222158Z/tables.json | F4
+cards,qwen3.5-9b,"made-up facts F4, without the 23 passages: recall, switches lost beyond a random part",0.5524475524475525,0.4642857142857143,0.6447368421052632,177,results/z1p_checks/20261030T222158Z/tables.json | F4
+cards,qwen3.5-9b,"made-up facts F4, without the 23 passages: the gap",0.5881618381618382,0.4600000000000001,0.7200611380594606,177,results/z1p_checks/20261030T222158Z/tables.json | F4
+cards,qwen3.5-9b,"made-up facts F4b, without the 54 items: lookup, switches lost beyond a random part",-0.023809523809523947,-0.1282051282051282,0.08571428571428563,146,results/z1p_checks/20261030T222158Z/tables.json | F4b
+cards,qwen3.5-9b,"made-up facts F4b, without the 54 items: recall, switches lost beyond a random part",0.6,0.5000000000000001,0.7000000000000001,146,results/z1p_checks/20261030T222158Z/tables.json | F4b
+cards,qwen3.5-9b,"made-up facts F4b, without the 54 items: the gap",0.6238095238095239,0.47293115582050016,0.7750458291130534,146,results/z1p_checks/20261030T222158Z/tables.json | F4b
