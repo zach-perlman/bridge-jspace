@@ -2,7 +2,7 @@
  "styles_plot": "0.1.13",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "e00b715ab579bc1d4ae21e2057bd08685334e1be8f9b3b01c18d7190a68df22e"
+  "sha256": "ba102eebf9c945d01afa6548596010764721e8d968306099ba8de40af908609f"
  },
  "registry": {
   "path": "data/figures/status.csv",
@@ -14,7 +14,7 @@
  "publishable": true,
  "text_only": false,
  "png": {
-  "pixels_sha256": "720ab54c6d7fd13e30b4a861fdddde26fcf183925258fc88dd95d4e468b52cce",
+  "pixels_sha256": "100e657681784ee6fd1fed0fff90639496846f2cca9ed305b751996b87408d09",
   "dpi": 160
  },
  "roles": [
@@ -46,7 +46,7 @@
  },
  "marks": [
   {
-   "kind": "dot",
+   "kind": "segment",
    "role": "lens",
    "cell": "atoms.q9",
    "timing": "fixed_in_advance",
@@ -54,7 +54,7 @@
    "hollow": false
   },
   {
-   "kind": "dot",
+   "kind": "segment",
    "role": "lens",
    "cell": "atoms.q9",
    "timing": "fixed_in_advance",
@@ -62,7 +62,7 @@
    "hollow": false
   },
   {
-   "kind": "dot",
+   "kind": "segment",
    "role": "answer",
    "cell": "atoms.q9",
    "timing": "fixed_in_advance",
@@ -70,7 +70,23 @@
    "hollow": false
   },
   {
-   "kind": "dot",
+   "kind": "segment",
+   "role": "other",
+   "cell": "atoms.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "segment",
+   "role": "other",
+   "cell": "atoms.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "segment",
    "role": "lens",
    "cell": "atoms.q27",
    "timing": "fixed_in_advance",
@@ -78,7 +94,7 @@
    "hollow": false
   },
   {
-   "kind": "dot",
+   "kind": "segment",
    "role": "lens",
    "cell": "atoms.q27",
    "timing": "fixed_in_advance",
@@ -86,7 +102,7 @@
    "hollow": false
   },
   {
-   "kind": "dot",
+   "kind": "segment",
    "role": "answer",
    "cell": "atoms.q27",
    "timing": "fixed_in_advance",
@@ -94,7 +110,23 @@
    "hollow": false
   },
   {
-   "kind": "dot",
+   "kind": "segment",
+   "role": "other",
+   "cell": "atoms.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "segment",
+   "role": "other",
+   "cell": "atoms.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "segment",
    "role": "lens",
    "cell": "atoms.mu",
    "timing": "fixed_in_advance",
@@ -102,7 +134,7 @@
    "hollow": false
   },
   {
-   "kind": "dot",
+   "kind": "segment",
    "role": "lens",
    "cell": "atoms.mu",
    "timing": "fixed_in_advance",
@@ -110,7 +142,7 @@
    "hollow": false
   },
   {
-   "kind": "dot",
+   "kind": "segment",
    "role": "answer",
    "cell": "atoms.mu",
    "timing": "fixed_in_advance",
@@ -118,7 +150,23 @@
    "hollow": false
   },
   {
-   "kind": "dot",
+   "kind": "segment",
+   "role": "other",
+   "cell": "atoms.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "segment",
+   "role": "other",
+   "cell": "atoms.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "segment",
    "role": "lens",
    "cell": "atoms.nl",
    "timing": "post_hoc",
@@ -126,7 +174,7 @@
    "hollow": true
   },
   {
-   "kind": "dot",
+   "kind": "segment",
    "role": "lens",
    "cell": "atoms.nl",
    "timing": "post_hoc",
@@ -134,7 +182,7 @@
    "hollow": true
   },
   {
-   "kind": "dot",
+   "kind": "segment",
    "role": "answer",
    "cell": "atoms.nl",
    "timing": "post_hoc",
@@ -142,7 +190,23 @@
    "hollow": true
   },
   {
-   "kind": "dot",
+   "kind": "segment",
+   "role": "other",
+   "cell": "atoms.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "segment",
+   "role": "other",
+   "cell": "atoms.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "segment",
    "role": "lens",
    "cell": "atoms.q122",
    "timing": "fixed_in_advance",
@@ -150,7 +214,7 @@
    "hollow": false
   },
   {
-   "kind": "dot",
+   "kind": "segment",
    "role": "lens",
    "cell": "atoms.q122",
    "timing": "fixed_in_advance",
@@ -158,8 +222,24 @@
    "hollow": false
   },
   {
-   "kind": "dot",
+   "kind": "segment",
    "role": "answer",
+   "cell": "atoms.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "segment",
+   "role": "other",
+   "cell": "atoms.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "segment",
+   "role": "other",
    "cell": "atoms.q122",
    "timing": "fixed_in_advance",
    "claim": "claimed",
@@ -170,30 +250,10 @@
   "○ post hoc"
  ],
  "numbers": {
-  "f5.other_scene.q9": "0.01",
-  "f5.other_scene.q27": "0.01",
-  "f5.other_scene.mu": "0.02",
-  "f5.other_scene.nl": "0.01",
-  "f5.other_scene.q122": "0.01",
-  "f5.no_scene.q9": "0.77",
-  "f5.no_scene.q27": "0.77",
-  "f5.no_scene.mu": "0.61",
-  "f5.no_scene.nl": "0.79",
-  "f5.no_scene.q122": "0.69",
-  "f5.old.q9": "0.11",
-  "f5.new.q9": "0.11",
   "f5.answer.q9": "0.00",
-  "f5.old.q27": "0.10",
-  "f5.new.q27": "0.11",
   "f5.answer.q27": "0.00",
-  "f5.old.mu": "0.18",
-  "f5.new.mu": "0.19",
   "f5.answer.mu": "0.00",
-  "f5.old.nl": "0.09",
-  "f5.new.nl": "0.11",
   "f5.answer.nl": "0.00",
-  "f5.old.q122": "0.15",
-  "f5.new.q122": "0.15",
   "f5.answer.q122": "0.00"
  },
  "problems": []

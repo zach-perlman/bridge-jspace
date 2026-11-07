@@ -867,6 +867,10 @@ name = "Olmo-3 7B"
 id = "o7"
 
 # every figures/<set>/ keeps its sidecars under _meta/ (figkit/layout.py)
+# the README's atoms figure splits the lens part's energy five ways (Dan, 7 Nov: a 100% stack)
+[marks]
+max_segments = 5
+
 [output]
 sidecar_dir = "_meta"
 

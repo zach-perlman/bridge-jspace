@@ -191,7 +191,7 @@ What the lens part is made of in the locker scenes, word by word:
 
 ![The lens part's 25 directions are the two bridge words, almost never the answer word](figures/readme/05_atoms.png)
 
-*Per model three rows: the old bridge word, the new bridge word (the lens part, teal) and the answer word (brick): each one's share of the lens part's rebuilt energy, over its directions by the word each decodes to. Right: the shares in another scene word and in no scene word. Lightning hollow (○, post hoc).*
+*One bar per model: the lens part's directions, each counted by the word it decodes to, as shares of the energy they rebuild. The old and the new bridge word are the two teal segments, named above them; another scene word and no scene word are grey. The answer word (brick) has no visible segment: its share is printed at the right. Lightning hollow (○, post hoc).*
 
 </details>
 

@@ -222,29 +222,24 @@ def r4_pointer() -> sp.Figure:
 ATOMS = "52 A: share of the rebuilt energy, "
 
 
+ATOM_SEGMENTS = (("old bridge word", "lens", "the old bridge word", "old"),
+                 ("new bridge word", "lens", "the new bridge word", "new"),
+                 ("answer word", "answer", "an answer word", "answer"),
+                 ("another scene word", "other", "another scene word or its class", "other_scene"),
+                 ("no scene word", "other", "no scene word", "no_scene"))  # fmt: skip
+
+
 def f5_atoms() -> sp.Figure:
-    """Of the lens part's 25 directions, the share of the rebuilt energy by the word each decodes to: the old and the new
-    bridge word (both the lens part, named in grey lane words), an answer word (brick); another scene word and no
-    scene word as numbers beside (Dan, 7 Nov: no new roles)."""
+    """Of the lens part's 25 directions, the share of the rebuilt energy by the word each decodes to, one 100% bar per
+    model (README brief, 7 Nov, F5): the old and the new bridge word (both the lens part, told apart by their words),
+    an answer word (brick), another scene word and no scene word (grey). The answer word's share is about zero, so its
+    segment has no width: its number is printed beside the bar."""
     models = [m for m in DAN if D.s(m, ATOMS + "the old bridge word")]
-    lens, answer, other, none_ = {}, {}, {}, {}
-    for m in models:
-        k = ZK[m]
-        for lane, q in (("old", "the old bridge word"), ("new", "the new bridge word")):
-            lens[(m, lane)] = est(need(D.s(m, ATOMS + q), m), f"atoms.{k}", key=f"f5.{lane}.{k}", label=True)
-        answer[(m, "answer")] = est(need(D.s(m, ATOMS + "an answer word"), m), f"atoms.{k}", key=f"f5.answer.{k}",
-                                    label=True)  # fmt: skip
-        other[(m, "old")] = est(need(D.s(m, ATOMS + "another scene word or its class"), m), f"atoms.{k}",
-                                key=f"f5.other_scene.{k}")  # fmt: skip
-        none_[(m, "old")] = est(need(D.s(m, ATOMS + "no scene word"), m), f"atoms.{k}", key=f"f5.no_scene.{k}")
-    col = sp.DotColumn("share of the rebuilt energy", "rebuilt", (-0.03, 1.05), (0, 0.5, 1),
-                       series=[sp.Series("lens", lens), sp.Series("answer", answer, word="answer word")])  # fmt: skip
-    t = sp.DotTable(models, [col, sp.TextColumn("another scene word", "rebuilt", other, unit_title=False),
-                             sp.TextColumn("no scene word", "rebuilt", none_, unit_title=False)],
-                    lanes=[sp.Lane("old", "old bridge word"), sp.Lane("new", "new bridge word"),
-                           sp.Lane("answer", "answer word")],
-                    note="of the lens part's 25 directions, by the word each decodes to")  # fmt: skip
-    return sp.Figure("f5_atoms", vocab()).add(t)
+    shares = {key: {m: est(need(D.s(m, ATOMS + q), m), f"atoms.{ZK[m]}", key=f"f5.{key}.{ZK[m]}", interval=False)
+                    for m in models} for _n, _r, q, key in ATOM_SEGMENTS}  # fmt: skip
+    segments = [sp.Segment(name, role, shares[key]) for name, role, _q, key in ATOM_SEGMENTS]
+    answer = sp.TextColumn("answer word", "rebuilt", shares["answer"], role="answer", unit_title=False)
+    return sp.Figure("f5_atoms", vocab()).add(sp.Stack(models, segments, unit="rebuilt", columns=[answer]))
 
 
 # ---- f6_address: read, remove, swap, rebuild ---------------------------------------------------------------------------
