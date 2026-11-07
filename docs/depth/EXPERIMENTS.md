@@ -115,6 +115,7 @@ New in this ledger:
 
 - **Tags** on the line under each heading: `in README` (a README card or claim uses it as is), `changes README` (the README must change; the change waits in [Appendix B](#readme-changes)), `ledger only` (not in the README), `below gate: <model>` (that model's readers missed the test's gate, so its column is not tested, or later an exploratory run shown hollow).
 - **†**: not in the hand-checked sample (the README's mark). VERIFIED.md (human recomputation) is not filled for any card.
+- **Terms**: the **ladder** (49.2) takes the lens part out step by step (more layers, the earlier mention, the question, every token), each step (rung) against a random part; the **full carrier** (51.7) changes the bridge token at every layer up to L on the fact passages. In verbatim rules and their verdict words, "J-space" means the lens's directions and "pointer" the address unless a card glosses it otherwise.
 - **Below gate**: a test runs on a model only if both readers answer the original prompts right often enough (usually 0.80); a failed gate is not lowered after the data (the spec's rule). Lightning's below-gate runs (Dan, 29 Oct morning) are exploratory: hollow marks, never in claims or grades.
 - **Adapted design**: where a model needed a changed design (Lightning: attention blocks only after L14, no per-block MLP; the 27B's grids), the card's Data or Method says so.
 - **The 122B** (Qwen3.5-122B-A10B; FP8; MoE, ~10B active): a fifth column where a verdict exists, from its source files, no reruns (Dan, 29 Oct 11:30); "not run" elsewhere; a fifth slot only in the figures of those cards. Its L33 is the 27B's relative depth carried over (33/48), not the other models' rule; its J++ lens was fit on the bf16 weights; FP8; MoE, ~10B active.
@@ -153,7 +154,7 @@ New in this ledger:
   On the clean one-pick scenes Lightning misses the gate (recall 0.751<!-- src: results/x0_necessity/nem35l_x52_fresh/coverage.txt | (recall 0.751 :: 0.751 --> < 0.80), so it is not tested there; the below-gate run on the eligible scenes (295 at L14; the source of Lightning's below-gate runs) is descriptive only, hollow ○: recall ○ 0.39 [0.33, 0.45]<!-- src: results/x0_necessity/nem35l_x52_fresh/verdict-20261029T083122Z/verdict.md | PM | 295 :: 0.39 [0.33, 0.45] -->, lookup ○ 0.03 [-0.02, 0.08]<!-- src: results/x0_necessity/nem35l_x52_fresh/verdict-20261029T083122Z/verdict.md | PP | 295 :: 0.03 [-0.02, 0.08] --> blocked beyond a random part, the pattern the rule calls confirmed.
 
 - **Read.**
-  - The rank check (Dan 13:15, range per model Dan 18:10; every item of the conflict test and the routes test, docs/review/verify_pack_jspace.md; no flag): what the lens can read about the item sits in the J++ part; the rest puts the new bridge word in the lens's top 50 on 0.00-0.14 of items (conflict test: 9B 0.00<!-- src: docs/review/verify_pack_jspace.md \| Qwen3.5-9B :: S's bridge (word or symbol) :: 0.00 -->, 27B 0.02<!-- src: docs/review/verify_pack_jspace.md \| Qwen3.6-27B :: S's bridge (word or symbol) :: 0.02 -->, Muse 0.01, Lightning 0.06, 122B 0.05; the routes test's highest condition, Lightning C0: 0.14), against about 0.5 for a random part (0.52 / 0.53 / 0.66 / 0.65 / 0.83) and about 0.8 for the J++ part (0.81 / 0.81 / 0.89 / 0.93 / 0.93); the random part reads the bridge because it keeps part of Δ itself.
+  - The rank check (Dan 13:15, range per model Dan 18:10; every item of the conflict test and the routes test, docs/review/verify_pack_jspace.md; no flag): what the lens can read about the item sits in the lens part; the rest puts the new bridge word in the lens's top 50 on 0.00-0.14 of items (conflict test: 9B 0.00<!-- src: docs/review/verify_pack_jspace.md \| Qwen3.5-9B :: S's bridge (word or symbol) :: 0.00 -->, 27B 0.02<!-- src: docs/review/verify_pack_jspace.md \| Qwen3.6-27B :: S's bridge (word or symbol) :: 0.02 -->, Muse 0.01, Lightning 0.06, 122B 0.05; the routes test's highest condition, Lightning C0: 0.14), against about 0.5 for a random part (0.52 / 0.53 / 0.66 / 0.65 / 0.83) and about 0.8 for the lens part (0.81 / 0.81 / 0.89 / 0.93 / 0.93); the random part reads the bridge because it keeps part of Δ itself.
   - On the 122B, at its L33, the lookup has nothing blocked beyond random and the recall has about a third blocked: confirmed; with more lens directions (k = 50, 100) the lookup still has nothing blocked beyond random.
   - At L14 the recall follows the lens part and the lookup does not; the same split stands at L18 and L22.
 - **Caveats.**
@@ -444,7 +445,7 @@ New in this ledger:
 `in README` *Used in: README Part I card "Does asking the question before the scene change how the lookup uses the lens part?"; README "Tested and dropped" ("The question's position decides item or answer").*
 
 - **Question.** On our locker scenes, does the recall's lens effect (the item or its answer, by 51.12's arms) change when the question comes before the scene instead of after it, or when the recall's answer is a word instead of a number?
-- **Why we asked.** On Zach's passages the answer word is readable and usable through the lens ([52 B](#b52-b)); on our scenes it is not. His questions and answers differ from ours in two ways at once: where the question sits and what kind of answer it asks for.
+- **Why we asked.** On the fact passages the answer word is readable and usable through the lens ([52 B](#b52-b)); on our scenes it is not. His questions and answers differ from ours in two ways at once: where the question sits and what kind of answer it asks for.
 - **Data.** Our locker scenes (the main test), four cells: the question after the scene with a number answer (the main test as is), the question before the scene with a number answer, and the same two with a word answer: the animal's class (mammal, bird, insect, ...), the only relation that passed the 9B's coverage rule, on 191<!-- src: jobs/c3/x53_2x2_words_9b.yaml | Animal class passes coverage on the 9B :: 191 --> animal scenes, not the 600 of the number cells. Lightning: 516 scenes (84 dropped: the bridge word is not one token at one position), its word cells stopped (Dan 11:10: the wording fails). The 122B (FP8; MoE, ~10B active) at L33: 200 scenes in each number cell, its gate passed in both (lookup / recall 0.9917 / 0.85<!-- src: results/x53_2x2/x53_2x2-20261029T113335Z/verdict.md \| (Q-after, number) :: 0.9917 / 0.85 --> and 0.9983 / 0.84<!-- src: results/x53_2x2/x53_2x2-20261029T113335Z/verdict.md \| (Q-before, number) :: 0.9983 / 0.84 -->); its word cells stopped too.
 - **Method.** Per cell: the main gate; the conflict test at L; 51.12's arms with the readout check first (without the lens part; without it but keeping the answer's directions; without the answer directions only, each beyond random); the inventory of the lens part's directions on 50 items.
 
@@ -551,11 +552,11 @@ New in this ledger:
 
 - **Question.** Which words do the 25 lens directions of the change stand for: the two bridge items, the answer words, or other words?
 - **Why we asked.** The answer control tests the answer words only; the rest of the lens part was never looked at.
-- **Data.** Main test, 50 locker-first items per model (Lightning at L14, main test only); Zach's described passages, 50 per model (9B, 27B, Muse).
+- **Data.** Main test, 50 locker-first items per model (Lightning at L14, main test only); the fact passages, 50 per model (9B, 27B, Muse).
 - **Method.** Each of the 25 lens directions labelled by a word classifier (the bridge words with their spellings, the answer words, other classes); the share of the rebuilt energy per class, against a chance baseline.
 
 ![The lens part holds the two bridge words, almost never the answer](../../figures/readme/05_atoms.png)
-*The README's figure: the lens part's rebuilt energy at the bridge word, by the word each of its 25 directions decodes to; right: the reader's answer word's share. Main test at L; Lightning tinted (○); the 122B at L33 (coverage †).*
+*The README's figure: the lens part's rebuilt energy at the bridge word, by the word each of its 25 directions decodes to; right: the reader's answer word's share. Main test at L; Lightning hollow (○); the 122B at L33 (coverage †).*
 
 - **Rule, fixed in advance.** None: descriptive inventory, no rule.
 
@@ -572,18 +573,18 @@ New in this ledger:
   - On the main test the two bridge words carry about a fifth (9B, 27B, Lightning) to two fifths (Muse) of the rebuilt energy, the answer words almost none (none at all on Lightning).
 - **Caveats.**
   - The classifier was hand-checked on 5 items per model (blind on Muse's main test only) and misses non-English answer words.
-  - On Zach's described passages the bridge names carry 0.02-0.03 and the descriptions' words dominate (see the report).
+  - On the fact passages the bridge names carry 0.02-0.03 and the descriptions' words dominate (see the report).
 
 ### Where is the answer readable through the lens, and can it be written there? (batch 52 B, landed 29 Oct 01:46; Lightning's main set 29 Oct) <a id="b52-b"></a>
 
 `ledger only` *Used in: not in the README (its 12:50 rebuild).*
 
-- **Question.** For each reader, on our scenes and on Zach's described passages, is the answer word readable through the lens before the answer is computed, and does writing its lens directions change the answer?
+- **Question.** For each reader, on our scenes and on the fact passages, is the answer word readable through the lens before the answer is computed, and does writing its lens directions change the answer?
 - **Why we asked.** The answer control found the answer word not read at our bridge word but read at Zach's description; where else is it readable, and is it used there?
-- **Data.** Our main test, 200 per model (Lightning at L14, a coverage run, no prediction); Zach's described passages, 158 / 166 / 157 (Lightning's read pending).
+- **Data.** Our main test, 200 per model (Lightning at L14, a coverage run, no prediction); the fact passages, 158 / 166 / 157 (Lightning's read pending).
 - **Method.** Read: the answer word's rank in the lens readout at the bridge word, its earlier mention, the question and the last token, every second layer before the answer layer. Write: at the most readable cell, the answer word's lens directions at one and two times a real change's size, against a random part and a frequency-matched part of the same size; the whole change at that cell as the reference.
 
-*[figure removed: On Zach's passages the answer is readable and usable; on ours rarely]*
+*[figure removed: On the fact passages the answer is readable and usable; on ours rarely]*
 *Per model and dataset: the best top-5 share of the reader's answer through the lens before the answer layer (readable), and answers changed by writing it there at gain 1 (usable), lookup and recall. whiskers: 95% intervals over bridge items; Lightning ○; –: not run, not tested or under 30 switches.*
 
 - **Rule, fixed in advance.** "“Readable”: the answer word in the lens top-5 on ≥ 0.5 of items at some layer before the answer layer. “Usable”: writing its directions changes the answer on ≥ 0.3 of items with the random control ≤ 0.10. Report the four combinations per reader, per dataset." No prediction.
@@ -600,7 +601,7 @@ New in this ledger:
   The recall's write at twice a real change's size, what the model outputs (a CPU check after the data, descriptive; results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md): the table counts the changed prompt's answer token, but at twice the size the recall's top token is mostly one of the written answer word's own tokens ("Four", "Six", ...), on 0.76<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 35 :: 0.76 --> / 0.84<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 39 :: 0.84 --> / 0.96<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 40 :: 0.96 --> of items (9B / Muse / Lightning); the changed prompt's answer token on 0.03<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 35 :: 0.03 --> / 0.09<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 39 :: 0.09 --> / 0.01<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 40 :: 0.01 -->, the original answer on 0.04<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 35 :: 0.04 --> / 0.03<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 39 :: 0.03 --> / 0.00<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 40 :: 0.00 -->. The 27B differs: its top token stays the original answer on 0.74<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | recall | ans2 | 200 | 0.20 | 0.74 :: 0.74 -->.
 
 - **Read.**
-  - On Zach's described passages the answer word is readable and writing it changes the answer, for both readers on all three models.
+  - On the fact passages the answer word is readable and writing it changes the answer, for both readers on all three models.
   - On our scenes the recall's answer is never readable before the answer layer, yet writing it at the last token moves the 9B's, Muse's and Lightning's recall; the lookup's is readable only on the 9B and Lightning, where writing it moves a tenth of answers or fewer.
 - **Caveats.**
   - The 27B's and Muse's lookup cells on our scenes were written where nothing was readable and where the whole change itself switches nothing, so their "not usable" cannot tell (see Flagged for Dan).
@@ -1397,7 +1398,7 @@ New in this ledger:
 ![The address is readable before the lookup uses it](../../figures/depth/07_depth.png)
 
 ![The address is readable before the lookup uses it](../../figures/depth/08_depth_more.png)
-*Per model, one panel, x = the layer as a share of the model's depth: the locker probe's accuracy, the position answers under the whole change, the lookup's switches blocked without the J++ part beyond a random part; 95% intervals; faded: layers where the whole change switches under 0.30 (outside the gate); triangles: the address readable (probe at least 0.80) and the position answers begin (at least 0.20). The lookup barely needs the lens part at any layer (largest effect at most 0.2 except the 27B); the recall is not drawn. The 27B is its full grid, where rule (a) fails; Lightning and the 122B ○. The layer-by-layer anatomy with every clause is also in the supplementary figure.*
+*Per model, one panel, x = the layer as a share of the model's depth: the locker probe's accuracy, the position answers under the whole change, the lookup's switches blocked without the lens part beyond a random part; 95% intervals; faded: layers where the whole change switches under 0.30 (outside the gate); triangles: the address readable (probe at least 0.80) and the position answers begin (at least 0.20). The lookup barely needs the lens part at any layer (largest effect at most 0.2 except the 27B); the recall is not drawn. The 27B is its full grid, where rule (a) fails; Lightning and the 122B ○. The layer-by-layer anatomy with every clause is also in the supplementary figure.*
 
 - **Rule, fixed in advance.** "Define l_J = the first layer from which the lookup's extra drop without J++ stays <= 0.10; l_P = the first layer where the position share under the whole change is >= 0.20; l_probe = the first layer where the slot probe is >= 0.80. (a) "Handoff": l_P >= l_J [...] (b) "The address forms before it is used": l_probe <= l_P on every model [...] (c) "Identity leaves the lens": identity share with only-J++ is >= 0.5 at the earliest interpretable layer and <= 0.1 by L, while identity with only-I_l rises to >= 0.3 by L, on >= 2 of 3 models [...] (d) "Never the value, at any depth": value <= 0.05 at every interpretable layer." D4: "persistent if the mean cos^2 of the principal angles >= 0.5 across the window where the slot probe is >= 0.8; re-encoded if it drops below 0.2 between adjacent sampled layers." The 27B's full grid and Lightning: coverage runs on this rule, no prediction.
 
@@ -1522,7 +1523,7 @@ New in this ledger:
 
 - **Question.** At the last token, does the lookup compute its answer through the lens part when the answer is a word the passage states, as the recall does, or outside it as with digits?
 - **Why we asked.** On our locker scenes (digit answers) the lookup computes outside the lens part at the last token on two models while the recall goes through it near the answer ([53.3](#b53-3)); the asymmetry could belong to digits or to copying. (53.3's near-answer recall cells are now labelled uninformative near the output, Dan 11:25; its Muse and Lightning digit lookups keep their labels, Dan 11:55.)
-- **Data.** Zach's named-bridge passages with made-up facts (Z1-P's items): the lookup copies a made-up word the passage states; the recall answers from memory, the same answer vocabulary. The 9B: 112 passages (86 bridge entities) and the 27B: 200 passages (118 entities), at their gates; Muse: 120 passages (85 entities) and Lightning: 129 passages (100 entities), their eligible passages only, below their gates.
+- **Data.** the fact passages with made-up facts (Z1-P's items): the lookup copies a made-up word the passage states; the recall answers from memory, the same answer vocabulary. The 9B: 112 passages (86 bridge entities) and the 27B: 200 passages (118 entities), at their gates; Muse: 120 passages (85 entities) and Lightning: 129 passages (100 entities), their eligible passages only, below their gates.
 - **Method.** 53.3's conflict test at the last token, per reader at its own answer layer minus 1, 2 and 3 and at 51.10's read peak: the whole change, without the lens part, without a random part of the same share, the lens part alone; and 53.3's lookup again on our locker scenes at its answer layer minus 1 and 3. A cell under 53.3's validity bar (whole change >= 0.30, >= 30 switches) is invalid and counts for neither clause.
 
 *[figure removed: Near the output the test is uninformative; read peaks differ]*
@@ -1599,13 +1600,13 @@ New in this ledger:
 
 ## Part V. Other datasets and operations
 
-### Does the split hold on Zach's passages with a named bridge? (Z1, opened 28 Oct 17:17; Lightning's coverage run 29 Oct) <a id="z1"></a>
+### Does the split hold on the fact passages with a named bridge? (Z1, opened 28 Oct 17:17; Lightning's coverage run 29 Oct) <a id="z1"></a>
 
 `in README` *Used in: README Part V card "Does the split hold on Zach's passages, and do his operation and ours agree?" (his named passages and the recheck); README "Tested and dropped" ("The lookup follows the lens part on Zach's passages").*
 
-- **Question.** On Zach's passages with a named bridge, does the lookup let go of the lens part while the recall follows it?
-- **Why we asked.** Our scenes are short lists; his passages scatter the facts in prose.
-- **Data.** His passages (named bridge; the lookup's passage states the true final fact, the recall's leaves it out): 200 per model (Lightning at L14, which decides, and L27 beside). Z1-P: his passages with made-up facts, 200 each on the 9B, 27B, Muse (L26) and Lightning.
+- **Question.** On the fact passages with a named bridge, does the lookup let go of the lens part while the recall follows it?
+- **Why we asked.** Our scenes are short lists; the fact passages scatter the facts in prose.
+- **Data.** His passages (named bridge; the lookup's passage states the true final fact, the recall's leaves it out): 200 per model (Lightning at L14, which decides, and L27 beside). Z1-P: the fact passages with made-up facts, 200 each on the 9B, 27B, Muse (L26) and Lightning.
 - **Method.** The conflict test at the bridge name's last token at L: without the lens part, against without a random part; each reader gets its own change.
 
 *[figure removed: On Zach's named passages the lookup follows the lens part too]*
@@ -1632,20 +1633,20 @@ New in this ledger:
   - Rechecked on the 9B (Dan 12:50) without the 60 passages where the bridge's true value stands in the lookup's passage as another entity's value: the split holds on the remaining 140 as on the full set, with the same gap.
   - On his named-bridge passages the lookup follows the lens part too on the 9B and 27B; Muse's lookup switches too rarely to tell (see Flagged for Dan). The order pattern replicates on all three.
   - On Lightning at L14 the split is in between: the lookup has more blocked than the 0.10 bar but far less than the recall; its order pattern does not replicate (fact-first under twice fact-after).
-  - On his passages with made-up facts (Z1-P) the 9B's split holds and the 27B's is in between; Muse and Lightning missed the gate there, so their numbers are descriptive only.
+  - On the fact passages with made-up facts (Z1-P) the 9B's split holds and the 27B's is in between; Muse and Lightning missed the gate there, so their numbers are descriptive only.
 - **Caveats.**
   - His true-fact lookup passages (the first four rows) state facts the model may know; the made-up-fact rerun (Z1-P, Dan's morning brief, 29 Oct) ran on the 9B, 27B (L32) and Lightning (L14): coverage runs on the same rule, no prediction, 200 passages each; Muse not run.
   - Hollow ○: below the gate, numbers descriptive only, never in claims or grades (Dan, 09:15).
   - Gates just under 0.80 stay not tested (Dan, 11:25): on the harder variants the eligible items are the easier ones (Muse's and Lightning's made-up-fact gates).
   - Muse's lookup switches under the whole change on 0.12 of passages; at L36 it cannot tell. Lightning's L27 (beside) likewise: its lookup switches on 1<!-- src: results/x50_zach/x52_z1-20261029T013035Z/z1.md \| L27: routes :: "original": 198, "switch": 1 :: 1 --> of 200 passages there, so the verdict's "follows the lens here" at L27 is not valid (Flagged 13).
 
-### On Zach's made-up-fact passages, does the answer control read the same with the bridge named and described? (53.1b, the 9B and the 27B opened 29 Oct ~11:00-12:15) <a id="b53-1b"></a>
+### On the fact passages, does the answer control read the same with the bridge named and described? (53.1b, the 9B and the 27B opened 29 Oct ~11:00-12:15) <a id="b53-1b"></a>
 
 `ledger only` *Used in: not in the README (its 12:50 rebuild).*
 
-- **Question.** On Zach's passages with made-up facts, what do 51.12's arms (is it the bridge item or its answer that moves through the lens?) say when the passage names the bridge (PP: the lookup reads the made-up value the passage states; PM: the recall answers from memory) and when it describes the bridge instead (MP: the lookup; MM: the recall)? In his codes the first letter is how the bridge enters, the second where the answer comes from; the made-up fact is stated in every cell, so PP against MP is a named against a described bridge, for the lookup.
-- **Why we asked.** Dan's priority 1 of 29 Oct 09:50 ("jsuite PP vs MP, 51.12's arms + readout"): on his passages the cells exist already, no new scenes.
-- **Data.** Zach's passages with made-up facts: the named bridge (Z1-P's items) and the described bridge (Z2's design, the change at the description's last token); 200 per cell where tested; the 9B at L12, the 27B at L32.
+- **Question.** On the fact passages with made-up facts, what do 51.12's arms (is it the bridge item or its answer that moves through the lens?) say when the passage names the bridge (PP: the lookup reads the made-up value the passage states; PM: the recall answers from memory) and when it describes the bridge instead (MP: the lookup; MM: the recall)? In his codes the first letter is how the bridge enters, the second where the answer comes from; the made-up fact is stated in every cell, so PP against MP is a named against a described bridge, for the lookup.
+- **Why we asked.** Dan's priority 1 of 29 Oct 09:50 ("jsuite PP vs MP, 51.12's arms + readout"): on the fact passages the cells exist already, no new scenes.
+- **Data.** the fact passages with made-up facts: the named bridge (Z1-P's items) and the described bridge (Z2's design, the change at the description's last token); 200 per cell where tested; the 9B at L12, the 27B at L32.
 - **Method.** 51.12's arms per cell: the readout check first (is the answer word in the lens's top 50 at the bridge word?), then the change without the lens part, without the lens part but keeping the answer's directions, and without the answer directions only, each beyond a random part.
 
 *[figure removed: Named: both recalls mixed; described: the 27B's reads as the answer]*
@@ -1678,7 +1679,7 @@ New in this ledger:
 
 `in README` *Used in: README Part V card "Does the split hold on Zach's passages, and do his operation and ours agree?" (the full carrier).*
 
-- **Question.** On Zach's named-bridge passages, does changing the bridge token at every layer up to L (the full carrier) explain the one-layer result, and does the split hold there?
+- **Question.** On the fact passages, does changing the bridge token at every layer up to L (the full carrier) explain the one-layer result, and does the split hold there?
 - **Why we asked.** At one layer his fact-after lookups barely switch; the link may be carried by the bridge token over several layers.
 - **Data.** Z1's passages: 200 per model (9B: 100 fact-first, 100 fact-after; 27B: 97 / 103; Lightning, at L14: 103<!-- src: results/x51_carrier/x52_carrier-20261029T014338Z/verdict.md \| fact-first :: 103 (87) :: 103 --> / 97<!-- src: results/x51_carrier/x52_carrier-20261029T014338Z/verdict.md \| fact-after :: 97 (80) :: 97 -->); 9B, 27B and Lightning.
 - **Method.** The change at the bridge name's last token at every block output up to L; the conflict test on it: without the lens part, against without a random part of the same share; the one-layer change beside.
@@ -1705,17 +1706,17 @@ New in this ledger:
   - Zach's lookup passages state true facts (see [Z1](#z1)).
   - Muse not run (designed for the 9B and 27B).
 
-### Does the lookup take a position route on Zach's passages? (Z3, opened 28 Oct 17:31; the 27B's and Lightning's coverage runs 29 Oct) <a id="z3"></a>
+### Does the lookup take a position route on the fact passages? (Z3, opened 28 Oct 17:31; the 27B's and Lightning's coverage runs 29 Oct) <a id="z3"></a>
 
-`in README` *Used in: README Part V card "Does the split hold on Zach's passages, and do his operation and ours agree?" (the routes test on his passages).*
+`in README` *Used in: README Part V card "Does the split hold on Zach's passages, and do his operation and ours agree?" (the routes test on the fact passages).*
 
-- **Question.** On Zach's passages with scattered facts, does the lookup take a position route besides the identity route?
-- **Why we asked.** The address codes where a locker sentence sits in a list; his passages have no list.
+- **Question.** On the fact passages with scattered facts, does the lookup take a position route besides the identity route?
+- **Why we asked.** The address codes where a locker sentence sits in a list; the fact passages have no list.
 - **Data.** His level-0 passages with all three facts before the pointer: 60 (9B), 81<!-- src: results/x50_zach/x52_z3-20261029T024151Z/z3.md \| x50_z3_27b :: 81 (72) :: 81 --> (27B, at L32: X0's layer and the start of Zach's band), 48 (Muse), 52<!-- src: results/x50_zach/x52_z3-20261029T013329Z/z3.md \| nem35l_x52_z3 :: 52 (47) :: 52 --> (Lightning, at L14 and L27).
 - **Method.** The routes test: the change comes from a passage where another item's fact sentence moved and took a new value; the lookup's answer is sorted into identity, position, value or original.
 
-*[figure removed: On Zach's passages the lookup rarely takes the position route]*
-*Per model and layer: the lookup's shares by route under the whole change on his passages. whiskers: 95% intervals over bridge items; Lightning ○; –: not run, not tested or under 30 switches.*
+*[figure removed: On the fact passages the lookup rarely takes the position route]*
+*Per model and layer: the lookup's shares by route under the whole change on the fact passages. whiskers: 95% intervals over bridge items; Lightning ○; –: not run, not tested or under 30 switches.*
 
 - **Rule, fixed in advance.** "Value <= 0.05; if position >= 0.2: the address exists in scattered-fact passages; if position <= 0.05: no position route in his layout." The 27B and Lightning: coverage runs on this rule, no prediction.
 
@@ -1729,7 +1730,7 @@ New in this ledger:
   | the rule | **in between** | **no position route in his layout<!-- src: results/x50_zach/x52_z3-20261029T024151Z/z3.md \| x50_z3_27b :: no position route in his layout -->** (no prediction) | **in between** (L36: no position route) | **in between<!-- src: results/x50_zach/x52_z3-20261029T013329Z/z3.md \| nem35l_x52_z3 :: 0.10 [0.02, 0.19] :: in between -->** (L27: no position route; no prediction) | **no position route in his layout<!-- src: results/x50_zach/x52_z3-20261030T035019Z/z3.md \| qwen35_122b_z3 :: 0.57 [0.43, 0.70] :: no position route in his layout -->** (L39 too; no prediction) |
 
 - **Read.**
-  - On his passages the lookup rarely takes the position route: in between on the 9B, Muse and Lightning at L, and almost none on the 27B (no position route in his layout); it never takes the value.
+  - On the fact passages the lookup rarely takes the position route: in between on the 9B, Muse and Lightning at L, and almost none on the 27B (no position route in his layout); it never takes the value.
 - **Caveats.**
   - Small n (60 / 81 / 48 / 52); the lookup only.
   - The 27B is read at L32 only (X0's layer and the start of Zach's band).
@@ -1738,12 +1739,12 @@ New in this ledger:
 
 `ledger only` *Used in: not in the README (its 12:50 rebuild).*
 
-- **Question.** On Zach's named-bridge passages, does each reader's read window end within 4 layers of ours?
+- **Question.** On the fact passages, does each reader's read window end within 4 layers of ours?
 - **Why we asked.** His swap works up to about L20; ours up to L16 on the 9B; the windows decide where the two operations can be compared.
 - **Data.** Z1's passages, 200 per model (9B, 27B; Lightning: a coverage run with the design taken from the 9B / 27B spec, adapted to its layers, no prediction).
 - **Method.** The whole change at the bridge name's last token, one layer at a time; the window's end is the last layer where a reader switches on at least 0.3.
 
-*[figure removed: On the 9B his passages are read over our layers; on the 27B not]*
+*[figure removed: On the 9B the fact passages are read over our layers; on the 27B not]*
 *Per model (columns) and layer (rows): lookups and recalls switched by the whole change on his named passages. Whiskers: 95% intervals; Lightning ○.*
 
 - **Rule, fixed in advance.** "The same read window as ours if the last layer where each reader's switch >= 0.3 lies within 4 layers of ours."
@@ -1757,7 +1758,7 @@ New in this ledger:
   | the rule | **the same window** | **not the same** | | **the same read window as ours<!-- src: results/x51_depth/x52_depth51-20261029T083500Z/verdict.md \| nem35l_x52_depth51 :: the same read window as ours -->** (no prediction) | |
 
 - **Read.**
-  - On the 9B his passages are read over the same layers as our scenes; on the 27B the lookup's window ends 6 layers earlier.
+  - On the 9B the fact passages are read over the same layers as our scenes; on the 27B the lookup's window ends 6 layers earlier.
 - **Caveats.**
   - Lightning's run uses the 9B / 27B design (adapted design, coverage run); its own window from its anatomy run (L22 for both readers).
   - Our 27B window comes from a coarser grid (every 8th layer with L30-34).
@@ -2104,13 +2105,13 @@ Rows of the coverage matrix whose result exists on one model only, by design or 
 
 `in README` *Used in: README "Tested and dropped" ("The described bridge on Zach's passages").*
 
-- **Question.** On Zach's passages with a described (never named) bridge, does the lookup let go of the lens part?
+- **Question.** On the fact passages with a described (never named) bridge, does the lookup let go of the lens part?
 - **Why we asked.** A described bridge must be computed before it can be used; the computed item could travel through the lens.
 - **Data.** His described-bridge passages: 158 / 166 / 157 (below the 200 aimed for) / 200<!-- src: results/x50_zach/x52_z2-20261029T025625Z/z2.md \| nem35l_x52_z2 :: 200 (124) :: 200 --> (Lightning, at L14; L27 beside).
 - **Method.** The conflict test at the description's last token at L, each reader its own change, against a random part.
 
-*[figure removed: Zach's knock-out hits the recall more; our gap is unclear]*
-*Recall minus lookup: our one-layer gap and the band knock-out on his described bridges. whiskers: 95% intervals over bridge items; Lightning ○; –: not run, not tested or under 30 switches.*
+*[figure removed: Zach's removal everywhere hits the recall more; our gap is unclear]*
+*Recall minus lookup: our one-layer gap and the band removal everywhere on his described bridges. whiskers: 95% intervals over bridge items; Lightning ○; –: not run, not tested or under 30 switches.*
 
 - **Rule, fixed in advance.** "Per model, the 47.3 rule: (a) the split holds: gap >= 0.3, lookup <= 0.10; (a') the computed bridge is handed through the lens: lookup >= 0.20; (d) in between." Withdrawn by the answer control's rule ([51.12](#t51-12)): the lens effect there is the answer or mixed in all four cells.
 
@@ -2151,7 +2152,7 @@ Dan 18:20 (jobs/c3/batch53.yaml coverage_122b_1820, decision_470_1845): Qwen3.5-
   - **47.16, the swap after neutral sentences** (`x47_16_122b`; adapted design: lookup-only gate; the recall (0.797) is not part of this test): ran, its gate passed (lookup 1.00, the recall 0.78 descriptive); verdict (CPU, 30 Oct; [x47_16](../../results/x47_distance/x52_distance-20261030T094552Z/x47_16.md)): "none of the three".
   - **47.8, anatomy by layer** (`x47_8_122b_lk`; same adapted design; [verdict](../../results/x47_anatomy/x52_anatomy-20261030T032402Z/x47_8.md)): (a) yes, gap 0; (b) yes; (c) no; (d) yes.
   - **47.13, the lookup's errors** (`x47_13_122b`): the GPU stage ran; 7 wrong of 1,500 lookups, under the rule's 30: can't tell. The job's exit 1 is its coverage note's path, not the run; no rerun.
-  - **Z3, routes on Zach's passages** (`x50_z3_122b`; [verdict](../../results/x50_zach/x52_z3-20261030T035019Z/z3.md)): "no position route in his layout" at L33 and L39.
+  - **Z3, routes on the fact passages** (`x50_z3_122b`; [verdict](../../results/x50_zach/x52_z3-20261030T035019Z/z3.md)): "no position route in his layout" at L33 and L39.
   - **47.14, chained addresses** (`x47_14_122b`): ran, its own gate passed (both lookups: 1.00 / 0.84); verdict (CPU, 30 Oct; [x47_14](../../results/x47_chain/x52_chain-20261030T094553Z/x47_14.md)): addresses do not chain (no).
   - **49.1, the gain grid** (`x49_1_122b`): ran on the main test's 410 eligible scenes; verdict (CPU, 30 Oct; [x49_1](../../results/x49_gain/x52_gain-20261030T094553Z/x49_1.md)): "(c) neither".
   - **Z2, the described bridge** (`x50_z2_122b`; [verdict](../../results/x50_zach/x52_z2-20261030T045145Z/z2.md)): at L33 "(a') the computed bridge is handed through the lens"; at L39 can't tell (no lookup switch under the whole change).
@@ -2230,7 +2231,7 @@ Dan lifted the overnight no-README rule at 08:55; the README's 12:50 rebuild (55
 - **Applied** (after the rebuild, d5f208a3: Part III card "Can the address be read, removed, added and swapped?", the swap with no / 50 neutral sentences on the 9B, 27B and Lightning). E6: the swap after 50 neutral sentences is distance-robust on the 27B and Lightning as on the 9B; Muse has no run (Flagged 22) ([47.16](#t47-16)).
 - **Applied** (8cc913df: Muse's column in the same row, 0.50 / 0.52, "distance-robust address"). Part III address card, the neutral-sentences row: Muse showed "not run", but its rerun r2 (Dan, 09:05; a coverage run on the same rule, no prediction) gives 0.50 [0.46, 0.54]<!-- src: results/x47_distance/x52_distance-20261029T090323Z/x47_16.md \| muse-glimmer-30b :: 0.44 [0.39, 0.50] :: 0.50 [0.46, 0.54] --> with no sentences and a distance-robust address, as in the 47.16 card; Flagged 22 covers only its first run ([47.16](#t47-16)).
 - **Applied** ("Tested and dropped" and Part VI (one line each)). Part VI, models: the 27B also fails the person mark (48.3), the formation block (47.6) and the any-kind-of-item address (47.11: fruits neither U nor the refit, names slot x type) ([48.3](#t48-3), [47.6](#t47-6), [47.11](#t47-11)).
-- **Applied** (Part V card, the routes test on his passages). Part V (Z3), models: the 27B takes no position route on Zach's passages at L32 (0.04), the 9B, Muse and Lightning in between ([Z3](#z3)).
+- **Applied** (Part V card, the routes test on the fact passages). Part V (Z3), models: the 27B takes no position route on the fact passages at L32 (0.04), the 9B, Muse and Lightning in between ([Z3](#z3)).
 - **Applied** (claim 2, the Part III refit card and Part VI's line on the lookup's errors). Part I (47.5) and Part VI (x45d, 47.13), models: on Lightning the recall follows the lens part and does not need it at one layer; refit per format the address is a pointer elsewhere; its errors are not address errors (coverage runs, no prediction) ([47.5](#t47-5), [x45d](#x45d), [47.13](#t47-13)).
 - **Not on the page** (claim 4 reads "value none anywhere" (Lightning included); 47.7 (c) is ledger only). E5, models: "never the value" holds on Lightning's JSON (its prose and tables not tested, gate) ([47.7 (c)](#t47-7c)).
 - **Applied** (the line is gone; the person mark is one of "Four mechanisms for the split" under "Tested and dropped"). Part VI, the person-mark line (README line 482): "(the pooled probe is running)" is stale. 49.3 landed on the 9B and Muse ("neither at the sentence") and on the 27B ("in between" at L32); "in between" does not contradict "did not hold", note it only ([49.3](#t49-3)). The copying heads (48.4) and the enrichment (48.2) fail on the 27B too ([48.4](#t48-4), [48.2](#t48-2)).
@@ -2241,7 +2242,7 @@ Dan lifted the overnight no-README rule at 08:55; the README's 12:50 rebuild (55
 
 Which test ran on which model, from the committed coverage matrix (results/x52_coverage/matrix-20261029T122040Z/matrix.json, built 12:20 UTC 29 Oct; each cell's source is in that file). Rows in the README's order, under their Part; a linked test has a card above. Each cell is a symbol (legend under the table) and, where the matrix has a note for it, a number pointing to that note. Lightning's gate (all its cells): the main test's gate on all 516 scenes, chosen after the 60-scene pre-check was seen (its cells are read as hollow); layer L14 (see [Lightning's layer](#lightning-layer)). Nemotron 3.5 Bolt: out of scope, only a J-lens exists, no J++ lens.
 
-As of the matrix at 12:20 UTC (13:20 Paris; 8e2ef0cb: 47.15's row renamed "One question, two sources"; otherwise as b8a24aab: 161 done, 20 not tested, 9 not designed, 6 partial, none missing; 47.15 on the 9B and 47.7 (a) on the 9B and Muse now read "not tested" from their r2 reruns' failed gates, as flag 26). The 122B is not in the matrix; its cells are in the cards and the heatmap. Results opened since then are in their cards and the heatmap; the matrix has no rows for batch 53 or for Zach's made-up-fact passages.
+As of the matrix at 12:20 UTC (13:20 Paris; 8e2ef0cb: 47.15's row renamed "One question, two sources"; otherwise as b8a24aab: 161 done, 20 not tested, 9 not designed, 6 partial, none missing; 47.15 on the 9B and 47.7 (a) on the 9B and Muse now read "not tested" from their r2 reruns' failed gates, as flag 26). The 122B is not in the matrix; its cells are in the cards and the heatmap. Results opened since then are in their cards and the heatmap; the matrix has no rows for batch 53 or for the fact passages.
 
 <!-- coverage:start (scripts/ledger_coverage.py; do not edit by hand) -->
 | test | 27B | Lightning | 9B | Muse |

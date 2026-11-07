@@ -244,6 +244,6 @@ TWO_BY_TWO = [
 ]  # fmt: skip
 
 # ---- words the builders fill in --------------------------------------------------------------------------------------------
-READ_ALOUD = ("read: on {model}, the knock-out drops recall {recall} points and lookup {lookup}; the gap is {gap}, "
+READ_ALOUD = ("read: on {model}, removing the lens part everywhere drops recall {recall} points and lookup {lookup}; the gap is {gap}, "
               "the largest same-size control's {ctrl}")  # fmt: skip
 RULE_BAR = "bar fixed in advance: {}"

@@ -707,7 +707,7 @@ templates = [
     "48.4's bar fixed in advance: {num} of {num}",
     "unedited: {num}\u2013{num}% right on every model",
     "unedited: {num}% right on every model",
-    "read: on {entity}, the knock-out drops recall {num} points and lookup {num}; the gap is {num}, the largest same-size control's {num}",
+    "read: on {entity}, removing the lens part everywhere drops recall {num} points and lookup {num}; the gap is {num}, the largest same-size control's {num}",
 ]
 missing = ["no run", "no comparable run", "below gate", "too few switches", "no interval", "source missing", "no control run", "no energy-matched control", "can't tell", "not tested"]
 not_claimed = ["shared with the logit lens", "gone when scored by probability"]
