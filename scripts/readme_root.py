@@ -2,7 +2,7 @@
 of the words plus one command; numbers and figures fill themselves in.
 
 Placeholders in docs/readme/README.template.md:
-  {{b|key}}            docs/breadth/data.csv's value string for key, with its source comment
+  {{b|key}}            docs/breadth/data.csv's value for key (report_breadth.fmt, the one formatter), with its source
   {{bci|key}}          the same with its interval, "value [lo, hi]"
   {{q|text}}           a number quoted from outside the data files, as is (shared captions use it)
   {{x|key}}            docs/depth/x0_numbers.json's first number for key, with its source comment
@@ -103,18 +103,16 @@ CLAIMS = {
 def build() -> str:
     from bridge_jspace.figkit import layout as L
 
+    from scripts.report_breadth import fmt, typed
+
     BR, X, S, WR = breadth_rows(), x0(), story(), writeup_rows()
-    B = {k: r["value"] for k, r in BR.items()}
 
     def fill(m: re.Match) -> str:
         kind, arg = m.group(1), m.group(2)
-        if kind == "b":
-            return f"{B[arg]}<!-- src: docs/breadth/data.csv | {arg} -->"
+        if kind in ("b", "bci"):  # one formatter for the breadth data on every page (report_breadth.fmt)
+            return f"{fmt(typed(BR[arg]), kind == 'bci')}<!-- src: docs/breadth/data.csv | {arg} -->"
         if kind == "q":  # a number quoted from outside the data files, as the depth builder renders it
             return arg
-        if kind == "bci":
-            r = BR[arg]
-            return f"{r['value']} [{r['lo']}, {r['hi']}]<!-- src: docs/breadth/data.csv | {arg} -->"
         if kind == "x":
             return f"{X[arg]}<!-- src: docs/depth/x0_numbers.json | {arg} -->"
         if kind in ("w", "wci"):

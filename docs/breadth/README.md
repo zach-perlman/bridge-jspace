@@ -4,13 +4,13 @@
 *When a model answers a two-step question about an entity, does it need the directions the J++ lens reads at that
 entity, does that depend on whether the final fact is recalled or stated, and in which models?*
 
-**Status:** every number is sourced from the run files (checked by tests); a 46-item hand-check changed no headline claim ([findings](../review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->; human recomputation (VERIFIED.md) not yet done. Built at 79b853a9 from the run files.
+**Status:** every number is sourced from the run files (checked by tests); a 46-item hand-check changed no headline claim ([findings](../review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->; human recomputation (VERIFIED.md) not yet done. Built at 7ced3c44 from the run files.
 
 ## In one minute
 
 - **Recall needs a handful of lens-readable directions; reading the same fact does not.** In Qwen3.6-27B, Qwen3.5-9B
   and Nemotron 3.5 Lightning (two families), removing the lens part (the top 10 J++ directions) over one band drops
-  recall accuracy 51, 43 and 53 points more than the same question with the fact
+  recall accuracy 50.9, 42.6 and 53.1 points more than the same question with the fact
   stated, under controls fixed before the run. → [1](#1-recall-needs-the-lens-part-reading-the-stated-fact-does-not)
 - **What recall needs is its answer's own directions.** Keeping only the answer span's directions undoes
   0.91<!-- src: data/figures/writeup/data.csv | fig10.keep_span.nl --> to 0.95<!-- src: data/figures/writeup/data.csv | fig10.keep_span.q27 --> of that damage; removals orthogonal to the answer cost nothing,
@@ -24,10 +24,10 @@ entity, does that depend on whether the final fact is recalled or stated, and in
   cannot be tested: any lens removal breaks them. → [10](#10-every-model-every-test)
 - **Longer chains: the rule "a chain needs the lens part when its last hop is recalled" holds on Lightning, not
   cleanly on the 27B.** Lightning meets it on every set and on the second seed (its natural set post hoc). The 27B meets
-  it on three of the four chains ending in a recall, but P → P → M costs only +8 [-4, 21]
-  points beyond the all-passage chain, and M → M → P costs +20 [5, 35], which was not
+  it on three of the four chains ending in a recall, but P → P → M costs only 8.2 [-4, 21]
+  points beyond the all-passage chain, and M → M → P costs 20.5 [5, 35], which was not
   predicted. The 9B's chains cannot be read: its all-passage chain alone drops
-  46 points. → [6](#6-beyond-two-hops-longer-chains-and-numbers-computed-from-the-passage)
+  45.8 points. → [6](#6-beyond-two-hops-longer-chains-and-numbers-computed-from-the-passage)
 - **For monitoring:** at the entity's mention the lens shows which entity the model will recall from, in every model.
   Whether the model depends on those directions is a separate, model-specific question.
 
@@ -126,42 +126,42 @@ more than any removal of the same size.
 
 *Top: one row per model; each dot is the recall − lookup gap, in points, when the lens part's directions are removed at every token over the model's band (slate), with its 95% interval over bridges; grey tick: the gap of the largest same-size control (a rotated part, the logit lens's directions or the top principal directions). Hollow (○): post hoc (Muse 30B, Qwen 122B). Bottom, the three clearest models: answers turned wrong, in points, by final: the fact in the passage and a new made-up fact in the passage (lookup, purple), the answer word on another entity, nothing in the passage, and recall with lures present (recall, black); items per model: the n column of docs/breadth/data.csv.*
 
-**Takeaway.** The recall − lookup gap is +51 [46, 55] (27B), +43 [37, 49] (9B) and +53 [48, 59]
+**Takeaway.** The recall − lookup gap is 50.9 [46, 55] (27B), 42.6 [37, 49] (9B) and 53.1 [48, 59]
 (Lightning), and the drop tracks where the answer is: it grows from the fact stated to nothing stated to recall.
 
 <details><summary>Method, controls and limits</summary>
 
 *Fixed in advance (amendments 33, 39, 42, 48).*
 
-- **Three models, two families.** Stated facts drop 3, 5 and 4
+- **Three models, two families.** Stated facts drop 2.6, 5.0 and 3.7
   points.
 - **It is specific to the lens's directions.**
-  - Rotated: +3 / +2 / +4.
-  - Logit lens: +2 / +1 / +9.
+  - Rotated: 2.7 / 1.8 / 3.6.
+  - Logit lens: 1.9 / 1.4 / 8.7.
   - The same norm along the residual's top principal directions costs 0.24, 0.17 and
     0.15 of the effect.
-- **It is not a threshold effect.** Scored by the answer's probability, the gap is +50 /
-  +35 / +44.
+- **It is not a threshold effect.** Scored by the answer's probability, the gap is 50.3 /
+  35.3 / 44.1.
 - **The drop tracks where the answer is.** Accuracy drop (points) on the 27B, by final:
 
   | Final | Drop |
   |---|---|
-  | Fact stated (K) | 3 |
-  | New made-up fact stated (P) | 9 |
-  | Answer word once, on another entity (A) | 30 |
-  | Nothing stated, no lures (N) | 45 |
-  | Recall (M) | 54 |
+  | Fact stated (K) | 2.6 |
+  | New made-up fact stated (P) | 9.1 |
+  | Answer word once, on another entity (A) | 30.2 |
+  | Nothing stated, no lures (N) | 45.4 |
+  | Recall (M) | 53.5 |
 
   Under the removal, the models rarely name the bridge: 1% (27B), 5% (9B)
   and 1% (Lightning) of replies. They still know which entity it is, but not its fact.
 - **The other six models are in the grid (Section 10).** All six fail to show it cleanly:
-  - DeepSeek and Ministral are weak (+18, +23); more directions do not rescue DeepSeek
+  - DeepSeek and Ministral are weak (17.9, 23.3); more directions do not rescue DeepSeek
     (Section 5);
-  - Bolt shows little: +6 at 10 directions, and at 100 a same-size removal along the top principal
-    directions costs nearly as much as the lens part (+24 vs +31);
-  - OLMo does not need it (+5);
-  - Muse shares more than half of it with the logit lens (+35 of +60);
-  - the 122B shows none by probability (+2 vs +48).
+  - Bolt shows little: 6.0 at 10 directions, and at 100 a same-size removal along the top principal
+    directions costs nearly as much as the lens part (24.0 vs 31.3);
+  - OLMo does not need it (5.4);
+  - Muse shares more than half of it with the logit lens (34.6 of 59.9);
+  - the 122B shows none by probability (1.7 vs 48.5).
 
 </details>
 
@@ -186,22 +186,22 @@ run, and keeping the bridge's own word restores only a part of it (the plan's ki
 
   | Dataset | 27B | 9B |
   |---|---|---|
-  | Toy puzzles, data seeds 1 / 2 / 3 | +36 / +34 / +40 | +38 / +23 / +31 |
-  | Natural fact chains, seeds 1 / 2 / 3 | +51 / +44 / +42 | +37 / +38 / +37 |
-  | natplus | +52 [47, 58] | +40 [34, 47] |
-  | jsuite v1 | +50 [43, 57] | +42 [34, 50] |
+  | Toy puzzles, data seeds 1 / 2 / 3 | 36.2 / 34.1 / 40.0 | 38.2 / 22.8 / 30.9 |
+  | Natural fact chains, seeds 1 / 2 / 3 | 51.3 / 44.1 / 42.5 | 36.9 / 38.0 / 37.0 |
+  | natplus | 52.1 [47, 58] | 40.4 [34, 47] |
+  | jsuite v1 | 50.2 [43, 57] | 42.3 [34, 50] |
 
   The logit lens stays near zero wherever it was run:
 
   | Logit lens on | 27B | 9B |
   |---|---|---|
-  | Toy puzzles | 0 | -3 |
-  | Natural fact chains | 0 | -5 |
-  | natplus | 0 | -5 |
-  | jsuite v1 | -1 | -4 |
+  | Toy puzzles | 0.0 | -3.4 |
+  | Natural fact chains | 0.0 | -4.5 |
+  | natplus | 0.4 | -5.0 |
+  | jsuite v1 | -1.1 | -4.0 |
 
-- **Lightning on natplus** (amendment 55): +52 [46, 58], with rotated -1 and logit lens
-  +8. Its only other datasets are v2 and the natural three-hop set (Section 6).
+- **Lightning on natplus** (amendment 55): 51.8 [46, 58], with rotated -1.2 and logit lens
+  7.9. Its only other datasets are v2 and the natural three-hop set (Section 6).
 
 The other models on the datasets they ran:
 
@@ -210,16 +210,16 @@ The other models on the datasets they ran:
 *The other models on the datasets they ran: one row per model, one column per dataset (toy puzzles, toy data seed 2, natural chains, natplus, suite v1, suite v2); each dot is the recall − lookup gap, in points, with its 95% interval; dashed: the bar fixed in advance; "no run" where a model did not run a set. Hollow (○): post hoc.*
 
 - **Every relation.**
-  - On the 27B, the gap runs from +36 (languages) to +72 (dishes).
-  - Animals is the weakest everywhere (6 answers): 9B +14 [0, 36], Lightning +18 [9, 29].
+  - On the 27B, the gap runs from 36.0 (languages) to 72.0 (dishes).
+  - Animals is the weakest everywhere (6 answers): 9B 14.3 [0, 36], Lightning 18.3 [9, 29].
 
 ![The split holds on every relation, far above the rotated control](../../figures/breadth/03a_robust.png)
 
 *Every relation of jsuite v2, one row each, one panel per model: the recall − lookup gap, in points, under the lens part's removal (slate), with its 95% interval over bridges; grey: the same removal rotated to random directions.*
 
 - **Every start, both test halves, three renderings.**
-  - Renderings: 27B +49 and +50; 9B +42 and +43; Lightning
-    +49 and +50.
+  - Renderings: 27B 49.3 and 50.2; 9B 42.1 and 42.8; Lightning
+    48.9 and 50.3.
   - A rendering redraws passages, distractors and wording over the same facts.
 
 ![The split holds on every start, both test halves, three renderings and by probability; a bridge never named adds to the recall's drop](../../figures/breadth/03b_robust.png)
@@ -229,7 +229,7 @@ The other models on the datasets they ran:
 - **A clean checkout reproduces it.** Rerun from a fresh worktree:
   - the 27B's and 9B's removals match row for row (0 of 22325 and
     0 of 14100 rows differ);
-  - Lightning's headline reproduces (+52 [47, 58] vs +53 [48, 59]) but not row for row:
+  - Lightning's headline reproduces (52.4 [47, 58] vs 53.1 [48, 59]) but not row for row:
     9 of 14075 rows differ.
   - Lightning is deterministic: rerun at HEAD with the clean rerun's eligibility and batch size, it matches the clean
     rerun on 14275 of 14275 rows (amendment 56).
@@ -248,16 +248,16 @@ The other models on the datasets they ran:
 
   The kill bar is 0.75.
 - **Rare bridges drop as much as popular ones**, so Neel's narrow-concept prediction is not supported. natplus,
-  popular vs rare: 27B +50 vs +56; 9B +39 vs
-  +44; Lightning +48 vs +61.
-- **It is mostly from pretraining.** The 9B base model gives +34 against the instruct model's
-  +41 (same Q&A format, same lens).
+  popular vs rare: 27B 50.4 vs 55.6; 9B 38.7 vs
+  43.9; Lightning 47.5 vs 61.4.
+- **It is mostly from pretraining.** The 9B base model gives 33.7 against the instruct model's
+  41.2 (same Q&A format, same lens).
 - **The lens matters; who fitted it does not.**
-  - On the 27B (v1), the plain J-lens finds +24 against the J++ lens's +50.
+  - On the 27B (v1), the plain J-lens finds 23.9 against the J++ lens's 50.2.
   - The Qwens use published J++ lenses; the other models use our own fits. On the 9B, our own fit gives
-    +45 [40, 50] against the published lens's +43 [37, 49].
-- **A bridge never named.** Deleting the bridge's one passing mention adds to the recall's drop: +18 [10, 26] (27B),
-  +12 [5, 19] (9B) and +4 [-3, 11] (Lightning).
+    44.8 [40, 50] against the published lens's 42.6 [37, 49].
+- **A bridge never named.** Deleting the bridge's one passing mention adds to the recall's drop: 17.6 [10, 26] (27B),
+  11.6 [5, 19] (9B) and 4.0 [-3, 11] (Lightning).
 
 </details>
 
@@ -279,31 +279,31 @@ layer sees only part of what the recall uses.
 bands in amendment 57.*
 
 - **In the Qwens, a read bridge needs the directions at its own mention.**
-  - Mention alone: +38 of +51 (27B) and +48 of
-    +50 (9B).
-  - Question alone: +5 and +4.
-- **Lightning needs them at both the mention and the question.** Mention +28 and question
-  +21, of +60. Its lookup happens inside its band (Section 4); the Qwens' happens
+  - Mention alone: 38.2 of 50.6 (27B) and 47.7 of
+    50.4 (9B).
+  - Question alone: 5.3 and 4.3.
+- **Lightning needs them at both the mention and the question.** Mention 28.0 and question
+  21.1, of 60.4. Its lookup happens inside its band (Section 4); the Qwens' happens
   after theirs.
-- **Bolt splits the same way as Lightning**, with 100 directions: mention +18 and question
-  +12, of +31. The two Nemotrons split; the Qwens' read bridges sit at the mention.
+- **Bolt splits the same way as Lightning**, with 100 directions: mention 17.8 and question
+  11.5, of 31.3. The two Nemotrons split; the Qwens' read bridges sit at the mention.
 - **A recalled bridge needs them at several places at once.** No single region carries it: on the 27B, mention
-  +6 and question +11, of +45.
+  5.8 and question 10.7, of 45.3.
 - **Late in depth, the dependence moves to the question, in both families.** The recall − lookup gap, all starts:
 
   | Model (late band, depth) | All tokens | Question only | Mention only |
   |---|---|---|---|
-  | 27B (L52-60, 81-94%) | +50 | +47 | +3 |
-  | 9B (L26-29, 81-91%) | +53 | +53 | 0 |
-  | Lightning (L33-39, 64-75%) | +62 | +53 | +0 |
-  | Ministral (L32-37) | +23 | +24 | 0 |
-  | 122B (L39-45) | +48 | +28 | +10 |
-  | Muse (L36-42) | +60 | +59 | +2 |
+  | 27B (L52-60, 81-94%) | 50.0 | 47.1 | 2.9 |
+  | 9B (L26-29, 81-91%) | 53.1 | 52.6 | 0.2 |
+  | Lightning (L33-39, 64-75%) | 61.6 | 52.6 | 0.5 |
+  | Ministral (L32-37) | 23.3 | 24.0 | 0.0 |
+  | 122B (L39-45) | 48.5 | 28.3 | 10.0 |
+  | Muse (L36-42) | 59.9 | 59.3 | 1.8 |
 
   - The 9B's and Lightning's late bands were picked on dev (amendment 57): the latest window where stated facts still
     drop at most 10. Lightning's is shallower than the 27B's because past 69% depth its removal breaks stated facts too.
-  - At these bands more of the effect is shared with the logit lens: 9B +28, Lightning
-    +23 (mid band: +1, +9).
+  - At these bands more of the effect is shared with the logit lens: 9B 27.5, Lightning
+    22.9 (mid band: 1.4, 8.7).
 
 </details>
 
@@ -324,14 +324,14 @@ looked up later. Decodable, carried and needed come apart.
 *Fixed in advance (amendments 32, 34, 38A, 47, 48, 51, 55 note 1).*
 
 - **The answer follows a swapped lens part.**
-  - Transfer: +63 [57, 69] (27B), +64 [58, 69] (9B), +45 [39, 50] (Lightning).
-  - Rotated or logit-lens parts move nothing (27B: 0 and 0).
-  - Pasting the whole residual moves less in Lightning (+14), because it also overwrites position and
+  - Transfer: 63.0 [57, 69] (27B), 63.9 [58, 69] (9B), 44.8 [39, 50] (Lightning).
+  - Rotated or logit-lens parts move nothing (27B: -0.2 and 0.0).
+  - Pasting the whole residual moves less in Lightning (13.8), because it also overwrites position and
     binding.
 - **It is not just the answer token (Neel's linear answer swap).**
-  - Without the other entity's answer direction, the swap is unchanged: +66 vs +66 (27B) and
-    +70 vs +69 (9B), on the PM final.
-  - The answer direction alone moves +29.
+  - Without the other entity's answer direction, the swap is unchanged: 65.8 vs 65.8 (27B) and
+    70.0 vs 69.2 (9B), on the PM final.
+  - The answer direction alone moves 28.9.
 - **It is a reference to the entity, whatever context it came from.**
   - From one neutral sentence about the other entity, the lens part moves the answer 1.09, 1.10 and
     1.01 times as much as from that entity's own passage. It holds on 8 of
@@ -343,8 +343,8 @@ looked up later. Decodable, carried and needed come apart.
   swap keeps 0.84 / 0.83 / 0.62. Bolt's keeps 0.43, below the
   2/3 bar: its reference is mostly the name's own directions.
 - **Decodable is not carried.** A supervised probe reads the fact at the mention about as well as the lens. Swapping
-  the probe's subspace moves +8 / +6 / +2, against the lens
-  part's +75 / +80 / +62.
+  the probe's subspace moves 8.3 / 5.5 / 2.2, against the lens
+  part's 74.8 / 79.5 / 62.4.
 
 ![A lens part from one neutral sentence carries as much as one from the passage; a probe's subspace carries almost nothing](../../figures/readme/04_pointer.png)
 
@@ -361,9 +361,9 @@ looked up later. Decodable, carried and needed come apart.
 *One panel per model: the share of items, in %, on which the lens's top pick at the answer position is the fact of the entity in play, layer by layer, unedited (grey: no change) and with another entity's lens part swapped in, taken from that entity's own passage or from one neutral sentence about it (teal, each line named at its end).*
 
 - **Readable, carried and needed come apart.**
-  - OLMo carries the entity (swap +41), but the removal costs only +5.
-  - Ministral's lens reads the fact at mid depth, but its lens part carries only +3, and
-    +5 with 100 directions.
+  - OLMo carries the entity (swap 41.4), but the removal costs only 5.4.
+  - Ministral's lens reads the fact at mid depth, but its lens part carries only 2.6, and
+    4.9 with 100 directions.
 
 ![The lens reads the fact at the mention in every model; readable is not the same as needed](../../figures/breadth/08_readable.png)
 
@@ -392,20 +392,20 @@ Bolt and DeepSeek are weak, not spread out.
 
   | Model | 1 | 10 | 100 |
   |---|---|---|---|
-  | 27B | +34 | +52 | +65 |
-  | 9B | +34 | +44 | +52 |
-  | Lightning | +46 | +51 | +54 |
-  | Ministral | +21 | +26 | +22 |
-  | DeepSeek | +12 | +18 | +29 |
-  | Muse | +69 | +60 | +51 |
+  | 27B | 34.5 | 51.9 | 65.3 |
+  | 9B | 33.9 | 44.0 | 51.8 |
+  | Lightning | 46.1 | 51.2 | 54.5 |
+  | Ministral | 20.7 | 26.4 | 21.9 |
+  | DeepSeek | 11.9 | 18.3 | 28.7 |
+  | Muse | 68.6 | 60.4 | 51.2 |
 
-  The 27B keeps rising to 30 directions (+65).
+  The 27B keeps rising to 30 directions (65.3).
   Muse (amendment 57 note 1) is specific at every K: at 10 directions the size-matched control costs
-  +5 and the rotated one +3, but the logit lens's own 10 directions cost +36.
+  5.3 and the rotated one 3.3, but the logit lens's own 10 directions cost 35.5.
 - **More directions add damage that is not specific.** Greedy answers hide it: the answer given in the passage usually stays on top
   while its probability drops a lot.
-  - Lightning: stated facts drop 4 points by greedy answer at 100 directions, but
-    50 by probability.
+  - Lightning: stated facts drop 3.8 points by greedy answer at 100 directions, but
+    49.6 by probability.
   - The plateau rule as pre-registered calls Lightning distributed (K\* 300). On the lens-specific
     excess it is concentrated (K\* 1).
 - **Bolt is weak, not spread out.** Its lens-part effect grows with the number of directions, but a removal of the same
@@ -413,15 +413,15 @@ Bolt and DeepSeek are weak, not spread out.
 
   | Directions | Lens part | Same size, top principal directions |
   |---|---|---|
-  | 10 | +6 | +7 |
-  | 30 | +14 | +17 |
-  | 100 | +31 | +24 |
+  | 10 | 5.7 | 7.3 |
+  | 30 | 14.1 | 17.0 |
+  | 100 | 31.3 | 24.0 |
 
-  - By probability, the lens part keeps an edge only at 100 directions: +33 vs +18.
+  - By probability, the lens part keeps an edge only at 100 directions: 33.2 vs 18.5.
   - Bolt's 100 directions remove 18% of the residual. Lightning's top 10 remove about the same
-    (18%) and give +51.
+    (18%) and give 51.2.
   - The pre-registered limit stops Bolt's readings at K 10, where the size-matched control already
-    exceeds half the lens part's effect; below it the effect is about 0 (+2 at 3).
+    exceeds half the lens part's effect; below it the effect is about 0 (1.8 at 3).
   - Its lens part swap still carries the entity at 100 directions, as a context-free reference to the entity (Section 4). Bolt's mention
     holds the entity in J-space, but its recall does not depend on those directions more than on any same-size removal.
 
@@ -429,20 +429,20 @@ Bolt and DeepSeek are weak, not spread out.
 
   | Directions | Lens part | Same size, top principal directions | Rotated |
   |---|---|---|---|
-  | 10 | +18 | +13 | +5 |
-  | 30 | +22 | +19 | +5 |
-  | 100 | +29 | +26 | +8 |
+  | 10 | 18.3 | 12.9 | 5.1 |
+  | 30 | 22.5 | 18.7 | 5.1 |
+  | 100 | 28.7 | 25.9 | 8.0 |
 
   - The pre-registered limit stops it at K 10; its lens-specific excess peaks at 1 direction
-    (+8).
+    (8.0).
   - Its top direction alone removes 11% of the residual; all 100 remove 21%.
-  - At 100 directions stated facts drop 17 points.
+  - At 100 directions stated facts drop 17.0 points.
 - **Swapping more directions.**
-  - The 9B's swap grows: +64 → +76.
-  - The 27B's and Lightning's are saturated (under the +10 bar): +64 → +71 and
-    +46 → +55.
-  - Bolt's carries only at 100: +3 → +41.
-  - Ministral's never carries (at mid depth, L20-25): +3 → +5.
+  - The 9B's swap grows: 63.7 → 75.9.
+  - The 27B's and Lightning's are saturated (under the +10 bar): 64.0 → 71.2 and
+    45.8 → 55.3.
+  - Bolt's carries only at 100: 2.8 → 41.3.
+  - Ministral's never carries (at mid depth, L20-25): 2.6 → 4.9.
 
 </details>
 
@@ -451,7 +451,7 @@ Bolt and DeepSeek are weak, not spread out.
 The rule "a chain needs the lens part when its last hop is recalled" holds on Lightning on every set and seed; the 27B
 meets it on three of four chains ending in a recall, misses it on P → P → M and adds an unpredicted M → M → P; the 9B
 cannot be read. Reporting a number computed from the passage by arithmetic costs nothing in all three models; a recalled
-one costs the Qwens +13 and +15.
+one costs the Qwens 13.3 and 14.8.
 
 ![Chains whose last hop recalls: the removal turns more answers wrong than in the all-passage chain, beyond its largest same-size control, on every chain but the 27B's P → P → M](../../figures/breadth/10a1_beyond.png)
 
@@ -473,32 +473,32 @@ proposal's own question (H0: J-space carries recalled words, not computed variab
 
   | Chain | 27B (v2) | 27B (second seed) | Lightning (v2) | Lightning (second seed) | Lightning (natural set) |
   |---|---|---|---|---|---|
-  | M → M → M | +32 [17, 46] | +38 [23, 52] | +49 [34, 62] | +30 [14, 44] | +46 [31, 60] |
-  | P → M → M | +26 [13, 38] | +38 [24, 51] | +36 [21, 49] | +44 [28, 58] | +46 [34, 59] |
-  | M → P → M | +21 [8, 34] | +26 [12, 41] | +55 [31, 76] | +52 [30, 72] | +58 [41, 74] |
-  | P → P → M | +8 [-4, 21] | +9 [-4, 23] | +60 [45, 74] | +56 [39, 71] | +52 [43, 62] |
-  | M → M → P | +20 [5, 35] | +16 [2, 29] | -2 [-16, 11] | -5 [-21, 12] | +2 [-7, 12] |
-  | M → P → P | +6 [-8, 19] | +7 [-7, 20] | -3 [-15, 8] | -6 [-19, 8] | +6 [-4, 17] |
-  | P → M → P | -8 [-20, 4] | -5 [-18, 7] | +2 [-12, 15] | -4 [-18, 12] | -3 [-11, 3] |
+  | M → M → M | 31.7 [17, 46] | 38.2 [23, 52] | 48.6 [34, 62] | 29.5 [14, 44] | 46.0 [31, 60] |
+  | P → M → M | 26.5 [13, 38] | 37.8 [24, 51] | 35.8 [21, 49] | 43.9 [28, 58] | 46.4 [34, 59] |
+  | M → P → M | 20.9 [8, 34] | 25.7 [12, 41] | 54.8 [31, 76] | 52.2 [30, 72] | 58.2 [41, 74] |
+  | P → P → M | 8.2 [-4, 21] | 8.6 [-4, 23] | 59.9 [45, 74] | 55.8 [39, 71] | 52.4 [43, 62] |
+  | M → M → P | 20.5 [5, 35] | 15.6 [2, 29] | -1.9 [-16, 11] | -4.8 [-21, 12] | 2.3 [-7, 12] |
+  | M → P → P | 5.6 [-8, 19] | 6.6 [-7, 20] | -2.7 [-15, 8] | -5.5 [-19, 8] | 6.1 [-4, 17] |
+  | P → M → P | -8.2 [-20, 4] | -4.9 [-18, 7] | 1.8 [-12, 15] | -3.5 [-18, 12] | -3.1 [-11, 3] |
 
   - **Pre-registered:** the four chains ending in a recall drop more than P → P → P; M → P → P and P → M → P do not.
     Lightning meets all of it, on v2, on the second seed and on the natural set (post hoc). The 27B meets it except
-    P → P → M, on both seeds (+8 [-4, 21] and +9 [-4, 23]).
+    P → P → M, on both seeds (8.2 [-4, 21] and 8.6 [-4, 23]).
   - **Not predicted:** the 27B's M → M → P also drops; Lightning's does not.
   - **Controls.**
     - On the 27B, the rotated and logit-lens removals cost no chain more than P → P → P. P → P → P itself drops
-      20 points under the lens part and
-      23 rotated, so only the excess is read.
+      20.0 points under the lens part and
+      23.1 rotated, so only the excess is read.
     - In Lightning the controls explain part of two cells, on every set. M → P → M: rotated
-      +29 and logit lens +28 on v2 (n
-      22), +28 and
-      +32 on the second seed (n 26).
-      P → P → M: logit lens +32 on the natural set, +26 on
+      28.9 and logit lens 27.8 on v2 (n
+      22), 27.9 and
+      31.8 on the second seed (n 26).
+      P → P → M: logit lens 32.0 on the natural set, 25.7 on
       the second seed.
-  - **The 9B cannot be read.** Its all-passage chain alone drops 46 points (rotated
-    33; n 24).
-  - **The earlier dataset agrees** (27B, v1): M → M → M +35 [21, 49] and P → M → M +33 [22, 46];
-    M → P → P -3 and P → M → P -3.
+  - **The 9B cannot be read.** Its all-passage chain alone drops 45.8 points (rotated
+    33.3; n 24).
+  - **The earlier dataset agrees** (27B, v1): M → M → M 35.1 [21, 49] and P → M → M 33.2 [22, 46];
+    M → P → P -3.0 and P → M → P -3.2.
 
 Chains whose last hop reads the passage, the same way:
 
@@ -511,35 +511,35 @@ Chains whose last hop reads the passage, the same way:
 
   | The number is | 27B | 9B | Lightning |
   |---|---|---|---|
-  | Counted from a list | 0 [0, 0] | +4 [0, 10] | +12 [3, 22] |
-  | Computed by adding or subtracting | 0 [0, 0] | 0 [0, 0] | 0 [0, 0] |
-  | Recalled | +13 [6, 23] | +15 [7, 24] | +5 [0, 11] |
+  | Counted from a list | 0.0 [0, 0] | 3.9 [0, 10] | 11.9 [3, 22] |
+  | Computed by adding or subtracting | 0.0 [0, 0] | 0.0 [0, 0] | 0.0 [0, 0] |
+  | Recalled | 13.3 [6, 23] | 14.8 [7, 24] | 4.8 [0, 11] |
 
   - **Pre-registered:** counted and computed within 10 of read; recalled at least 10 above.
     - The Qwens meet all three.
-    - Lightning misses two: counting costs it +12, and reporting a recalled number only
-      +5.
-    - Rotated and logit-lens controls cost recalled numbers nothing (0 in every
+    - Lightning misses two: counting costs it 11.9, and reporting a recalled number only
+      4.8.
+    - Rotated and logit-lens controls cost recalled numbers nothing (0.0 in every
       model).
   - **A recalled number feeding another recall needs the lens part no more than one feeding a lookup.** On the larger
     set (amendment 57; n 128 to 253 per word), the
-    month or planet at that position minus the locker with that number: 27B -1 [-10, 7], 9B
-    +3 [-8, 13], Lightning +2 [-7, 11].
+    month or planet at that position minus the locker with that number: 27B -1.3 [-10, 7], 9B
+    2.6 [-8, 13], Lightning 2.5 [-7, 11].
     - Amendment 24's final-hop rule for numbers (each start's recall final >= 20 above its lookup final) fails for
       every start in all three models.
     - On v2, Lightning's +47 (n 17 and 13) looked
       like the rule; at ten times the items it does not replicate.
-  - **The earlier dataset agrees** (v1): 9B counted +7, computed +1, recalled
-    +26 [18, 34]; 27B recalled +15.
+  - **The earlier dataset agrees** (v1): 9B counted 7.3, computed 0.9, recalled
+    25.5 [18, 34]; 27B recalled 15.2.
 - **H0 head-on: does a number computed from the passage need the lens part when it keys a recall?** Accuracy drop
   (points), minus the same recall keyed by a number read from the passage (larger set, amendment 57):
 
   | | 27B | 9B | Lightning |
   |---|---|---|---|
-  | Counted, then recalled | +1 [-6, 7] | +32 [25, 40] | +31 [22, 39] |
-  | Computed, then recalled | -13 [-18, -7] | +48 [38, 59] | +19 [6, 32] |
-  | Counted / computed, rotated removal | -1 / -11 | +13 / +29 | +13 / +31 |
-  | Counted / computed, logit lens | +3 / 0 | +27 / +28 | +14 / +22 |
+  | Counted, then recalled | 0.7 [-6, 7] | 32.5 [25, 40] | 30.6 [22, 39] |
+  | Computed, then recalled | -12.6 [-18, -7] | 48.3 [38, 59] | 18.9 [6, 32] |
+  | Counted / computed, rotated removal | -0.6 / -11.3 | 13.1 / 29.1 | 13.0 / 31.1 |
+  | Counted / computed, logit lens | 2.7 / -0.2 | 26.8 / 28.3 | 13.8 / 21.6 |
 
   - **Pre-registered:** within 10 of read means the computed number needs no more of the lens part (H0 holds for
     numbers). At least 15 above, with the rotated control within 10, means it routes through the lens part (H0 false).
@@ -663,15 +663,15 @@ choose among given words need it much less.
 
 | Model | plain-text cost | recall − lookup gap (top 10) | rotated / logit lens | size-matched (share) | by probability | renderings | clean rerun | keep-own restores | lens-part swap / paste | neutral sentence | probe swap (lens part / probe) | dose: K* (excess) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Qwen3.6-27B (L32-40) | +0.30 nats | +51 [46, 55] | +3 / +2 | 0.24 | +50 | +49, +50 | 0 of 22325 differ | 0.06 | +63 / +62 | 1.09 | +75 / +8 | 30 (30) |
-| Qwen3.5-9B (L12-16) | +0.46 nats | +43 [37, 49] | +2 / +1 | 0.17 | +35 | +42, +43 | 0 of 14100 differ | 0.17 | +64 / +42 | 1.10 | +80 / +6 | 10 (3) |
-| Nemotron 3.5 Lightning (L27-33) | +1.67 nats | +53 [48, 59] | +4 / +9 | 0.15 | +44 | +49, +50 | 9 of 14075 differ | 0.22 | +45 / +14 | 1.01 | +62 / +2 | 300 (1) |
-| DeepSeek-V4-Flash (L18-23) | +1.68 nats | +18 [14, 22] | +5 / +2 | 0.49 | +21 | · | · | · | +10 / +19 (mid depth) | · | · | 1 (1) |
-| Ministral-3-14B (L32-37) | +0.62 nats | +23 [19, 28] | +1 / +4 | 0.06 | +37 | · | · | 0.06 | +3 / +10 (mid depth) | · | · | 10 (3) |
-| Nemotron 3.5 Bolt (L42-53) | +0.20 nats | +6 [3, 9] | +0 / +2 | 1.28 | +6 | · | · | · | +3 / +20; K 100: +41 | 1.01 | · | 3 (3) |
-| OLMo-3-32B base (L12-20) | +0.04 nats | +5 [3, 8] | +2 / +2 | · | +4 | · | · | · | +41 / +53 | · | · | · |
-| Muse Glimmer 30B (L36-42) | +0.94 nats | +60 [55, 65] | +3 / +35 | 0.09 | +49 | · | · | · | · | · | · | 1 (1) |
-| Qwen3.5-122B (FP8) (L39-45) | +1.26 nats | +48 [44, 54] | +2 / +12 | · | +2 | · | · | · | · | · | · | · |
+| Qwen3.6-27B (L32-40) | +0.30 nats | 50.9 [46, 55] | 2.7 / 1.9 | 0.24 | 50.3 | 49.3, 50.2 | 0 of 22325 differ | 0.06 | 63.0 / 62.2 | 1.09 | 74.8 / 8.3 | 30 (30) |
+| Qwen3.5-9B (L12-16) | +0.46 nats | 42.6 [37, 49] | 1.8 / 1.4 | 0.17 | 35.3 | 42.1, 42.8 | 0 of 14100 differ | 0.17 | 63.9 / 42.1 | 1.10 | 79.5 / 5.5 | 10 (3) |
+| Nemotron 3.5 Lightning (L27-33) | +1.67 nats | 53.1 [48, 59] | 3.6 / 8.7 | 0.15 | 44.1 | 48.9, 50.3 | 9 of 14075 differ | 0.22 | 44.8 / 13.8 | 1.01 | 62.4 / 2.2 | 300 (1) |
+| DeepSeek-V4-Flash (L18-23) | +1.68 nats | 17.9 [14, 22] | 5.0 / 1.6 | 0.49 | 21.2 | · | · | · | 10.2 / 18.7 (mid depth) | · | · | 1 (1) |
+| Ministral-3-14B (L32-37) | +0.62 nats | 23.3 [19, 28] | 0.6 / 3.6 | 0.06 | 37.1 | · | · | 0.06 | 2.6 / 9.5 (mid depth) | · | · | 10 (3) |
+| Nemotron 3.5 Bolt (L42-53) | +0.20 nats | 6.0 [3, 9] | 0.5 / 2.4 | 1.28 | 6.0 | · | · | · | 2.8 / 19.5; K 100: 41.3 | 1.01 | · | 3 (3) |
+| OLMo-3-32B base (L12-20) | +0.04 nats | 5.4 [3, 8] | 1.7 / 1.7 | · | 4.2 | · | · | · | 41.4 / 53.1 | · | · | · |
+| Muse Glimmer 30B (L36-42) | +0.94 nats | 59.9 [55, 65] | 2.6 / 34.6 | 0.09 | 49.4 | · | · | · | · | · | · | 1 (1) |
+| Qwen3.5-122B (FP8) (L39-45) | +1.26 nats | 48.5 [44, 54] | 2.1 / 11.8 | · | 1.7 | · | · | · | · | · | · | · |
 
 Size-matched for Bolt: from the dose run (150 items per word), where no stand-alone run exists. Dose column: K\* as
 pre-registered (on the lens-specific excess). Bolt's readings stop at its specificity limit (K 10), so
@@ -689,9 +689,9 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
 
 | Model | Earlier datasets |
 |---|---|
-| Qwen3-32B | +22 and +17 |
-| Olmo-Hybrid 7B | +1 |
-| Olmo-3 7B | +4 |
+| Qwen3-32B | 21.6 and 17.2 |
+| Olmo-Hybrid 7B | 1.4 |
+| Olmo-3 7B | 3.8 |
 
 </details>
 
@@ -704,29 +704,29 @@ lens, Bolt, OLMo, the 27B's P → P → M chain, Lightning's numbers, and the nu
 <details><summary>Each, with its number</summary>
 
 - **Failed when fixed in advance.**
-  - The 9B's second toy data seed: +23, below the 30-point bar; pooled over seeds it passed.
+  - The 9B's second toy data seed: 22.8, below the 30-point bar; pooled over seeds it passed.
   - The steering test (the plan's second claim, C2): most cells broke more than 10% of answers, and it was withdrawn on
     the 24 Oct re-score. The swap replaced it as the sufficiency test.
-  - The 27B with the plain J-lens: +24, below 30.
-  - The never-named bridge, predicted to cost nothing extra: it costs the 27B +18 and the 9B +12.
-  - The 122B by probability (+2). Muse's share with the logit lens. Bolt at 10 directions. OLMo.
-  - The 27B's P → P → M three-hop chain: +8 [-4, 21], predicted to drop more than P → P → P.
-  - Lightning's numbers: counting costs +12 (predicted within 10), and reporting a
-    recalled number +5 (predicted at least +10).
+  - The 27B with the plain J-lens: 23.9, below 30.
+  - The never-named bridge, predicted to cost nothing extra: it costs the 27B 17.6 and the 9B 11.6.
+  - The 122B by probability (1.7). Muse's share with the logit lens. Bolt at 10 directions. OLMo.
+  - The 27B's P → P → M three-hop chain: 8.2 [-4, 21], predicted to drop more than P → P → P.
+  - Lightning's numbers: counting costs 11.9 (predicted within 10), and reporting a
+    recalled number 4.8 (predicted at least +10).
   - The 9B's three-hop chains: unreadable, because the all-passage chain itself breaks.
   - Numbers on the larger set (amendment 57):
     - The final-hop rule for numbers (amendment 24): fails for every start in all three models.
-    - Lightning's v2 recall-keyed-by-a-recalled-number result (+47, n
-      13) did not replicate (+2).
+    - Lightning's v2 recall-keyed-by-a-recalled-number result (47.1, n
+      13) did not replicate (2.5).
     - H0 head-on: no reading in the 9B and Lightning (controls also cost computed chains more); in the 27B the
-      computed chain drops 13 less than a read one, outside the within-10 band.
+      computed chain drops 12.6 less than a read one, outside the within-10 band.
     - Computation feeding a lookup within 10 of a read number (amendment 24): holds on the 9B
-      (+9, +10), not on the 27B
-      (+16, +18) or Lightning
-      (+19, +18).
+      (9.1, 10.0), not on the 27B
+      (16.1, 18.0) or Lightning
+      (18.9, 17.9).
   - Bolt's "distributed" reading (amendment 52, against the rotated control only) does not survive the size-matched
-    control: at 100 directions the lens part costs +31 and the same size along the top principal
-    directions +24.
+    control: at 100 directions the lens part costs 31.3 and the same size along the top principal
+    directions 24.0.
 - **Design errors.**
   - **A fixed number of directions is not a fixed dose.** The top 10 remove 6% of the residual in Bolt and 13-20%
     elsewhere.

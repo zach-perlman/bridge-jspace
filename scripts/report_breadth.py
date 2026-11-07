@@ -534,21 +534,23 @@ def collect_redraw() -> None:
 
 # ---- rendering
 def fmt(r: dict, ci: bool = False) -> str:
+    """The one formatter for docs/breadth/data.csv values: this page, the root README (scripts/readme_root.py) and the
+    hypotheses ledger print a key the same way (Dan, 8 Nov). Points (and points lost, `abs`) to one decimal, no forced
+    sign; their intervals in whole points, "20.5 [5, 35]"."""
     v, u = r["value"], r["unit"]
-    if u == "points":
-        s = "0" if abs(v) < 0.5 else f"{v:+.0f}"
+    if u in ("points", "abs"):
+        s = f"{v:.1f}"
+        s = "0.0" if s == "-0.0" else s
     elif u == "ratio":
         s = f"{v:.2f}"
     elif u == "pct":
         s = f"{v:.0f}%"
-    elif u == "abs":
-        s = f"{v:.0f}"
     elif u == "nats":
         s = f"{v:+.2f} nats"
     else:
         s = f"{v:.0f}"
     if ci and r["lo"] != "":
-        s += f" [{r['lo']:.0f}, {r['hi']:.0f}]" if u == "points" else f" [{r['lo']}, {r['hi']}]"
+        s += f" [{r['lo']:.0f}, {r['hi']:.0f}]" if u in ("points", "abs") else f" [{r['lo']}, {r['hi']}]"
     return s
 
 
@@ -580,15 +582,19 @@ FINALS = (("K", "MK", "the fact is stated"), ("M", "MM", "recall: the answer is 
           ("N", "MN", "no relation sentences at all, so no lures"), ("P", "MP", "a new made-up fact is stated"))  # fmt: skip
 
 
+def typed(r: dict) -> dict:
+    """A data.csv row as fmt reads it: a float value; a points interval as floats, other intervals as stored."""
+    r = dict(r)
+    r["value"] = float(r["value"])
+    if r["unit"] in ("points", "abs") and r["lo"] != "":
+        r["lo"], r["hi"] = float(r["lo"]), float(r["hi"])
+    return r
+
+
 def load_rows() -> None:
-    """ROWS from the data.csv on disk (for rendering without the run files): a points value keeps its formatted
-    interval, other intervals print as stored."""
+    """ROWS from the data.csv on disk (for rendering without the run files)."""
     with (OUT / "data.csv").open() as fh:
-        for r in csv.DictReader(fh):
-            r["value"] = float(r["value"])
-            if r["unit"] == "points" and r["lo"] != "":
-                r["lo"], r["hi"] = float(r["lo"]), float(r["hi"])
-            ROWS.append(r)
+        ROWS.extend(typed(r) for r in csv.DictReader(fh))
 
 
 def example() -> str:
@@ -648,10 +654,8 @@ def render() -> None:
             return head
         if kind == "q":  # a number quoted from outside the data files, as is
             return rest[0]
-        if kind in ("b", "bci"):  # docs/breadth/data.csv's value string, as the root README prints it
-            r = raw[rest[0]]
-            ci = f" [{r['lo']}, {r['hi']}]" if kind == "bci" else ""
-            return f"{r['value']}{ci}<!-- src: docs/breadth/data.csv | {rest[0]} -->"
+        if kind in ("b", "bci"):  # the root README's markers, by the same formatter
+            return f"{fmt(typed(raw[rest[0]]), kind == 'bci')}<!-- src: docs/breadth/data.csv | {rest[0]} -->"
         if kind in ("w", "wci"):  # data/figures/writeup/data.csv, at its unit's precision
             r = wrows[rest[0]]
             v = wnum(r["value"], r["unit"])
@@ -663,7 +667,7 @@ def render() -> None:
             missing.append(key)
             return "??"
         r = rows[key]
-        return {"v": fmt(r), "a": f"{abs(r['value']):.0f}", "vci": fmt(r, True), "ci": fmt(r, True)[len(fmt(r)) + 1 :], "n": str(r["n"])}[kind]
+        return {"v": fmt(r), "a": fmt({**r, "value": abs(r["value"])}), "vci": fmt(r, True), "ci": fmt(r, True)[len(fmt(r)) + 1 :], "n": str(r["n"])}[kind]
 
     text = re.sub(r"\{\{([^}]+)\}\}", sub, tpl)
     if missing and "--draft" not in sys.argv:
