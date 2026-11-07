@@ -4,7 +4,7 @@
 *When a model answers a two-step question about an entity, does it need the directions the J++ lens reads at that
 entity, does that depend on whether the final fact is recalled or stated, and in which models?*
 
-**Status:** every number is sourced from the run files (checked by tests); a 46-item hand-check changed no headline claim ([findings](../review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->; human recomputation (VERIFIED.md) not yet done. Built at b761a742 from the run files.
+**Status:** every number is sourced from the run files (checked by tests); a 46-item hand-check changed no headline claim ([findings](../review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->; human recomputation (VERIFIED.md) not yet done. Built at e724e88e from the run files.
 
 ## In one minute
 
@@ -54,7 +54,7 @@ One real fact passage, as the model reads it:
 
 ![One real fact passage, Qwen 27B: without the lens part the recalled answer turns wrong and the looked-up one holds](../../figures/examples/02_fact_passage.png)
 
-*One fact passage, Qwen 27B, jsuite v2 test: the lookup's passage states the facts (the sentences in the lookup's colour, the asked one among them), the recall's passage replaces them with sentences that do not, so its answer must come from memory; the bridge in bold. Answers before and with the lens part removed at every token over a band of middle layers, or a rotated part of the same size. Picked to show the typical flip, by the outcome rule on the card: the recall turns wrong only without the lens part, the lookup holds. Over the test set the removal costs the lookup 2.6<!-- src: docs/breadth/data.csv | ko.q27.lostK --> points and the recall 53.5<!-- src: docs/breadth/data.csv | ko.q27.lostM -->.*
+*One fact passage, Qwen 27B, jsuite v2 test: the lookup's passage states the facts (the sentences in the lookup's colour, the asked one among them), the recall's passage replaces them with sentences that do not, so its answer must come from memory; the bridge in bold. Answers before and with the lens part removed at every token over a band of middle layers, or a rotated part of the same size. Picked to show the typical flip, by the outcome rule on the card: the recall turns wrong only without the lens part, the lookup holds. On the 27B this pattern shows on 164<!-- src: data/figures/examples/data.csv | e2.pairs_flip --> of the 338<!-- src: data/figures/examples/data.csv | e2.pairs_both_right --> pairs whose two answers were right before the removal. Over the test set the removal costs the lookup 2.6<!-- src: docs/breadth/data.csv | ko.q27.lostK --> points and the recall 53.5<!-- src: docs/breadth/data.csv | ko.q27.lostM -->.*
 
 One entity's three-hop chains (each hop P read or M recalled):
 

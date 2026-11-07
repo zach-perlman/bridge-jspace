@@ -132,9 +132,17 @@ def e2_fact_passage() -> sp.Figure:
                 and correct.get((pm["id"], "none")) and not correct.get((pm["id"], "paper10"), True)
                 and correct.get((pm["id"], "paper10_rot")))  # fmt: skip
 
-    pm = next(i for i in items if i["word"] == "PM" and "PK" in scenes[i["scene"]] and i["id"] in have
-              and scenes[i["scene"]]["PK"]["id"] in have and flips(i))  # fmt: skip
+    pairs = [i for i in items if i["word"] == "PM" and "PK" in scenes[i["scene"]] and i["id"] in have
+             and scenes[i["scene"]]["PK"]["id"] in have]  # fmt: skip
+    pm = next(i for i in pairs if flips(i))
     pk = scenes[pm["scene"]]["PK"]
+    # how typical the card is: the pairs both right before, and those that show its pattern (the caption's N of M)
+    both_right = [i for i in pairs if correct.get((i["id"], "none")) and correct.get((scenes[i["scene"]]["PK"]["id"], "none"))]
+    write_keys({"e2.pairs_both_right": (len(both_right), "count", f"{rel(ITEMS)} + {rel(KO)}: final-from-memory items "
+                                        "whose stated pair is in the run, both answers right before the removal"),
+                "e2.pairs_flip": (sum(flips(i) for i in both_right), "count", f"{rel(ITEMS)} + {rel(KO)}: of those, the "
+                                  "recall wrong with the lens part removed and right with a rotated part removed, the "
+                                  "lookup right throughout")})  # fmt: skip
     # the two passages differ sentence by sentence (a passage may be one paragraph): the lookup's states the facts the
     # recall's replaces with filler about the same entities
     lookup_s, recall_s = _sentences(pk["context"]), _sentences(pm["context"])
@@ -170,6 +178,26 @@ def e2_fact_passage() -> sp.Figure:
                         f"while its stated pair's lookup stays right, Qwen 27B; the removal at layers {_band(rows)} · "
                         f"items {pk['id']}, {pm['id']}")  # fmt: skip
     return sp.Figure("e2_fact_passage", vocab(), direct_labels=True).add(card)
+
+
+DATA = REPO / "data/figures/examples/data.csv"
+
+
+def write_keys(rows: dict[str, tuple]) -> None:
+    """Merge keyed counts into data/figures/examples/data.csv (key, value, unit, source), the captions' source."""
+    import csv
+
+    have: dict[str, dict] = {}
+    if DATA.exists():
+        with DATA.open() as f:
+            have = {r["key"]: r for r in csv.DictReader(f)}
+    for k, (v, unit, src) in rows.items():
+        have[k] = {"key": k, "value": v, "unit": unit, "source": src}
+    DATA.parent.mkdir(parents=True, exist_ok=True)
+    with DATA.open("w", newline="") as f:
+        w = csv.DictWriter(f, ["key", "value", "unit", "source"], lineterminator="\n")
+        w.writeheader()
+        w.writerows(have[k] for k in sorted(have))
 
 
 def _sentences(context: str) -> list[str]:

@@ -634,7 +634,10 @@ def render() -> None:
     rows = {r["key"]: r for r in ROWS}
     head = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True, cwd=ROOT).stdout.strip()
     from bridge_jspace.figkit.captions import expand
-    from scripts.readme_root import WRITEUP_DATA, breadth_rows, wnum, writeup_rows
+    from scripts.readme_root import EXAMPLES_DATA, WRITEUP_DATA, breadth_rows, wnum, writeup_rows
+
+    with (ROOT / EXAMPLES_DATA).open() as fh:
+        ex = {r["key"]: r["value"] for r in csv.DictReader(fh)}
 
     # captions come from the figure sets' stores (one caption per figure, the same on every page); their numbers use the
     # root README's markers, rendered here exactly as there
@@ -656,6 +659,8 @@ def render() -> None:
             return rest[0]
         if kind in ("b", "bci"):  # the root README's markers, by the same formatter
             return f"{fmt(typed(raw[rest[0]]), kind == 'bci')}<!-- src: docs/breadth/data.csv | {rest[0]} -->"
+        if kind == "e":  # data/figures/examples/data.csv's counts, as the root README prints them
+            return f"{ex[rest[0]]}<!-- src: {EXAMPLES_DATA} | {rest[0]} -->"
         if kind in ("w", "wci"):  # data/figures/writeup/data.csv, at its unit's precision
             r = wrows[rest[0]]
             v = wnum(r["value"], r["unit"])

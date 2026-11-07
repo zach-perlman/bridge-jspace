@@ -1,5 +1,5 @@
 """docs/writeup/figure_map.md: the post's figures in order, for swapping them in the Google Doc by hand: number, section,
-file, caption (read from the caption stores, figures/<set>/_meta/captions.toml, src comments dropped) and what changed
+file, caption (read from the caption stores, figures/<set>/_meta/captions.toml, its numbers rendered as on the READMEs, src comments dropped) and what changed
 against the deck figure the Doc shows now (the figkit versions as of 25d7b48e).
 
 uv run python scripts/writeup_figure_map.py
@@ -14,6 +14,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(REPO), str(REPO / "src")]
 from bridge_jspace.figkit import captions  # noqa: E402
+from scripts import readme_root as RR  # noqa: E402  the captions' markers rendered as on the READMEs
 
 OUT = REPO / "docs/writeup/figure_map.md"
 F1, F2, F3, F4 = ("Finding 1: recall needs the lens part", "Finding 2: lookup runs on codes outside the lens",
@@ -127,7 +128,7 @@ def main() -> None:
     lines = []
     for num, section, files, change in ROWS:
         names = "<br>".join(f"`{'examples/' if s == 'examples' else ''}{stem}.png`" for s, stem in files)
-        caps = "<br><br>".join(cell(captions.caption(s, stem)) for s, stem in files)
+        caps = "<br><br>".join(cell(RR.render(captions.caption(s, stem))) for s, stem in files)
         lines.append(f"| {num} | {section} | {names} | {caps} | {cell(change)} |")
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(HEAD + "\n".join(lines) + "\n")
