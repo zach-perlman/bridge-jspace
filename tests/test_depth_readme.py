@@ -7,6 +7,8 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+import pytest
+
 from scripts import readme_build as RB
 
 REPO = Path(__file__).resolve().parents[1]
@@ -57,13 +59,19 @@ def test_the_same_png_has_the_same_caption_everywhere():
                 seen.setdefault(png, cap) if cap else None
 
 
-def test_values_listed_by_model_keep_the_figures_order():
-    text = body(PAGE)
+QUOTED = re.compile(r"\"[^\"\n]*\"|“[^”\n]*”")  # verbatim rule quotes keep their own order
+RUN = re.compile(r"\b(?:9B|27B|Muse|Lightning|122B)(?: / (?:9B|27B|Muse|Lightning|122B))+")
+
+
+@pytest.mark.parametrize("page", [REPO / "README.md", PAGE, REPO / "docs" / "depth" / "EXPERIMENTS.md"],
+                         ids=lambda p: p.name if p != PAGE else "depth README")  # fmt: skip
+def test_values_listed_by_model_keep_the_figures_order(page):
+    text = QUOTED.sub("", body(page))
     for line in text.splitlines():
         if line.startswith("|") and sum(f" {m} " in line or f"{m} ○" in line for m in ORDER) >= 3:
             cols = [c.strip().removesuffix(" ○") for c in line.strip("|").split("|")]
             names = [c for c in cols if c in ORDER]
             assert names == sorted(names, key=ORDER.index), line[:120]
-        for run in re.findall(r"\b(?:9B|27B|Muse|Lightning|122B)(?: / (?:9B|27B|Muse|Lightning|122B))+", line):
+        for run in RUN.findall(line):
             names = run.split(" / ")
             assert names == sorted(names, key=ORDER.index), run

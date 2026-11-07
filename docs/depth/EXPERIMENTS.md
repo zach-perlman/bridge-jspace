@@ -179,6 +179,12 @@ Test 51.12 · opened 28 Oct · status: rule fixed in advance · hand-check: in s
 
 - **Rule, fixed in advance.** (Amended 20:20, before opening.) "The lens effect is the entity: arm 2 keeps >= 0.7 of arm 1's extra drop and arm 3 costs <= 0.10 beyond random. The lens effect is the answer: arm 2 falls to <= 0.3 of arm 1 and arm 3 alone costs >= 0.5 of arm 1. Else: mixed." First: "the answer word is not read at the bridge word (lens rank > 50 on >= 90 % of items)".
 
+The three arms side by side, per model:
+
+![The recall's drop without the lens part is the item, not its answer](../../figures/depth/38_item_not_answer.png)
+
+*The answer control, main test: the recall's switches blocked beyond a random part of the same size without the lens part, with the lens part removed but the answer word's directions kept, and with only the answer word's directions removed, one lane each per model. Whiskers 95% intervals; Lightning and the 122B hollow ○ (after the data).*
+
 - **Result.** (recall)
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -211,6 +217,12 @@ Test Lightning's layer · opened 29 Oct · status: rule fixed in advance · hand
 - **Method.** The whole change at the bridge word at every 4th layer (L2 to L50); each reader's switch rate; the bridge word's lens readability recorded as the tie-break.
 
 - **Rule, fixed in advance.** Batch 52 amendment 1 (Dan ~00:50, before the sweep): "earliest layer passing the gate at relative depth ≥ 0.25; tie-break = highest lens readability of the bridge word." Passing = both readers switch on at least 0.3 (the published rule). ○ Gate chosen after the 60-scene pre-check was seen.
+
+The sweep that picked the layer:
+
+![Lightning's layer sweep and the conflict test by layer](../../figures/depth/39_lightning_layers.png)
+
+*Lightning's layer sweep on the pre-check scenes: the share of each reader's answers switched by the whole change at the bridge word, lookup (violet) and recall (black), at every swept layer; dashed: the bar both readers must reach. All estimates post hoc (the gate was chosen after the pre-check).*
 
 - **Result.**
 
@@ -370,6 +382,12 @@ Test 49.2 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 
 - **Rule, fixed in advance.** "second_copy: rung (3) costs the recall >= 0.3 more than rung (2) in locker-first scenes (paired CI excluding 0) and rung (2) already costs >= 0.3 in locker-after scenes; only_everything: rungs (1)-(4) each <= 0.2 and rung (5) or (6) >= 0.5; lookup: <= 0.1 beyond random at every rung." The 27B's full ladder and Muse's rerun: coverage runs on this rule, no prediction.
 
+The two rungs the rule compares, per reader and scene order:
+
+![The recall needs the lens part once its other copies go; the lookup never](../../figures/depth/40_ladder.png)
+
+*The ladder at the two rungs its rule compares: the answers turned wrong beyond a random part of the same share when the lens part is taken out step by step, the recall in locker-first and in locker-after scenes and the lookup over every scene. Whiskers 95% intervals; Lightning and the 122B hollow ○.*
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -434,6 +452,12 @@ Test 53.6 · opened 29 Oct · status: rule fixed in advance · hand-check: not i
 
 - **Rule, fixed in advance.** "Rule: "the recall follows the lens identity" if B's share >= 2x C's; "follows the address" if C's >= 2x B's; else both." (jobs/c3/batch53.yaml, Dan 29 Oct 09:30; no prediction) Across models: "the recall's pointer [pointer: the address] use tracks the swap's collateral" if the models whose recall the address swap moved (9B, Lightning) give "both" and the others give "follows the lens identity". (jobs/c3/batch53.yaml, critic_1125, Dan 11:25; no prediction)
 
+Which item the recall follows when the lens part and the address disagree:
+
+![Every recall follows both; on the 27B and Muse it mostly stays put](../../figures/depth/41_follows_both.png)
+
+*The lens part from one scene (item B) and the address from another (item C) swapped in together (left) or alone (right): the share of the recall's answers that are B's (the lens part's item, teal) and C's (the address's item, orange), per model. Whiskers 95% intervals; Lightning hollow ○.*
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -472,6 +496,12 @@ Test 53.1 · opened 29 Oct · status: rule fixed in advance · hand-check: not i
 - **Rule, fixed in advance.** "Rule per cell: 51.12's labels (entity / answer / mixed / answer word not read). Rule across cells: "position": (Q-before, number) is answer or mixed and (Q-after, word) is entity; "readability": (Q-after, word) is answer or mixed and (Q-before, number) is entity; "both": each single change gives mixed and (Q-before, word) gives answer; "neither": all four entity. Cross-check, decisive for the story: the conflict test's lookup has <= 0.10 blocked beyond random in all four cells ("the pointer [pointer: the address] does not depend on the question"); report per cell." Models: 9B, then 27B, then Lightning if its gate passes. Dan 11:10, across the number cells: "the pointer [pointer: the address] does not depend on the question's position" if the lookup has <= 0.10 blocked in both cells on a model. Dan 11:25: the paired difference (Q-before minus Q-after) with its cluster-bootstrap CI; "order dependence" only if that CI excludes 0. (jobs/c3/batch53.yaml, next_1110 and critic_1125; no prediction)
 
 </details>
+
+Both readers with a number answer, the question after and before the scene:
+
+![With a number answer the recall follows the entity](../../figures/depth/42_number_answer.png)
+
+*A number as the answer: the switches blocked without the lens part beyond a random part, the recall (left) and the lookup (right), with the question after the scene and, on the 27B and the 122B, before it. Whiskers 95% intervals; Lightning and the 122B hollow ○.*
 
 - **Result.**
 
@@ -621,6 +651,12 @@ Test batch 52 B · opened 29 Oct · status: rule fixed in advance · hand-check:
 
 - **Rule, fixed in advance.** "“Readable”: the answer word in the lens top-5 on ≥ 0.5 of items at some layer before the answer layer. “Usable”: writing its directions changes the answer on ≥ 0.3 of items with the random control ≤ 0.10. Report the four combinations per reader, per dataset." No prediction.
 
+Readable and usable, per reader and data set:
+
+![On the fact passages the answer is readable and usable; on ours rarely](../../figures/depth/43_answer_map.png)
+
+*Where the answer word is readable through the lens (left: the share of items with it in the lens top 5 at the best layer before the answer; one value, no interval) and whether adding its lens directions there changes the answer (right; at the size the run chose), lookup (violet) and recall (black), on our scenes and on the fact passages. Whiskers 95% intervals; Lightning and the 122B hollow ○ (coverage runs).*
+
 - **Result.** (the combination; answers changed by the write at one / two times a real change's size)
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -726,6 +762,12 @@ Test 47.7 (c) · opened not stated · status: rule fixed in advance · hand-chec
 
 - **Rule, fixed in advance.** "never the value generalizes if value <= 0.05 in every format on every model; a position route in JSON / table if the position share >= 0.2 and the refit pointer's [pointer: the address] removal cuts it >= 0.3 beyond random." Lightning: a coverage run on this rule, no prediction.
 
+The position and value routes per format:
+
+![In prose, JSON and tables the lookup never takes the value](../../figures/depth/44_value_formats.png)
+
+*The routes test in prose, JSON and a table: the share of the lookup's answers that follow the moved item's position (orange) and its new value (slate), per model and format run. Whiskers 95% intervals; Lightning hollow ○.*
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -793,6 +835,12 @@ Test 53.8 · opened not stated · status: rule fixed in advance · hand-check: n
 - **Rule, fixed in advance.** "Rule: "a shared identity code" if X's share minus random >= 0.25 at 2x and minus Y's version >= 0.15; "no" if <= 0.05; else in between." (jobs/c3/batch53.yaml, critic_1125 item 6, Dan 11:25; no prediction) The centered arm (decisions_1210b item 1, Dan 12:10, before any run): "the same rule thresholds reported for it beside"; the headline stays the uncentered arm's (Dan 13:15).
 
 </details>
+
+The identity code against another item's version and a random vector:
+
+![Centered, the code moves lookups beyond random; raw, little or none](../../figures/depth/45_identity_code.png)
+
+*The item's identity code from its locker sentence added at the bridge word: the share of lookups moved by the item's own code (blue), by another item's version of it (slate) and by a random vector (grey), with the code as fit in advance and centered. Whiskers 95% intervals.*
 
 - **Result.**
 
@@ -1014,6 +1062,12 @@ Test 53.5 · opened 29 Oct · status: rule fixed in advance · hand-check: not i
 
 - **Rule, fixed in advance.** "Rule: "same mechanism, used less" if the address alone brings >= 0.25 of position answers back and its removal leaves <= 0.10 (the 9B's pattern); "the 27B differs" otherwise. Same subset on the 9B beside." (jobs/c3/batch53.yaml, Dan 29 Oct 09:30; no prediction)
 
+The address removed and added alone on the 27B's position scenes, beside the 9B:
+
+![On its position scenes the 27B's address brings fewer answers back](../../figures/depth/46_subset27b.png)
+
+*The 27B's scenes where its lookup goes by position, beside the 9B: the position answers left without the address and without a random part (grey), and brought back by the address alone and by a random part alone (grey). Whiskers 95% intervals.*
+
 - **Result.**
 
   | | 9B (beside) | 27B | Muse | Lightning | 122B |
@@ -1171,6 +1225,12 @@ Test 49.6 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 
 - **Rule, fixed in advance.** "if slot 1 stays <= 0.2 on the 9B under both wordings, keep as an appendix curiosity; if it recovers, drop." (results/x49_report/x49_6-20261028T154511Z/x49_6.md; Q49.6, Dan: 60%; Lightning a coverage run, no prediction)
 
+The report under each wording:
+
+![Reworded, the report reads slot 1 on every model tested](../../figures/depth/47_report_first_position.png)
+
+*The model's report of where the item sits, reworded: the share of reports naming the first position under the earlier wording, when a digit is asked for and when a word is asked for, per model. Whiskers 95% intervals; Lightning hollow ○.*
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -1296,6 +1356,12 @@ Test x45d · opened not stated · status: rule fixed in advance · hand-check: n
 - **Method.** The address refit per format on one half (rank 4) and taken out of the change at the bridge word at L on the other half, against a random part of its share; the address fit on simple scenes beside.
 
 - **Rule, fixed in advance.** ""Pointer elsewhere" [pointer: the address] if the refit basis gives a lookup extra drop of at least 0.2, with lower CI above 0.1, in 2 of 3 formats; "No linear pointer found" [pointer: the address] if all three formats are below 0.1 (point estimate); otherwise neither." Added after the first results (Dan, 26 Oct ~21:20): a format whose lookup has fewer than 30 switches under the whole change does not count. Lightning: a coverage run, no prediction.
+
+The fitted address against one refit per format:
+
+![The address must be refit for each text format](../../figures/depth/34_transfer.png)
+
+*Top, after the data: the switches blocked beyond a random part without the lens part (teal) and without the address fit on simple scenes (orange), per model and setting, all hollow ○. Bottom, rule 45d: per format, without the address fit on simple scenes (left) and refit on that format (right); a cell under its switch bar says so. Whiskers 95% intervals.*
 
 - **Result.**
 
@@ -1589,6 +1655,12 @@ Test 51.4 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 
 - **Rule, fixed in advance.** "The code travels: the bridge-fit swap sends >= 0.3 of lookups to slot k (random <= 0.05). Re-encoded on copy: bridge-fit <= 0.10 while last-token-fit >= 0.3. Not at the last token: both <= 0.10 while the probe reads the slot there >= 0.8. Otherwise in between." Lightning: a coverage run on this rule, no prediction.
 
+The swap at the last token, per model:
+
+![The bridge word's code works at the last token only on Muse](../../figures/depth/48_last_token_swap.png)
+
+*The address fit at the bridge word swapped in at the last token, a few layers after L at twice a real change's size: the share of lookups sent to the target item, per model. Whiskers 95% intervals; Lightning hollow ○ (a coverage run).*
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -1658,6 +1730,12 @@ Test 53.3 · opened 29 Oct · status: rule fixed in advance · hand-check: not i
 
 </details>
 
+Both readers at the last token:
+
+![At the read peak no lookup goes through the lens part](../../figures/depth/49_last_conflict.png)
+
+*The conflict test at the last token: the switches blocked without the lens part beyond a random part, lookup (left) and recall (right), at the two layers tested for each reader (its own layers, earlier first; the 122B at one). Whiskers 95% intervals; Lightning and the 122B hollow ○.*
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -1697,6 +1775,12 @@ Test 53.3b · opened 29 Oct · status: rule fixed in advance · hand-check: not 
 - **Rule, fixed in advance.** "Rule per reader and layer: 53.3's labels. Across readers: "copy bypasses the lens" if at answer - 1 and - 2 the recall is "through the lens" and the lookup "outside" on >= 3 of 4 models; "digits only" if on words the lookup goes through the lens like the recall; else in between." (jobs/c3/batch53.yaml, test_53_3b, Dan ~10:05; no prediction)
 
 </details>
+
+Both readers at the last token, with words as answers:
+
+![Near the output the test is uninformative; read peaks differ](../../figures/depth/50_last_conflict_words.png)
+
+*As the figure above with words as the answers: per model, three, two and one layers before the answer and at the read peak (the rule counts the two layers nearest the answer as uninformative). Whiskers 95% intervals; Lightning hollow ○.*
 
 - **Result.**
 
@@ -1748,6 +1832,12 @@ Test 53.4 · opened 29 Oct · status: rule fixed in advance · hand-check: not i
 - **Rule, fixed in advance.** "Rule: "read through two blocks" if (iii) cuts the lookup's switches by >= 0.6 of the whole change's and (v) by <= 0.15; "one block" if (i) or (ii) alone cuts >= 0.6; "not through attention at the bridge" if (iv) cuts < 0.3 (the Mamba state carries it); else in between." (jobs/c3/batch52.yaml, lightning_attn_block, Dan ~10:05; no prediction) Follow-up (span): "the pointer [pointer: the address] is read by attention after the Mamba state spreads it" if the span cuts the lookup's switches by >= 0.6 and the control by <= 0.15; else as 53.4. (jobs/c3/batch53.yaml, next_1110, Dan 11:10; no prediction)
 
 </details>
+
+Each block or span cut on Lightning:
+
+![Two attention blocks carry a third of Lightning's lookup switch](../../figures/depth/51_attention_blocks.png)
+
+*Lightning: the switches blocked when attention blocks are cut, lookup (left) and recall (right), per block or span cut (rows), with a control block and a control span. Whiskers 95% intervals; all estimates post hoc.*
 
 - **Result.**
 
@@ -1849,6 +1939,12 @@ Test 53.1b · opened 29 Oct · status: rule fixed in advance · hand-check: not 
 
 - **Rule, fixed in advance.** 51.12's rule per cell: "the lens effect is the entity": arm 2 keeps >= 0.7 of arm 1's extra drop and arm 3 costs <= 0.10 beyond random; "the lens effect is the answer": arm 2 falls to <= 0.3 of arm 1 and arm 3 alone costs >= 0.5 of arm 1; else mixed; the readout check first ("the answer word is not read at the bridge word" if its lens rank is above 50 on >= 90% of items). (results/x51_answer/x53_jsuite-20261029T095443Z/verdict.md; no prediction)
 
+The answer control per chain:
+
+![Named: both recalls mixed; described: the 27B's reads as the answer](../../figures/depth/52_fact_answer_control.png)
+
+*The answer control on the fact passages with the bridge named, per chain (P: read in the passage, M: recalled; the last letter is the hop the reader answers): the switches blocked without the lens part and with only the answer word's directions removed, lookup (violet) and recall (black). Whiskers 95% intervals.*
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -1883,6 +1979,12 @@ Test 51.7 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 
 - **Rule, fixed in advance.** "(i) "The slice explanation": the whole before-L raises the lookup's switch on fact-after items by >= 0.3 over the one-layer whole, and on fact-first brings the lookup within 0.10 of the recall. (ii) On the full carrier, per model and reported per stratum with fact-first decisive: recall extra drop - lookup extra drop >= 0.3 and lookup <= 0.10 -> "the split holds on the full carrier"; lookup >= 0.20 -> "the lookup follows the lens on the full carrier"; else in between." (verdict.md) Lightning: a coverage run on this rule, no prediction.
 
+One layer against every layer up to L:
+
+![Over every layer up to L, fact-after lookups follow the lens part](../../figures/depth/53_every_layer.png)
+
+*The change at the bridge word at one layer (left) and at every layer up to L (right): the switches blocked without the lens part beyond a random part, lookup (violet) and recall (black), with the fact sentence before the pick and after it. Whiskers 95% intervals; Lightning hollow ○.*
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -1913,6 +2015,12 @@ Test Z3 · opened 28 Oct · status: rule fixed in advance · hand-check: not in 
 
 - **Rule, fixed in advance.** "Value <= 0.05; if position >= 0.2: the address exists in scattered-fact passages; if position <= 0.05: no position route in his layout." The 27B and Lightning: coverage runs on this rule, no prediction.
 
+The three routes on the fact passages:
+
+![On the fact passages the lookup rarely takes the position route](../../figures/depth/54_fact_routes.png)
+
+*The routes test on the fact passages: the share of the lookup's answers by identity (blue), by position (orange) and by value (slate), at each model's layer tested and, where run, a later one. Whiskers 95% intervals; the 27B, Lightning and the 122B hollow ○ (coverage runs, or after the data).*
+
 - **Result.**
 
   | | 9B | 27B (L32) | Muse (L26) | Lightning (L14) | 122B |
@@ -1940,6 +2048,12 @@ Test 51.5 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 - **Method.** The whole change at the bridge name's last token, one layer at a time; the window's end is the last layer where a reader switches on at least 0.3.
 
 - **Rule, fixed in advance.** "The same read window as ours if the last layer where each reader's switch >= 0.3 lies within 4 layers of ours."
+
+Each reader's switches by layer on the fact passages:
+
+![On the 9B the fact passages are read over our layers; on the 27B not](../../figures/depth/55_read_window.png)
+
+*The fact passages' read window: the share of each reader's answers switched by the whole change at the bridge name, one layer at a time, lookup (violet) and recall (black); dashed: the bar fixed in advance. Lightning post hoc (a coverage run).*
 
 - **Result.** (window ends, his / ours)
 
@@ -2128,6 +2242,12 @@ Test 49.3 · opened not stated · status: rule fixed in advance · hand-check: n
 
 - **Rule, fixed in advance.** ""Distributed person mark": pooled (i) >= 0.85 with every per-token (i) <= 0.6. "A picked-flag, not a person": (ii) >= 0.85 pooled or at some token while (i) <= 0.5. "Neither at the sentence": both at chance; the link is made elsewhere." The 27B: a coverage run on this rule, no prediction.
 
+The pooled probe against the best single token:
+
+![No probe reads who picked an item at its locker sentence](../../figures/depth/56_person_probe.png)
+
+*Who picked the item, read by a probe at its locker sentence: the accuracy pooled over the sentence (with its 95% interval) and at the best single token, at half the test layer and at it. The 27B and Lightning hollow ○ (a coverage run; below its gate).*
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -2246,6 +2366,12 @@ Test 47.11 · opened not stated · status: rule fixed in advance · hand-check: 
 
 - **Rule, fixed in advance.** ""An address, not an animal code" if without U cuts position answers >= 0.3 beyond random on both new item types (within 0.1 of the animal result), and only-U gives position >= 0.15. If it fails, refit U per item type and report both: the code is slot x type." The 27B and Lightning: coverage runs on this rule, no prediction.
 
+The address fit on animals against one refit on each kind:
+
+![The animal-fit address does not carry over to other items as ruled](../../figures/depth/57_any_item.png)
+
+*The address on other kinds of item: the position answers cut beyond random without the address fit on animals (left) and refit on each kind (right), per model and kind. Whiskers 95% intervals; Lightning hollow ○.*
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -2323,6 +2449,12 @@ Test Z2 · opened 28 Oct · status: rule fixed in advance · hand-check: not in 
 
 - **Rule, fixed in advance.** "Per model, the 47.3 rule: (a) the split holds: gap >= 0.3, lookup <= 0.10; (a') the computed bridge is handed through the lens: lookup >= 0.20; (d) in between." Withdrawn by the answer control's rule ([51.12](#t51-12)): the lens effect there is the answer or mixed in all four cells.
 
+Both operations' gaps on the described bridge:
+
+![Zach's removal everywhere hits the recall more; our gap is unclear](../../figures/depth/58_described_gap.png)
+
+*The fact passages with the bridge described: the gap, recall minus lookup, under the change at one layer (left, a share of switches) and under removal everywhere (right, a share of answers); the 122B not run at one layer. Whiskers 95% intervals; Lightning and the 122B hollow ○.*
+
 - **Result.**
 
   | | 9B | 27B | Muse (L26) | Lightning (L14) | 122B |
@@ -2347,95 +2479,95 @@ Which test ran on which model, from the committed coverage matrix (results/x52_c
 As of the matrix at 12:20 UTC (13:20 Paris; 8e2ef0cb: 47.15's row renamed "One question, two sources"; otherwise as b8a24aab: 161 done, 20 not tested, 9 not designed, 6 partial, none missing; 47.15 on the 9B and 47.7 (a) on the 9B and Muse now read "not tested" from their r2 reruns' failed gates, as flag 26). The 122B is not in the matrix; its cells are in the cards and the heatmap. Results opened since then are in their cards and the heatmap; the matrix has no rows for batch 53 or for the fact passages.
 
 <!-- coverage:start (scripts/ledger_coverage.py; do not edit by hand) -->
-| test | 27B | Lightning | 9B | Muse |
+| test | 9B | 27B | Muse | Lightning |
 |---|---|---|---|---|
 | **Part I. The two readers** | | | | |
-| [1. Conflict test (main test, at L)](#lightning-conflict) | ✓ <sup>1</sup> | ✓ <sup>2</sup> | ✓ <sup>3</sup> | ✓ <sup>3</sup> |
-| [2. Answer control (51.12 E1)](#t51-12) | ✓ <sup>4</sup> | ✓ | ✓ <sup>4</sup> | ✓ <sup>5</sup> |
+| [1. Conflict test (main test, at L)](#lightning-conflict) | ✓ <sup>1</sup> | ✓ <sup>2</sup> | ✓ <sup>1</sup> | ✓ <sup>3</sup> |
+| [2. Answer control (51.12 E1)](#t51-12) | ✓ <sup>4</sup> | ✓ <sup>4</sup> | ✓ <sup>5</sup> | ✓ |
 | [Split in other texts: varied scenes (x0b)](#x0b) | ✓ | ✓ | ✓ | ✓ |
-| [Split in other texts: natural passages (x5)](#x5) | ✓ | ○ <sup>6</sup> | ✓ <sup>7</sup> | ✓ |
+| [Split in other texts: natural passages (x5)](#x5) | ✓ <sup>6</sup> | ✓ | ✓ | ○ <sup>7</sup> |
 | [Dose curves, a part alone (51.1)](#t51-1) | ✓ | ✓ | ✓ | ✓ |
-| [Zeroing at one layer (47.5)](#t47-5) | ✓ | ✓ <sup>8</sup> | ✓ | ✓ |
-| [7. Ladder (49.2, rungs 1-6)](#t49-2) | ✓ <sup>9</sup> | ○ <sup>10</sup> | ✓ | ✓ <sup>11</sup> |
-| [Earlier mention (45p)](#t45p) | ✓ | ○ <sup>10</sup> | ✓ | ✓ |
+| [Zeroing at one layer (47.5)](#t47-5) | ✓ | ✓ | ✓ | ✓ <sup>8</sup> |
+| [7. Ladder (49.2, rungs 1-6)](#t49-2) | ✓ | ✓ <sup>9</sup> | ✓ <sup>10</sup> | ○ <sup>11</sup> |
+| [Earlier mention (45p)](#t45p) | ✓ | ✓ | ✓ | ○ <sup>11</sup> |
 | [Gain map (49.1)](#t49-1) | ✓ | ✓ | ✓ | ✓ |
 | **Part II. Identity** | | | | |
 | [E3: identity route outside the lens (47.1 atom slices)](#t47-1) | ✓ | ✓ | ✓ | ✓ |
-| [3. Routes test (identity / position / value; no address; address alone)](#routes) | ✓ <sup>12</sup> | ✓ | ✓ | ✓ |
-| [What is left of the route; the value (47.7)](#t47-7c) | ✓ | ◐ <sup>13</sup> | ○ <sup>14</sup> | ○ <sup>14</sup> |
-| [Learned subspaces (48 DAS; 51.3 DAS at scale)](#t51-3) | ✓ <sup>15</sup> | – <sup>16</sup> | ✓ | ✓ |
+| [3. Routes test (identity / position / value; no address; address alone)](#routes) | ✓ | ✓ <sup>12</sup> | ✓ | ✓ |
+| [What is left of the route; the value (47.7)](#t47-7c) | ○ <sup>13</sup> | ✓ | ○ <sup>13</sup> | ◐ <sup>14</sup> |
+| [Learned subspaces (48 DAS; 51.3 DAS at scale)](#t51-3) | ✓ | ✓ <sup>15</sup> | ✓ | – <sup>16</sup> |
 | **Part III. The address** | | | | |
 | [E6: the address probe (x0_probe v4)](#probe) | ✓ | ✓ | ✓ | ✓ |
 | [4. Address swap by dose (x8_write, s = 1 / 2 / 4)](#swap) | ✓ <sup>17</sup> | ✓ <sup>18</sup> | ✓ <sup>19</sup> | ✓ <sup>20</sup> |
-| [E6: the swap after neutral sentences (47.16 distance)](#t47-16) | ✓ | ✓ | ✓ | ✓ <sup>21</sup> |
+| [E6: the swap after neutral sentences (47.16 distance)](#t47-16) | ✓ | ✓ | ✓ <sup>21</sup> | ✓ |
 | [E7: six lockers, one code per slot (47.2)](#six) | ✓ | ✓ | ✓ | ✓ |
-| [What is the address: dimension, methods, geometry (51.11)](#t51-11) | ◐ <sup>22</sup> | – <sup>16</sup> | ✓ | ✓ |
+| [What is the address: dimension, methods, geometry (51.11)](#t51-11) | ✓ | ◐ <sup>22</sup> | ✓ | – <sup>16</sup> |
 | [8. Lens readout with the item-change control (47.0)](#t47-0) | ✓ | ✓ | ✓ | ✓ |
-| [E8: the report prompt (47.10)](#t47-10) | ✓ | ○ <sup>23</sup> | ○ <sup>24</sup> | ○ <sup>25</sup> |
-| [Report of slot 1, reworded (49.6)](#t49-6) | ✓ | ✓ <sup>26</sup> | ✓ <sup>27</sup> | ✗ <sup>28</sup> |
+| [E8: the report prompt (47.10)](#t47-10) | ○ <sup>23</sup> | ✓ | ○ <sup>24</sup> | ○ <sup>25</sup> |
+| [Report of slot 1, reworded (49.6)](#t49-6) | ✓ <sup>26</sup> | ✓ | ✗ <sup>27</sup> | ✓ <sup>28</sup> |
 | [Joint head ablation under the swap (51.2)](#t51-2) | ✓ | ✓ | ✓ | ✓ |
-| [10. Attention under the swap (49.7)](#t49-7) | ✓ | ✓ <sup>29</sup> | ✓ | ✓ |
-| [Chained addresses (47.14)](#t47-14) | ✓ | ○ <sup>30</sup> | ✓ | ✓ |
+| [10. Attention under the swap (49.7)](#t49-7) | ✓ | ✓ | ✓ | ✓ <sup>29</sup> |
+| [Chained addresses (47.14)](#t47-14) | ✓ | ✓ | ✓ | ○ <sup>30</sup> |
 | [Address refit per text format (x45d)](#x45d) | ✓ | ✓ | ✓ | ✓ |
 | **Part IV. Where and when** | | | | |
-| [5a. Order split (descriptive)](#order) | ✓ | ✓ <sup>31</sup> | ✓ | ✓ |
-| [5b. Copy test (45q)](#t45q) | ✓ <sup>32</sup> | ○ <sup>10</sup> | ✓ <sup>32</sup> | ✓ <sup>32</sup> |
-| [E11: token by layer map (47.D1)](#d1) | ✓ | ◐ <sup>33</sup> | ✓ | ✓ |
-| [E11: lookups carried before L (47.4 cumulative)](#t47-4) | ✓ | ◐ <sup>34</sup> | ✓ | ✓ |
-| [6. Anatomy by layer (47.8)](#t47-8) | ✓ <sup>35</sup> | ✓ <sup>36</sup> | ✓ | ✓ |
-| [E12: address persistence across depth (D4, CPU)](#t47-8) | ✓ <sup>37</sup> | ✓ <sup>38</sup> | ✓ | ✓ |
+| [5a. Order split (descriptive)](#order) | ✓ | ✓ | ✓ | ✓ <sup>31</sup> |
+| [5b. Copy test (45q)](#t45q) | ✓ <sup>32</sup> | ✓ <sup>32</sup> | ✓ <sup>32</sup> | ○ <sup>11</sup> |
+| [E11: token by layer map (47.D1)](#d1) | ✓ | ✓ | ✓ | ◐ <sup>33</sup> |
+| [E11: lookups carried before L (47.4 cumulative)](#t47-4) | ✓ | ✓ | ✓ | ◐ <sup>34</sup> |
+| [6. Anatomy by layer (47.8)](#t47-8) | ✓ | ✓ <sup>35</sup> | ✓ | ✓ <sup>36</sup> |
+| [E12: address persistence across depth (D4, CPU)](#t47-8) | ✓ | ✓ <sup>37</sup> | ✓ | ✓ <sup>38</sup> |
 | [The address at the last token (51.4)](#t51-4) | ✓ | ✓ | ✓ | ✓ |
 | [9. Last-token read / write (51.10)](#t51-10) | ✓ | ✓ | ✓ | ✓ |
 | **Part V. Other datasets** | | | | |
-| [Part V: the fact passages Z1 / Z2 (x50)](#z1) | ✓ | ✓ <sup>39</sup> | ✓ | ✓ |
-| [Z1 on the full carrier (51.7)](#t51-7) | ✓ | ✓ | ✓ | ✗ <sup>28</sup> |
-| [Part V: the fact passages Z3 (routes on the fact passages)](#z3) | ✓ <sup>40</sup> | ✓ <sup>41</sup> | ✓ | ✓ |
-| [Anatomy on the fact passages (51.5)](#t51-5) | ✓ | ✗ <sup>42</sup> | ✓ | ✗ <sup>28</sup> |
+| [Part V: the fact passages Z1 / Z2 (x50)](#z1) | ✓ | ✓ | ✓ | ✓ <sup>39</sup> |
+| [Z1 on the full carrier (51.7)](#t51-7) | ✓ | ✓ | ✗ <sup>27</sup> | ✓ |
+| [Part V: the fact passages Z3 (routes on the fact passages)](#z3) | ✓ | ✓ <sup>40</sup> | ✓ | ✓ <sup>41</sup> |
+| [Anatomy on the fact passages (51.5)](#t51-5) | ✓ | ✓ | ✗ <sup>27</sup> | ✗ <sup>42</sup> |
 | **Part VI. What did not hold** | | | | |
-| [Described bridge (47.3, and 51.12's cue r2)](#t47-3) | ✓ | ○ <sup>43</sup> | ✓ | ◐ <sup>44</sup> |
-| [One question, two sources (47.15)](#t47-15) | ✓ | ○ <sup>14</sup> | ○ <sup>14</sup> | ○ <sup>45</sup> |
-| [The lookup's errors are not address errors (47.13)](#t47-13) | ✓ | ✓ <sup>46</sup> | ✓ | ✓ |
-| [Failed: the lens part keys the attribute; late MLPs (48.2 enrichment)](#t48-2) | ✓ <sup>47</sup> | ◐ <sup>48</sup> | ✓ | ✓ |
-| [Failed: a person mark at the locker sentence (48.3 bind)](#t48-3) | ✓ | ○ <sup>49</sup> | ✓ | ✓ |
-| [Pooled person probe (49.3)](#t49-3) | ✓ | ○ <sup>50</sup> | ✓ | ✓ |
-| [Failed: copying heads pass the rest (48 heads)](#t48-4) | ✓ | ✓ <sup>51</sup> | ✓ | ✓ |
-| [Failed: the address as the recall's second route (48 route2)](#t48-5) | ✓ | ○ <sup>52</sup> | ✓ | ✓ |
-| [Failed: blocking the pick sentence (47.6 edges)](#t47-6) | ✓ | – <sup>53</sup> | ✓ | ✓ |
+| [Described bridge (47.3, and 51.12's cue r2)](#t47-3) | ✓ | ✓ | ◐ <sup>43</sup> | ○ <sup>44</sup> |
+| [One question, two sources (47.15)](#t47-15) | ○ <sup>13</sup> | ✓ | ○ <sup>45</sup> | ○ <sup>13</sup> |
+| [The lookup's errors are not address errors (47.13)](#t47-13) | ✓ | ✓ | ✓ | ✓ <sup>46</sup> |
+| [Failed: the lens part keys the attribute; late MLPs (48.2 enrichment)](#t48-2) | ✓ | ✓ <sup>47</sup> | ✓ | ◐ <sup>48</sup> |
+| [Failed: a person mark at the locker sentence (48.3 bind)](#t48-3) | ✓ | ✓ | ✓ | ○ <sup>49</sup> |
+| [Pooled person probe (49.3)](#t49-3) | ✓ | ✓ | ✓ | ○ <sup>50</sup> |
+| [Failed: copying heads pass the rest (48 heads)](#t48-4) | ✓ | ✓ | ✓ | ✓ <sup>51</sup> |
+| [Failed: the address as the recall's second route (48 route2)](#t48-5) | ✓ | ✓ | ✓ | ○ <sup>52</sup> |
+| [Failed: blocking the pick sentence (47.6 edges)](#t47-6) | ✓ | ✓ | ✓ | – <sup>53</sup> |
 | [Failed: the address is the same for any kind of item (47.11 agnostic)](#t47-11) | ✓ | ✓ | ✓ | ✓ |
 | **Withdrawn, or run on one model only** | | | | |
-| DAS by position (49.x das_pos) | ✗ <sup>54</sup> | ✗ <sup>54</sup> | ✓ | ✗ <sup>54</sup> |
-| [Answer-direction control on the fact passages' Z2 (51.12 Z2)](#z2) | ✓ | ✗ <sup>42</sup> | ✓ | ✗ <sup>28</sup> |
+| DAS by position (49.x das_pos) | ✓ | ✗ <sup>54</sup> | ✗ <sup>54</sup> | ✗ <sup>54</sup> |
+| [Answer-direction control on the fact passages' Z2 (51.12 Z2)](#z2) | ✓ | ✓ | ✗ <sup>27</sup> | ✗ <sup>42</sup> |
 
 ✓ done, ◐ partial, ○ below the model's gate (not tested; a below-gate run is exploratory), – not tested (including missing, not completed or queued), ✗ not designed for that model; a number points to the matrix's note for that cell, listed under the table.
 
-1. not confirmed (lookup 0.14 > 0.10; recall 0.74)
-2. decided at L14; 3 arms at all 13 swept layers
-3. confirmed
+1. confirmed
+2. not confirmed (lookup 0.14 > 0.10; recall 0.74)
+3. decided at L14; 3 arms at all 13 swept layers
 4. recall: the entity
 5. answer word not read
-6. its gate failed ({'PP': 0.7701149425287356, 'PM': 0.896551724137931}, eligible 36); no lowered rerun (the spec's rule)
-7. gate lowered after the data
+6. gate lowered after the data
+7. its gate failed ({'PP': 0.7701149425287356, 'PM': 0.896551724137931}, eligible 36); no lowered rerun (the spec's rule)
 8. L14 and L14..17; the 60 dev scenes kept out
 9. rungs 1-6, rung 6 at Zach's L32-40
-10. the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change)
-11. rung 6 in Zach's L36-42 (49.2 ran it at L23-29)
+10. rung 6 in Zach's L36-42 (49.2 ran it at L23-29)
+11. the clean one-pick design's gate fails on Lightning (recall 0.751 < 0.80; amendment 1: no gate change)
 12. 0.66 / 0.34 / 0.00; alone fails
-13. (a) not tested (its gate failed (no placement / condition passed; see gate.json); no lowered rerun (the spec's rule)); (c) done
-14. its gate failed (no placement / condition passed; see gate.json); no lowered rerun (the spec's rule)
+13. its gate failed (no placement / condition passed; see gate.json); no lowered rerun (the spec's rule)
+14. (a) not tested (its gate failed (no placement / condition passed; see gate.json); no lowered rerun (the spec's rule)); (c) done
 15. 51.3 done; 48.1 done
 16. DAS trains through the model's backward, unverified through NemotronH's Mamba-2 kernels; its recall half needs the clean design (gate fails)
-17. target share at s = 1 / 2 / 4: 0.01 / 0.24 / 0.50
-18. target share at s = 1 / 2 / 4: 0.03 / 0.50 / 0.69
-19. target share at s = 1 / 2 / 4: 0.02 / 0.46 / 0.73
-20. target share at s = 1 / 2 / 4: 0.05 / 0.52 / 0.52
+17. target share at s = 1 / 2 / 4: 0.02 / 0.46 / 0.73
+18. target share at s = 1 / 2 / 4: 0.01 / 0.24 / 0.50
+19. target share at s = 1 / 2 / 4: 0.05 / 0.52 / 0.52
+20. target share at s = 1 / 2 / 4: 0.03 / 0.50 / 0.69
 21. x47_16_muse was cancelled by Dan mid-run (batch 49 amendment 1; no outcomes); r2 re-opens it under amendment 2 (flagged)
 22. part 2 only by design (parts 1, 3 not designed for the 27B)
-23. the cited verdict lists Lightning as not tested (results/x47_report/x52_report-20261029T023828Z)
-24. the cited verdict lists 9B as not tested (results/x47_report/x47_10-20261028T113109Z)
-25. the cited verdict lists Muse as not tested (results/x47_report/x47_10-20261028T113109Z)
-26. the 9B / 27B design; read per model, the action is the 9B's
-27. the deciding model
-28. designed for the 9B and 27B (conservative, Dan 01:10)
+23. the cited verdict lists 9B as not tested (results/x47_report/x47_10-20261028T113109Z)
+24. the cited verdict lists Muse as not tested (results/x47_report/x47_10-20261028T113109Z)
+25. the cited verdict lists Lightning as not tested (results/x47_report/x52_report-20261029T023828Z)
+26. the deciding model
+27. designed for the 9B and 27B (conservative, Dan 01:10)
+28. the 9B / 27B design; read per model, the action is the 9B's
 29. attention blocks 19 / 26 / 33 / 42 after L14 (6 of 52 blocks)
 30. the cited verdict lists Lightning as not tested (the gate missed (see gate.json); results/x47_chain/x52_chain-20261029T023424Z)
 31. CPU from the conflict test's outcomes
@@ -2450,8 +2582,8 @@ As of the matrix at 12:20 UTC (13:20 Paris; 8e2ef0cb: 47.15's row renamed "One q
 40. at L32 (X0's layer = the start of his band L32-40)
 41. at L14 and L27
 42. the test was designed for the 9B and 27B; amendment 2's grid adds no new design
-43. the cited verdict lists Lightning as not tested (gate: O's read accuracy {'PP': 0.7228571428571429, 'PM': 0.87} (bar 0.8), eligible 301; results/x47_cue/x52_cue-20261029T023827Z); was: 47.3 done; 51.12 cue r2 queued (x52_lightning_cue_answer (queued or running; no ledger entry here yet))
-44. 47.3 done; 51.12's cue r2 not run on Muse (9B / 27B only by design)
+43. 47.3 done; 51.12's cue r2 not run on Muse (9B / 27B only by design)
+44. the cited verdict lists Lightning as not tested (gate: O's read accuracy {'PP': 0.7228571428571429, 'PM': 0.87} (bar 0.8), eligible 301; results/x47_cue/x52_cue-20261029T023827Z); was: 47.3 done; 51.12 cue r2 queued (x52_lightning_cue_answer (queued or running; no ledger entry here yet))
 45. the cited verdict lists Muse as not tested (the gate failed; results/x47_source/x47_15-20261028T142722Z)
 46. count (CPU) then the verdict
 47. A and B

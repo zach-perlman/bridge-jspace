@@ -1,6 +1,6 @@
 """ledger_coverage: the coverage table of docs/depth/EXPERIMENTS.md (Dan, 29 Oct 01:15), generated from the committed
 coverage matrix (scripts/x52_coverage.py's matrix.json): rows = the matrix's tests in the README's order (Dan's
-restructure brief, 29 Oct 08:55) under their Part, columns = 27B / Lightning / 9B / Muse, each cell the matrix's status
+restructure brief, 29 Oct 08:55) under their Part, columns = 9B / 27B / Muse / Lightning, each cell the matrix's status
 as a symbol (✓ done, ◐ partial, ○ below gate, – not tested, ✗ not designed) and its note verbatim as a numbered
 footnote under the table (the Lightning gate sentence, said once above the table, left out). A row whose test has a
 ledger card links to it. scripts/check_ledger.py checks that the table in the document equals this output, so the
@@ -19,6 +19,9 @@ REPO = Path(__file__).resolve().parents[1]
 MATRIX = REPO / "results" / "x52_coverage" / "matrix-20261029T122040Z" / "matrix.json"
 COLUMNS = (("qwen3.6-27b", "27B"), ("nemotron-3.5-lightning", "Lightning"), ("qwen3.5-9b", "9B"),
            ("muse-glimmer-30b", "Muse"))  # fmt: skip
+# the coverage table's columns in the figures' model order (docs pass, 7 Nov); COLUMNS keeps HEATMAP's cell order
+TABLE_COLUMNS = tuple(sorted(COLUMNS, key=lambda c: ["qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b",
+                                                     "nemotron-3.5-lightning"].index(c[0])))
 # the matrix's row -> the ledger card's anchor (rows without a card stay plain)
 ANCHORS = {
     "1. Conflict test (main test, at L)": "lightning-conflict",
@@ -258,17 +261,17 @@ def table(matrix: Path = MATRIX) -> str:
     m = json.loads(matrix.read_text())
     gate = m["lightning_gate"]
     notes: dict[str, int] = {}
-    lines = ["| test | " + " | ".join(name for _, name in COLUMNS) + " |", "|---" * (len(COLUMNS) + 1) + "|"]
+    lines = ["| test | " + " | ".join(name for _, name in TABLE_COLUMNS) + " |", "|---" * (len(TABLE_COLUMNS) + 1) + "|"]
     last = "start"
     for part, r in ordered_rows(m):
         if part != last:
-            lines.append(f"| **{PART_TITLE[part]}** |" + " |" * len(COLUMNS))
+            lines.append(f"| **{PART_TITLE[part]}** |" + " |" * len(TABLE_COLUMNS))
             last = part
         name = display(r["row"]).replace("|", "/")
         if r["row"] in ANCHORS:
             name = f"[{name}](#{ANCHORS[r['row']]})"
         cells = []
-        for k, _ in COLUMNS:
+        for k, _ in TABLE_COLUMNS:
             c = r["cells"][k]
             note = note_of(c, gate)
             sym = SYMBOL[status_of(c, note, r["row"], k)]
