@@ -1,0 +1,143 @@
+{
+ "styles_plot": "0.1.13",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "a9a956d822e187866dea3395f365bee262de96e4d24a13224f0513c00efdd4d6"
+ },
+ "registry": {
+  "path": "data/figures/status.csv",
+  "sha256": "4bdc364104bfa6de05797bdd39798cbe2554591bd322df7bf8eca7bc702325b0"
+ },
+ "figure": "fig05e_address_added_alone",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "text_only": false,
+ "png": {
+  "pixels_sha256": "3e319dc96f95fbf245b7bfa2121ada64e1dea3b435ea690f1c783ae29b209b5d",
+  "dpi": 160
+ },
+ "roles": [
+  "address"
+ ],
+ "controls": [
+  "a random part"
+ ],
+ "cells": {
+  "keep.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "keep.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "keep.q122": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "keep.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "keep.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "keep.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "keep.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "keep.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "keep.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "keep.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "keep.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "keep.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "keep.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "keep.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "keep.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  }
+ ],
+ "key": [
+  "grey: a random part",
+  "whiskers: 95% interval",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "f05e.address.q9": "0.26",
+  "f05e.address.q27": "0.09",
+  "f05e.address.mu": "0.29",
+  "f05e.address.nl": "0.40",
+  "f05e.address.q122": "0.21"
+ },
+ "problems": []
+}

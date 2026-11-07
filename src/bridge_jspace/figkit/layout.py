@@ -39,7 +39,9 @@ ORDER: dict[str, list[tuple[str, str]]] = {
         "fig16b_dose_rest", "fig05b_identity_outside", "fig05c_described_bridge", "fig03b_layers",
         "fig06c_address_depth", "fig07c_probe_errors", "fig08_first_locker", "fig09c_formation", "fig09d_chain",
         "fig10_what_is_left", "fig10b_enrichment", "fig10c_binding", "fig10c2_binding_added", "fig10d_heads",
-        "fig10e_second_route", "fig13_attention", "fig14_learned", "fig09_transfer", "fig24_two_codes")),
+        "fig10e_second_route", "fig13_attention", "fig14_learned", "fig09_transfer", "fig24_two_codes",
+        # docs pass P2-4 (7 Nov): the figures of claims 3 and 7, appended so no later file is renumbered
+        "fig03d_earlier_mention", "fig05e_address_added_alone")),
               *(("supp", i) for i in (
                   "s01_split_all_scene_sets", "s02_parts_all", "s03_order_split", "s03d_link_copy_variants", "s03f_link_copy_27b", "s03g_link_copy_muse",
                   "s03e_cumulative", "s07_recall_follows_swap", "s07b_lens_readout",

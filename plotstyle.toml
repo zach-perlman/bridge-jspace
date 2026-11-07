@@ -271,6 +271,11 @@ title = "share of the lookup switches still switching"
 quantity = "lookups still switching"
 format = "share"
 
+[units.recall_blocked]
+title = "recall switches blocked beyond the bridge word's edit (share)"
+quantity = "switches blocked"
+format = "share"
+
 [units.mlp_lost]
 title = "recall answers turned wrong (share)"
 quantity = "recall answers turned wrong"
@@ -626,6 +631,9 @@ canonical = [
     "the recall's switches blocked beyond random · earlier runs with a same-size control",
     "probe accuracy at the bridge word",
     "position answers without the address",
+    "position answers with only the address",
+    "without the lens part at the item's earlier mention",
+    "without another item's lens part there",
     "keep the answer span",
     "remove the answer span",
     "remove it, codename set",

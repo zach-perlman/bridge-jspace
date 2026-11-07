@@ -213,6 +213,16 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 ![The recall follows the lens part of the bridge word; the lookup mostly does not](figures/depth/02_one_layer_split.png)
 {{caption|depth/02_one_layer_split}}
 
+Following is not needing (claim 2): taken out of the changed prompt's own state at one layer, the lens part leaves nearly all of the recall's answers unchanged; the recall has other copies.
+
+![At one layer the recall keeps its answers without the lens part: it has other copies](figures/depth/15_zeroing.png)
+{{caption|depth/15_zeroing}}
+
+The recall also reads the item's earlier mention (claim 3): taking the lens part out there too blocks more of its switches than a random part of the same share, and taking out another item's lens part blocks none.
+
+![The recall also reads the lens part at the item's earlier mention](figures/depth/36_earlier_mention.png)
+{{caption|depth/36_earlier_mention}}
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning ○ | 122B |
@@ -332,6 +342,11 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 ![Every model's lookup takes identity or position, never the value](figures/readme/08_routes.png)
 {{caption|readme/08_routes}}
 
+The lookup's "which item" lives outside the lens (claim 5): taking out the lens's next directions blocks little of the lookup's switches beyond a random part, while the lens part blocks the recall's.
+
+![The lookup's identity survives taking out the lens's next directions](figures/depth/18_identity_outside.png)
+{{caption|depth/18_identity_outside}}
+
 - **Result.**
   - Identity share under the whole change: 9B {{dp|fig05|9b|another item moved, whole: identity share}}, 27B {{dp|fig05|27b|another item moved, whole: identity share}}, Muse {{dp|fig05|muse|another item moved, whole: identity share}}, Lightning ○ {{dp|fig05|nemotron-3.5-lightning|another item moved, whole: identity share}}, 122B ○ {{dp|fig05|122b|another item moved, whole: identity share}}.
   - Position share: 9B {{dp|fig05|9b|another item moved, whole: position share}}, 27B {{dp|fig05|27b|another item moved, whole: position share}}, Muse {{dp|fig05|muse|another item moved, whole: position share}}, Lightning ○ {{dp|fig05|nemotron-3.5-lightning|another item moved, whole: position share}}, 122B ○ {{dp|fig05|122b|another item moved, whole: position share}}.
@@ -364,8 +379,18 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - the swap: the difference between two lockers' mean address codes, at one, two and four times its size (s = 1, 2, 4), against a random vector of the same size; read: lookups sent to the swapped-in locker, and recalls that change.
 - **Rule, fixed in advance.** Removing and adding: the routes test's, "a route counts as used if its share is ≥ 0.20 with lower bound ≥ 0.10". The swap: "at s = 1 the target share minus the random direction's ≥ 0.15 with lower bound > 0" (read at s = 1; see the caveats). The distance test: "distance-robust: position share and probe within 0.1 of no neutral sentences at every distance, swap success within 0.15". The probe: none, descriptive, post hoc. Lightning and the 122B (and the 27B's, Muse's and Lightning's distance runs): the same rules, copied, no prediction.
 
-![The address carries the position route; swapping it moves the lookup](figures/readme/06_address_read_remove.png) ![The address carries the position route; swapping it moves the lookup](figures/readme/07_address_swap_lens.png)
+![A probe reads the address, and removing it takes the position route away](figures/readme/06_address_read_remove.png)
 {{caption|readme/06_address_read_remove}}
+
+Added by itself, the address brings position answers back on the 9B, Muse, Lightning and the 122B, not on the 27B (claim 7).
+
+![Added alone, the address brings position answers back, except on the 27B](figures/depth/37_address_added_alone.png)
+{{caption|depth/37_address_added_alone}}
+
+With six lockers, swaps between given lockers pass the bar on most pairs on every model but the 27B, and no single shift moves the lookup one locker on (claim 8).
+
+![With six lockers, swaps between given lockers work on most pairs; no shift moves the lookup one locker on](figures/depth/03_six_lockers.png)
+{{caption|depth/03_six_lockers}}
 
 - **Result.**
 
@@ -414,7 +439,10 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
   - The report prompt (27B): asked which locker sentence holds the item, the lens's top five at the bridge word, and the report's switches blocked without the lens part and without the address, beyond random.
 - **Rule, fixed in advance.** Descriptive, with the reading fixed in advance: "'not verbalizable': the share rebuilt with 25 lens directions within 2x the random vectors' share, no position word in the top 20 beyond the random vectors' 5th-percentile rank, and the readout's change under the swap within the random vectors' 95th percentile, on all three models." The report prompt: "'surfaced on demand': under the report prompt the lens ranks the right position word in its top five in ≥ 0.4 of items (under the lookup prompt ≤ 0.1), and the report has ≥ 0.3 of its switches blocked without the lens part beyond random"; else "reported late, not surfaced" or neither. Lightning: the reading copied, no prediction.
 
-*Shown in the right column of the address figure above ("The lens cannot see it"); the position word's rank: the Result.*
+A swapped-in address moves the lookup, yet reads through the lens like a random vector of its size; an item change of the same size stands far outside the random range (claim 9).
+
+![The swapped-in address moves the lookup but reads through the lens like a random vector](figures/readme/07_address_swap_lens.png)
+{{caption|readme/07_address_swap_lens}}
 
 - **Result.**
 
@@ -489,7 +517,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 
 **More in the ledger** (each card with its figure, numbers and caveats):
 
-- [With six lockers, does each locker have its own code?](docs/depth/EXPERIMENTS.md#six) No single shift moves the lookup one locker on, on any model: the address is not a line over the lockers. ([the six-lockers figure](figures/depth/03_six_lockers.png))
+- [With six lockers, does each locker have its own code?](docs/depth/EXPERIMENTS.md#six) No single shift moves the lookup one locker on, on any model: the address is not a line over the lockers.
 - [Must the address be refit for each text format?](docs/depth/EXPERIMENTS.md#x45d) Refit on each format, the address carries the lookup again on the 9B, Muse and Lightning; on the 27B it stays weak in every format.
 - [Is the address readable, and used, in Python code and tool output?](docs/depth/EXPERIMENTS.md#b53-7) In tool output on the 9B and in both formats on the 27B, the probe at the bridge word reads which locker sentence holds the bridge's locker about as well as in prose, far above the layout baseline; with the locker after the pick it reads nothing beyond its baselines. ([the code and tool figure](figures/depth/04_code_tool.png))
 
@@ -547,6 +575,11 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 
 ![Locker after the pick: the link is made in the locker sentences](figures/depth/05_order.png) ![Locker after the pick: the link is made in the locker sentences](figures/depth/06_link_layers.png)
 {{caption|depth/05_order}}
+
+Where the switches are carried (claim 11): for the lookup almost all at the bridge word at L; the lookups the change at L misses, with the locker after the pick, were read from the bridge word before L ([the ledger card](docs/depth/EXPERIMENTS.md#t47-4)).
+
+![Where each reader's switches are carried: the bridge word at L, before L, after L, elsewhere](figures/depth/s07_cumulative.png)
+{{caption|depth/s07_cumulative}}
 
 - **Result.**
   - Locker first / after, lookups switched by the whole change: 9B {{num|lk_order_before_9b}} / {{num|lk_order_after_9b}}, 27B {{num|lk_order_before_27b}} / {{num|lk_order_after_27b}}, Muse {{num|lk_order_before_muse}} / {{num|lk_order_after_muse}}, Lightning ○ {{num|lk_order_before_lightning}} / {{num|lk_order_after_lightning}}, 122B {{num|lk_order_before_122b}} / {{num|lk_order_after_122b}}.
@@ -705,7 +738,7 @@ Models bind entities to attributes in context (Feng & Steinhardt 2023) and track
 
 ## Appendix A. Links
 
-Every number on this page carries a source comment into data/figures/depth/data.csv or docs/depth/x0_numbers.json; where things live: run files under results/, job specs under jobs/c3/, scripts under scripts/. All figures on one page: [the contact sheet](figures/depth/_sheets/contact_sheet.png). Supplementary figures: [every scene set](figures/depth/s01_split_all_scene_sets.png), [the settings](figures/depth/11_settings.png), [every part](figures/depth/s02_parts_all.png), [parts of the same size](figures/depth/12_specificity.png), [the 27B with more directions](figures/depth/13_k_curve.png) · [2](figures/depth/14_k_routes.png), [the lens part taken out at one layer](figures/depth/15_zeroing.png), [the dose curves](figures/depth/16_dose_lens.png) · [2](figures/depth/17_dose_rest.png), [the main test's parts](figures/depth/18_identity_outside.png), [a described bridge](figures/depth/19_described_bridge.png), [the order split with every model](figures/depth/s03_order_split.png), [the layer sweep](figures/depth/20_layers.png), the link copy variants ([9B](figures/depth/s04_link_copy_variants.png), [27B](figures/depth/s05_link_copy_27b.png), [Muse](figures/depth/s06_link_copy_muse.png)), [the lookups the change misses](figures/depth/s07_cumulative.png), [the address across depth](figures/depth/21_address_depth.png), [the recall follows the swap](figures/depth/s08_recall_follows_swap.png), [the lens readout of the swap](figures/depth/s09_lens_readout.png), [the lookup's errors](figures/depth/22_probe_errors.png), [the first locker](figures/depth/23_first_locker.png), [the first sentence and the moves](figures/depth/s10_pointer_moves_and_neutral_sentence.png), [the routes test drawn large](figures/depth/s11_routes_design.png), [every routes arm](figures/depth/s12_routes_taken_out.png) · [2](figures/depth/s13_routes_kept.png), [the blocked pick sentence](figures/depth/24_formation.png), [chained addresses](figures/depth/25_chain.png), [what is left of the route](figures/depth/26_what_is_left.png), [attribute probe and MLPs](figures/depth/27_enrichment.png), [binding](figures/depth/28_binding.png) · [2](figures/depth/29_binding_added.png), [heads](figures/depth/30_heads.png), [second route](figures/depth/31_second_route.png), [the mechanism tests](figures/depth/10_mechanisms.png), [attention follows the swapped address](figures/depth/32_attention.png), [learned subspaces](figures/depth/33_learned.png), [Muse's learned subspaces](figures/depth/s14_das_muse.png), [the transfer on every model](figures/depth/34_transfer.png). Earlier figures: figures/archive/status_2026-10-25/.
+Every number on this page carries a source comment into data/figures/depth/data.csv or docs/depth/x0_numbers.json; where things live: run files under results/, job specs under jobs/c3/, scripts under scripts/. All figures on one page: [the contact sheet](figures/depth/_sheets/contact_sheet.png). Supplementary figures: [every scene set](figures/depth/s01_split_all_scene_sets.png), [the settings](figures/depth/11_settings.png), [every part](figures/depth/s02_parts_all.png), [parts of the same size](figures/depth/12_specificity.png), [the 27B with more directions](figures/depth/13_k_curve.png) · [2](figures/depth/14_k_routes.png), [the dose curves](figures/depth/16_dose_lens.png) · [2](figures/depth/17_dose_rest.png), [a described bridge](figures/depth/19_described_bridge.png), [the order split with every model](figures/depth/s03_order_split.png), [the layer sweep](figures/depth/20_layers.png), the link copy variants ([9B](figures/depth/s04_link_copy_variants.png), [27B](figures/depth/s05_link_copy_27b.png), [Muse](figures/depth/s06_link_copy_muse.png)), [the address across depth](figures/depth/21_address_depth.png), [the recall follows the swap](figures/depth/s08_recall_follows_swap.png), [the lens readout of the swap](figures/depth/s09_lens_readout.png), [the lookup's errors](figures/depth/22_probe_errors.png), [the first locker](figures/depth/23_first_locker.png), [the first sentence and the moves](figures/depth/s10_pointer_moves_and_neutral_sentence.png), [the routes test drawn large](figures/depth/s11_routes_design.png), [every routes arm](figures/depth/s12_routes_taken_out.png) · [2](figures/depth/s13_routes_kept.png), [the blocked pick sentence](figures/depth/24_formation.png), [chained addresses](figures/depth/25_chain.png), [what is left of the route](figures/depth/26_what_is_left.png), [attribute probe and MLPs](figures/depth/27_enrichment.png), [binding](figures/depth/28_binding.png) · [2](figures/depth/29_binding_added.png), [heads](figures/depth/30_heads.png), [second route](figures/depth/31_second_route.png), [the mechanism tests](figures/depth/10_mechanisms.png), [attention follows the swapped address](figures/depth/32_attention.png), [learned subspaces](figures/depth/33_learned.png), [Muse's learned subspaces](figures/depth/s14_das_muse.png), [the transfer on every model](figures/depth/34_transfer.png). Earlier figures: figures/archive/status_2026-10-25/.
 
 ## Appendix B. Following the same scenes: the position route (post hoc)
 

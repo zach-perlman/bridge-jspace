@@ -430,6 +430,24 @@ def depth_set_d() -> list[dict]:
     return out
 
 
+def depth_set_e() -> list[dict]:
+    """The figures of claims 3 and 7 (figkit/depth_sp_e.py, docs pass P2-4): 45p fixed in advance on the 9B, 27B and
+    Muse (docs/depth/EXPERIMENTS.md#t45p), Lightning below its gate and the 122B a coverage run with no prediction
+    (after the data); the routes test's keep-only arms by hollow() with the lowered gate (the 122B's runs at 0.75), as
+    the address figure (writeup fig08a) draws them."""
+    out = []
+    for m, _ in MODELS:
+        k = SHORT[m]
+        for cid in ("item", "other"):
+            out.append(fixed("fig03d_earlier_mention", f"{cid}.{k}", "45p, set before its data",
+                             "docs/depth/EXPERIMENTS.md#t45p") if k in ("q9", "q27", "mu") else
+                       post_hoc("fig03d_earlier_mention", f"{cid}.{k}", "45p, below its gate or a coverage run",
+                                "docs/depth/EXPERIMENTS.md#t45p; data/figures/depth/data.csv fig03c"))  # fmt: skip
+        out.append(by_hollow("fig05e_address_added_alone", f"keep.{k}", m, lowered=True,
+                             what="the routes test, the address added alone"))  # fmt: skip
+    return out
+
+
 BREADTH_FIGS = {"breadth_fig01_needed": ("mk", "lost"), "breadth_fig03a_robust": ("robust",), "breadth_fig03b_robust": ("robust",), "breadth_fig04_where": ("pos", "prof"),
                 "breadth_fig05_carries": ("swap",), "breadth_fig09_dose": ("dose",), "breadth_fig02_datasets": ("data", "var"),
                 "breadth_fig07_lookup": ("look",), "breadth_fig08_readable": ("read",)}  # fmt: skip
@@ -589,7 +607,7 @@ def rows() -> list[dict]:
     writeup += fig05_split(writeup) + f14_split(writeup)
     readme = readme_set(writeup)
     return lightning([*writeup, *readme, *depth_set(writeup), *depth_set_b(), *depth_set_c(),
-                      *depth_set_d(), *breadth_set(readme)])
+                      *depth_set_d(), *depth_set_e(), *breadth_set(readme)])
 
 
 COLUMNS = ("figure", "cell", "timing", "claim", "claim_reason", "reason", "source")  # styles-plot's registry schema

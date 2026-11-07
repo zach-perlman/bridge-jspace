@@ -16,6 +16,7 @@ from bridge_jspace import figdata as D
 from bridge_jspace.figkit import depth_sp_b as DB
 from bridge_jspace.figkit import depth_sp_c as DC
 from bridge_jspace.figkit import depth_sp_d as DD
+from bridge_jspace.figkit import depth_sp_e as DE
 from bridge_jspace.figkit import layout as L
 from bridge_jspace.figkit import readme_sp as RS
 from bridge_jspace.figkit.writeup_sp_base import REPO, ZK, est, need, vocab
@@ -378,7 +379,7 @@ def fig14_learned() -> sp.Figure:
 FIGS = {**{fid: _alias(fid) for fid in ALIAS}, "fig01b_settings": fig01b_settings, "fig01c_zeroing": fig01c_zeroing,
         "fig02_specificity": fig02_specificity, "fig05b_identity_outside": fig05b_identity_outside,
         "fig05c_described_bridge": fig05c_described_bridge, "fig07c_probe_errors": fig07c_probe_errors,
-        "fig09d_chain": fig09d_chain, "fig21_code_tool": fig21_code_tool, "fig14_learned": fig14_learned, **DB.FIGS, **DC.FIGS, **DD.FIGS}  # fmt: skip
+        "fig09d_chain": fig09d_chain, "fig21_code_tool": fig21_code_tool, "fig14_learned": fig14_learned, **DB.FIGS, **DC.FIGS, **DD.FIGS, **DE.FIGS}  # fmt: skip
 
 
 def build(ids=None) -> list[str]:

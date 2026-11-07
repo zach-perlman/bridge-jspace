@@ -1032,6 +1032,21 @@ fig06_depth,depth.q122,post_hoc,claimed,,"47.8, by depth: post hoc for qwen3.5-1
 fig06d_depth_more,depth.q122,post_hoc,claimed,,"47.8, by depth: post hoc for qwen3.5-122b-a10b",src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
 fig06c_address_depth,overlap.q122,fixed_in_advance,claimed,,"D4, under its stated rule: the figkit figure drew no mark hollow",scripts/story_b47c.py build_depth
 fig10b_enrichment,enrich.q122,fixed_in_advance,claimed,,"48.2, set before its data: the figkit figure drew no mark hollow",scripts/story_b48.py build_enrichment
+fig03d_earlier_mention,item.q9,fixed_in_advance,claimed,,"45p, set before its data: the figkit figure drew no mark hollow",docs/depth/EXPERIMENTS.md#t45p
+fig03d_earlier_mention,other.q9,fixed_in_advance,claimed,,"45p, set before its data: the figkit figure drew no mark hollow",docs/depth/EXPERIMENTS.md#t45p
+fig05e_address_added_alone,keep.q9,fixed_in_advance,claimed,,"the routes test, the address added alone: fixed in advance for qwen3.5-9b",src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig03d_earlier_mention,item.q27,fixed_in_advance,claimed,,"45p, set before its data: the figkit figure drew no mark hollow",docs/depth/EXPERIMENTS.md#t45p
+fig03d_earlier_mention,other.q27,fixed_in_advance,claimed,,"45p, set before its data: the figkit figure drew no mark hollow",docs/depth/EXPERIMENTS.md#t45p
+fig05e_address_added_alone,keep.q27,fixed_in_advance,claimed,,"the routes test, the address added alone: fixed in advance for qwen3.6-27b",src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig03d_earlier_mention,item.mu,fixed_in_advance,claimed,,"45p, set before its data: the figkit figure drew no mark hollow",docs/depth/EXPERIMENTS.md#t45p
+fig03d_earlier_mention,other.mu,fixed_in_advance,claimed,,"45p, set before its data: the figkit figure drew no mark hollow",docs/depth/EXPERIMENTS.md#t45p
+fig05e_address_added_alone,keep.mu,fixed_in_advance,claimed,,"the routes test, the address added alone: fixed in advance for muse-glimmer-30b",src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig03d_earlier_mention,item.nl,post_hoc,claimed,,"45p, below its gate or a coverage run: the figkit figure drew it hollow (post hoc)",docs/depth/EXPERIMENTS.md#t45p; data/figures/depth/data.csv fig03c
+fig03d_earlier_mention,other.nl,post_hoc,claimed,,"45p, below its gate or a coverage run: the figkit figure drew it hollow (post hoc)",docs/depth/EXPERIMENTS.md#t45p; data/figures/depth/data.csv fig03c
+fig05e_address_added_alone,keep.nl,post_hoc,claimed,,"the routes test, the address added alone: post hoc for nemotron-3.5-lightning",src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
+fig03d_earlier_mention,item.q122,post_hoc,claimed,,"45p, below its gate or a coverage run: the figkit figure drew it hollow (post hoc)",docs/depth/EXPERIMENTS.md#t45p; data/figures/depth/data.csv fig03c
+fig03d_earlier_mention,other.q122,post_hoc,claimed,,"45p, below its gate or a coverage run: the figkit figure drew it hollow (post hoc)",docs/depth/EXPERIMENTS.md#t45p; data/figures/depth/data.csv fig03c
+fig05e_address_added_alone,keep.q122,post_hoc,claimed,,"the routes test, the address added alone: post hoc for qwen3.5-122b-a10b",src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
 breadth_fig01_needed,mk.q9,fixed_in_advance,claimed,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 33 (jsuite_v2: the 27B and 9B at their pre-registered bands, before any v2 run)"
 breadth_fig01_needed,lost.q9,fixed_in_advance,claimed,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 33 (jsuite_v2: the 27B and 9B at their pre-registered bands, before any v2 run)"
 breadth_fig01_needed,mk.q27,fixed_in_advance,claimed,,registered before this model's data,"docs/breadth/prereg_replication_1022.md Amendment 33 (jsuite_v2: the 27B and 9B at their pre-registered bands, before any v2 run)"

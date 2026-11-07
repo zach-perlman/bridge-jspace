@@ -21,7 +21,7 @@ GRADES = {"A", "B"}
 CONVERTED = ("Part I.", "Part II.", "Part III.", "Part IV.", "Part V.")
 IMAGE = re.compile(r"^!\[[^\]]+\]\(([^)]+)\)", re.M)
 # Dan's 01:58 brief: fig07b dropped into r2_address's right column, shown in the card above
-POINTS_UP = ("Can the lens read the address?",)
+POINTS_UP: tuple[str, ...] = ()  # docs pass P2-4 (7 Nov): every claim card shows its own figure
 
 
 def text() -> str:

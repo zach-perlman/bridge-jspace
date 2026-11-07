@@ -311,7 +311,7 @@ CLAIMS_MARK = "<summary>Key numbers per claim</summary>"  # the claims table sit
 CLAIM_CARD = {
     1: "In a conflict, which part of the bridge word does each reader follow?",
     2: "In a conflict, which part of the bridge word does each reader follow?",
-    3: "Part I. The two readers: lookup and recall",
+    3: "In a conflict, which part of the bridge word does each reader follow?",
     4: "Which route does the lookup take: the item's identity, its locker's position, or the number?",
     5: "Which route does the lookup take: the item's identity, its locker's position, or the number?",
     6: "Can the address be read, removed, added and swapped?",
