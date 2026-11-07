@@ -4,7 +4,7 @@
 *When a model answers a two-step question about an entity, does it need the directions the J++ lens reads at that
 entity, does that depend on whether the final fact is recalled or stated, and in which models?*
 
-**Status:** every number is sourced from the run files (checked by tests); a 46-item hand-check changed no headline claim ([findings](../review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->; human recomputation (VERIFIED.md) not yet done. Built at 7ced3c44 from the run files.
+**Status:** every number is sourced from the run files (checked by tests); a 46-item hand-check changed no headline claim ([findings](../review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->; human recomputation (VERIFIED.md) not yet done. Built at 60e9555e from the run files.
 
 ## In one minute
 
@@ -14,7 +14,8 @@ entity, does that depend on whether the final fact is recalled or stated, and in
   stated, under controls fixed before the run. → [1](#1-recall-needs-the-lens-part-reading-the-stated-fact-does-not)
 - **What recall needs is its answer's own directions.** Keeping only the answer span's directions undoes
   0.91<!-- src: data/figures/writeup/data.csv | fig10.keep_span.nl --> to 0.95<!-- src: data/figures/writeup/data.csv | fig10.keep_span.q27 --> of that damage; removals orthogonal to the answer cost nothing,
-  even on a one-hop question about the subject (post hoc on all three models). →
+  even on a one-hop question about the subject (the city and answer arms were fixed in advance; the orthogonal arm is
+  post hoc on all three models). →
   [7](#7-what-recall-needs-the-answers-own-directions), [8](#8-removals-orthogonal-to-the-answer)
 - **At the entity's mention, the lens part carries which entity it is, not its fact.** Taken from one neutral sentence
   about another entity, it moves the answer as much as when taken from that entity's own passage; a probe that reads
@@ -617,8 +618,7 @@ cannot see the subject.
 
 <details><summary>Method, controls and limits</summary>
 
-*The one-hop removals of the city and of the answers fixed in advance; the orthogonal removal post hoc on all three
-models; the data-built subspace fixed in advance (rule R1, bar 15 points)<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.q27 -->.*
+*The city and answer arms were fixed in advance; the orthogonal arm is post hoc on all three models; the data-built subspace fixed in advance (rule R1, bar 15 points)<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.q27 -->.*
 
 - **One-hop question.** The city's lens directions cost 41.5 [35.3, 47.3]<!-- src: data/figures/writeup/data.csv | fig11.onehop.city.q9 --> / 29.2 [24.3, 34.5]<!-- src: data/figures/writeup/data.csv | fig11.onehop.city.q27 --> /
   25.2 [21.3, 29.4]<!-- src: data/figures/writeup/data.csv | fig11.onehop.city.nl --> points (9B / 27B / Lightning), the answers' own directions
@@ -626,8 +626,9 @@ models; the data-built subspace fixed in advance (rule R1, bar 15 points)<!-- sr
   directions orthogonal to the answers 0.4<!-- src: data/figures/writeup/data.csv | fig11.onehop.city_perp.q9 --> / 1.2<!-- src: data/figures/writeup/data.csv | fig11.onehop.city_perp.q27 --> /
   0.0<!-- src: data/figures/writeup/data.csv | fig11.onehop.city_perp.nl --> (no interval).
 - **A subspace built from the data**, cleaned of the answers, against a random part of the same energy:
-  −0.8 [−2.0, 0.0]<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.q9 --> / 11.1 [3.0, 21.1]<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.q27 --> / 11.3 [6.6, 18.0]<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.nl --> points; on the
-  27B and Lightning the intervals cross the bar, on the 9B it is at zero. It does not clear its bar on any model.
+  −0.8 [−2.0, 0.0]<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.q9 --> / 11.1 [3.0, 21.1]<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.q27 --> / 11.3 [6.6, 18.0]<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.nl --> points. The
+  rule fixed in advance: under 15 points beyond random means the subject is not seen<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.q27 -->. All three point estimates are
+  under it; the 27B's and Lightning's intervals reach above it, so the test is not decisive on those two.
 - **Limits.** One relation; the one-hop set's items are not posted, its numbers are.
 
 </details>
