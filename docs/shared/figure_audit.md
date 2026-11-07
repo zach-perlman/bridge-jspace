@@ -1,6 +1,6 @@
 # Figure audit against grammar v2 (7 Nov)
 
-Every figure in scope (`figures/writeup/`, `figures/readme/`, `figures/depth/` with `supp/` and `ledger/`, `figures/shared/`, `figures/breadth/`) against [figure_style.md](figure_style.md) v2, rules A to I: colours and what each stands for, marks, key phrases, cues, terms, number formats, status encodings, and every violation. Written before any v2 drawing, from the code and the PNGs at branch `writeup-figures` 7b8083a7; the pilot figures (key, Fig. 1, 4, 9, 12, appendix B f17) have been redrawn since and pass the v2 checks. Frozen and not audited: `figures/slides/`, `figures/archive/`, `figures/pre-sprint/`.
+Every figure in scope (`figures/writeup/`, `figures/readme/`, `figures/depth/` with `supp/` and `ledger/`, `figures/shared/`, `figures/breadth/`) against [figure_style.md](figure_style.md) v2, rules A to I: colours and what each stands for, marks, key phrases, cues, terms, number formats, status encodings, and every violation. Written before any v2 drawing, from the code and the PNGs on `danorel` at 7b8083a7; the pilot figures (key, Fig. 1, 4, 9, 12, appendix B f17) have been redrawn since and pass the v2 checks. Frozen and not audited: `figures/slides/`, `figures/archive/`, `figures/pre-sprint/`.
 
 Part 1 is the write-up set; part 2 the README sets. Each part ends with the disagreements between files it found; they are listed, not resolved.
 
@@ -77,7 +77,7 @@ H was checked only for titles inside images. Aspect ratio, pt sizes and dpi were
 
 ## Part 2: README figure sets against figure grammar v2 (docs/shared/figure_style.md, rules A–I)
 
-Audit of the PNGs on disk at branch `figure-style-v2` (working tree: figure_style.md, palette.py modified; hex values in `palette.ROLE` unchanged), read together with their builders. Read-only; nothing was rebuilt. PNGs in figures/readme and figures/depth were last committed 30–31 Oct; the figkit builders were edited on 7 Nov (write-up batches), so a fresh `make readme` may not reproduce them byte for byte.
+Audit of the PNGs on disk on `danorel` before 25d7b48e (working tree: figure_style.md, palette.py modified; hex values in `palette.ROLE` unchanged), read together with their builders. Read-only; nothing was rebuilt. PNGs in figures/readme and figures/depth were last committed 30–31 Oct; the figkit builders were edited on 7 Nov (write-up batches), so a fresh `make readme` may not reproduce them byte for byte.
 
 ### 0. Global findings (apply to every in-scope row below; not repeated per row)
 
