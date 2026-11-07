@@ -2,23 +2,22 @@
  "styles_plot": "0.1.12",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "ebe1309bf90b6ee1a6f49160cf05c8adb9f268ee3d5bd65eb5943e26738ba61c"
+  "sha256": "cdc3fec7022ba280b0fd516dbbec02098a526e7e535c854bc61640015d631907"
  },
  "registry": {
   "path": "data/figures/status.csv",
-  "sha256": "9b9b5753501186e57345fff825ee2ba450774e1db1d8cae1d85d8d5d926366b4"
+  "sha256": "b3fabc41f97962627b075b048b4501312ea0b4294693f0463a3d4d05c00822d5"
  },
  "figure": "r1_c1_split",
  "target": "readme",
  "mode": "strict",
  "publishable": true,
  "png": {
-  "pixels_sha256": "8f9ee8d19c1f9b37aed410686aca66a390e2443f1d4d30213032a5ce0d075716",
+  "pixels_sha256": "ff3923ade81f06fb3bf9103547efe6e7951f88b476a880a948e271cd678427a4",
   "dpi": 160
  },
  "roles": [
   "lookup",
-  "neutral",
   "recall"
  ],
  "controls": [],
@@ -147,46 +146,6 @@
   },
   {
    "kind": "dot",
-   "role": "neutral",
-   "cell": "band.q9",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "neutral",
-   "cell": "band.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "neutral",
-   "cell": "band.mu",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "neutral",
-   "cell": "band.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "neutral",
-   "cell": "band.q122",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
    "role": "lookup",
    "cell": "layer.q9",
    "timing": "fixed_in_advance",
@@ -260,46 +219,6 @@
   {
    "kind": "dot",
    "role": "recall",
-   "cell": "layer.q122",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "neutral",
-   "cell": "layer.q9",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "neutral",
-   "cell": "layer.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "neutral",
-   "cell": "layer.mu",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "neutral",
-   "cell": "layer.nl",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "neutral",
    "cell": "layer.q122",
    "timing": "fixed_in_advance",
    "claim": "claimed",
@@ -308,21 +227,32 @@
  ],
  "key": [
   "grey band: within 0.10 of a random part",
-  "grey tick: the largest same-size control",
-  "whiskers: 95% interval",
   "○ post hoc"
  ],
  "numbers": {
   "ko.q9.mk": "42.6",
+  "ko.q9.mk.interval": "[37.0, 49.0]",
   "ko.q27.mk": "50.9",
+  "ko.q27.mk.interval": "[46.0, 55.0]",
   "ko.mu.mk": "59.9",
+  "ko.mu.mk.interval": "[55.0, 65.0]",
   "ko.nl.mk": "53.1",
+  "ko.nl.mk.interval": "[48.0, 59.0]",
   "ko.q122.mk": "48.5",
+  "ko.q122.mk.interval": "[44.0, 54.0]",
   "contrast.q9": "0.53",
+  "contrast.q9.interval": "[0.42, 0.61]",
   "contrast.q27": "0.60",
+  "contrast.q27.interval": "[0.50, 0.69]",
   "contrast.mu": "0.85",
+  "contrast.mu.interval": "[0.68, 0.98]",
   "contrast.nl": "0.31",
-  "contrast.q122": "0.32"
+  "contrast.q122": "0.32",
+  "contrast.q122.interval": "[0.20, 0.43]",
+  "ko.q27.lostM": "53.5",
+  "ko.q27.lostK": "2.6",
+  "conflict.recall.q27": "0.74",
+  "conflict.lookup.q27": "0.14"
  },
  "problems": []
 }

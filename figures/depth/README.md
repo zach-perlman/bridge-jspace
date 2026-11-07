@@ -18,7 +18,7 @@ Built by `make readme` with [styles-plot](https://github.com/danorel/styles-plot
 | 12 | <a href="12_specificity.png"><img src="12_specificity.png" width="260" alt="12_specificity"></a> | parts of the same size | all post hoc · UNVERIFIED |
 | 13 | <a href="13_k_curve.png"><img src="13_k_curve.png" width="260" alt="13_k_curve"></a> | the 27B with more directions | all post hoc · UNVERIFIED |
 | 14 | <a href="14_k_routes.png"><img src="14_k_routes.png" width="260" alt="14_k_routes"></a> | 2 | UNVERIFIED |
-| 15 | <a href="15_zeroing.png"><img src="15_zeroing.png" width="260" alt="15_zeroing"></a> | the J++ part taken out at one layer | 1 of 4 cells post hoc · UNVERIFIED |
+| 15 | <a href="15_zeroing.png"><img src="15_zeroing.png" width="260" alt="15_zeroing"></a> | the lens part taken out at one layer | 1 of 4 cells post hoc · UNVERIFIED |
 | 16 | <a href="16_dose_lens.png"><img src="16_dose_lens.png" width="260" alt="16_dose_lens"></a> | the dose curves | 1 of 5 cells post hoc · UNVERIFIED |
 | 17 | <a href="17_dose_rest.png"><img src="17_dose_rest.png" width="260" alt="17_dose_rest"></a> | 2 | 1 of 5 cells post hoc · UNVERIFIED |
 | 18 | <a href="18_identity_outside.png"><img src="18_identity_outside.png" width="260" alt="18_identity_outside"></a> | the main test's parts | 12 of 15 cells post hoc · UNVERIFIED |
@@ -38,7 +38,7 @@ Built by `make readme` with [styles-plot](https://github.com/danorel/styles-plot
 | 32 | <a href="32_attention.png"><img src="32_attention.png" width="260" alt="32_attention"></a> | attention follows the swapped address | UNVERIFIED |
 | 33 | <a href="33_learned.png"><img src="33_learned.png" width="260" alt="33_learned"></a> | learned subspaces | UNVERIFIED |
 | 34 | <a href="34_transfer.png"><img src="34_transfer.png" width="260" alt="34_transfer"></a> | the transfer on every model | 4 of 7 cells post hoc · UNVERIFIED |
-| 35 | <a href="35_two_codes.png"><img src="35_two_codes.png" width="260" alt="35_two_codes"></a> | Position scenes leave position without the address; identity scenes go to position without the J++ part (post hoc) | all post hoc · UNVERIFIED |
+| 35 | <a href="35_two_codes.png"><img src="35_two_codes.png" width="260" alt="35_two_codes"></a> | Position scenes leave position without the address; identity scenes go to position without the lens part (post hoc) | all post hoc · UNVERIFIED |
 | s01 | <a href="s01_split_all_scene_sets.png"><img src="s01_split_all_scene_sets.png" width="260" alt="s01_split_all_scene_sets"></a> | every scene set | all post hoc · UNVERIFIED |
 | s02 | <a href="s02_parts_all.png"><img src="s02_parts_all.png" width="260" alt="s02_parts_all"></a> | every part | 20 of 32 cells post hoc · UNVERIFIED |
 | s03 | <a href="s03_order_split.png"><img src="s03_order_split.png" width="260" alt="s03_order_split"></a> | the order split with every model | 8 of 14 cells post hoc · UNVERIFIED |

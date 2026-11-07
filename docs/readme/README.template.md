@@ -70,6 +70,12 @@ Each finding has the same parts: the claim, the main figure, then **Test**, **Re
 
 {{caption|readme/02_main_split}}
 
+The gaps against their controls, model by model:
+
+![The gap is far above the largest same-size control on every model in the band test, and above zero on every model at one layer](figures/readme/02b_main_split_gaps.png)
+
+{{caption|readme/02b_main_split_gaps}}
+
 - **Test.** Remove everywhere over a band of middle layers (fact passages), and remove from the patch at one layer (locker scenes).
 - **Result.**
   - Remove everywhere: the accuracy of recalled answers drops 50.9 / 42.6 / 53.1 points more than that of stated ones (Qwen 27B / Qwen 9B / Lightning)<!-- src: docs/breadth/data.csv | ko.q27.mk; ko.q9.mk; ko.nl.mk -->; the stated facts themselves drop 3, 5 and 4 points<!-- src: docs/breadth/README.md | Stated facts drop 3, 5 and 4 points -->.

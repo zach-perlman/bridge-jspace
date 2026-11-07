@@ -71,8 +71,8 @@ quantity = "answers right"
 format = "accuracy"
 
 [units.drop]
-title = "accuracy drop (points)"
-quantity = "accuracy drop"
+title = "answers turned wrong (points)"
+quantity = "answers turned wrong"
 format = "points"
 
 [units.gap]
@@ -81,7 +81,7 @@ quantity = "gap"
 format = "points"
 
 [units.switches]
-title = "share of switches"
+title = "switches blocked beyond a random part (share)"
 quantity = "switches blocked"
 format = "share"
 
@@ -141,8 +141,8 @@ quantity = "of the damage undone"
 format = "share"
 
 [units.drop_beyond]
-title = "accuracy drop beyond random (points)"
-quantity = "accuracy drop"
+title = "answers turned wrong beyond random (points)"
+quantity = "answers turned wrong"
 format = "points"
 
 [units.recalls]
@@ -151,13 +151,13 @@ quantity = "recalls switched"
 format = "share"
 
 [units.beyond_rotated]
-title = "accuracy drop minus rotated (points)"
-quantity = "accuracy drop"
+title = "answers turned wrong minus rotated (points)"
+quantity = "answers turned wrong"
 format = "points"
 
 [units.beyond_harshest]
-title = "accuracy drop minus the harshest control (points)"
-quantity = "accuracy drop"
+title = "answers turned wrong minus the harshest control (points)"
+quantity = "answers turned wrong"
 format = "points"
 
 [units.scenes]
@@ -272,8 +272,8 @@ quantity = "lookups still switching"
 format = "share"
 
 [units.mlp_lost]
-title = "recall accuracy drop (share)"
-quantity = "recall accuracy drop"
+title = "recall answers turned wrong (share)"
+quantity = "recall answers turned wrong"
 format = "share"
 
 [units.named]
@@ -330,13 +330,13 @@ quantity = "extra recall drop"
 format = "points"
 
 [units.beyond_ppp]
-title = "accuracy drop beyond P → P → P (points)"
-quantity = "accuracy drop"
+title = "extra answers turned wrong vs the all-passage chain (points)"
+quantity = "extra answers turned wrong"
 format = "points"
 
 [units.beyond_read]
-title = "accuracy drop beyond the number read (points)"
-quantity = "accuracy drop"
+title = "answers turned wrong beyond the number read (points)"
+quantity = "answers turned wrong"
 format = "points"
 
 [units.replies]
@@ -426,8 +426,8 @@ quantity = "moved toward the changed item"
 format = "share"
 
 [units.accuracy_drop_share]
-title = "accuracy drop (share)"
-quantity = "accuracy drop"
+title = "answers turned wrong (share)"
+quantity = "answers turned wrong"
 format = "share"
 
 [terms]
@@ -565,7 +565,7 @@ canonical = [
     "One layer \u00b7 locker scenes",
     "a change of item",
     "about another entity",
-    "accuracy drop",
+    "accuracy drop", "answers turned wrong",
     "address",
     "address swap",
     "another entity",
@@ -694,6 +694,8 @@ canonical = [
     "the 25% bar",
 ]
 templates = [
+    # the README headline's read line (figkit/readme_sp.py READ_HEADLINE)
+    "read: on {entity}, removing the lens part everywhere costs recall {num} points and lookup {num}; at one layer it blocks {num} of the recall's switches beyond random and {num} of the lookup's",
     "{num} directions",
     "strength {num}",
     "k = {num}",

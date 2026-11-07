@@ -41,7 +41,7 @@ def _layer_gap(m: str) -> sp.Est:
 def _band_columns(models, label_gap=True) -> list:
     """The band test's two panels: each reader's accuracy drop, and the gap with its whisker and the grey tick."""
     drop = sp.DotColumn(
-        "accuracy drop", "drop", (-4, 70), (0, 30, 60),
+        "answers turned wrong", "drop", (-4, 70), (0, 30, 60),
         series=[sp.Series("lookup", {m: est(D.b(f"ko.{ZK[m]}.lostK"), f"band.{ZK[m]}", interval=False) for m in models}),
                 sp.Series("recall", {m: est(D.b(f"ko.{ZK[m]}.lostM"), f"band.{ZK[m]}", interval=False) for m in models})],
         connect=("lookup", "recall"),

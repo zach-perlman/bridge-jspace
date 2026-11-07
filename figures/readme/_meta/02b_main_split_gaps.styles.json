@@ -1,0 +1,165 @@
+{
+ "styles_plot": "0.1.12",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "cdc3fec7022ba280b0fd516dbbec02098a526e7e535c854bc61640015d631907"
+ },
+ "registry": {
+  "path": "data/figures/status.csv",
+  "sha256": "b3fabc41f97962627b075b048b4501312ea0b4294693f0463a3d4d05c00822d5"
+ },
+ "figure": "r1_c1_gaps",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "pixels_sha256": "ffc36e0090343847a6a598c5bc068360aaa75f10d34ba3dbda0a3d9b9c94db7a",
+  "dpi": 160
+ },
+ "roles": [
+  "neutral"
+ ],
+ "controls": [],
+ "cells": {
+  "band.mu": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "band.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "band.q122": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "band.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "band.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "layer.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "layer.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "layer.q122": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "layer.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "layer.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "band.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "band.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "band.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "band.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "band.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "layer.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "layer.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "layer.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "layer.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "layer.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "grey tick: the largest same-size control",
+  "whiskers: 95% interval",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "ko.q9.mk": "42.6",
+  "ko.q27.mk": "50.9",
+  "ko.mu.mk": "59.9",
+  "ko.nl.mk": "53.1",
+  "ko.q122.mk": "48.5",
+  "contrast.q9": "0.53",
+  "contrast.q27": "0.60",
+  "contrast.mu": "0.85",
+  "contrast.nl": "0.31",
+  "contrast.q122": "0.32"
+ },
+ "problems": []
+}

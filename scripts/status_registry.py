@@ -187,11 +187,11 @@ def readme_set(writeup: list[dict]) -> list[dict]:
     takes its rows under the README's id, without the "not claimed" tags: the README's figkit figures never printed
     them (presentation unchanged; listed as a disagreement). The others keep the hollow rule their figkit builder drew,
     cited."""
-    from bridge_jspace.figkit.readme_sp import ALIAS
+    from bridge_jspace.figkit.readme_sp import ALIAS, COPIES
 
     src = "src/bridge_jspace/figkit/"
     out = []
-    for fid, wid in ALIAS.items():
+    for fid, wid in {**ALIAS, **COPIES}.items():
         rs = [r for r in writeup if r["figure"] == wid]
         if any(r["tag"] for r in rs):
             DISAGREEMENTS.append(f"{fid} (README copy of {wid}): the write-up tags {', '.join(r['cell'] for r in rs if r['tag'])} "

@@ -27,7 +27,7 @@ DAN = [m for m, _ in D.DAN]
 TWIN = WB.TWIN
 
 # README id -> the write-up figure it draws (the same cells and statuses, scripts/status_registry.py copies them)
-ALIAS = {"r1_c1_split": "fig01_main_split", "r3_last_token": "fig13_last_token", "f9_where": "appB_f9_where",
+ALIAS = {"r3_last_token": "fig13_last_token", "f9_where": "appB_f9_where",
          "f8_facts": "appB_f8_facts", "f8_directions": "appB_f8_directions", "f12_order": "appB_f12_order",
          "f14_two_codes": "appB_f14_two_codes", "f2_controls": "fig05_controls", "p0b_tools": "fig03_tools",
          "f3_nine_models": "fig06_nine_models", "r5_routes": "fig07_routes",
@@ -35,6 +35,8 @@ ALIAS = {"r1_c1_split": "fig01_main_split", "r3_last_token": "fig13_last_token",
          # (SP609; Dan, 7 Nov: lanes or split); the README embeds both where it embedded f6_address.png
          "f6a_address_read_remove": "fig08a_address_read_remove", "f6b_address_swap_lens": "fig08b_address_swap_lens"}  # fmt: skip
 WRITEUP = {**WS.FIGS, **WB.BLOCKED}
+# README figures drawn here from a write-up figure's cells (the registry copies that figure's rows under these ids)
+COPIES = {"r1_c1_split": "fig01_main_split", "r1_c1_gaps": "fig01_main_split"}
 
 
 # laid out in inches: drawn for the README's width, not the post's (p0a_datasets is a markdown table in the README)
@@ -50,6 +52,54 @@ def _alias(fid: str):
 
     build.__doc__ = f"The write-up's {ALIAS[fid]}, as the README's {fid}."
     return build
+
+
+# ---- r1_c1_split: the headline (README brief F2) ----------------------------------------------------------------------
+READ_HEADLINE = ("read: on {model}, removing the lens part everywhere costs recall {{recall}} points and lookup "
+                 "{{lookup}}; at one layer it blocks {{rc}} of the recall's switches beyond random and {{lk}} of the "
+                 "lookup's")  # fmt: skip
+
+
+def r1_c1_split() -> sp.Figure:
+    """The headline: two dumbbell panels, lookup → recall per model. Left, the band test (fact passages): each reader's
+    answers turned wrong when the lens part is removed everywhere; right, the one-layer test (locker scenes): each reader's
+    switches blocked beyond a random part, on the grey band. The gap, recall − lookup, printed at each panel's right
+    end; the gaps with their controls are r1_c1_gaps (the Finding 1 fold). One sentence reads the 27B's row."""
+    drop = sp.DotColumn(
+        "answers turned wrong", "drop", (-4, 70), (0, 30, 60),
+        series=[sp.Series("lookup", {m: est(D.b(f"ko.{ZK[m]}.lostK"), f"band.{ZK[m]}", interval=False) for m in DAN}),
+                sp.Series("recall", {m: est(D.b(f"ko.{ZK[m]}.lostM"), f"band.{ZK[m]}", interval=False) for m in DAN})],
+        connect=("lookup", "recall"),
+    )  # fmt: skip
+    band_gap = sp.TextColumn(WS.GAP, "gap", {m: est(D.b(f"ko.{ZK[m]}.mk"), f"band.{ZK[m]}", key=f"ko.{ZK[m]}.mk")
+                                             for m in DAN}, role="neutral", unit_title=False)  # fmt: skip
+    shares = sp.DotColumn(
+        "switches blocked beyond random", "switches", (-0.25, 1.0), (0, 0.5, 1),
+        series=[sp.Series("lookup", {m: est(S.conflict(m, "lookup"), f"layer.{ZK[m]}", interval=False) for m in DAN}),
+                sp.Series("recall", {m: est(S.conflict(m, "recall"), f"layer.{ZK[m]}", interval=False) for m in DAN})],
+        connect=("lookup", "recall"), band=(-0.1, 0.1),
+    )  # fmt: skip
+    layer_gap = sp.TextColumn(WS.GAP, "gap_share", {m: WS._layer_gap(m) for m in DAN}, role="neutral",
+                              unit_title=False)  # fmt: skip
+    t = sp.DotTable(DAN, [sp.ColumnGroup(WS.BAND, [drop, band_gap]), sp.Gutter(),
+                          sp.ColumnGroup(WS.LAYER, [shares, layer_gap])])  # fmt: skip
+    m, k = "qwen3.6-27b", ZK["qwen3.6-27b"]
+    numbers = {"recall": (need(D.b(f"ko.{k}.lostM"), "lostM")[0], "drop", f"ko.{k}.lostM"),
+               "lookup": (need(D.b(f"ko.{k}.lostK"), "lostK")[0], "drop", f"ko.{k}.lostK"),
+               "rc": (need(S.conflict(m, "recall"), m)[0], "switches", f"conflict.recall.{k}"),
+               "lk": (need(S.conflict(m, "lookup"), m)[0], "switches", f"conflict.lookup.{k}")}  # fmt: skip
+    read = READ_HEADLINE.format(model=vocab().entity("models", m).name)
+    return sp.Figure("r1_c1_split", vocab(), read=read, numbers=numbers).add(t)
+
+
+def r1_c1_gaps() -> sp.Figure:
+    """The headline's gaps with their controls (the Finding 1 fold): the band test's gap with its 95% whisker and the
+    largest same-size control as a grey tick; the one-layer test's gap with its interval."""
+    layer_gap = sp.DotColumn(WS.GAP, "gap_share", (-0.1, 1.1), (0, 0.5, 1),
+                             series=[sp.Series("neutral", {m: WS._layer_gap(m) for m in DAN}, word=WS.GAP)])  # fmt: skip
+    t = sp.DotTable(DAN, [sp.ColumnGroup(WS.BAND, [WS._band_columns(DAN)[1]]), sp.Gutter(),
+                          sp.ColumnGroup(WS.LAYER, [layer_gap])])  # fmt: skip
+    return sp.Figure("r1_c1_gaps", vocab()).add(t)
 
 
 # ---- r1_dan_split: the one-layer test alone --------------------------------------------------------------------------
@@ -235,7 +285,8 @@ def t12_two_by_two() -> sp.Figure:
     return sp.Figure("t12_two_by_two", vocab()).add(t)
 
 
-FIGS = {**{fid: _alias(fid) for fid in ALIAS}, "r1_dan_split": r1_dan_split, "r4_pointer": r4_pointer,
+FIGS = {**{fid: _alias(fid) for fid in ALIAS}, "r1_c1_split": r1_c1_split, "r1_c1_gaps": r1_c1_gaps,
+        "r1_dan_split": r1_dan_split, "r4_pointer": r4_pointer,
         "f5_atoms": f5_atoms, "f11_monitor": f11_monitor, "f10_sentence_order": f10_sentence_order,
         "t12_two_by_two": t12_two_by_two}  # fmt: skip
 # Declared but refused strict (SP609, see ALIAS): f6_address, drawn as f6a + f6b.
