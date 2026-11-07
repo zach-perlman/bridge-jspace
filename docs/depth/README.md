@@ -57,7 +57,7 @@ Weaker results are in Part VI, dropped readings under "Tested and dropped"; † 
 **Status.**
 
 - **Models.** Five models: Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), Nemotron 3.5 Lightning 30B-A3B (a third family, a Mamba-attention hybrid) and Qwen3.5-122B-A10B (FP8; MoE, ~10B active) where it ran; Nemotron 3.5 Bolt is out of scope: no J++ lens exists for it.
-- **Runs.** As of 29 Oct 2026, built at 24fd8b97 from the run files.
+- **Runs.** As of 29 Oct 2026. Built at d4fa6bef from the run files.
 - **Hand-check.** Hand-checked on a sample: 46 items across views a-g (5-10 per view, fixed in advance), all consistent; 6 issues and 6 observations logged in [docs/review/handcheck_findings.md](../review/handcheck_findings.md), none changes a headline claim.<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g --> VERIFIED.md (human recomputation) not yet filled.
 - **Marks.** ○: post hoc (Lightning everywhere, the 122B where its gate was lowered); †: not in the hand-checked sample (the last-token conflict test, the identity-and-address test, the 122B's coverage runs). See [How to read this page](#how-to-read-this-page).
 
@@ -400,7 +400,7 @@ The lookup's "which item" lives outside the lens (claim 5): taking out the lens'
 
 Added by itself, the address brings position answers back on the 9B, Muse, Lightning and the 122B, not on the 27B (claim 7).
 
-![Added alone, the address brings position answers back, except on the 27B](../../figures/depth/37_address_added_alone.png)
+![Added by itself, the address brings position answers back, except on the 27B](../../figures/depth/37_address_added_alone.png)
 *Claim 7, the routes test (another item moved): position answers when only the address is added at the bridge word (orange) against only a random part of its share (grey); whiskers 95% intervals; Lightning hollow ○ (its gate chosen after its pre-check), the 122B hollow ○ (its gate lowered after the data).*
 
 With six lockers, swaps between given lockers pass the bar on most pairs on every model but the 27B, and no single shift moves the lookup one locker on (claim 8).
@@ -457,7 +457,7 @@ With six lockers, swaps between given lockers pass the bar on most pairs on ever
 
 A swapped-in address moves the lookup, yet reads through the lens like a random vector of its size; an item change of the same size stands far outside the random range (claim 9).
 
-![The swapped-in address moves the lookup but reads through the lens like a random vector](../../figures/readme/07_address_swap_lens.png)
+![An address swap moves the lookup, but the lens reads it like a random vector](../../figures/readme/07_address_swap_lens.png)
 *Left: the lookups sent to the new locker when another locker's address is swapped in at about a real change's size (amber), against a random vector of the same size (grey). Right: how far above 200 random vectors the lens's 25 directions rebuild that swap (amber), against a change of item of the same size (blue, the positive control), in z; grey band: the range of the 200 random vectors. Hollow (○): Lightning, and the 122B where its gate was lowered (post hoc).<!-- src: plotstyle.toml | z against 200 random vectors --><!-- src: docs/depth/README.md | the 25 directions of the J++ lens that best rebuild the change -->*
 
 - **Result.**
@@ -778,9 +778,9 @@ Every number on this page carries a source comment into data/figures/depth/data.
 | `readme/08_routes.png` | claim 4 · [Which route does the lookup take: the item's identity, its locker's position, or the number?](#which-route-does-the-lookup-take-the-items-identity-its-lockers-position-or-the-number) | Every model's lookup takes identity or position, never the value |
 | `depth/18_identity_outside.png` | claim 5 · [Which route does the lookup take: the item's identity, its locker's position, or the number?](#which-route-does-the-lookup-take-the-items-identity-its-lockers-position-or-the-number) | The lookup's identity survives taking out the lens's next directions |
 | `readme/06_address_read_remove.png` | claim 6 · [Can the address be read, removed, added and swapped?](#can-the-address-be-read-removed-added-and-swapped) | A probe reads the address, and removing it takes the position route away |
-| `depth/37_address_added_alone.png` | claim 7 · [Can the address be read, removed, added and swapped?](#can-the-address-be-read-removed-added-and-swapped) | Added alone, the address brings position answers back, except on the 27B |
+| `depth/37_address_added_alone.png` | claim 7 · [Can the address be read, removed, added and swapped?](#can-the-address-be-read-removed-added-and-swapped) | Added by itself, the address brings position answers back, except on the 27B |
 | `depth/03_six_lockers.png` | claim 8 · [Can the address be read, removed, added and swapped?](#can-the-address-be-read-removed-added-and-swapped) | With six lockers, swaps between given lockers work on most pairs; no shift moves the lookup one locker on |
-| `readme/07_address_swap_lens.png` | claim 9 · [Can the lens read the address?](#can-the-lens-read-the-address) | The swapped-in address moves the lookup but reads through the lens like a random vector |
+| `readme/07_address_swap_lens.png` | claim 9 · [Can the lens read the address?](#can-the-lens-read-the-address) | An address swap moves the lookup, but the lens reads it like a random vector |
 | `readme/11_monitor.png` | [Can a monitor on the lens part read the address where the lookup uses it?](#can-a-monitor-on-the-lens-part-read-the-address-where-the-lookup-uses-it) | The lens part holds less of the address than random parts of its energy |
 | `readme/12_last_token.png` | [At the last token, is the bridge entity in the lens part of the state, and does the model use it there?](#at-the-last-token-is-the-bridge-entity-in-the-lens-part-of-the-state-and-does-the-model-use-it-there) | The recall's entity at the last token: readable through the lens, not used |
 | `depth/05_order.png` | claim 10 · [Does the bridge word redirect the lookup only when its locker sentence came first?](#does-the-bridge-word-redirect-the-lookup-only-when-its-locker-sentence-came-first) | With the locker sentence first, the bridge word switches the lookup; after the pick, far less |
