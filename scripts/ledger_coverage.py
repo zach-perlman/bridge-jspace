@@ -12,6 +12,7 @@ uv run python scripts/ledger_coverage.py            # prints the table
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
@@ -92,7 +93,7 @@ HEATMAP = (
     ("I", "x5", "Split in natural passages", ("B mixed", "G below gate", "H holds°", "H holds")),
     ("I", "t51-1", "Each part added by itself", ("B (i) no", "B (ii) no", "H (i), (ii) yes", "H (i), (ii) yes")),
     ("I", "t47-5", "Zeroing at one layer", ("H not needed", "H not needed", "H not needed", "H not needed")),
-    ("I", "t49-2", "Ladder: other copies taken out", ("B (a), (b) no", "G below gate", "B (b) no", "B (a), (b) no")),
+    ("I", "t49-2", "The lens part removed step by step (more layers, the earlier mention)", ("B (a), (b) no", "G below gate", "B (b) no", "B (a), (b) no")),
     ("I", "t45p", "The item's earlier mention", ("H yes", "G below gate", "H yes", "H yes")),
     ("I", "b53-6", "Lens identity vs address", ("B both", "B both", "B both", "B both")),
     ("I", "b53-1", "Question order, number answer", ("F order matters", "N gate missed", "N gate missed",
@@ -277,11 +278,12 @@ def verdict_tables() -> str:
     column per model (9B, 27B, Muse, Lightning ○, 122B); a cell is the verdict and its words, "–" where nothing was
     tested (not run, not designed, below its gate: the coverage table says which); "fails" in bold."""
     order = ("9B", "27B", "Muse", "Lightning", "122B")
+    meta = card_status()
     out = []
     for part in ("I", "II", "III", "IV", "V", "VI"):
         out += ["", f"**{PART_TITLE[part]}**", "", "| test | " + " | ".join(o + (" ○" if o == "Lightning" else "")
-                                                                          for o in order) + " |",
-                "|---|" + "---|" * len(order)]  # fmt: skip
+                                                                          for o in order)
+                + " | rule fixed in advance? | hand-checked? |", "|---|" + "---|" * (len(order) + 2)]  # fmt: skip
         for p_, anchor, label, cells in heatmap_cells():
             if p_ != part:
                 continue
@@ -297,8 +299,24 @@ def verdict_tables() -> str:
                 bare = words.replace(" ○", "")
                 cell = (v + words[len(bare):]) if bare in (v, "confirmed", "holds") else f"{v}: {words}"
                 row.append(f"**{cell}**" if code == "F" else cell)
-            out.append(f"| [{label}](#{anchor}) | " + " | ".join(row) + " |")
+            rule, checked = meta.get(anchor, ("not stated", "not stated"))
+            out.append(f"| [{label}](#{anchor}) | " + " | ".join(row) + f" | {rule} | {checked} |")
     return "\n".join(out[1:])
+
+
+def card_status(path: Path | None = None) -> dict[str, tuple[str, str]]:
+    """Per card anchor, (rule fixed in advance?, hand-checked?) from the metadata line under its status tag (docs pass
+    P3-2, 7 Nov: "Test … · status: … · hand-check: … · …"), so the index tables and the cards say the same."""
+    text = (path or REPO / "docs" / "depth" / "EXPERIMENTS.md").read_text()
+    rule = {"rule fixed in advance": "yes", "rule fixed in advance (part descriptive)": "yes (part descriptive)",
+            "descriptive": "descriptive", "post hoc (descriptive)": "post hoc", "post hoc": "post hoc"}  # fmt: skip
+    out = {}
+    for m in re.finditer(r'^### .*<a id="([a-z0-9-]+)"></a>\n(?:.*\n){0,3}?^Test .*· status: ([^·]+)· hand-check: '
+                         r"([^·]+)·", text, re.M):  # fmt: skip
+        status, check = m.group(2).strip(), m.group(3).strip()
+        view = re.search(r"view (\w)", check)
+        out[m.group(1)] = (rule.get(status, status), f"yes (view {view.group(1)})" if view else "no")
+    return out
 
 
 if __name__ == "__main__":

@@ -16,95 +16,95 @@
 <!-- verdicts:start (scripts/ledger_coverage.py verdicts; do not edit by hand) -->
 **Part I. The two readers**
 
-| test | 9B | 27B | Muse | Lightning ○ | 122B |
-|---|---|---|---|---|---|
-| [Conflict test, main test](#lightning-conflict) | holds | in part: not confirmed | holds | holds | holds |
-| [Item or answer, main test](#t51-12) | holds: the entity | holds: the entity | holds: answer not read | holds: answer not read | holds: answer not read |
-| [Item or answer, his true facts](#t51-12) | in part: mixed | in part: mixed | – | in part: mixed | – |
-| [Item or answer, his made-up facts](#t51-12) | in part: mixed | in part: mixed | – | – | – |
-| [Split in prose, JSON, tables](#x0b) | holds | holds | holds | holds | in part: mixed |
-| [Split in natural passages](#x5) | holds ○ | in part: mixed | holds | – | holds |
-| [Each part added by itself](#t51-1) | holds: (i), (ii) yes | in part: (i) no | holds: (i), (ii) yes | in part: (ii) no | holds: (i), (ii) yes |
-| [Zeroing at one layer](#t47-5) | holds: not needed | holds: not needed | holds: not needed | holds: not needed | holds: not needed |
-| [Ladder: other copies taken out](#t49-2) | in part: (b) no | in part: (a), (b) no | in part: (a), (b) no | – | in part: (a), (b) no |
-| [The item's earlier mention](#t45p) | holds: yes | holds: yes | holds: yes | – | **fails: no** |
-| [Lens identity vs address](#b53-6) | in part: both | in part: both | in part: both | in part: both | – |
-| [Question order, number answer](#b53-1) | – | **fails: order matters** | – | – | holds: order-free |
-| [Gain map: weight or route](#t49-1) | **fails: neither** | **fails: neither** | **fails: neither** | **fails: neither** | **fails: neither** |
-| [Two learned subspaces](#t48-1) | **fails: no** | **fails: no** | **fails: no** | – | – |
-| [Inside the lens part](#b52-a) | descriptive: bridge words | descriptive: bridge words | descriptive: bridge words | descriptive: bridge words | descriptive: bridge words |
-| [Answer readable, usable](#b52-b) | descriptive | descriptive | descriptive | descriptive: ours only | descriptive |
+| test | 9B | 27B | Muse | Lightning ○ | 122B | rule fixed in advance? | hand-checked? |
+|---|---|---|---|---|---|---|---|
+| [Conflict test, main test](#lightning-conflict) | holds | in part: not confirmed | holds | holds | holds | yes | yes (view a) |
+| [Item or answer, main test](#t51-12) | holds: the entity | holds: the entity | holds: answer not read | holds: answer not read | holds: answer not read | yes | yes (view b) |
+| [Item or answer, his true facts](#t51-12) | in part: mixed | in part: mixed | – | in part: mixed | – | yes | yes (view b) |
+| [Item or answer, his made-up facts](#t51-12) | in part: mixed | in part: mixed | – | – | – | yes | yes (view b) |
+| [Split in prose, JSON, tables](#x0b) | holds | holds | holds | holds | in part: mixed | yes | no |
+| [Split in natural passages](#x5) | holds ○ | in part: mixed | holds | – | holds | yes | no |
+| [Each part added by itself](#t51-1) | holds: (i), (ii) yes | in part: (i) no | holds: (i), (ii) yes | in part: (ii) no | holds: (i), (ii) yes | yes | no |
+| [Zeroing at one layer](#t47-5) | holds: not needed | holds: not needed | holds: not needed | holds: not needed | holds: not needed | yes | no |
+| [The lens part removed step by step (more layers, the earlier mention)](#t49-2) | in part: (b) no | in part: (a), (b) no | in part: (a), (b) no | – | in part: (a), (b) no | yes | no |
+| [The item's earlier mention](#t45p) | holds: yes | holds: yes | holds: yes | – | **fails: no** | yes | no |
+| [Lens identity vs address](#b53-6) | in part: both | in part: both | in part: both | in part: both | – | yes | no |
+| [Question order, number answer](#b53-1) | – | **fails: order matters** | – | – | holds: order-free | yes | no |
+| [Gain map: weight or route](#t49-1) | **fails: neither** | **fails: neither** | **fails: neither** | **fails: neither** | **fails: neither** | yes | no |
+| [Two learned subspaces](#t48-1) | **fails: no** | **fails: no** | **fails: no** | – | – | yes | no |
+| [Inside the lens part](#b52-a) | descriptive: bridge words | descriptive: bridge words | descriptive: bridge words | descriptive: bridge words | descriptive: bridge words | descriptive | no |
+| [Answer readable, usable](#b52-b) | descriptive | descriptive | descriptive | descriptive: ours only | descriptive | yes | no |
 
 **Part II. Identity**
 
-| test | 9B | 27B | Muse | Lightning ○ | 122B |
-|---|---|---|---|---|---|
-| [Identity route outside the lens](#t47-1) | holds: outside | holds: outside | holds: outside | holds: outside | – |
-| [Routes test and the address](#routes) | holds: both routes | in part: adding: no | holds: both routes | holds: both routes | – |
-| [Never the value, by format](#t47-7c) | in part: incomplete | in part: incomplete | in part: incomplete | in part: incomplete | – |
-| [Learned subspaces at scale](#t51-3) | in part: (iii) no | in part: (iii) no | in part: (iii) no | – | – |
-| [Shared identity code](#b53-8) | **fails: no** | **fails: no** | in part: in between | – | – |
+| test | 9B | 27B | Muse | Lightning ○ | 122B | rule fixed in advance? | hand-checked? |
+|---|---|---|---|---|---|---|---|
+| [Identity route outside the lens](#t47-1) | holds: outside | holds: outside | holds: outside | holds: outside | – | yes | no |
+| [Routes test and the address](#routes) | holds: both routes | in part: adding: no | holds: both routes | holds: both routes | – | yes | yes (view c) |
+| [Never the value, by format](#t47-7c) | in part: incomplete | in part: incomplete | in part: incomplete | in part: incomplete | – | yes | no |
+| [Learned subspaces at scale](#t51-3) | in part: (iii) no | in part: (iii) no | in part: (iii) no | – | – | yes (part descriptive) | no |
+| [Shared identity code](#b53-8) | **fails: no** | **fails: no** | in part: in between | – | – | yes | no |
 
 **Part III. The address**
 
-| test | 9B | 27B | Muse | Lightning ○ | 122B |
-|---|---|---|---|---|---|
-| [Address probe](#probe) | descriptive: readable | descriptive: readable | descriptive: readable | descriptive: readable | descriptive: readable |
-| [Address swap, rule at dose 1](#swap) | **fails: no** | **fails: no** | **fails: no** | **fails: no** | – |
-| [Swap after neutral sentences](#t47-16) | holds: robust | holds: robust | holds: robust | holds: robust | **fails: none of three ○** |
-| [Six lockers, own code each](#six) | holds: own code | **fails: none of three** | holds: own code | holds: own code | holds: own code |
-| [What the address is](#t51-11) | in part: in between | in part: part 2 only | in part: mixed | – | – |
-| [Address, 27B position scenes](#b53-5) | holds: pattern holds | **fails: differs** | – | – | – |
-| [Lens readout of the swap](#t47-0) | holds: lens blind | holds: lens blind | holds: lens blind | holds: lens blind | holds: lens blind ○ |
-| [Probes on the lens subspace](#b53-2) | holds: lens blind | in part: in between | holds: lens blind | in part: in between | holds: lens blind |
-| [Report prompt](#t47-10) | – | **fails: neither** | – | – | – |
-| [Report of slot 1, reworded](#t49-6) | **fails: recovers** | **fails: recovers** | – | **fails: recovers** | – |
-| [A few heads take the swap](#t51-2) | **fails: distributed** | **fails: distributed** | **fails: distributed** | **fails: distributed** | – |
-| [Attention follows the swap](#t49-7) | **fails: neither** | **fails: neither** | **fails: neither** | **fails: neither** | – |
-| [Chained addresses](#t47-14) | **fails: no** | **fails: no** | **fails: no** | – | **fails: no** |
-| [Address refit per format](#x45d) | holds: refit works | in part: neither | holds: refit works | holds: refit works | – |
-| [Address in code, tool output](#b53-7) | in part | in part | – | – | descriptive: readable ○ |
+| test | 9B | 27B | Muse | Lightning ○ | 122B | rule fixed in advance? | hand-checked? |
+|---|---|---|---|---|---|---|---|
+| [Address probe](#probe) | descriptive: readable | descriptive: readable | descriptive: readable | descriptive: readable | descriptive: readable | post hoc | no |
+| [Address swap, rule at dose 1](#swap) | **fails: no** | **fails: no** | **fails: no** | **fails: no** | – | yes | yes (view d) |
+| [Swap after neutral sentences](#t47-16) | holds: robust | holds: robust | holds: robust | holds: robust | **fails: none of three ○** | yes | no |
+| [Six lockers, own code each](#six) | holds: own code | **fails: none of three** | holds: own code | holds: own code | holds: own code | yes | no |
+| [What the address is](#t51-11) | in part: in between | in part: part 2 only | in part: mixed | – | – | yes | no |
+| [Address, 27B position scenes](#b53-5) | holds: pattern holds | **fails: differs** | – | – | – | yes | no |
+| [Lens readout of the swap](#t47-0) | holds: lens blind | holds: lens blind | holds: lens blind | holds: lens blind | holds: lens blind ○ | descriptive | no |
+| [Probes on the lens subspace](#b53-2) | holds: lens blind | in part: in between | holds: lens blind | in part: in between | holds: lens blind | yes | no |
+| [Report prompt](#t47-10) | – | **fails: neither** | – | – | – | yes | no |
+| [Report of slot 1, reworded](#t49-6) | **fails: recovers** | **fails: recovers** | – | **fails: recovers** | – | yes | no |
+| [A few heads take the swap](#t51-2) | **fails: distributed** | **fails: distributed** | **fails: distributed** | **fails: distributed** | – | yes | no |
+| [Attention follows the swap](#t49-7) | **fails: neither** | **fails: neither** | **fails: neither** | **fails: neither** | – | yes | no |
+| [Chained addresses](#t47-14) | **fails: no** | **fails: no** | **fails: no** | – | **fails: no** | yes | no |
+| [Address refit per format](#x45d) | holds: refit works | in part: neither | holds: refit works | holds: refit works | – | yes | no |
+| [Address in code, tool output](#b53-7) | in part | in part | – | – | descriptive: readable ○ | yes (part descriptive) | no |
 
 **Part IV. Where and when**
 
-| test | 9B | 27B | Muse | Lightning ○ | 122B |
-|---|---|---|---|---|---|
-| [Split by sentence order](#order) | descriptive: by order | descriptive: by order | descriptive: by order | descriptive: by order | descriptive: by order |
-| [Copy test, locker after](#t45q) | holds: yes | holds: yes | holds: yes | – | – |
-| [Token-by-layer map](#d1) | **fails: (a)-(c) no** | **fails: (a)-(c) no** | **fails: (a)-(c) no** | **fails: (a)-(c) no** | – |
-| [Lookups read before L](#t47-4) | descriptive: before L | descriptive: before L | descriptive: before L | descriptive: before L | descriptive: before L |
-| [Anatomy by depth, handoff](#t47-8) | holds: (a) yes | **fails: (a) no** | holds: (a) yes | holds: (a) yes | holds: (a) yes ○ |
-| [Address at the last token](#t51-4) | **fails: not there** | **fails: not there** | holds: travels | in part: in between | – |
-| [Entity at the last token](#t51-10) | in part: read, not used | in part: read, not used | in part: read, not used | in part: read, not used | in part: read, not used |
-| [Last token: the lookup's read](#b53-3) | descriptive: in between | descriptive: in between | descriptive: outside | descriptive: outside | descriptive: in between |
-| [Last token, word answers](#b53-3b) | in part: in between | in part: in between | – | – | – |
-| [Lightning's attention blocks](#b53-4) | – | – | – | in part: in between | – |
+| test | 9B | 27B | Muse | Lightning ○ | 122B | rule fixed in advance? | hand-checked? |
+|---|---|---|---|---|---|---|---|
+| [Split by sentence order](#order) | descriptive: by order | descriptive: by order | descriptive: by order | descriptive: by order | descriptive: by order | post hoc | yes (view g) |
+| [Copy test, locker after](#t45q) | holds: yes | holds: yes | holds: yes | – | – | yes | no |
+| [Token-by-layer map](#d1) | **fails: (a)-(c) no** | **fails: (a)-(c) no** | **fails: (a)-(c) no** | **fails: (a)-(c) no** | – | yes | no |
+| [Lookups read before L](#t47-4) | descriptive: before L | descriptive: before L | descriptive: before L | descriptive: before L | descriptive: before L | descriptive | no |
+| [Anatomy by depth, handoff](#t47-8) | holds: (a) yes | **fails: (a) no** | holds: (a) yes | holds: (a) yes | holds: (a) yes ○ | yes | no |
+| [Address at the last token](#t51-4) | **fails: not there** | **fails: not there** | holds: travels | in part: in between | – | yes | no |
+| [Entity at the last token](#t51-10) | in part: read, not used | in part: read, not used | in part: read, not used | in part: read, not used | in part: read, not used | yes | yes (view f) |
+| [Last token: the lookup's read](#b53-3) | descriptive: in between | descriptive: in between | descriptive: outside | descriptive: outside | descriptive: in between | yes | no |
+| [Last token, word answers](#b53-3b) | in part: in between | in part: in between | – | – | – | yes | no |
+| [Lightning's attention blocks](#b53-4) | – | – | – | in part: in between | – | yes | no |
 
 **Part V. Other datasets**
 
-| test | 9B | 27B | Muse | Lightning ○ | 122B |
-|---|---|---|---|---|---|
-| [Zach's passages, true facts](#z1) | **fails: lookup follows** | **fails: lookup follows** | **fails: follows, few** | in part: in between | in part: in between |
-| [Zach's passages, made-up facts](#z1) | holds | in part: in between | – | – | holds |
-| [Named vs described bridge](#b53-1b) | – | descriptive: mixed / answer | – | – | – |
-| [Full carrier up to L](#t51-7) | in part: in between | in part: in between | – | in part: in between | – |
-| [Position route, his passages](#z3) | in part: in between | **fails: no position** | in part: in between | in part: in between | **fails: no position** |
-| [Read window, his passages](#t51-5) | holds: same window | **fails: not the same** | – | holds: same window | – |
+| test | 9B | 27B | Muse | Lightning ○ | 122B | rule fixed in advance? | hand-checked? |
+|---|---|---|---|---|---|---|---|
+| [Zach's passages, true facts](#z1) | **fails: lookup follows** | **fails: lookup follows** | **fails: follows, few** | in part: in between | in part: in between | yes | yes (view e) |
+| [Zach's passages, made-up facts](#z1) | holds | in part: in between | – | – | holds | yes | yes (view e) |
+| [Named vs described bridge](#b53-1b) | – | descriptive: mixed / answer | – | – | – | yes | no |
+| [Full carrier up to L](#t51-7) | in part: in between | in part: in between | – | in part: in between | – | yes | no |
+| [Position route, his passages](#z3) | in part: in between | **fails: no position** | in part: in between | in part: in between | **fails: no position** | yes | no |
+| [Read window, his passages](#t51-5) | holds: same window | **fails: not the same** | – | holds: same window | – | yes | no |
 
 **Part VI. What did not hold**
 
-| test | 9B | 27B | Muse | Lightning ○ | 122B |
-|---|---|---|---|---|---|
-| [Described bridge](#t47-3) | holds | **fails: through lens** | holds | – | – |
-| [One question, two instructions](#t47-15) | – | **fails: neither** | – | – | – |
-| [Errors are address errors](#t47-13) | **fails: no** | – | **fails: no** | **fails: no** | – |
-| [Lens part keys the attribute](#t48-2) | **fails: no** | **fails: no** | **fails: no** | **fails: no** | – |
-| [Person mark at the locker](#t48-3) | **fails: no** | **fails: no** | **fails: no** | – | – |
-| [Pooled person probe](#t49-3) | **fails: neither** | in part: in between | **fails: neither** | – | – |
-| [Copying heads pass the rest](#t48-4) | **fails: no** | **fails: no** | **fails: no** | **fails: no** | – |
-| [Address as the recall's route](#t48-5) | **fails: no** | **fails: no** | **fails: no** | – | – |
-| [Blocking the pick sentence](#t47-6) | **fails: no** | **fails: no** | **fails: no** | – | – |
-| [Same address, any item](#t47-11) | **fails: no** | **fails: no** | **fails: no** | **fails: no** | – |
+| test | 9B | 27B | Muse | Lightning ○ | 122B | rule fixed in advance? | hand-checked? |
+|---|---|---|---|---|---|---|---|
+| [Described bridge](#t47-3) | holds | **fails: through lens** | holds | – | – | yes | no |
+| [One question, two instructions](#t47-15) | – | **fails: neither** | – | – | – | yes | no |
+| [Errors are address errors](#t47-13) | **fails: no** | – | **fails: no** | **fails: no** | – | yes | no |
+| [Lens part keys the attribute](#t48-2) | **fails: no** | **fails: no** | **fails: no** | **fails: no** | – | yes | no |
+| [Person mark at the locker](#t48-3) | **fails: no** | **fails: no** | **fails: no** | – | – | yes | no |
+| [Pooled person probe](#t49-3) | **fails: neither** | in part: in between | **fails: neither** | – | – | yes | no |
+| [Copying heads pass the rest](#t48-4) | **fails: no** | **fails: no** | **fails: no** | **fails: no** | – | yes | no |
+| [Address as the recall's route](#t48-5) | **fails: no** | **fails: no** | **fails: no** | – | – | yes | no |
+| [Blocking the pick sentence](#t47-6) | **fails: no** | **fails: no** | **fails: no** | – | – | yes | no |
+| [Same address, any item](#t47-11) | **fails: no** | **fails: no** | **fails: no** | **fails: no** | – | yes | no |
 <!-- verdicts:end -->
 
 ## How to read
