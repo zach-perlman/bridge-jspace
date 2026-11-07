@@ -105,7 +105,7 @@ Each hypothesis we committed to, with its verdict and source: [hypotheses ledger
   - C2, the lens steers only recall-used bridges: **withdrawn** (24 Oct), replaced by the swap.
   - C2′, a bridge is written only when a recall uses it: **held in part**.
   - C3, computed bridges sit in the workspace: **not tested in the final design**.
-- **Pre-registered checks.** The Olmo architecture prediction: **failed**. The Muse puzzle: **did not reproduce** on jsuite v2. Gemma 4 31B: untestable.
+- **Pre-registered checks.** The Olmo architecture prediction: **failed**. The Muse puzzle: **did not reproduce** on `jsuite_v2`. Gemma 4 31B: untestable.
 - **Longshots.** A "pointer readout" [the address] that steers the lookup: **held in part**. The OLMo post-training ladder: **not tested in the final design**.
 
 ## What we did
