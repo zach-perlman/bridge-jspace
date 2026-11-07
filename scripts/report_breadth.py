@@ -555,7 +555,7 @@ def grid(rows: dict) -> str:
         return fmt(rows[key], ci) if key in rows else "·"
 
     head = ["Model", "plain-text cost", "M − K (top 10)", "rotated / logit lens", "size-matched (share)", "by probability",
-            "renderings", "clean rerun", "keep-own restores", "J-part swap / paste", "neutral donor", "probe swap (J++ / probe)", "dose: K* (excess)"]  # fmt: skip
+            "renderings", "clean rerun", "keep-own restores", "lens-part swap / paste", "neutral donor", "probe swap (J++ / probe)", "dose: K* (excess)"]  # fmt: skip
     out = ["| " + " | ".join(head) + " |", "|" + "---|" * len(head)]
     for m in V2:
         ren = ", ".join(g(f"ko.{m}.r{i}") for i in (2, 3) if f"ko.{m}.r{i}" in rows) or "·"

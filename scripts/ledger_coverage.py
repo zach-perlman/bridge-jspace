@@ -246,7 +246,9 @@ def ordered_rows(m: dict) -> list[tuple[str | None, dict]]:
 # printed labels name the data set or the track, not a person (docs pass P3-6, 7 Nov); the matrix's row labels and the
 # HEATMAP labels stay as keys
 DISPLAY = (("Zach's passages", "the fact passages"), ("Zach's Z2", "the fact passages' Z2"),
-           ("on his passages", "on the fact passages"), ("his passages", "the fact passages"), ("J++ part", "lens part"))  # fmt: skip
+           ("on his passages", "on the fact passages"), ("his passages", "the fact passages"), ("J++ part", "lens part"),
+           ("Zach's L", "the breadth track's L"),
+           ("(queued or running; no ledger entry here yet)", "(not completed in the sprint; no ledger entry here)"))  # fmt: skip
 
 
 def display(label: str) -> str:
@@ -281,7 +283,7 @@ def table(matrix: Path = MATRIX) -> str:
                 cells.append(sym)
         lines.append(f"| {name} | " + " | ".join(cells) + " |")
     lines += ["", LEGEND, ""]
-    lines += [f"{i}. {note}" for note, i in notes.items()]
+    lines += [f"{i}. {display(note)}" for note, i in notes.items()]
     return "\n".join(lines)
 
 

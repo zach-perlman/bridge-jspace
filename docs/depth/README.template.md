@@ -122,7 +122,7 @@ Every prompt is read in the model's chat template, thinking off, the reply begun
 
 One item per set, copied from the run files (the original prompt; → the changed prompt's answer):
 
-**Main test** (all five models; the page's running example):
+**Main test** (all five models; the page's worked example):
 
 ```
 The locker of carbon is 3. The locker of helium is 5. The locker of oxygen is 7. Hugo picked oxygen. Eric picked carbon. Eva picked helium.

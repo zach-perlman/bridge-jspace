@@ -34,8 +34,8 @@ entity, does that depend on whether the final fact is recalled or stated, and in
 - **For monitoring:** at the entity's mention the lens shows which entity the model will recall from, in every model.
   Whether the model depends on those directions is a separate, model-specific question.
 
-**Status.** This is Zach's half (breadth): nine models on our dataset jsuite v2, plus the Qwens on every earlier dataset,
-as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at fd29af93 from the run files.
+**Status.** This is the breadth half: nine models on our dataset jsuite v2, plus the Qwens on every earlier dataset,
+as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at 2f43d2d0 from the run files.
 
 ## What we predicted
 
@@ -104,7 +104,7 @@ The test split and, per model, the items it answers right unedited (the items ev
   - The removal **rotated** to a random direction.
   - The **logit lens**'s own top 10.
   - The same norm along the residual's **top principal directions**.
-- **The swap.** Replace the J-part (the span of the top-10 J++ directions) of the bridge's last token with another
+- **The swap.** Replace the lens part (the span of the top-10 J++ directions) of the bridge's last token with another
   entity's (D).
   - **Transfer**: the share answering D's fact minus the share answering a third entity's.
 - **Fixed in advance** = pre-registered in docs/breadth/prereg_replication_1022.md (amendments 1-57) before the run.
@@ -271,9 +271,9 @@ Where in the prompt must the removal act?
 
 *Fixed in advance (amendments 32, 34, 38A, 47, 48, 51, 55 note 1).*
 
-If the mention's J-part is swapped for another entity's, does the answer follow, and what is being moved?
+If the mention's lens part is swapped for another entity's, does the answer follow, and what is being moved?
 
-- **The answer follows a swapped J-part.**
+- **The answer follows a swapped lens part.**
   - Transfer: +63 [57, 69] (27B), +64 [58, 69] (9B), +45 [39, 50] (Lightning).
   - Rotated or logit-lens parts move nothing (27B: 0 and 0).
   - Pasting the whole residual moves less in Lightning (+14), because it also overwrites position and
@@ -283,11 +283,11 @@ If the mention's J-part is swapped for another entity's, does the answer follow,
     +70 vs +69 (9B), on the PM final.
   - The answer direction alone moves +29.
 
-![A swapped J-part moves the answer to the other entity; it is not the answer token](../../figures/breadth/05_carries.png)
+![A swapped lens part moves the answer to the other entity; it is not the answer token](../../figures/breadth/05_carries.png)
 *Fig. 5.*
 
-- **It is a pointer, whatever context it came from.**
-  - From one neutral sentence about D ("A reader asked a question about D in the letters page"), the J-part moves the
+- **It is a reference to the entity, whatever context it came from.**
+  - From one neutral sentence about D ("A reader asked a question about D in the letters page"), the lens part moves the
     answer 1.09, 1.10 and 1.01 times as much as from D's own passage.
     It holds on 8 of 8 relations on the 27B.
   - Bolt, with 100 directions (amendment 55 note 1): 1.01, on 6 of
@@ -295,7 +295,7 @@ If the mention's J-part is swapped for another entity's, does the answer follow,
   - From a passage on another relation it moves 0.99 / 0.99 / 0.98 as much.
 - **In the Qwens it is more than the name; in the Nemotrons, less so.** Without the entity's own-word directions, the
   swap keeps 0.84 / 0.83 / 0.62. Bolt's keeps 0.43, below the
-  2/3 bar: its pointer is mostly the name's own directions.
+  2/3 bar: its reference is mostly the name's own directions.
 - **Decodable is not carried.** A supervised probe reads the fact at the mention about as well as J++. Swapping the
   probe's subspace moves +8 / +6 / +2, against J++'s
   +75 / +80 / +62.
@@ -314,7 +314,7 @@ If the mention's J-part is swapped for another entity's, does the answer follow,
 
 - **Readable, carried and needed come apart.**
   - OLMo carries the entity (swap +41), but the knock-out costs only +5.
-  - Ministral's lens reads the fact at mid depth, but its J-part carries only +3, and
+  - Ministral's lens reads the fact at mid depth, but its lens part carries only +3, and
     +5 with 100 directions.
 
 ![The lens reads the fact at the mention in every model; readable is not the same as needed](../../figures/breadth/08_readable.png)
@@ -362,7 +362,7 @@ How many directions does the dependence need, and when does the removal stop bei
     (18%) and give +51.
   - The pre-registered limit stops Bolt's readings at K 10, where the size-matched control already
     exceeds half the J++ effect; below it the effect is about 0 (+2 at 3).
-  - Its J-part swap still carries the entity at 100 directions, as a context-free pointer (Section 4). Bolt's mention
+  - Its lens part swap still carries the entity at 100 directions, as a context-free reference to the entity (Section 4). Bolt's mention
     holds the entity in J-space, but its recall does not depend on those directions more than on any same-size removal.
 
 - **DeepSeek is weak at every dose, not under-dosed** (amendment 56 D):
@@ -495,7 +495,7 @@ What the model says instead under the knock-out, in five classes of reply.
 
 ## 7. Every model, every test
 
-| Model | plain-text cost | M − K (top 10) | rotated / logit lens | size-matched (share) | by probability | renderings | clean rerun | keep-own restores | J-part swap / paste | neutral donor | probe swap (J++ / probe) | dose: K* (excess) |
+| Model | plain-text cost | M − K (top 10) | rotated / logit lens | size-matched (share) | by probability | renderings | clean rerun | keep-own restores | lens-part swap / paste | neutral donor | probe swap (J++ / probe) | dose: K* (excess) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | Qwen3.6-27B (L32-40) | +0.30 nats | +51 [46, 55] | +3 / +2 | 0.24 | +50 | +49, +50 | 0 of 22325 differ | 0.06 | +63 / +62 | 1.09 | +75 / +8 | 30 (30) |
 | Qwen3.5-9B (L12-16) | +0.46 nats | +43 [37, 49] | +2 / +1 | 0.17 | +35 | +42, +43 | 0 of 14100 differ | 0.17 | +64 / +42 | 1.10 | +80 / +6 | 10 (3) |

@@ -1,6 +1,6 @@
 # One caption per figure, keyed by its file stem (src/bridge_jspace/figkit/captions.py).
 
-01_setup = "The running example: one prompt, its two questions and the changed prompt."
+01_setup = "The worked example: one prompt, its two questions and the changed prompt."
 02_one_layer_split = "Switches blocked without the lens part beyond a random part, lookup and recall per model, main test at L (the 122B's L33: the 27B's relative depth carried over); right: the gap, recall minus lookup, with its {{q|95%}} interval; grey band: within 0.10 of random (the lookup's bar)."
 03_six_lockers = "Claim 8: six-locker scenes. Left: the locker pairs whose swap (dose 2) sends lookups past the bar fixed in advance (dashed line: half the pairs), with the count beside; right: lookups sent one locker on by one shift along the lockers, against a random vector (grey), whiskers the range over the five start lockers, the numbers beside. Lightning hollow ○ (its gate chosen after its pre-check)."
 04_code_tool = "Python code and tool output on the 9B and the 27B (rows): the locker probe's accuracy for the address (amber) against a random part and a layout-only probe (grey); the lookups left on position without the address, and brought back with only the address kept. The 9B's code probe is below its gate. Whiskers: 95% intervals."
