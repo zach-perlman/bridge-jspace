@@ -82,7 +82,8 @@ CLAIMS = {  # the alt text in the root README (scripts/readme_root.py)
 }
 assert set(CLAIMS) == set(TARGET["readme"])
 # the styles-plot figures (figkit/readme_sp.py) are not built here
-TARGET["readme"] = [i for i in TARGET["readme"] if i not in RS.FIGS]
+# p0a_datasets is a markdown table in the README now (Dan, 7 Nov: text belongs in text)
+TARGET["readme"] = [i for i in TARGET["readme"] if i not in RS.FIGS and i != "p0a_datasets"]
 TARGET["depth"] = [i for i in TARGET["depth"] if i not in RS.FIGS]
 
 PROBLEMS: list[str] = []

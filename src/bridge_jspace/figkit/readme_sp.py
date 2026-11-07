@@ -30,7 +30,7 @@ TWIN = WB.TWIN
 # README id -> the write-up figure it draws (the same cells and statuses, scripts/status_registry.py copies them)
 ALIAS = {"r1_c1_split": "fig01_main_split", "r3_last_token": "fig13_last_token", "f9_where": "appB_f9_where",
          "f8_facts": "appB_f8_facts", "f8_directions": "appB_f8_directions", "f12_order": "appB_f12_order",
-         "f14_two_codes": "appB_f14_two_codes", "f2_controls": "fig05_controls", "p0a_datasets": "fig02_datasets", "p0b_tools": "fig03_tools",
+         "f14_two_codes": "appB_f14_two_codes", "f2_controls": "fig05_controls", "p0b_tools": "fig03_tools",
          "f3_nine_models": "fig06_nine_models", "r5_routes": "fig07_routes",
          # f6_address drawn as two figures: one table of four columns needs 2.99 in of colour words over a 2.19 in panel
          # (SP609; Dan, 7 Nov: lanes or split); the README embeds both where it embedded f6_address.png
@@ -38,7 +38,8 @@ ALIAS = {"r1_c1_split": "fig01_main_split", "r3_last_token": "fig13_last_token",
 WRITEUP = {**WS.FIGS, **WB.BLOCKED}
 
 
-SCHEMATICS = {"p0a_datasets", "p0b_tools"}  # laid out in inches: drawn for the README's width, not the post's
+# laid out in inches: drawn for the README's width, not the post's (p0a_datasets is a markdown table in the README)
+SCHEMATICS = {"p0b_tools"}
 
 
 def _alias(fid: str):
