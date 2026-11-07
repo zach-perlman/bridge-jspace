@@ -151,6 +151,23 @@ def test_visible_text_within_the_word_budget():
     assert visible_words(README.read_text(encoding="utf-8")) <= WORD_BUDGET
 
 
+BREADTH = REPO / "docs" / "breadth" / "README.md"
+BREADTH_BUDGET = 3000  # finishing-pass brief C4: the breadth page in the root README's shape
+
+
+def test_breadth_visible_text_within_its_budget():
+    assert visible_words(BREADTH.read_text(encoding="utf-8")) <= BREADTH_BUDGET
+
+
+def test_breadth_figures_take_their_captions_from_the_store():
+    """Every figure on the breadth page is followed by its {{caption|set/stem}} in the template (no bare "Fig. N.")."""
+    tpl = (REPO / "docs" / "breadth" / "README.template.md").read_text(encoding="utf-8")
+    figs = re.findall(r"!\[[^\]]*\]\(\.\./\.\./figures/([\w-]+)/([\w-]+)\.png\)\n\n\{\{caption\|([\w-]+)/([\w-]+)\}\}", tpl)
+    assert len(figs) == len(re.findall(r"!\[[^\]]*\]\(\.\./\.\./figures/", tpl))
+    assert all(a == c and b == d for a, b, c, d in figs)
+    assert "*Fig. " not in tpl
+
+
 def test_alt_texts_are_unique():
     alts = re.findall(r"!\[([^\]]*)\]\(", README.read_text(encoding="utf-8"))
     assert len(alts) == len(set(alts)), sorted(a for a in alts if alts.count(a) > 1)

@@ -56,11 +56,11 @@ Notice: without the lens part only the recall stops switching.
 
 *One locker scene from the main test, Qwen 27B, as the model reads it (the bridge word in bold), with each reader's answer before the change and under each operation at layer 32<!-- src: docs/depth/x0_numbers.json | layer_27b -->. The scene is picked by the rule on the card, not by its outcome. Over the main test's 200<!-- src: docs/depth/x0_numbers.json | n_27b --> scenes, the whole change switches the lookup in 86<!-- src: docs/depth/x0_numbers.json | lk_whole_27b --> and the recall in 150<!-- src: docs/depth/x0_numbers.json | rc_whole_27b -->; without the lens part the lookup still switches in 71<!-- src: docs/depth/x0_numbers.json | lk_noj_27b --> and the recall in 35<!-- src: docs/depth/x0_numbers.json | rc_noj_27b -->; without a random part of the same size, in 83<!-- src: docs/depth/x0_numbers.json | lk_norand_27b --> and 146<!-- src: docs/depth/x0_numbers.json | rc_norand_27b -->.*
 
-Notice: the two passages differ only in whether the fact is stated.
+Notice: the two passages differ only in whether the fact is stated, and removing the lens part turns the recalled answer wrong while the looked-up one holds; a rotated part of the same size turns neither.
 
-![One real fact passage, Qwen 27B: the final fact stated for the lookup, left to memory for the recall](figures/examples/02_fact_passage.png)
+![One real fact passage, Qwen 27B: without the lens part the recalled answer turns wrong and the looked-up one holds](figures/examples/02_fact_passage.png)
 
-*One fact passage, Qwen 27B, jsuite v2 test: the lookup's passage states the final fact (the lines in the lookup's colour), the recall's passage leaves it to memory; the bridge in bold. Answers before and with the lens part removed at every token over a band of middle layers, or a rotated part of the same size. Picked by the rule on the card, not by its outcome: on this pair neither reader's answer turns wrong. Over the test set the removal costs the lookup 2.6<!-- src: docs/breadth/data.csv | ko.q27.lostK --> points and the recall 53.5<!-- src: docs/breadth/data.csv | ko.q27.lostM -->.*
+*One fact passage, Qwen 27B, jsuite v2 test: the lookup's passage states the facts (the sentences in the lookup's colour, the asked one among them), the recall's passage replaces them with sentences that do not, so its answer must come from memory; the bridge in bold. Answers before and with the lens part removed at every token over a band of middle layers, or a rotated part of the same size. Picked to show the typical flip, by the outcome rule on the card: the recall turns wrong only without the lens part, the lookup holds. Over the test set the removal costs the lookup 2.6<!-- src: docs/breadth/data.csv | ko.q27.lostK --> points and the recall 53.5<!-- src: docs/breadth/data.csv | ko.q27.lostM -->.*
 
 <details><summary>The two kinds of prompt, side by side</summary>
 

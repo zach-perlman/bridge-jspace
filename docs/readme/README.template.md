@@ -55,9 +55,9 @@ Notice: without the lens part only the recall stops switching.
 
 {{caption|examples/01_locker_scene}}
 
-Notice: the two passages differ only in whether the fact is stated.
+Notice: the two passages differ only in whether the fact is stated, and removing the lens part turns the recalled answer wrong while the looked-up one holds; a rotated part of the same size turns neither.
 
-![One real fact passage, Qwen 27B: the final fact stated for the lookup, left to memory for the recall](figures/examples/02_fact_passage.png)
+![One real fact passage, Qwen 27B: without the lens part the recalled answer turns wrong and the looked-up one holds](figures/examples/02_fact_passage.png)
 
 {{caption|examples/02_fact_passage}}
 

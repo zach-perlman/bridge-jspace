@@ -7,7 +7,9 @@ evidence, controls, what failed, one grid of models x experiments), every number
   docs/breadth/README.md         rendered
 
 Markers: {{v|key}} value; {{a|key}} its size, unsigned; {{ci|key}} "[lo, hi]"; {{vci|key}} "value [lo, hi]"; {{n|key}}; {{grid}} the models x
-experiments table; {{head}} the commit. A marker whose key is not in data.csv stops the build.
+experiments table; {{head}} the commit. A marker whose key is not in data.csv stops the build. Captions:
+{{caption|set/stem}} from figures/<set>/_meta/captions.toml (expanded first); the root README's markers {{b|key}},
+{{bci|key}}, {{q|text}}, {{w|key}}, {{wci|key}} render as there (w/wci: data/figures/writeup/data.csv).
 
 python scripts/report_breadth.py            (CPU only; reads results/ and the clean worktree's results)
 python scripts/report_breadth.py --redraw-keys   append only the keys data.csv lacks (collect_redraw: the numbers the
@@ -554,8 +556,8 @@ def grid(rows: dict) -> str:
     def g(key, ci=False):
         return fmt(rows[key], ci) if key in rows else "·"
 
-    head = ["Model", "plain-text cost", "M − K (top 10)", "rotated / logit lens", "size-matched (share)", "by probability",
-            "renderings", "clean rerun", "keep-own restores", "lens-part swap / paste", "neutral donor", "probe swap (J++ / probe)", "dose: K* (excess)"]  # fmt: skip
+    head = ["Model", "plain-text cost", "recall − lookup gap (top 10)", "rotated / logit lens", "size-matched (share)", "by probability",
+            "renderings", "clean rerun", "keep-own restores", "lens-part swap / paste", "neutral sentence", "probe swap (lens part / probe)", "dose: K* (excess)"]  # fmt: skip
     out = ["| " + " | ".join(head) + " |", "|" + "---|" * len(head)]
     for m in V2:
         ren = ", ".join(g(f"ko.{m}.r{i}") for i in (2, 3) if f"ko.{m}.r{i}" in rows) or "·"
@@ -625,7 +627,13 @@ def dataset(rows: dict) -> str:
 def render() -> None:
     rows = {r["key"]: r for r in ROWS}
     head = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True, cwd=ROOT).stdout.strip()
-    tpl = (OUT / "README.template.md").read_text()
+    from bridge_jspace.figkit.captions import expand
+    from scripts.readme_root import WRITEUP_DATA, breadth_rows, wnum, writeup_rows
+
+    # captions come from the figure sets' stores (one caption per figure, the same on every page); their numbers use the
+    # root README's markers, rendered here exactly as there
+    tpl = expand((OUT / "README.template.md").read_text())
+    raw, wrows = breadth_rows(), writeup_rows()
     missing = []
 
     def sub(mo):
@@ -638,6 +646,18 @@ def render() -> None:
             return dataset(rows)
         if kind == "head":
             return head
+        if kind == "q":  # a number quoted from outside the data files, as is
+            return rest[0]
+        if kind in ("b", "bci"):  # docs/breadth/data.csv's value string, as the root README prints it
+            r = raw[rest[0]]
+            ci = f" [{r['lo']}, {r['hi']}]" if kind == "bci" else ""
+            return f"{r['value']}{ci}<!-- src: docs/breadth/data.csv | {rest[0]} -->"
+        if kind in ("w", "wci"):  # data/figures/writeup/data.csv, at its unit's precision
+            r = wrows[rest[0]]
+            v = wnum(r["value"], r["unit"])
+            if kind == "wci":
+                v += f" [{wnum(r['lo'], r['unit'])}, {wnum(r['hi'], r['unit'])}]"
+            return f"{v}<!-- src: {WRITEUP_DATA} | {rest[0]} -->"
         key = rest[0]
         if key not in rows:
             missing.append(key)
