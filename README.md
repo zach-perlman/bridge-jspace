@@ -17,9 +17,9 @@
 The J++ lens reads a language model's hidden state as a short list of word-like directions, which its authors argue form a *global workspace* for multi-step thinking. We tested what it shows, and whether the model depends on it, on questions that need two steps: first find an entity (*the composer who wrote The Magic Flute* → Mozart), then a fact about it (Mozart's nationality). The fact either comes from the model's memory (**recall**) or is written in the text in front of it (**lookup**).
 
 - **Recall goes through the lens's directions; lookup does not.** Removing a handful of them costs recalled answers 43 to 53 points more than looked-up ones on the three clearest models<!-- src: docs/breadth/data.csv | ko.q9.mk; ko.nl.mk -->; at one layer the recall follows them and the lookup does not. → [Finding 1](#finding-1-recall-goes-through-the-lens-part-lookup-does-not)
-- **The lens shows what the entity's words evoke**: its name or its remembered attributes. That works as a reference to the entity, but it is not a fact retrieved for the question. → [Finding 2](#finding-2-the-lens-part-holds-what-the-bridges-words-evoke)
-- **Lookup runs on two codes outside the lens**: which item it is, and an address for where the item sits in the prompt. A linear probe reads the address at 0.85 to 0.99<!-- src: data/figures/depth/data.csv | the locker probe at the bridge word, locker-first scenes -->, swapping it redirects the lookup, and the lens cannot see it. → [Finding 3](#finding-3-lookup-runs-on-codes-outside-the-lens-identity-and-address)
-- **What the lens can read is not always what the model uses.** At the answer position the lens part reads the entity at 0.91 to 0.98, yet swapping it changes at most 0.14 of answers<!-- src: data/figures/depth/data.csv | 51.10: recall, last token, read peak: the probe's accuracy on the lens part; 51.10: recall, last token, read peak: the lens swap's switches -->. → [Finding 4](#finding-4-readable-is-not-the-same-as-used)
+- **Lookup runs on two codes outside the lens**: which item it is, and an address for where the item sits in the prompt. A linear probe reads the address at 0.85 to 0.99<!-- src: data/figures/depth/data.csv | the locker probe at the bridge word, locker-first scenes -->, swapping it redirects the lookup, and the lens cannot see it. → [Finding 2](#finding-2-lookup-runs-on-codes-outside-the-lens-identity-and-address)
+- **What recall needs is its answer's own directions.** Keeping only the answer span's directions inside the removal undoes 0.91<!-- src: data/figures/writeup/data.csv | fig10.keep_span.nl --> to 0.95<!-- src: data/figures/writeup/data.csv | fig10.keep_span.q27 --> of the recall's damage, and removing only them does all of it; removals orthogonal to the answer cost nothing, even for a one-hop question about the subject (post hoc on two of three models). So this removal cannot show that the bridge itself is used. → [Finding 3](#finding-3-what-recall-needs-is-its-answers-own-directions)
+- **A lens reading at an entity reports associations, not use.** At the bridge it shows what the entity's words evoke, which works as a reference to the entity; at the answer position it reads the entity at 0.91 to 0.98, yet swapping it changes at most 0.14 of answers<!-- src: data/figures/depth/data.csv | 51.10: recall, last token, read peak: the probe's accuracy on the lens part; 51.10: recall, last token, read peak: the lens swap's switches -->. → [Finding 4](#finding-4-a-lens-reading-at-an-entity-reports-associations-not-use)
 
 **For anyone using lens readouts as a monitor:** at the entity, the lens tells you what the model associates with it. It does not tell you whether the model is answering from memory or from the text, which source wins when they conflict, or whether what it shows is in use.
 
@@ -162,40 +162,7 @@ The same at one layer, where each control is removed from the patch instead of t
 
 </details>
 
-### Finding 2. The lens part holds what the bridge's words evoke
-
-In plain terms: the lens part is a reference to the entity: swapped into another prompt it redirects the recall, even when taken from one neutral sentence naming it; it is not the retrieved fact.
-
-![Another entity's lens part moves the recall from any context, a probe's subspace that reads the fact does not](figures/readme/04_pointer.png)
-
-*Rows are the source of the part swapped in at the bridge: another entity's own passage, one neutral sentence about that entity, the same without its own-word directions (the lens part, teal), a probe's subspace that reads the fact (slate) and a rotated part (grey, a control). One panel per model on one shared axis; each dot is the answers moved to the other entity's fact, in points, with its 95% interval over bridge items; items per model: the swap run's n in docs/breadth/data.csv. The neutral sentence minus the own passage, paired on the same items: 6.2<!-- src: docs/breadth/data.csv | ptr.q9.neutral_minus_swap --> / 6.0<!-- src: docs/breadth/data.csv | ptr.q27.neutral_minus_swap --> / 0.3<!-- src: docs/breadth/data.csv | ptr.nl.neutral_minus_swap --> points (9B / 27B / Lightning; intervals in the same file).*
-
-**Takeaway.** A lens reading at an entity reports associations, primed by the words, before and regardless of the question. A misleading cue word in a description outranks the true attribute there, on all three models tested (twin set).
-
-<details><summary>Method, controls and limits</summary>
-
-- **Claim.** At the bridge the lens reads what the entity's words evoke: its name or its remembered attributes. Written into another prompt it redirects recall to that entity, and it does so just as well when taken from one neutral sentence naming the entity. It is not the address the lookup uses (Finding 3), and not a fact computed for the question.
-- **Test.** Swap another entity's lens part into the bridge, taken from its own passage, from one neutral sentence naming it, or with its name's own directions removed. Decompose the lens part into the vocabulary words it stands for. Compare what the lens shows at the bridge before a recall, before a lookup, and with no question asked (twin set).
-- **Result.**
-  - Swap: 63.9 / 63.0 / 44.8 points of answers move to the other entity (9B / 27B / Lightning)<!-- src: docs/breadth/data.csv | swap.q9.swap; swap.q27.swap; swap.nl.swap -->.
-  - From one neutral sentence: 1.10 / 1.09 / 1.01 times as much as from the entity's own passage (9B / 27B / Lightning)<!-- src: docs/breadth/data.csv | ptr.q9.neutral; ptr.q27.neutral; ptr.nl.neutral -->.
-  - Decomposed in the locker scenes: the old and the new bridge words each carry 0.09 to 0.19 of the rebuilt energy, the answer word 0.00 (9B, 27B, Muse, Lightning ○, 122B)<!-- src: data/figures/depth/data.csv | 52 A: share of the rebuilt energy in the original bridge word; 52 A: share of the rebuilt energy in the new bridge word; 52 A: share of the rebuilt energy in the reader's answer word -->.
-  - Before the question (twin set): the person's remembered attribute shows as strongly before a lookup of a made-up value as before a recall, and as strongly when no question is asked. The made-up value the model will say barely shows at the bridge and appears only at the final token.
-  - At described bridges (the twin set and its predecessor), the swap's effect runs through the answer's directions: scrubbing the relation's answer directions removes almost all of it, while a random scrub of the same size keeps most of it.
-- **Controls.** Swapping a supervised probe's subspace that reads the fact moves 5.5 / 8.3 / 2.2 points, against 79.5 / 74.8 / 62.4 for the lens part on the same relations (9B / 27B / Lightning)<!-- src: docs/breadth/data.csv | probe.q9.probe; probe.q27.probe; probe.nl.probe; probe.q9.swap; probe.q27.swap; probe.nl.swap -->. Rotated and logit-lens parts move nothing on the 27B (0 and 0)<!-- src: docs/breadth/README.md | Rotated or logit-lens parts move nothing (27B: 0 and 0) -->. In the locker scenes, sparing the answer words' directions keeps 0.92 to 0.98 of the recall's drop<!-- src: data/figures/depth/data.csv | main test, recall: share of its loss kept when the lens part keeps the answer words' directions -->: there, the effect is not the answer token's.
-- **Scope.** The neutral-sentence reference holds on 8 of 8 relations on the 27B<!-- src: docs/breadth/README.md | It holds on 8 of 8 relations on the 27B --> and on Bolt with more directions (1.01)<!-- src: docs/breadth/data.csv | ptr.nb.neutral -->. It needs words that name the entity: a codename that the passage itself defines shows almost nothing of the person in the lens (twin set).
-- **Confidence.** High for the reference (fixed in advance; three models, two families; two methods agree). Medium for "what the words evoke" (twin set: three models, one seed each).
-- **Limits.** Which of the two the lens part holds depends on the setting. With named items and numeric answers (locker scenes), the part readable as words is the item's name; most of its energy matches no word of the scene; at a description (fact passages) it is the remembered attributes, the answer among them<!-- src: docs/depth/README.md | the answer when it is a word tied to the entity (the fact passages) -->. Even at a named mention it is more than the name in the Qwens: without the name's own directions the swap keeps 0.83 / 0.84 / 0.62 (9B / 27B / Lightning)<!-- src: docs/breadth/README.md | swap keeps 0.84 / 0.83 / 0.62 -->, while Bolt's keeps 0.43<!-- src: docs/breadth/README.md | Bolt's keeps 0.43 -->; with the answer taken in any language, a small causal part on the 27B and Muse (post hoc)<!-- src: docs/depth/README.md | answer in any language (single-token translations) -->.
-
-What the lens part is made of in the locker scenes, word by word:
-
-![The lens part's 25 directions are the two bridge words, almost never the answer word](figures/readme/05_atoms.png)
-
-*One bar per model: the lens part's directions, each counted by the word it decodes to, as shares of the energy they rebuild. The old and the new bridge word are the two teal segments, named above them; another scene word and no scene word are grey. The answer word (brick) has no visible segment: its share is printed at the right. Lightning hollow (○, post hoc).*
-
-</details>
-
-### Finding 3. Lookup runs on codes outside the lens: identity and address
+### Finding 2. Lookup runs on codes outside the lens: identity and address
 
 In plain terms: when another item moves, the lookup follows either the item's own locker (identity) or the position its locker sat in (the address), never the number, and the lens shows neither code.
 
@@ -261,17 +228,72 @@ The order of the sentences decides where the link is made:
 
 </details>
 
-### Finding 4. Readable is not the same as used
+### Finding 3. What recall needs is its answer's own directions
 
-In plain terms: at the answer position the lens part reads the entity almost perfectly, yet swapping it barely changes an answer, while swapping the whole state does.
+In plain terms: removing only the directions of the answer does all of the removal's damage, and removals orthogonal to the answer cost nothing even for a one-hop question about the subject (post hoc on the 9B and 27B); so this kind of removal cannot show that an intermediate step is used.
 
-![At the last token the lens reads the entity, and the answer does not go through it](figures/readme/12_last_token.png)
+![Keeping only the answer span's directions undoes nearly all of the recall's damage; removing only them does all of it](figures/writeup/10_answer_span.png)
 
-*Per model, at the layer where the read peaks (under the name). Left: a probe's accuracy for the recall's entity on the lens part of the last token's state, with its 95% interval; dashed: chance. Right: the recalls switched when only the lens part is swapped in (teal) against the whole state swapped in (grey); the lens part's value in the last column. Lightning hollow (○, post hoc).<!-- src: plotstyle.toml | 95% interval; within 0.10 of a random part -->*
+*What the knock-out removes from the recall. Left: the share of the knock-out's damage undone when the answer span (the answers' own lens directions, brick) is kept, against an energy-matched random keep (grey); descriptive. Middle: the damage when only the answer span is removed, as a multiple of the full knock-out's (dashed: all of it), beyond an energy-matched random removal. Right: the same on the codename set, an independent fact sample. Whiskers: 95% intervals; "matched on …": the share of items whose random part reached its target energy.<!-- src: plotstyle.toml | 95% interval -->*
 
-**Takeaway.** Seeing an entity or an attribute through the lens does not tell a monitor whether the model is using it, or which source the model will answer from.
+**Takeaway.** The removal of Finding 1 shows that recall needs the directions that produce its remembered word, not that the bridge entity is used as a step. The claims about the bridge rest on the one-layer conflict test (Finding 1) and the swap (Finding 4).
 
 <details><summary>Method, controls and limits</summary>
+
+- **Claim.** On the twin set the recall's damage under the removal is the answer's own directions: keeping only the answer span's directions undoes nearly all of it, removing only them does all of it, and removing the subject's directions made orthogonal to the answers costs nothing.
+- **Test.** Remove the lens part over the band as in Finding 1, but keep the answer span's directions (the keep); remove only the answer span's directions, net of a random part of the same energy; on a one-hop question about the subject (a city), remove its lens directions, the answers' own directions, or its directions made orthogonal to the answers; and a subspace built from the data, cleaned of the answers, against a random part of the same energy (rule fixed in advance, bar 15 points)<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.q27 -->.
+- **Result.**
+  - The keep undoes 0.93 [0.86, 1.01]<!-- src: data/figures/writeup/data.csv | fig10.keep_span.q9 --> / 0.95 [0.90, 1.00]<!-- src: data/figures/writeup/data.csv | fig10.keep_span.q27 --> / 0.91 [0.83, 0.98]<!-- src: data/figures/writeup/data.csv | fig10.keep_span.nl --> of the recall's damage (9B / 27B / Lightning).
+  - Removing only the answer span does 1.04 [0.88, 1.22]<!-- src: data/figures/writeup/data.csv | fig10.span_only.v4.q9 --> / 1.02 [0.93, 1.12]<!-- src: data/figures/writeup/data.csv | fig10.span_only.v4.q27 --> / 0.98 [0.82, 1.14]<!-- src: data/figures/writeup/data.csv | fig10.span_only.v4.nl --> times the full damage; on the codename set 1.32 [1.15, 1.54]<!-- src: data/figures/writeup/data.csv | fig10.span_only.codename.q9 --> / 1.18 [1.06, 1.32]<!-- src: data/figures/writeup/data.csv | fig10.span_only.codename.q27 --> / 1.05 [0.96, 1.14]<!-- src: data/figures/writeup/data.csv | fig10.span_only.codename.nl -->.
+  - One-hop question: the city's lens directions cost 41.5 [35.3, 47.3]<!-- src: data/figures/writeup/data.csv | fig11.onehop.city.q9 --> / 29.2 [24.3, 34.5]<!-- src: data/figures/writeup/data.csv | fig11.onehop.city.q27 --> / 25.2 [21.3, 29.4]<!-- src: data/figures/writeup/data.csv | fig11.onehop.city.nl --> points, the answers' own directions 59.3 [53.1, 65.1]<!-- src: data/figures/writeup/data.csv | fig11.onehop.answers.q9 --> / 60.9 [55.7, 66.2]<!-- src: data/figures/writeup/data.csv | fig11.onehop.answers.q27 --> / 75.0 [70.8, 78.9]<!-- src: data/figures/writeup/data.csv | fig11.onehop.answers.nl -->, the city's directions orthogonal to the answers 0.4<!-- src: data/figures/writeup/data.csv | fig11.onehop.city_perp.q9 --> / 1.2<!-- src: data/figures/writeup/data.csv | fig11.onehop.city_perp.q27 --> / 0.0<!-- src: data/figures/writeup/data.csv | fig11.onehop.city_perp.nl --> (no interval; post hoc on the 9B and 27B).
+  - The cleaned subspace minus random: −0.8 [−2.0, 0.0]<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.q9 --> / 11.1 [3.0, 21.1]<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.q27 --> / 11.3 [6.6, 18.0]<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.nl --> points; on the 27B and Lightning the intervals cross the bar, on the 9B it is at zero.
+- **Controls.** A random keep of the same energy, orthogonal to the answers, undoes −0.11 [−0.25, 0.00]<!-- src: data/figures/writeup/data.csv | fig10.keep_ctrl.q9 --> / 0.02 [−0.06, 0.10]<!-- src: data/figures/writeup/data.csv | fig10.keep_ctrl.q27 --> (9B / 27B; Lightning has no random part matched in energy). Every answer-only removal is net of a random part of the same energy.
+- **Scope.** The twin set and the codename set, three models (9B, 27B, Lightning); the one-hop question on one relation. Items of these sets are not posted; the numbers are.
+- **Confidence.** Medium-high for "the damage is the answer's directions": the answer-only removal was fixed in advance and agrees on three models, and the keep (descriptive: a number under a label fixed in advance) agrees with it. Medium for "orthogonal removals cost nothing": one relation, and the orthogonal removal is post hoc on the 9B and 27B. The registered subspace test does not clear its bar on any model.
+- **Limits.** On Lightning the random part reached its target energy on only 0.29<!-- src: data/figures/writeup/data.csv | fig10.span_only_matched.v4.nl --> of the twin items and 0.02<!-- src: data/figures/writeup/data.csv | fig10.span_only_matched.codename.nl --> of the codename items, so its answer-only numbers are weaker evidence. One-token answers; the removal of Finding 1 only.
+
+Removals orthogonal to the answers, on a one-hop question about the subject:
+
+![Removing the city's directions made orthogonal to the answers costs nothing, even for a one-hop question about the city](figures/writeup/11_orthogonal.png)
+
+*Removals orthogonal to the answers. Left: a data-built subspace for the subject (slate), answers turned wrong beyond random, against the bar fixed in advance (dashed). Right, a one-hop question about the subject: answers turned wrong when the subject's lens directions are removed (teal), when only the answers' own directions are (brick), and when the subject's directions are made orthogonal to the answers (slate, hollow: post hoc, no interval stored). Whiskers: 95% intervals.<!-- src: plotstyle.toml | 95% interval -->*
+
+</details>
+
+### Finding 4. A lens reading at an entity reports associations, not use
+
+In plain terms: at the bridge the lens part works as a reference to the entity, what its words evoke: swapped into another prompt it redirects the recall, even when taken from one neutral sentence naming the entity; at the answer position the lens reads the entity almost perfectly, yet swapping it barely changes an answer.
+
+![Another entity's lens part moves the recall from any context, a probe's subspace that reads the fact does not](figures/readme/04_pointer.png)
+
+*Rows are the source of the part swapped in at the bridge: another entity's own passage, one neutral sentence about that entity, the same without its own-word directions (the lens part, teal), a probe's subspace that reads the fact (slate) and a rotated part (grey, a control). One panel per model on one shared axis; each dot is the answers moved to the other entity's fact, in points, with its 95% interval over bridge items; items per model: the swap run's n in docs/breadth/data.csv. The neutral sentence minus the own passage, paired on the same items: 6.2<!-- src: docs/breadth/data.csv | ptr.q9.neutral_minus_swap --> / 6.0<!-- src: docs/breadth/data.csv | ptr.q27.neutral_minus_swap --> / 0.3<!-- src: docs/breadth/data.csv | ptr.nl.neutral_minus_swap --> points (9B / 27B / Lightning; intervals in the same file).*
+
+**Takeaway.** A lens reading at an entity reports associations, primed by the words, before and regardless of the question; it does not tell a monitor whether the model uses what it shows, or which source the model will answer from. A misleading cue word in a description outranks the true attribute there, on all three models tested (twin set).
+
+<details><summary>Method, controls and limits</summary>
+
+**The reference at the bridge.**
+
+- **Claim.** At the bridge the lens reads what the entity's words evoke: its name or its remembered attributes. Written into another prompt it redirects recall to that entity, and it does so just as well when taken from one neutral sentence naming the entity. It is not the address the lookup uses (Finding 2), and not a fact computed for the question.
+- **Test.** Swap another entity's lens part into the bridge, taken from its own passage, from one neutral sentence naming it, or with its name's own directions removed. Decompose the lens part into the vocabulary words it stands for. Compare what the lens shows at the bridge before a recall, before a lookup, and with no question asked (twin set).
+- **Result.**
+  - Swap: 63.9 / 63.0 / 44.8 points of answers move to the other entity (9B / 27B / Lightning)<!-- src: docs/breadth/data.csv | swap.q9.swap; swap.q27.swap; swap.nl.swap -->.
+  - From one neutral sentence: 1.10 / 1.09 / 1.01 times as much as from the entity's own passage (9B / 27B / Lightning)<!-- src: docs/breadth/data.csv | ptr.q9.neutral; ptr.q27.neutral; ptr.nl.neutral -->.
+  - Decomposed in the locker scenes: the old and the new bridge words each carry 0.09 to 0.19 of the rebuilt energy, the answer word 0.00 (9B, 27B, Muse, Lightning ○, 122B)<!-- src: data/figures/depth/data.csv | 52 A: share of the rebuilt energy in the original bridge word; 52 A: share of the rebuilt energy in the new bridge word; 52 A: share of the rebuilt energy in the reader's answer word -->.
+  - Before the question (twin set): the person's remembered attribute shows as strongly before a lookup of a made-up value as before a recall, and as strongly when no question is asked. The made-up value the model will say barely shows at the bridge and appears only at the final token.
+  - At described bridges (the twin set and its predecessor), the swap's effect runs through the answer's directions: scrubbing the relation's answer directions removes almost all of it, while a random scrub of the same size keeps most of it.
+- **Controls.** Swapping a supervised probe's subspace that reads the fact moves 5.5 / 8.3 / 2.2 points, against 79.5 / 74.8 / 62.4 for the lens part on the same relations (9B / 27B / Lightning)<!-- src: docs/breadth/data.csv | probe.q9.probe; probe.q27.probe; probe.nl.probe; probe.q9.swap; probe.q27.swap; probe.nl.swap -->. Rotated and logit-lens parts move nothing on the 27B (0 and 0)<!-- src: docs/breadth/README.md | Rotated or logit-lens parts move nothing (27B: 0 and 0) -->. In the locker scenes, sparing the answer words' directions keeps 0.92 to 0.98 of the recall's drop<!-- src: data/figures/depth/data.csv | main test, recall: share of its loss kept when the lens part keeps the answer words' directions -->: there, the effect is not the answer token's.
+- **Scope.** The neutral-sentence reference holds on 8 of 8 relations on the 27B<!-- src: docs/breadth/README.md | It holds on 8 of 8 relations on the 27B --> and on Bolt with more directions (1.01)<!-- src: docs/breadth/data.csv | ptr.nb.neutral -->. It needs words that name the entity: a codename that the passage itself defines shows almost nothing of the person in the lens (twin set).
+- **Confidence.** High for the reference (fixed in advance; three models, two families; two methods agree). Medium for "what the words evoke" (twin set: three models, one seed each).
+- **Limits.** Which of the two the lens part holds depends on the setting. With named items and numeric answers (locker scenes), the part readable as words is the item's name; most of its energy matches no word of the scene; at a description (fact passages) it is the remembered attributes, the answer among them<!-- src: docs/depth/README.md | the answer when it is a word tied to the entity (the fact passages) -->. Even at a named mention it is more than the name in the Qwens: without the name's own directions the swap keeps 0.83 / 0.84 / 0.62 (9B / 27B / Lightning)<!-- src: docs/breadth/README.md | swap keeps 0.84 / 0.83 / 0.62 -->, while Bolt's keeps 0.43<!-- src: docs/breadth/README.md | Bolt's keeps 0.43 -->; with the answer taken in any language, a small causal part on the 27B and Muse (post hoc)<!-- src: docs/depth/README.md | answer in any language (single-token translations) -->.
+
+What the lens part is made of in the locker scenes, word by word:
+
+![The lens part's 25 directions are the two bridge words, almost never the answer word](figures/readme/05_atoms.png)
+
+*One bar per model: the lens part's directions, each counted by the word it decodes to, as shares of the energy they rebuild. The old and the new bridge word are the two teal segments, named above them; another scene word and no scene word are grey. The answer word (brick) has no visible segment: its share is printed at the right. Lightning hollow (○, post hoc).*
+
+**Readable, not used: the answer position and nine models.**
 
 - **Claim.** What the lens can read is not necessarily what the model uses. At the last token the lens part reads the bridge entity almost perfectly while the answer does not go through it; across nine models the entity is readable everywhere and needed in only some; and in a real conflict between memory and the passage, the bridge shows memory whichever source wins.
 - **Test.** At the last token, train a probe on the lens part to read the recall's entity, then swap only the lens part between prompts and compare with patching the whole state. Across nine models, compare whether the lens part is carried (the swap moves the answer) and needed (the removal costs it). In the twin set's conflict variant (the passage states a value that contradicts the model's memory), read the bridge when memory wins and when the passage wins.
@@ -283,6 +305,12 @@ In plain terms: at the answer position the lens part reads the entity almost per
 - **Scope.** The last-token test on five models, three families; the carried-or-needed comparison on nine models; the conflict on three (twin set).
 - **Confidence.** Medium. The last-token test's rule was fixed in advance; Lightning is post hoc. The nine-model grading is descriptive: each model's band was fixed in advance, the grades after.
 - **Limits.** "Not used" means not used at that token and layer, and at a real change's size: at twice that size the lens part moves part of Muse's and Lightning's recalls. The simplest explanation fits: the answer was computed earlier, at the bridge, and the last-token copy is a by-product.
+
+At the answer position the lens part reads the entity, and the answer does not go through it:
+
+![At the last token the lens reads the entity, and the answer does not go through it](figures/readme/12_last_token.png)
+
+*Per model, at the layer where the read peaks (under the name). Left: a probe's accuracy for the recall's entity on the lens part of the last token's state, with its 95% interval; dashed: chance. Right: the recalls switched when only the lens part is swapped in (teal) against the whole state swapped in (grey); the lens part's value in the last column. Lightning hollow (○, post hoc).<!-- src: plotstyle.toml | 95% interval; within 0.10 of a random part -->*
 
 Across nine models, whether the lens part is carried, needed, or both:
 
@@ -320,6 +348,7 @@ Across nine models, whether the lens part is carried, needed, or both:
 - **[Where the need sits, layer by layer](figures/readme/17_where.png).** At middle layers the bridge's mention carries most of the need on the Qwens (Qwen 27B: 29.7 of 50.9 points from the mention alone); deeper, the question carries nearly all of it (47.1 of 50.0)<!-- src: docs/breadth/data.csv | pos.q27.all.bridge; pos.q27.all.all; late.q27.question; late.q27.all -->.
 - Figures for the cases above: [more lens directions, more of the 27B's lookup blocked](figures/readme/14_directions.png); [known facts against made-up ones](figures/readme/15_facts.png); [question before or after the scene](figures/readme/16_order.png).
 - **Longer chains, per chain and seed:** [chains ending in a recall](figures/breadth/10a1_beyond.png), [chains ending in a read](figures/breadth/10a2_beyond.png), [numbers computed from the passage](figures/breadth/10b_beyond.png), [how replies change](figures/breadth/10c_beyond.png). Reporting a number computed by arithmetic costs nothing in all three models; a recalled number costs the Qwens +13 and +15 points<!-- src: docs/breadth/README.md | Reporting a number computed from the passage by arithmetic costs nothing in all three models; a recalled one costs the Qwens +13 and +15. -->.
+- **[Agents: picking and verifying cost far less than producing](figures/writeup/a01_agents.png).** On one relation, with the facts posed as agent tasks, removing the lens part costs producing the answer 35.7<!-- src: data/figures/writeup/data.csv | figA1.produce.q9 --> / 36.6<!-- src: data/figures/writeup/data.csv | figA1.produce.q27 --> / 50.8<!-- src: data/figures/writeup/data.csv | figA1.produce.nl --> points beyond a rotated part, picking the true one of two 10.1<!-- src: data/figures/writeup/data.csv | figA1.pick.q9 --> / 4.5<!-- src: data/figures/writeup/data.csv | figA1.pick.q27 --> / 2.3<!-- src: data/figures/writeup/data.csv | figA1.pick.nl -->, and verifying a claim −16.3<!-- src: data/figures/writeup/data.csv | figA1.verify.q9 --> / 3.8<!-- src: data/figures/writeup/data.csv | figA1.verify.q27 --> / 3.7<!-- src: data/figures/writeup/data.csv | figA1.verify.nl --> against the harshest control (9B / 27B / Lightning; several cells descriptive).
 - **Mostly from pretraining**: the 9B base model +34, its instruct model +41<!-- src: docs/breadth/README.md | The 9B base model gives +34 against the instruct model's +41 -->.
 - **The fact is fetched later**: at the answer position the lens reads it only after the band (layer 50 on the 27B, band ending at L40)<!-- src: docs/breadth/README.md | layer 50 on the 27B (band ends at L40) -->.
 

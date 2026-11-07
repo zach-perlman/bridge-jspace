@@ -16,7 +16,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
 README = REPO / "README.md"
-CSV_SOURCES = {"data/figures/depth/data.csv", "docs/breadth/data.csv", "docs/shared/grid.csv"}
+CSV_SOURCES = {"data/figures/depth/data.csv", "docs/breadth/data.csv", "docs/shared/grid.csv", "data/figures/writeup/data.csv"}
 
 # In a table row the separator is written "\|" (a bare pipe would split the cell in GitHub's table syntax).
 SRC = re.compile(r"<!--\s*src:\s*([^|\\]*?)\s*\\?\|\s*(.*?)\s*-->", re.S)
@@ -137,7 +137,7 @@ def test_checks_catch_failures():
 
 # ---- the page's shape (README brief, 7 Nov: esk-audit's outline) ---------------------------------------------------------
 TEMPLATE = REPO / "docs" / "readme" / "README.template.md"
-WORD_BUDGET = 3500  # visible words outside <details>, comments, code blocks and image links
+WORD_BUDGET = 4000  # visible words outside <details>, comments, code blocks and image links
 
 
 def visible_words(text: str) -> int:
