@@ -2,18 +2,18 @@
  "styles_plot": "0.1.5",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "dce4f14a4525db992923ce7090815ca7eba05c7fe4fdd66a9497e8252c92235f"
+  "sha256": "f52f672f3c1c39aefe015d12725ae22998dda7479a19222a5617997aa751bed5"
  },
  "registry": {
   "path": "data/figures/status_sp.csv",
-  "sha256": "47ae63dd06daecf9c09a21b1949a5713fead6236f3ccb68cb029877a3f798359"
+  "sha256": "63b075cb68d9f5767a03c03ae30a262ba25af6d4dd9ed39bfd8d1790bcb710b7"
  },
- "figure": "fig04_where",
+ "figure": "breadth_fig04_where",
  "target": "readme",
  "mode": "strict",
  "publishable": true,
  "png": {
-  "sha256": "15ad4841ac885ca0526c7171a92d92a28db7c032aa33366f6b91b32de7cb989e",
+  "sha256": "e28bff163a4e1881daa0f9cc25831336014ffc08c434cc8906a537722e67d440",
   "dpi": 160
  },
  "roles": [
@@ -32,9 +32,64 @@
   "pos.q9": {
    "timing": "fixed_in_advance",
    "claim": "claimed"
+  },
+  "prof.mi": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "prof.nb": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "prof.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "prof.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "prof.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
   }
  },
  "marks": [
+  {
+   "kind": "line",
+   "role": "neutral",
+   "cell": "prof.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "neutral",
+   "cell": "prof.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "neutral",
+   "cell": "prof.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "neutral",
+   "cell": "prof.mi",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "neutral",
+   "cell": "prof.nb",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
   {
    "kind": "dot",
    "role": "neutral",
@@ -133,6 +188,7 @@
   }
  ],
  "key": [
+  "shading: 95% interval",
   "whiskers: 95% interval"
  ],
  "numbers": {

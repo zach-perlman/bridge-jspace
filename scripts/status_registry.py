@@ -358,8 +358,9 @@ def depth_set_b() -> list[dict]:
     return out
 
 
-BREADTH_FIGS = {"fig01_needed": ("mk", "lost"), "fig03_robust": ("robust",), "fig04_where": ("pos",),
-                "fig05_carries": ("swap",), "fig09_dose": ("dose",)}  # fmt: skip
+BREADTH_FIGS = {"breadth_fig01_needed": ("mk", "lost"), "breadth_fig03_robust": ("robust",), "breadth_fig04_where": ("pos", "prof"),
+                "breadth_fig05_carries": ("swap",), "breadth_fig09_dose": ("dose",), "breadth_fig02_datasets": ("data", "var"),
+                "breadth_fig07_lookup": ("look",), "breadth_fig08_readable": ("read",)}  # fmt: skip
 # per breadth model, the registration of its tests in Zach's preregistration (before that model's data); Muse 30B and
 # Qwen 122B: their band test post hoc, as the write-up's Fig. 1 (listed as a disagreement with Amendments 1 and 34)
 BREADTH_CITE = {
@@ -378,7 +379,7 @@ def breadth_set(readme: list[dict]) -> list[dict]:
     30B and Qwen 122B post hoc as the write-up's Fig. 1. Which cells each amendment covers is per model, not checked
     cell by cell (listed). fig06_pointer is the README's r4_pointer (its rows copied)."""
     ids = [*SHORT.values(), "ds", "mi", "nb", "ol"]  # the breadth-only models' ids (plotstyle.toml)
-    out =[{**r, "figure": "fig06_pointer", "source": f"{r['source']} (as r4_pointer, drawn for docs/breadth)"}
+    out = [{**r, "figure": "breadth_fig06_pointer", "source": f"{r['source']} (as r4_pointer, drawn for docs/breadth)"}
            for r in readme if r["figure"] == "r4_pointer"]  # fmt: skip
     for fig, cids in BREADTH_FIGS.items():
         UNCLEAR.add(f"{fig}: the amendments register each model's tests; this figure's cells are not listed one by one")

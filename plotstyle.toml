@@ -296,6 +296,27 @@ title = "share switched by the whole change"
 quantity = "switched"
 format = "share"
 
+# the breadth set's sweeps and fig02 (figkit/breadth_sp.py)
+[units.layer]
+title = "layer"
+format = "z"
+cue = false
+
+[units.depth_share]
+title = "share of the depth"
+format = "share"
+cue = false
+
+[units.top_pick]
+title = "the lens's top pick at the answer position (% of items)"
+quantity = "top picks"
+format = "accuracy"
+
+[units.ranked_first]
+title = "true attribute ranked first (% of items)"
+quantity = "ranked first"
+format = "accuracy"
+
 [units.position_share]
 title = "share of position answers"
 quantity = "position answers"
@@ -306,7 +327,7 @@ canonical = [
     # the breadth set (figkit/breadth_sp.py)
     "lens part knocked out", "accuracy drop under the lens part's top-10 knock-out, by where the answer is",
     "every token", "the passage", "the bridge's mention", "the question", "another entity's lens part swapped in",
-    "lens part swapped in",
+    "lens part swapped in", "Qwen 9B: logit lens", "Qwen 27B: logit lens", "what moves it",
     # depth batch B, second part (figkit/depth_sp_b.py)
     "answers by identity", "by position", "code shift against no sentence",
     "no sentence", "a neutral sentence", "a pick naming the first-locker item", "a pick naming another locker item",
