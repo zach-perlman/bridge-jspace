@@ -26,6 +26,17 @@ UNIT = {
     "attention": "share of the last token's attention",
     "cut": "share of the swap's switches cut",
     "gap_share": "gap: recall − lookup (share of switches)",
+    # added in the styles-plot port (plotstyle.toml)
+    "probe_accuracy": "probe accuracy (share)",
+    "undone": "share of the damage undone",
+    "drop_beyond": "accuracy drop beyond random (points)",
+    "recalls": "share of recalls switched",
+    "beyond_rotated": "accuracy drop minus rotated (points)",
+    "beyond_harshest": "accuracy drop minus the harshest control (points)",
+    "scenes": "share of the scenes",
+    "pairs": "pairs of lockers",
+    "points": "points",
+    "share": "share",
 }
 # the axis quantity each cue names: "→ more <quantity>"
 CUE_OF = {
@@ -42,6 +53,16 @@ CUE_OF = {
     "attention": "attention",
     "cut": "switches cut",
     "gap_share": "gap",
+    "probe_accuracy": "probe accuracy",
+    "undone": "of the damage undone",
+    "drop_beyond": "accuracy drop",
+    "recalls": "recalls switched",
+    "beyond_rotated": "accuracy drop",
+    "beyond_harshest": "accuracy drop",
+    "scenes": "scenes",
+    "pairs": "pairs",
+    "points": "gap",
+    "share": "blocked",
 }
 
 
@@ -62,7 +83,8 @@ KEY_ORDER = ("control", "tick", "post_hoc", "whisker", "band")
 DESCRIPTIVE = "descriptive"
 NOT_CLAIMED = "not claimed: {}"
 NOT_CLAIMED_WHY = ("shared with the logit lens", "gone when scored by probability")
-MISSING = ("no run", "no comparable run", "below gate", "too few switches", "no interval")
+MISSING = ("no run", "no comparable run", "below gate", "too few switches", "no interval", "source missing",
+           "no control run", "no energy-matched control", "can't tell")  # fmt: skip
 
 # ---- reference lines (C) -------------------------------------------------------------------------------------------------
 RULE_BAR = "bar fixed in advance: {}"
@@ -71,7 +93,8 @@ CHANCE = "chance"
 # ---- conditions, controls, readers, headers ------------------------------------------------------------------------------
 READERS = ("recall", "lookup")
 CONTROLS = ("rotated", "logit lens", "PCA", "a random part", "energy-matched random", "a random vector",
-            "layout-only probe", "10 random heads", "no change")  # fmt: skip
+            "layout-only probe", "10 random heads", "no change", "random lens directions",
+            "the whole state swapped in")  # fmt: skip
 CONDITIONS = (
     "lens part", "knock-out", "removed from the patch", "swapped in", "the whole change", "a change of item",
     "another entity", "switches blocked beyond random", "address", "identity", "position", "the number",

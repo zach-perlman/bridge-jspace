@@ -19,31 +19,12 @@ from bridge_jspace.figkit import data as D
 from bridge_jspace.figkit import specs as S
 from bridge_jspace.figkit import terms as TM
 from bridge_jspace.figkit import writeup_figs as W
+from bridge_jspace.figkit import writeup_sp_b
+from bridge_jspace.figkit.writeup_sp_base import MODEL, REPO, ZK, est, need, vocab
 
-REPO = Path(__file__).resolve().parents[3]
 OUT = REPO / "figures" / "writeup"
 TARGET = "post"
-ZK = W.ZK  # model key -> short id (the registry's cell suffix)
-MODEL = {k: m for m, k in ZK.items()}
 BAND, LAYER = "Band of layers · fact passages", "One layer · locker scenes"
-
-
-@cache
-def vocab() -> sp.Vocab:
-    return sp.load(REPO / "plotstyle.toml")
-
-
-def need(c, what: str):
-    """A value every figure must have: a missing one stops the build (it is never drawn as a guess)."""
-    if c is None:
-        raise ValueError(f"no data for {what}")
-    return c
-
-
-def est(c, cell, key=None, label=False, interval=True, note=None) -> sp.Est:
-    """A data cell (value, lo, hi) as an estimate; interval=False draws the dot alone."""
-    lo, hi = (c[1], c[2]) if interval and len(c) > 2 and c[1] is not None else (None, None)
-    return sp.Est(c[0], lo, hi, cell=cell, key=key, label=label, note=note)
 
 
 # ---- Fig. 1: the main split --------------------------------------------------------------------------------------------
@@ -94,6 +75,8 @@ def fig01_main_split() -> sp.Figure:
 
 # ---- Fig. 4: the twin set ----------------------------------------------------------------------------------------------
 LANES = (("paper10", None), ("paper10_rot", "control"), ("paper10_keepA", "answer"))
+# each lane's own colour word ("knock-out", "answer span kept") does not fit one line over a post-width accuracy panel
+# (SP606, styles-plot 0.1.3), so the lanes keep their roles' words
 
 
 def fig04_twin_set() -> sp.Figure:
@@ -191,7 +174,8 @@ def fig12_pointer() -> sp.Figure:
     def panel(cond, header):
         role = "control" if cond == "rot" else "lens"
         return sp.DotColumn(header, "moved", (-8, 96), (0, 40, 80),
-                            series=[sp.Series(role, cells(cond), control="rotated" if role == "control" else None)])  # fmt: skip
+                            series=[sp.Series(role, cells(cond), control="rotated" if role == "control" else None,
+                                              word=None if role == "control" else "lens part swapped in")])  # fmt: skip
 
     def diff(m):
         key = f"ptr.{ZK[m]}.neutral_minus_swap"
@@ -204,7 +188,7 @@ def fig12_pointer() -> sp.Figure:
     bottom = sp.DotTable(models, [panel("noown", "without another entity's own-word directions"),
                                   panel("rot", "rotated"),
                                   sp.TextColumn("neutral sentence − own passage", "moved_difference",
-                                                {m: diff(m) for m in models})],
+                                                {m: diff(m) for m in models}, unit_title=False)],
                          note="the pointer runs: a different item set from Fig. 6's swap")  # fmt: skip
     return sp.Figure("fig12_pointer", vocab()).add(top, bottom)
 
@@ -232,7 +216,8 @@ def appB_f17_attention() -> sp.Figure:
                 v = D.s(m, ATT.format(slot, quantity), "fig13")
                 cells[(m, q)] = est(v, f"att.{'old' if slot == 'j' else 'new'}.{q}.{ZK[m]}",
                                     key=f"att.{slot}.{q}.{ZK[m]}", label=True, interval=control is None)  # fmt: skip
-            series.append(sp.Series("control" if control else "address", cells, control=control))
+            series.append(sp.Series("control" if control else "address", cells, control=control,
+                                    word=None if control else "address swap"))  # fmt: skip
         return sp.DotColumn(header, "attention", (-0.04, 1.0), (0, 0.5, 1), series=series)
 
     table = sp.DotTable(models, [column("j", "old locker sentence"), column("k", "new locker sentence")],
@@ -254,11 +239,11 @@ def appB_f17b_heads() -> sp.Figure:
     ran = {m: est(rnd[m], f"heads.random10.{ZK[m]}", key=f"heads.random10.{ZK[m]}", interval=False) for m in models}
     heads = sp.DotColumn(
         "zeroing the top 10 heads", "cut", (-0.15, 0.66), (0, 0.25, 0.5),
-        series=[sp.Series("control", ran, control="10 random heads"), sp.Series("address", top)],
-        rules=[sp.Rule(BAR, TM.RULE_BAR.format(v.format(BAR, "cut")))],
+        series=[sp.Series("control", ran, control="10 random heads"), sp.Series("address", top, word="the top 10 heads")],
+        rules=[sp.Rule(BAR, TM.RULE_BAR, unit="cut", key="heads.bar")],
     )  # fmt: skip
-    table = sp.DotTable(list(models), [heads, sp.TextColumn("top 10 heads", "cut", top),
-                                       sp.TextColumn("10 random heads", "cut", ran)],
+    table = sp.DotTable(list(models), [heads, sp.TextColumn("top 10 heads", "cut", top, unit_title=False),
+                                       sp.TextColumn("10 random heads", "cut", ran, unit_title=False)],
                         note="under the address swap")  # fmt: skip
     return sp.Figure("appB_f17b_heads", v).add(table)
 
@@ -271,15 +256,17 @@ def key() -> sp.Figure:
     k = ZK[m]
     lk, rc, mk = (need(D.b(f"ko.{k}.{q}"), f"ko.{k}.{q}") for q in ("lostK", "lostM", "mk"))
     ctrl = need(S.ctrl(k), f"ctrl {k}")
-    read = TM.READ_ALOUD.format(model=v.entity("models", m).name, recall=v.format(rc[0], "drop"),
-                                lookup=v.format(lk[0], "drop"), gap=v.format(mk[0], "gap"),
-                                ctrl=v.format(ctrl, "gap"))  # fmt: skip
-    return sp.key_figure(v, example=sp.DotTable([m], _band_columns([m])), read_aloud=read)
+    names = ("recall", "lookup", "gap", "ctrl")
+    read = TM.READ_ALOUD.format(model=v.entity("models", m).name, **{n: f"{{{n}}}" for n in names})
+    numbers = {"recall": (rc[0], "drop", f"ko.{k}.lostM"), "lookup": (lk[0], "drop", f"ko.{k}.lostK"),
+               "gap": (mk[0], "gap", f"ko.{k}.mk"), "ctrl": (ctrl, "gap", f"ko.{k}.ctrl")}  # fmt: skip
+    return sp.key_figure(v, example=sp.DotTable([m], _band_columns([m])), read_aloud=read, numbers=numbers)
 
 
 FIGS = {"key": key, "fig01_main_split": fig01_main_split, "fig04_twin_set": fig04_twin_set, "fig09_order": fig09_order,
         "fig12_pointer": fig12_pointer, "appB_f17_attention": appB_f17_attention,
         "appB_f17b_heads": appB_f17b_heads}  # fmt: skip
+FIGS.update(writeup_sp_b.FIGS)
 
 
 def build(ids=None, out: Path = OUT) -> list[str]:
@@ -295,5 +282,16 @@ def build(ids=None, out: Path = OUT) -> list[str]:
     return failed
 
 
+def write_order(out: Path = OUT) -> Path:
+    """The post's figure order (tables.WRITEUP_ORDER), one file name a line, for `styles-plot sheet --order`."""
+    from bridge_jspace.figkit.tables import WRITEUP_ORDER
+
+    path = out / "order.txt"
+    path.write_text("".join(f"{i}.png\n" for i in WRITEUP_ORDER))
+    return path
+
+
 if __name__ == "__main__":
-    sys.exit(1 if build(sys.argv[1:] or None) else 0)
+    failed = build(sys.argv[1:] or None)
+    write_order()
+    sys.exit(1 if failed else 0)

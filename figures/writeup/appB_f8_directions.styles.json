@@ -1,0 +1,158 @@
+{
+ "styles_plot": "0.1.3",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "7d16d14a2010e13081fb06de8329ab7b1a1341ee7efd50b4a13a97b9350c3b0c"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "6b4a173099a90d20e838f62277be93a09afa0bfc74468024adcebdd050e54992"
+ },
+ "figure": "appB_f8_directions",
+ "target": "post",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "2f4232f0541487555422215f6de88e734899f219dd3b85ea5e0e73c49585da1e",
+  "dpi": 200
+ },
+ "roles": [
+  "lookup"
+ ],
+ "controls": [],
+ "cells": {
+  "dirs.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "dirs.q122": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "dirs.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "dirs.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "dirs.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "grey band: within 0.10 of a random part",
+  "whiskers: 95% interval"
+ ],
+ "numbers": {
+  "f8.dirs.25.q9": "−0.02",
+  "f8.dirs.25.q27": "0.12",
+  "f8.dirs.25.mu": "−0.10",
+  "f8.dirs.25.q122": "0.00",
+  "f8.dirs.50.q9": "−0.03",
+  "f8.dirs.50.q27": "0.30",
+  "f8.dirs.50.mu": "−0.01",
+  "f8.dirs.50.q122": "−0.02",
+  "f8.dirs.100.q9": "−0.08",
+  "f8.dirs.100.q27": "0.60",
+  "f8.dirs.100.mu": "0.00",
+  "f8.dirs.100.q122": "−0.12"
+ },
+ "problems": []
+}

@@ -1,19 +1,19 @@
 {
- "styles_plot": "0.1.2",
+ "styles_plot": "0.1.3",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "5b7a90697ab6706a1738256547dc6e40540ff47e5fa7a7bbad4f37dca64fc108"
+  "sha256": "7d16d14a2010e13081fb06de8329ab7b1a1341ee7efd50b4a13a97b9350c3b0c"
  },
  "registry": {
   "path": "data/figures/status_sp.csv",
-  "sha256": "14c45e55d5c25d3356f05c41ce482e1ff56220321be63797eb8996a028a10ddc"
+  "sha256": "6b4a173099a90d20e838f62277be93a09afa0bfc74468024adcebdd050e54992"
  },
  "figure": "fig12_pointer",
  "target": "post",
  "mode": "strict",
  "publishable": true,
  "png": {
-  "sha256": "c02e875a3702c9cbd32c0adfae06ed08d2bac6db828230c601a7c9d48f4513e0",
+  "sha256": "f0f16e743a9a121fce4565fbd5b3c123d6702ccaeae214bf466c54ed6910a0cc",
   "dpi": 200
  },
  "roles": [
@@ -176,11 +176,11 @@
  ],
  "numbers": {
   "ptr.q9.neutral_minus_swap": "+6.2",
-  "ptr.q9.neutral_minus_swap.interval": "[+3.2, +8.9]",
+  "ptr.q9.neutral_minus_swap.interval": "[3.2, 8.9]",
   "ptr.q27.neutral_minus_swap": "+6.0",
-  "ptr.q27.neutral_minus_swap.interval": "[+3.3, +8.7]",
+  "ptr.q27.neutral_minus_swap.interval": "[3.3, 8.7]",
   "ptr.nl.neutral_minus_swap": "+0.3",
-  "ptr.nl.neutral_minus_swap.interval": "[−2.4, +3.2]",
+  "ptr.nl.neutral_minus_swap.interval": "[−2.4, 3.2]",
   "ptr.q9.swap": "63.5",
   "ptr.q27.swap": "64.0",
   "ptr.nl.swap": "45.8",

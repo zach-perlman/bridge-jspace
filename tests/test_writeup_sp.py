@@ -74,7 +74,7 @@ def test_converted_registry_is_current_and_loads():
 
 
 # ---- the figures -----------------------------------------------------------------------------------------------------
-BUILT = [f for f in SP.FIGS if f != "key"]
+BUILT = list(SP.FIGS)
 
 
 @pytest.fixture(scope="module")
@@ -94,9 +94,3 @@ def test_one_data_key_prints_one_string_across_figures(saved):
         for key, s in json.loads(report.sidecar.read_text())["numbers"].items():
             seen[key].add(s)
     assert {k: v for k, v in seen.items() if len(v) > 1} == {}
-
-
-@pytest.mark.xfail(strict=True, reason="styles-plot 0.1.2: the key figure's controls line does not wrap and the "
-                                       "legend is taller than the post aspect allows (reported to styles-plot)")  # fmt: skip
-def test_key_figure_saves_strict(tmp_path):
-    sp.save(SP.key(), tmp_path / "key.png", target="post")

@@ -41,7 +41,7 @@ word = "neutral"
 meaning = "a method of no role (a probe's subspace)"
 
 [controls]
-names = ["rotated", "logit lens", "PCA", "a random part", "energy-matched random", "a random vector", "layout-only probe", "10 random heads", "no change"]
+names = ["rotated", "logit lens", "PCA", "a random part", "energy-matched random", "a random vector", "layout-only probe", "10 random heads", "no change", "random lens directions", "the whole state swapped in"]
 
 [key]
 tick = "the largest same-size control"
@@ -49,10 +49,15 @@ band = "within 0.10 of a random part"
 
 [intervals]
 ci95 = "95% interval"
+range = "the range over the five start lockers"
 
 # a paired difference printed with its sign (neutral sentence − own passage)
 [formats.points_signed]
 decimals = 1
+sign = true
+
+[formats.share_signed]
+decimals = 2
 sign = true
 
 [units.accuracy]
@@ -120,10 +125,86 @@ title = "gap: recall \u2212 lookup (share of switches)"
 quantity = "gap"
 format = "share"
 
+[units.probe_accuracy]
+title = "probe accuracy (share)"
+quantity = "probe accuracy"
+format = "share"
+
+[units.undone]
+title = "share of the damage undone"
+quantity = "of the damage undone"
+format = "share"
+
+[units.drop_beyond]
+title = "accuracy drop beyond random (points)"
+quantity = "accuracy drop"
+format = "points"
+
+[units.recalls]
+title = "share of recalls switched"
+quantity = "recalls switched"
+format = "share"
+
+[units.beyond_rotated]
+title = "accuracy drop minus rotated (points)"
+quantity = "accuracy drop"
+format = "points"
+
+[units.beyond_harshest]
+title = "accuracy drop minus the harshest control (points)"
+quantity = "accuracy drop"
+format = "points"
+
+[units.scenes]
+title = "share of the scenes"
+quantity = "scenes"
+format = "share"
+
+[units.scenes_difference]
+title = "difference (share of the scenes)"
+quantity = "difference"
+format = "share_signed"
+cue_word = "larger"
+
+# Fig. 5's narrow panels: the group header and the note name the quantity
+[units.points]
+title = "points"
+quantity = "gap"
+format = "points"
+
+[units.share]
+title = "share"
+quantity = "blocked"
+format = "share"
+
+[units.pairs]
+title = "pairs of lockers"
+quantity = "pairs"
+format = "z"
+
+# text columns: the header names the quantity (no cue, no unit title drawn)
 [units.moved_difference]
 title = "difference (points)"
 quantity = "answers moved"
 format = "points_signed"
+cue = false
+
+[units.gap_difference]
+title = "difference (points)"
+quantity = "gap"
+format = "points_signed"
+cue = false
+
+[units.share_difference]
+title = "difference (share)"
+quantity = "difference"
+format = "share_signed"
+cue = false
+
+[units.pair_count]
+title = "pairs of lockers"
+quantity = "pairs"
+format = "count"
 cue = false
 
 [terms]
@@ -187,9 +268,62 @@ canonical = [
     "without another entity's own-word directions",
     "without own-word directions",
     "zeroing the top 10 heads",
+    "lens part − largest control",
+    "the recall − lookup gap under each removal",
+    "the recall's switches blocked beyond random · earlier runs with a same-size control",
+    "probe accuracy at the bridge word",
+    "position answers without the address",
+    "keep the answer span",
+    "remove the answer span",
+    "remove it, codename set",
+    "all of it",
+    "one-hop question",
+    "data-built city subspace",
+    "one-hop question: “{city} is in the country of”",
+    "probe accuracy on the lens part",
+    "recalls switched",
+    "chance",
+    "copy a given answer",
+    "pick the true of two",
+    "verify a Yes/No claim",
+    "produce the answer alone",
+    "derive from a premise",
+    "Middle layers · the knock-out band",
+    "Deeper layers",
+    "all tokens",
+    "the bridge's mention",
+    "the question",
+    "fact passages",
+    "true facts",
+    "made-up facts",
+    "the lookup's switches blocked when more lens directions are removed",
+    "without the lens part",
+    "lookup: before − after",
+    "lookup: question after the scene",
+    "lookup: question before the scene",
+    "recall: question after the scene",
+    "recall: question before the scene",
+    "position-route scenes, without the address",
+    "identity-route scenes, without the lens part",
+    "the bridge word",
+    "its state",
+    "Position-route scenes · without the address",
+    "Identity-route scenes · without the lens part",
+    "scenes that leave position",
+    "scenes that go to position",
+    "difference",
+    "pairs reaching the 25% bar",
+    "pairs",
+    "sent one locker on",
+    "half",
+    "the 25% bar",
 ]
 templates = [
     "{num} items",
+    "{num} lens directions",
+    "layer {num}",
+    "matched on {num}%",
+    "below gate ({num})",
     "{num} / {num} items",
     "{entity} \u00b7 {num} / {num} items",
     "bar fixed in advance: {num}",
@@ -197,7 +331,7 @@ templates = [
     "unedited: {num}% right on every model",
     "read: on {entity}, the knock-out drops recall {num} points and lookup {num}; the gap is {num}, the largest same-size control's {num}",
 ]
-missing = ["no run", "no comparable run", "below gate", "too few switches", "no interval"]
+missing = ["no run", "no comparable run", "below gate", "too few switches", "no interval", "source missing", "no control run", "no energy-matched control", "can't tell"]
 not_claimed = ["shared with the logit lens", "gone when scored by probability"]
 
 [[terms.banned]]

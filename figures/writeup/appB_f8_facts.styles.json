@@ -1,0 +1,123 @@
+{
+ "styles_plot": "0.1.3",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "7d16d14a2010e13081fb06de8329ab7b1a1341ee7efd50b4a13a97b9350c3b0c"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "6b4a173099a90d20e838f62277be93a09afa0bfc74468024adcebdd050e54992"
+ },
+ "figure": "appB_f8_facts",
+ "target": "post",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "cec8e6ef9c18dc61a9f652091ac12adcc0969f74250e612e6cc26bd411205015",
+  "dpi": 200
+ },
+ "roles": [
+  "lookup"
+ ],
+ "controls": [],
+ "cells": {
+  "facts.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "facts.q122": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "facts.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "facts.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "facts.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "facts.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "facts.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "facts.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "facts.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "facts.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "facts.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "facts.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "grey band: within 0.10 of a random part",
+  "whiskers: 95% interval",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "f8.true.q9": "0.26",
+  "f8.made_up.q9": "−0.05",
+  "f8.true.q27": "0.28",
+  "f8.made_up.q27": "0.15",
+  "f8.true.nl": "0.15",
+  "f8.made_up.nl": "0.03",
+  "f8.true.q122": "0.12",
+  "f8.made_up.q122": "0.02"
+ },
+ "problems": []
+}

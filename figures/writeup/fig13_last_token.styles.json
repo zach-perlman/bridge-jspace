@@ -1,0 +1,188 @@
+{
+ "styles_plot": "0.1.3",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "7d16d14a2010e13081fb06de8329ab7b1a1341ee7efd50b4a13a97b9350c3b0c"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "6b4a173099a90d20e838f62277be93a09afa0bfc74468024adcebdd050e54992"
+ },
+ "figure": "fig13_last_token",
+ "target": "post",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "d4c88c1cbe4c2aaecdfc51c44dff245595894914780eb60f9f628e9fbd2428f6",
+  "dpi": 200
+ },
+ "roles": [
+  "lens",
+  "recall"
+ ],
+ "controls": [
+  "the whole state swapped in"
+ ],
+ "cells": {
+  "last.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "last.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "last.q122": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "last.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "last.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "last.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "last.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "last.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "last.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "last.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "last.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "last.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "last.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "last.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "last.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "last.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "last.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "last.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "last.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "last.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "grey: the whole state swapped in",
+  "whiskers: 95% interval",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "fig13.lens.q9": "0.00",
+  "fig13.lens.q27": "0.01",
+  "fig13.lens.mu": "0.01",
+  "fig13.lens.nl": "0.14",
+  "fig13.lens.q122": "0.00",
+  "fig13.read.q9": "0.97",
+  "fig13.read.q27": "0.95",
+  "fig13.read.mu": "0.95",
+  "fig13.read.nl": "0.98",
+  "fig13.read.q122": "0.91"
+ },
+ "problems": []
+}

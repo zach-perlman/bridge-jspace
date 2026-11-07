@@ -114,6 +114,71 @@ def appB_f17() -> list[dict]:
     return out
 
 
+def fixed(fig, cell, what, source):
+    return row(fig, cell, "fixed_in_advance", f"{what}: the figkit figure drew no mark hollow", source)
+
+
+def post_hoc(fig, cell, what, source):
+    return row(fig, cell, "post_hoc", f"{what}: the figkit figure drew it hollow (post hoc)", source)
+
+
+def styles_plot_port() -> list[dict]:
+    """The figures moved to styles-plot after the pilot (figkit/writeup_sp_b.py): each status is the one the figkit
+    figure drew (its hollow rule, cited), so the port changes the presentation only."""
+    src = "src/bridge_jspace/figkit/"
+    out = []
+    for m, _ in MODELS:  # Fig. 5: the band test's post hoc models hollow in every arm (writeup_figs.fig05_controls)
+        k = SHORT[m]
+        if k in WF.NOT_CLAIMED:
+            out.append(row("fig05_controls", f"band.{k}", "post_hoc", "the band test on this model was run after the "
+                           "data (as Fig. 1)", f"{src}writeup_figs.py fig05_controls zach_post_hoc",
+                           tag=WF.NOT_CLAIMED[k]))  # fmt: skip
+        else:
+            out.append(fixed("fig05_controls", f"band.{k}", "the band test", f"{src}writeup_figs.py fig05_controls"))
+        out.append(fixed("fig05_controls", f"layer.{k}", "one layer, the earlier same-size runs",
+                         f"{src}writeup_figs.py fig05_controls"))  # fmt: skip
+        if m == "nemotron-3.5-lightning":
+            DISAGREEMENTS.append("Lightning in fig05_controls: the figkit figure drew its cells filled; "
+                                 "figkit/data.py hollow() says Lightning is post hoc everywhere. Kept as drawn.")
+        out.append(by_hollow("fig08a_address_read_remove", f"probe.{k}", m, what="the locker probe"))
+        out.append(by_hollow("fig08a_address_read_remove", f"remove.{k}", m, lowered=True, what="the address removed"))
+        out.append(by_hollow("fig13_last_token", f"last.{k}", m, what="the last token"))
+        out.append(by_hollow("appB_f8_facts", f"facts.{k}", m, what="true and made-up facts"))
+        out.append(fixed("appB_f8_directions", f"dirs.{k}", "more lens directions", f"{src}writeup_appendix.py"))
+        for when in ("after", "before"):
+            if D.hollow(m) or m == "qwen3.6-27b":
+                out.append(post_hoc("appB_f12_order", f"{when}.{k}", "question order (the 27B's rule set after its "
+                                    "cells; Lightning's gate after its pre-check)", f"{src}writeup_address.py appB_f12_order"))  # fmt: skip
+            else:
+                out.append(fixed("appB_f12_order", f"{when}.{k}", "question order", f"{src}writeup_address.py"))
+        for tag in ("address", "lens"):
+            out.append(post_hoc("appB_f14_two_codes", f"{tag}.{k}", "the two removals, every cell post hoc",
+                                f"{src}writeup_claims.py appB_f14_two_codes"))  # fmt: skip
+        out.append(by_hollow("appB_f19_six_lockers", f"six.{k}", m, what="six lockers"))
+    for k in ("q9", "q27", "mu", "nl"):  # appB_f9's models
+        for band_ in ("mid", "late"):
+            for j in range(3):
+                out.append(fixed("appB_f9_where", f"{band_}.{j}.{k}", "where in the prompt", f"{src}writeup_appendix.py"))
+    for m in TWIN:
+        k = SHORT[m]
+        out.append(fixed("fig10_answer_span", f"keep.{k}", "keep the answer span", f"{src}writeup_figs.py"))
+        for panel in ("v4", "codename"):
+            out.append(fixed("fig10_answer_span", f"remove.{panel}.{k}", "remove the answer span", f"{src}writeup_figs.py"))
+        for key_ in ("city", "answers"):
+            out.append(fixed("fig11_orthogonal", f"onehop.{key_}.{k}", "the one-hop question", f"{src}writeup_figs.py"))
+        out.append(post_hoc("fig11_orthogonal", f"onehop.city_perp.{k}", "the city directions orthogonal to the "
+                            "answers, not a reading fixed in advance on this question", f"{src}writeup_figs.py fig11"))  # fmt: skip
+        out.append(fixed("fig11_orthogonal", f"subspace.{k}", "the cleaned city subspace", f"{src}writeup_figs.py"))
+        for col in ("copy", "pick", "verify", "produce", "derive"):
+            q = WF._quantities().get(f"figA1.{col}.{k}", "")
+            if "registered role: descriptive" in q or "role: none" in q:
+                out.append(row("figA1_agents", f"{col}.{k}", "descriptive", "no reading fixed in advance for this "
+                               "cell (data.csv quantity)", "data/figures/writeup/data.csv"))  # fmt: skip
+            else:
+                out.append(fixed("figA1_agents", f"{col}.{k}", "agent transcripts", "data/figures/writeup/data.csv"))
+    return out
+
+
 def key() -> list[dict]:
     """The key figure draws Fig. 1's cells (the 27B's band and one-layer rows, Muse 30B's band row): their statuses."""
     f1 = {r["cell"]: r for r in fig01()}
@@ -122,7 +187,7 @@ def key() -> list[dict]:
 
 
 def rows() -> list[dict]:
-    return [*key(), *fig01(), *fig04(), *fig09(), *fig12(), *appB_f17()]
+    return [*key(), *fig01(), *fig04(), *fig09(), *fig12(), *appB_f17(), *styles_plot_port()]
 
 
 if __name__ == "__main__":
