@@ -126,7 +126,7 @@ def test_no_bullet_starts_with_we():
 
 
 def claims_rows(page: str) -> list[list[str]]:
-    table = page.split("## Claims", 1)[1].split("\n## ", 1)[0]
+    table = page.split("<summary>Key numbers per claim</summary>", 1)[1].split("</details>", 1)[0]
     rows = [r for r in table.splitlines() if r.startswith("| ") and not r.startswith(("| #", "|---"))]
     return [[c.strip() for c in r.strip()[1:-1].split("|")] for r in rows]
 

@@ -306,34 +306,63 @@ F11_NOTES = {(10, "lightning"): ("¹", "Lightning, claim 10: the order split is 
                                       "gate (0.751).")}  # fmt: skip
 
 
-def claims_table(path: Path = TEMPLATE) -> list[tuple[str, str]]:
-    """The first two columns (id, claim) of the template's "## Claims" table, in order."""
-    lines = path.read_text().split("## Claims", 1)[1].splitlines()
+CLAIMS_MARK = "<summary>Key numbers per claim</summary>"  # the claims table sits folded under the scorecard (P2-1)
+# each claim's card on the page, by its heading (the card that shows the claim's figure inline; docs pass P2-4)
+CLAIM_CARD = {
+    1: "In a conflict, which part of the bridge word does each reader follow?",
+    2: "In a conflict, which part of the bridge word does each reader follow?",
+    3: "Part I. The two readers: lookup and recall",
+    4: "Which route does the lookup take: the item's identity, its locker's position, or the number?",
+    5: "Which route does the lookup take: the item's identity, its locker's position, or the number?",
+    6: "Can the address be read, removed, added and swapped?",
+    7: "Can the address be read, removed, added and swapped?",
+    8: "Can the address be read, removed, added and swapped?",
+    9: "Can the lens read the address?",
+    10: "Does the bridge word redirect the lookup only when its locker sentence came first?",
+    11: "Does the bridge word redirect the lookup only when its locker sentence came first?",
+    12: "Is the address readable before the lookup uses it, on every model?",
+}
+# † cells: not in the hand-checked sample. The 122B's coverage runs (no prediction, not among the hand-checked views)
+# add it to claims 2, 8, 9, 11 and 12 and fail claim 3 (the claims table's note); its other cells are its main runs
+NOT_CHECKED = {(n, "122b") for n in (2, 3, 8, 9, 11, 12)}
+
+
+def slug(heading: str) -> str:
+    """GitHub's anchor for a heading: lower case, punctuation dropped (hyphens kept), spaces to hyphens."""
+    return re.sub(r"[^\w\- ]", "", heading.lower()).replace(" ", "-")
+
+
+def claims_table(path: Path = TEMPLATE) -> list[list[str]]:
+    """The template's claims table (folded under the scorecard), one row per claim: id, claim, models, grade, key
+    numbers, in order."""
+    lines = path.read_text().split(CLAIMS_MARK, 1)[1].splitlines()
     rows = []
     for ln in lines:
         if ln.startswith("|"):
             rows.append(ln)
         elif rows:
             break
-    return [(ln.split("|")[1].strip(), ln.split("|")[2].strip()) for ln in rows[2:]]
+    return [[c.strip() for c in ln.split("|")[1:-1]] for ln in rows[2:]]
 
 
 def scorecard() -> list[str]:
     """The claims by model as a markdown table (Dan's 01:58 brief: Fig. 11 as markdown, no red and green): the claims
-    table's sentences, CLAIM_CELLS's words; "○" post hoc, a cell that has no result says why ("below gate", "not run"),
-    "fails" in bold, the cell notes as footnotes."""
-    claims = dict(claims_table(TEMPLATE))
+    table's sentences and grades, CLAIM_CELLS's words; each claim number links to its card; "○" post hoc, "†" not in
+    the hand-checked sample, a cell that has no result says why ("below gate", "not run"), "fails" in bold, the cell
+    notes as footnotes."""
+    claims = {r[0]: r for r in claims_table(TEMPLATE)}
     word = {"holds": "holds", "in part": "in part", "fails": "**fails**", "below gate": "below gate", "not run": "not run"}
     head = [CLAIM_SHORT[m] + (" ○" if m == "lightning" else "") for m in F11_MODELS]
-    out = ["| # | Claim | " + " | ".join(head) + " |", "|---|---|" + "---|" * len(head)]
+    out = ["| # | Claim | Grade | " + " | ".join(head) + " |", "|---|---|---|" + "---|" * len(head)]
     for n, cells in CLAIM_CELLS.items():
         row = []
         for m, (w, flag) in cells.items():
             cell = word[w] + (
                 " ○" if flag == "hollow" and m != "lightning" and w not in ("not run", "below gate") else ""
             )
-            row.append(cell + F11_NOTES.get((n, m), ("",))[0])
-        out.append(f"| {n} | {claims[str(n)]} | " + " | ".join(row) + " |")
+            row.append(cell + (" †" if (n, m) in NOT_CHECKED else "") + F11_NOTES.get((n, m), ("",))[0])
+        _id, claim, _models, grade, *_ = claims[str(n)]
+        out.append(f"| [{n}](#{slug(CLAIM_CARD[n])}) | {claim} | {grade} | " + " | ".join(row) + " |")
     notes = list(F11_NOTES.values())
     return [*out, "", *[f"{mark} {note}" for mark, note in F11_NOTES.values()], *([""] if notes else [])]
 
