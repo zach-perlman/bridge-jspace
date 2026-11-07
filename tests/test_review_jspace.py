@@ -19,6 +19,8 @@ from bridge_jspace.review import items as I
 from scripts import review_jspace as J
 from scripts import x51_jread as JR
 
+pytestmark = pytest.mark.slow  # CPU readouts of the real models: minutes
+
 MODELS = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b", "nemotron-3.5-lightning", "qwen3.5-122b-a10b")
 
 

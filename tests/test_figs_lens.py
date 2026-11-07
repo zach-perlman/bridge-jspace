@@ -269,6 +269,7 @@ def newest_real_grid() -> Path | None:
     return g if paths and all((C.REPO / p).exists() for p in paths) else None
 
 
+@pytest.mark.slow  # rebuilds the real grids
 @pytest.mark.skipif(newest_real_grid() is None, reason="no grid with its finding 2 and 7 result files here")
 @pytest.mark.parametrize("mod", [SB, LP, NE])
 def test_real_grid_numbers_match(tmp_path, mod):

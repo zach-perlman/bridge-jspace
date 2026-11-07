@@ -1,4 +1,4 @@
-.PHONY: readme figures-kit figures-writeup writeup-examples install fmt lint typecheck test test-model check run data-report review-serve review-export review-summary review-verified verify-checks verify-independent verify-pack examples-render examples-serve enqueue queue-status queue-pull queue-worker queue-cancel queue-stats autonomy autonomy-status autonomy-off
+.PHONY: readme figures-kit figures-writeup writeup-examples install fmt lint typecheck test test-all test-model check run data-report review-serve review-export review-summary review-verified verify-checks verify-independent verify-pack examples-render examples-serve enqueue queue-status queue-pull queue-worker queue-cancel queue-stats autonomy autonomy-status autonomy-off
 
 # make run CONFIG=scripts/exp10_lens_sanity/config.yaml ARGS="model=configs/models/qwen3.6-27b.yaml"
 run:                ## experiment in a detached tmux session, log in log/
@@ -19,8 +19,11 @@ lint:
 typecheck:
 	uv run pyright
 
-test:               ## fast unit tests (no model download)
-	uv run pytest -n auto  # parallel (pytest-xdist): ~2.5 min instead of ~7
+test:               ## fast unit tests (no model download, no slow tests)
+	uv run pytest -n auto
+
+test-all:           ## every test but the model ones, the slow ones included (minutes)
+	uv run pytest -n auto -m 'not model'
 
 test-model:         ## integration tests on Qwen3.5-0.8B + its lenses (CPU ok, a few minutes)
 	uv run pytest -m model

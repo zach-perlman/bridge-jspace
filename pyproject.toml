@@ -91,5 +91,6 @@ venv = ".venv"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]  # `scripts.*` experiment packages import from the repo root, as under bj-run
-markers = ["model: loads a real (small) model; slower, needs HF download"]
-addopts = "-m 'not model'"
+markers = ["model: loads a real (small) model; slower, needs HF download",
+           "slow: minutes each (review views, verification packs, real grids); make test-all"]
+addopts = "-m 'not model and not slow'"

@@ -291,6 +291,7 @@ def figure_texts(tmp_path_factory) -> dict[str, list[str]]:
     return texts
 
 
+@pytest.mark.slow  # renders every README figure
 def test_every_shown_figure_uses_the_glossary(figure_texts):
     from scripts import readme_story_figures as F
 

@@ -18,6 +18,8 @@ from bridge_jspace.review import items as I
 from bridge_jspace.review import page as P
 from bridge_jspace.review import questions as Q
 
+pytestmark = pytest.mark.slow  # renders every review view: minutes
+
 TIER1 = [v["id"] for v in I.spec()["views"] if v.get("tier") == 1]
 WITH_QUESTIONS = [vid for vid in TIER1 if Q.has_questions(vid)]
 SHIPPED = ("main_swap",)  # view a; c, d, f, b follow in the same checklist (Dan 30 Oct: a first)

@@ -15,6 +15,8 @@ from bridge_jspace import pins
 from bridge_jspace.review import items as I
 from scripts import review_states as RS
 
+pytestmark = pytest.mark.slow  # stage runs on a fake model: minutes
+
 MODEL = pins.TARGET  # the tests' process target (BJ_TARGET unset: qwen3.6-27b)
 
 

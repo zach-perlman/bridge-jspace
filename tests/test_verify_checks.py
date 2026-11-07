@@ -9,6 +9,8 @@ from bridge_jspace.review import fixed as F
 from bridge_jspace.review import items as I
 from scripts import verify_checks as VC
 
+pytestmark = pytest.mark.slow  # builds the verification packs: minutes
+
 
 @pytest.fixture
 def repo(tmp_path, monkeypatch):
