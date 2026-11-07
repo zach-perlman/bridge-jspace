@@ -576,10 +576,11 @@ def _sentence(x: float, y: float, parts) -> list:
 
 
 # ---- Fig. 2: the datasets (a schematic of real prompts) ------------------------------------------------------------------
-def fig02_datasets() -> sp.Figure:
+def fig02_datasets(width: float | None = None) -> sp.Figure:
     """The two kinds of prompt: the fact passages (question, the lookup's passage, the recall's) and the locker scenes
     (scene, lookup question, recall question); the bridge in bold; each answer in its reader's colour, over its
-    source."""
+    source. The answer column follows the target's width (the README draws it at 11 in, the post at 8 in)."""
+    width = width or vocab().target("post").width_in
     rows = (  # (label, reader role or None, prompt lines [(text, bold)], answer, source)
         ("Fact passages", None, [[("Question: ", False), ("The composer who wrote The Magic Flute", True)],
                                  [("was of which nationality?", False)]], "", ""),
@@ -592,7 +593,10 @@ def fig02_datasets() -> sp.Figure:
         ("lookup", "lookup", [[("Which locker belongs to Eric's pick?", False)]], "3", "in the scene"),
         ("recall", "recall", [[("What is the atomic number of Eric's pick?", False)]], "6", "from memory"),
     )  # fmt: skip
-    x_label, x_prompt, x_answer, top, rh = 0.12, 1.55, 6.55, 0.75, 0.62
+    x_label, x_prompt, top, rh = 0.12, 1.55, 0.75, 0.62
+    longest = max(sum(_width(t, bold=b) for t, b in parts) for *_, lines, _a, _s in rows for parts in lines)
+    # the answer column right after the longest prompt line (a gap in the middle splits the prompt from its answer)
+    x_answer = min(x_prompt + longest + 0.5, width - 1.45 - 0.12)  # the answers and their sources need ~1.45 in
     el: list = [sp.Words(x_prompt, 0.25, [("Prompt", None)], bold=True),
                 sp.Words(x_prompt, 0.52, [("the bridge in bold", None)]),
                 sp.Words(x_answer, 0.25, [("Answer", None)], bold=True),
@@ -610,32 +614,42 @@ def fig02_datasets() -> sp.Figure:
 
 
 # ---- Fig. 3: the tools (layers x tokens grids) ---------------------------------------------------------------------------
-def fig03_tools() -> sp.Figure:
+def fig03_tools(width: float | None = None) -> sp.Figure:
     """The three tools as grids (layers x tokens): the cells a tool changes are one box in its colour (the lens part
-    teal, another entity's part blue) with its words right under it (Dan, 7 Nov: a word beside every coloured
-    element); the bridge word's column is labelled. The grid is an illustration: its band is the bottom rows."""
-    nl, nt, bridge, cell = 4, 7, 4, 0.27  # layers, tokens, the bridge word's token, a cell's side (in)
+    teal, another entity's part blue) with its words centred right under it (Dan, 7 Nov: a word beside every coloured
+    element); the bridge word's column is labelled. The grid is an illustration: its band is the bottom rows. The
+    layout follows the target's width (the README draws it at 11 in, the post at 8 in)."""
+    width = width or vocab().target("post").width_in
+    nl, nt, bridge = 4, 7, 4  # layers, tokens, the bridge word's token
     panels = (("remove everywhere", "a band of layers, every token", (2, 4, 0, nt), "lens", "lens part removed"),
               ("removed from the patch", "one layer, the bridge word", (3, 4, bridge, bridge + 1), "lens",
                "lens part removed"),
               ("swap", "the bridge word, over the band", (2, 4, bridge, bridge + 1), "identity",
                ("another entity's", "lens part swapped in")))  # fmt: skip
+    panel_w, label_w = (width - 0.24) / 3, 0.62
+    cell = min((panel_w - label_w - 0.12) / nt, 0.42)
+    gy, line = 0.95, 0.22
+    words_n = max(1 if isinstance(w, str) else len(w) for *_, w in panels)
     el: list = []
     for k, (title, sub, (r0, r1, t0, t1), role, word) in enumerate(panels):
-        x0 = 0.12 + k * 2.66
-        gx, gy = x0 + 0.62, 0.95
+        x0 = 0.12 + k * panel_w
+        gx = x0 + label_w
+        grid_bottom = gy + nl * cell
         el += [sp.Words(x0, 0.2, [(title, None)], bold=True), sp.Words(x0, 0.47, [(sub, None)]),
-               sp.Words(gx + bridge * cell - 0.08, gy - 0.14, [("bridge", None)]),
+               sp.Words(gx + (bridge + 0.5) * cell - _width("bridge") / 2, gy - 0.14, [("bridge", None)]),
                sp.Words(x0, gy + nl * cell / 2, [("layers", None)]),
-               sp.Words(gx + nt * cell / 2 - 0.25, gy + nl * cell + 0.67, [("tokens", None)])]  # fmt: skip
+               sp.Words(gx + nt * cell / 2 - _width("tokens") / 2, grid_bottom + 0.17 + line * words_n + 0.12,
+                        [("tokens", None)])]  # fmt: skip
         el += [sp.Box(gx + t * cell + 0.015, gy + r * cell + 0.015, cell - 0.03, cell - 0.03)
                for r in range(nl) for t in range(nt) if not (r0 <= r < r1 and t0 <= t < t1)]  # fmt: skip
-        el += [sp.Box(gx + t0 * cell + 0.015, gy + r0 * cell + 0.015, (t1 - t0) * cell - 0.03, (r1 - r0) * cell - 0.03,
-                      role=role),
-               *(sp.Words(min(gx + t0 * cell, x0 + 2.55 - 1.2 * _width(w, bold=True)), gy + nl * cell + 0.17 + 0.22 * j, [(w, role)],
-                          bold=True)
-                 for j, w in enumerate((word,) if isinstance(word, str) else word))]  # fmt: skip
-    return sp.Figure("fig03_tools", vocab(), direct_labels=True).add(sp.Schematic(gy + nl * cell + 0.87, el))
+        box_mid = gx + (t0 + t1) / 2 * cell
+        el.append(sp.Box(gx + t0 * cell + 0.015, gy + r0 * cell + 0.015, (t1 - t0) * cell - 0.03,
+                         (r1 - r0) * cell - 0.03, role=role))  # fmt: skip
+        for j, w in enumerate((word,) if isinstance(word, str) else word):  # centred under the box, inside the panel
+            x = min(max(box_mid - _width(w, bold=True) / 2, gx), x0 + panel_w - 0.1 - _width(w, bold=True))
+            el.append(sp.Words(x, grid_bottom + 0.17 + line * j, [(w, role)], bold=True))
+    height = gy + nl * cell + 0.17 + line * words_n + 0.12 + 0.3
+    return sp.Figure("fig03_tools", vocab(), direct_labels=True).add(sp.Schematic(height, el))
 
 
 # Declared, but styles-plot refuses them in strict mode (they stay on figkit until a decision):

@@ -38,9 +38,13 @@ ALIAS = {"r1_c1_split": "fig01_main_split", "r3_last_token": "fig13_last_token",
 WRITEUP = {**WS.FIGS, **WB.BLOCKED}
 
 
+SCHEMATICS = {"p0a_datasets", "p0b_tools"}  # laid out in inches: drawn for the README's width, not the post's
+
+
 def _alias(fid: str):
     def build() -> sp.Figure:
-        fig = WRITEUP[ALIAS[fid]]()
+        src = WRITEUP[ALIAS[fid]]
+        fig = src(vocab().target(TARGET).width_in) if fid in SCHEMATICS else src()
         fig.id = fid  # the README's figure id: its registry rows (copies of the write-up figure's)
         return fig
 
