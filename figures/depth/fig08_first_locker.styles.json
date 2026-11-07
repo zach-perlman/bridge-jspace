@@ -1,0 +1,220 @@
+{
+ "styles_plot": "0.1.5",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "166439273756c92a0e1d5213201875529f50951c3947dcbef491729e37f6ba02"
+ },
+ "registry": {
+  "path": "data/figures/status_sp.csv",
+  "sha256": "7f53a72853edb3ce3dbfddff5b6084e23a92785b8f060c442c1790cad3744af7"
+ },
+ "figure": "fig08_first_locker",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "png": {
+  "sha256": "ae2d6d613695bf1a843edae90d41bda2269527e81b8eb77d9580bdc75beb0b1c",
+  "dpi": 160
+ },
+ "roles": [
+  "identity"
+ ],
+ "controls": [],
+ "cells": {
+  "first.mu": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "first.q27": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "first.q9": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "identity",
+   "cell": "first.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "identity",
+   "cell": "first.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "identity",
+   "cell": "first.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "identity",
+   "cell": "first.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "identity",
+   "cell": "first.q9",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "identity",
+   "cell": "first.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "identity",
+   "cell": "first.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "identity",
+   "cell": "first.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "identity",
+   "cell": "first.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "identity",
+   "cell": "first.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "identity",
+   "cell": "first.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "identity",
+   "cell": "first.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "identity",
+   "cell": "first.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "identity",
+   "cell": "first.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "identity",
+   "cell": "first.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  }
+ ],
+ "key": [
+  "whiskers: 95% interval",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "f08.none.position.q9": "0.46",
+  "f08.neutral.position.q9": "0.42",
+  "f08.first.position.q9": "0.06",
+  "f08.another.position.q9": "0.04",
+  "f08.nolocker.position.q9": "0.12",
+  "f08.none.position.q27": "0.35",
+  "f08.neutral.position.q27": "0.27",
+  "f08.first.position.q27": "0.04",
+  "f08.another.position.q27": "0.03",
+  "f08.nolocker.position.q27": "0.01",
+  "f08.none.position.mu": "0.52",
+  "f08.neutral.position.mu": "0.54",
+  "f08.first.position.mu": "0.34",
+  "f08.another.position.mu": "0.14",
+  "f08.nolocker.position.mu": "0.27",
+  "f08.neutral.shift.q9": "0.15",
+  "f08.neutral.shift.q9.interval": "[0.14, 0.17]",
+  "f08.first.shift.q9": "0.32",
+  "f08.first.shift.q9.interval": "[0.29, 0.35]",
+  "f08.another.shift.q9": "0.35",
+  "f08.another.shift.q9.interval": "[0.25, 0.45]",
+  "f08.nolocker.shift.q9": "0.69",
+  "f08.nolocker.shift.q9.interval": "[0.64, 0.74]",
+  "f08.neutral.shift.q27": "0.17",
+  "f08.neutral.shift.q27.interval": "[0.15, 0.20]",
+  "f08.first.shift.q27": "0.37",
+  "f08.first.shift.q27.interval": "[0.34, 0.41]",
+  "f08.another.shift.q27": "0.30",
+  "f08.another.shift.q27.interval": "[0.22, 0.37]",
+  "f08.nolocker.shift.q27": "0.61",
+  "f08.nolocker.shift.q27.interval": "[0.56, 0.66]",
+  "f08.neutral.shift.mu": "0.18",
+  "f08.neutral.shift.mu.interval": "[0.17, 0.20]",
+  "f08.first.shift.mu": "0.60",
+  "f08.first.shift.mu.interval": "[0.55, 0.65]",
+  "f08.another.shift.mu": "0.54",
+  "f08.another.shift.mu.interval": "[0.49, 0.59]",
+  "f08.nolocker.shift.mu": "0.83",
+  "f08.nolocker.shift.mu.interval": "[0.78, 0.87]",
+  "f08.none.identity.q9": "0.54",
+  "f08.neutral.identity.q9": "0.58",
+  "f08.first.identity.q9": "0.89",
+  "f08.another.identity.q9": "0.96",
+  "f08.nolocker.identity.q9": "0.85",
+  "f08.none.identity.q27": "0.65",
+  "f08.neutral.identity.q27": "0.73",
+  "f08.first.identity.q27": "0.91",
+  "f08.another.identity.q27": "0.90",
+  "f08.nolocker.identity.q27": "0.97",
+  "f08.none.identity.mu": "0.47",
+  "f08.neutral.identity.mu": "0.46",
+  "f08.first.identity.mu": "0.50",
+  "f08.another.identity.mu": "0.59",
+  "f08.nolocker.identity.mu": "0.60"
+ },
+ "problems": []
+}

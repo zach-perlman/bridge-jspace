@@ -246,7 +246,9 @@ BREADTH = {  # (figure, cell prefix) -> the registration it cites
 DEPTH_FIGS = {"fig08a_address_read_remove", "fig08b_address_swap_lens", "f6_address", "fig13_last_token",
               "r3_last_token", "r1_dan_split", "fig05b_controls_layer", "fig01b_settings", "fig01c_zeroing",
               "fig02_specificity", "fig05b_identity_outside", "fig05c_described_bridge", "fig07c_probe_errors",
-              "fig09d_chain", "fig21_code_tool", "fig14_learned"}  # fmt: skip
+              "fig09d_chain", "fig21_code_tool", "fig14_learned", "fig08_first_locker", "fig09_transfer",
+              "fig10_what_is_left", "fig15_mechanisms", "s01_split_all_scene_sets", "s02_parts_all",
+              "s03_order_split", "s08b_pointer_moves_and_neutral_sentence"}  # fmt: skip
 DEPTH_PREFIX = (("t12_two_by_two", "t12.0."), ("t12_two_by_two", "t12.1."))
 
 
@@ -314,10 +316,52 @@ def depth_set(writeup: list[dict]) -> list[dict]:
     return out
 
 
+def depth_set_b() -> list[dict]:
+    """The depth README's second batch (figkit/depth_sp_b.py): statuses as the story builders' docstrings state them
+    (scripts/readme_story_figures.py f08_first_locker, f09_transfer, f10_left, s01_split, s02_parts, s03_order_split,
+    s08b_pointer_moves; scripts/story_b48.py build_mechanisms), cited per row."""
+    from bridge_jspace.figkit.depth_sp_b import REMOVALS, S01, S02, S03
+
+    rs_, b48 = "scripts/readme_story_figures.py", "scripts/story_b48.py build_mechanisms"
+    out = []
+    for m, _ in MODELS:
+        k = SHORT[m]
+        out.append(post_hoc("fig08_first_locker", f"first.{k}", "45a, after the data", f"{rs_} f08_first_locker"))
+        out.append(post_hoc("fig09_transfer", f"format.{k}", "(a) the pointer fit on simple scenes, after the data",
+                            f"{rs_} f09_transfer"))  # fmt: skip
+        out.append(fixed("fig09_transfer", f"refit.{k}", "(b) 45d, fixed in advance", f"{rs_} f09_transfer"))
+        for lane, *_ in REMOVALS:
+            out.append(post_hoc("fig10_what_is_left", f"left.{lane}.{k}", "the sanity swap's removals (both-removed "
+                                "runs, batch 40; 45e on the matched scenes chosen after the data)", f"{rs_} f10_left"))  # fmt: skip
+        for test in ("48.2", "48.3", "48.4", "48.5", "47.6"):
+            out.append(fixed("fig15_mechanisms", f"{test}.{k}", f"{test}, every arm fixed in advance", b48))
+        for row_, *_ in S01:
+            out.append(post_hoc("s01_split_all_scene_sets", f"split.{row_}.{k}", "supplementary to Fig. 1; no rule set "
+                                "before these settings' data", f"{rs_} s01_split"))  # fmt: skip
+        for row_, *_ in S02:
+            if row_ in ("wu", "embed", "rand"):
+                out.append(fixed("s02_parts_all", f"part.{row_}.{k}", "the logit-lens, input-embedding and random-atom "
+                                 "dictionaries from the main test, fixed in advance", f"{rs_} s02_parts"))  # fmt: skip
+            else:
+                out.append(post_hoc("s02_parts_all", f"part.{row_}.{k}", "the parts runs on the one-pick scenes, after "
+                                    "the data", f"{rs_} s02_parts"))  # fmt: skip
+        for lane, *_ in S03:
+            if lane.startswith("clean"):
+                out.append(fixed("s03_order_split", f"order.{lane}.{k}", "the clean one-pick scenes (45m)",
+                                 f"{rs_} s03_order_split"))  # fmt: skip
+            else:
+                out.append(post_hoc("s03_order_split", f"order.{lane}.{k}", "the main test split by order, after the "
+                                    "data", f"{rs_} s03_order_split"))  # fmt: skip
+        for cid in ("moves", "shift"):
+            out.append(post_hoc("s08b_pointer_moves_and_neutral_sentence", f"{cid}.{k}", "supplementary to Fig. 8, "
+                                "after the data", f"{rs_} s08b_pointer_moves"))  # fmt: skip
+    return out
+
+
 def rows() -> list[dict]:
     writeup = [*key(), *fig01(), *fig04(), *fig09(), *fig12(), *appB_f17(), *styles_plot_port()]
     writeup += fig05_split(writeup) + f14_split(writeup)
-    return lightning([*writeup, *readme_set(writeup), *depth_set(writeup)])
+    return lightning([*writeup, *readme_set(writeup), *depth_set(writeup), *depth_set_b()])
 
 
 if __name__ == "__main__":

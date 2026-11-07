@@ -53,6 +53,7 @@ random_vectors = "the range of 200 random vectors"
 [intervals]
 ci95 = "95% interval"
 range = "the range over the five start lockers"
+wilson95 = "95% Wilson interval"
 
 # a paired difference printed with its sign (neutral sentence − own passage)
 [formats.points_signed]
@@ -253,8 +254,77 @@ title = "gap: recall − lookup (effect share)"
 quantity = "gap"
 format = "share"
 
+# depth batch B, second part (figkit/depth_sp_b.py)
+[units.identity_share]
+title = "share of the lookup's answers"
+quantity = "answers by identity"
+format = "share"
+
+[units.code_shift]
+title = "code shift (positions)"
+quantity = "code shift"
+format = "share"
+
+[units.still_switching]
+title = "share of the lookup switches still switching"
+quantity = "lookups still switching"
+format = "share"
+
+[units.mlp_lost]
+title = "recall accuracy drop (share)"
+quantity = "recall accuracy drop"
+format = "share"
+
+[units.named]
+title = "share of recalls naming the target's item"
+quantity = "recalls naming it"
+format = "share"
+
+[units.identity_kept]
+title = "share of identity answers kept"
+quantity = "identity answers kept"
+format = "share"
+
+[units.heads_of_five]
+title = "heads of the five"
+quantity = "heads"
+format = "count"
+cue = false
+
+[units.switched]
+title = "share switched by the whole change"
+quantity = "switched"
+format = "share"
+
+[units.position_share]
+title = "share of position answers"
+quantity = "position answers"
+format = "share"
+
 [terms]
 canonical = [
+    # depth batch B, second part (figkit/depth_sp_b.py)
+    "answers by identity", "by position", "code shift against no sentence",
+    "no sentence", "a neutral sentence", "a pick naming the first-locker item", "a pick naming another locker item",
+    "a pick naming an item with no locker",
+    "simple scenes", "prose", "JSON", "table", "natural passages",
+    "after the data: the pointer fit on simple scenes, not refit",
+    "pointer fit on simple scenes", "pointer refit on the format",
+    "lookups still switching", "share of the change", "identity answers cut beyond the wrong pair",
+    "lens part and pointer", "+ identity outside the lens part", "+ a wrong pair instead",
+    "48.2: late MLPs carry the recall", "recall accuracy drop", "48.3: a person mark", "probe at the item",
+    "probe at the number", "48.4: heads passing the rest", "48.5: the address as a second route",
+    "recalls naming the target's item", "47.6: blocking the pick sentence", "identity answers kept", "the rule's bar",
+    "main test", "one-pick scenes", "matched scenes, two people swap", "matched scenes, one pick changes",
+    "varied scenes",
+    "lens part", "lens part without the word's directions", "the word's directions", "PCA directions (same size)",
+    "lens part fitted to another scene", "logit-lens directions", "input-embedding directions",
+    "random lens directions",
+    "switched by the whole change", "gap: recall − lookup",
+    "main test, locker first", "main test, locker after", "clean scenes, locker first", "clean scenes, locker after",
+    "position answers, only the address kept", "the whole change", "moves to or from the first locker",
+    "moves between the second and third", "a sentence before the first locker",
+    "a sentence between the lockers and the picks", "switched by the whole change: the main test only",
     # the README set (figkit/readme_sp.py)
     "a probe's subspace",
     "old bridge word", "new bridge word", "answer word", "another scene word", "no scene word",
@@ -414,6 +484,7 @@ templates = [
     "{num} / {num} items",
     "{entity} \u00b7 {num} / {num} items",
     "bar fixed in advance: {num}",
+    "48.4's bar fixed in advance: {num} of {num}",
     "unedited: {num}\u2013{num}% right on every model",
     "unedited: {num}% right on every model",
     "read: on {entity}, the knock-out drops recall {num} points and lookup {num}; the gap is {num}, the largest same-size control's {num}",

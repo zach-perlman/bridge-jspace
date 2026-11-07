@@ -556,3 +556,158 @@ fig07c_probe_errors,errors.q122,fixed_in_advance,,"47.13, set before its data: t
 fig09d_chain,hall.q122,fixed_in_advance,,"47.14, set before its data: the figkit figure drew no mark hollow",scripts/story_b47c.py build_chain
 fig21_code_tool,code.q122,fixed_in_advance,,"53.7, set before its data: the figkit figure drew no mark hollow",scripts/story_b53b.py build_code_tool
 fig14_learned,learned.q122,fixed_in_advance,,"51.3, set before its data: the figkit figure drew no mark hollow",scripts/story_b51.py build_learned
+fig08_first_locker,first.q9,post_hoc,,"45a, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f08_first_locker
+fig09_transfer,format.q9,post_hoc,,"(a) the pointer fit on simple scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f09_transfer
+fig09_transfer,refit.q9,fixed_in_advance,,"(b) 45d, fixed in advance: the figkit figure drew no mark hollow",scripts/readme_story_figures.py f09_transfer
+fig10_what_is_left,left.jpp.q9,post_hoc,,"the sanity swap's removals (both-removed runs, batch 40; 45e on the matched scenes chosen after the data): the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f10_left
+fig10_what_is_left,left.idout.q9,post_hoc,,"the sanity swap's removals (both-removed runs, batch 40; 45e on the matched scenes chosen after the data): the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f10_left
+fig10_what_is_left,left.wrong.q9,post_hoc,,"the sanity swap's removals (both-removed runs, batch 40; 45e on the matched scenes chosen after the data): the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f10_left
+fig15_mechanisms,48.2.q9,fixed_in_advance,,"48.2, every arm fixed in advance: the figkit figure drew no mark hollow",scripts/story_b48.py build_mechanisms
+fig15_mechanisms,48.3.q9,fixed_in_advance,,"48.3, every arm fixed in advance: the figkit figure drew no mark hollow",scripts/story_b48.py build_mechanisms
+fig15_mechanisms,48.4.q9,fixed_in_advance,,"48.4, every arm fixed in advance: the figkit figure drew no mark hollow",scripts/story_b48.py build_mechanisms
+fig15_mechanisms,48.5.q9,fixed_in_advance,,"48.5, every arm fixed in advance: the figkit figure drew no mark hollow",scripts/story_b48.py build_mechanisms
+fig15_mechanisms,47.6.q9,fixed_in_advance,,"47.6, every arm fixed in advance: the figkit figure drew no mark hollow",scripts/story_b48.py build_mechanisms
+s01_split_all_scene_sets,split.main.q9,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s01_split_all_scene_sets,split.onepick.q9,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s01_split_all_scene_sets,split.matched2.q9,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s01_split_all_scene_sets,split.matched1.q9,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s01_split_all_scene_sets,split.varied.q9,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s01_split_all_scene_sets,split.natural.q9,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s02_parts_all,part.jpp.q9,post_hoc,,"the parts runs on the one-pick scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.jpp_noword.q9,post_hoc,,"the parts runs on the one-pick scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.word.q9,post_hoc,,"the parts runs on the one-pick scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.pca.q9,post_hoc,,"the parts runs on the one-pick scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.other_scene.q9,post_hoc,,"the parts runs on the one-pick scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.wu.q9,fixed_in_advance,,"the logit-lens, input-embedding and random-atom dictionaries from the main test, fixed in advance: the figkit figure drew no mark hollow",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.embed.q9,fixed_in_advance,,"the logit-lens, input-embedding and random-atom dictionaries from the main test, fixed in advance: the figkit figure drew no mark hollow",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.rand.q9,fixed_in_advance,,"the logit-lens, input-embedding and random-atom dictionaries from the main test, fixed in advance: the figkit figure drew no mark hollow",scripts/readme_story_figures.py s02_parts
+s03_order_split,order.main_before.q9,post_hoc,,"the main test split by order, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s03_order_split
+s03_order_split,order.main_after.q9,post_hoc,,"the main test split by order, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s03_order_split
+s03_order_split,order.clean_before.q9,fixed_in_advance,,the clean one-pick scenes (45m): the figkit figure drew no mark hollow,scripts/readme_story_figures.py s03_order_split
+s03_order_split,order.clean_after.q9,fixed_in_advance,,the clean one-pick scenes (45m): the figkit figure drew no mark hollow,scripts/readme_story_figures.py s03_order_split
+s08b_pointer_moves_and_neutral_sentence,moves.q9,post_hoc,,"supplementary to Fig. 8, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s08b_pointer_moves
+s08b_pointer_moves_and_neutral_sentence,shift.q9,post_hoc,,"supplementary to Fig. 8, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s08b_pointer_moves
+fig08_first_locker,first.q27,post_hoc,,"45a, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f08_first_locker
+fig09_transfer,format.q27,post_hoc,,"(a) the pointer fit on simple scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f09_transfer
+fig09_transfer,refit.q27,fixed_in_advance,,"(b) 45d, fixed in advance: the figkit figure drew no mark hollow",scripts/readme_story_figures.py f09_transfer
+fig10_what_is_left,left.jpp.q27,post_hoc,,"the sanity swap's removals (both-removed runs, batch 40; 45e on the matched scenes chosen after the data): the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f10_left
+fig10_what_is_left,left.idout.q27,post_hoc,,"the sanity swap's removals (both-removed runs, batch 40; 45e on the matched scenes chosen after the data): the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f10_left
+fig10_what_is_left,left.wrong.q27,post_hoc,,"the sanity swap's removals (both-removed runs, batch 40; 45e on the matched scenes chosen after the data): the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f10_left
+fig15_mechanisms,48.2.q27,fixed_in_advance,,"48.2, every arm fixed in advance: the figkit figure drew no mark hollow",scripts/story_b48.py build_mechanisms
+fig15_mechanisms,48.3.q27,fixed_in_advance,,"48.3, every arm fixed in advance: the figkit figure drew no mark hollow",scripts/story_b48.py build_mechanisms
+fig15_mechanisms,48.4.q27,fixed_in_advance,,"48.4, every arm fixed in advance: the figkit figure drew no mark hollow",scripts/story_b48.py build_mechanisms
+fig15_mechanisms,48.5.q27,fixed_in_advance,,"48.5, every arm fixed in advance: the figkit figure drew no mark hollow",scripts/story_b48.py build_mechanisms
+fig15_mechanisms,47.6.q27,fixed_in_advance,,"47.6, every arm fixed in advance: the figkit figure drew no mark hollow",scripts/story_b48.py build_mechanisms
+s01_split_all_scene_sets,split.main.q27,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s01_split_all_scene_sets,split.onepick.q27,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s01_split_all_scene_sets,split.matched2.q27,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s01_split_all_scene_sets,split.matched1.q27,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s01_split_all_scene_sets,split.varied.q27,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s01_split_all_scene_sets,split.natural.q27,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s02_parts_all,part.jpp.q27,post_hoc,,"the parts runs on the one-pick scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.jpp_noword.q27,post_hoc,,"the parts runs on the one-pick scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.word.q27,post_hoc,,"the parts runs on the one-pick scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.pca.q27,post_hoc,,"the parts runs on the one-pick scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.other_scene.q27,post_hoc,,"the parts runs on the one-pick scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.wu.q27,fixed_in_advance,,"the logit-lens, input-embedding and random-atom dictionaries from the main test, fixed in advance: the figkit figure drew no mark hollow",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.embed.q27,fixed_in_advance,,"the logit-lens, input-embedding and random-atom dictionaries from the main test, fixed in advance: the figkit figure drew no mark hollow",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.rand.q27,fixed_in_advance,,"the logit-lens, input-embedding and random-atom dictionaries from the main test, fixed in advance: the figkit figure drew no mark hollow",scripts/readme_story_figures.py s02_parts
+s03_order_split,order.main_before.q27,post_hoc,,"the main test split by order, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s03_order_split
+s03_order_split,order.main_after.q27,post_hoc,,"the main test split by order, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s03_order_split
+s03_order_split,order.clean_before.q27,fixed_in_advance,,the clean one-pick scenes (45m): the figkit figure drew no mark hollow,scripts/readme_story_figures.py s03_order_split
+s03_order_split,order.clean_after.q27,fixed_in_advance,,the clean one-pick scenes (45m): the figkit figure drew no mark hollow,scripts/readme_story_figures.py s03_order_split
+s08b_pointer_moves_and_neutral_sentence,moves.q27,post_hoc,,"supplementary to Fig. 8, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s08b_pointer_moves
+s08b_pointer_moves_and_neutral_sentence,shift.q27,post_hoc,,"supplementary to Fig. 8, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s08b_pointer_moves
+fig08_first_locker,first.mu,post_hoc,,"45a, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f08_first_locker
+fig09_transfer,format.mu,post_hoc,,"(a) the pointer fit on simple scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f09_transfer
+fig09_transfer,refit.mu,fixed_in_advance,,"(b) 45d, fixed in advance: the figkit figure drew no mark hollow",scripts/readme_story_figures.py f09_transfer
+fig10_what_is_left,left.jpp.mu,post_hoc,,"the sanity swap's removals (both-removed runs, batch 40; 45e on the matched scenes chosen after the data): the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f10_left
+fig10_what_is_left,left.idout.mu,post_hoc,,"the sanity swap's removals (both-removed runs, batch 40; 45e on the matched scenes chosen after the data): the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f10_left
+fig10_what_is_left,left.wrong.mu,post_hoc,,"the sanity swap's removals (both-removed runs, batch 40; 45e on the matched scenes chosen after the data): the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f10_left
+fig15_mechanisms,48.2.mu,fixed_in_advance,,"48.2, every arm fixed in advance: the figkit figure drew no mark hollow",scripts/story_b48.py build_mechanisms
+fig15_mechanisms,48.3.mu,fixed_in_advance,,"48.3, every arm fixed in advance: the figkit figure drew no mark hollow",scripts/story_b48.py build_mechanisms
+fig15_mechanisms,48.4.mu,fixed_in_advance,,"48.4, every arm fixed in advance: the figkit figure drew no mark hollow",scripts/story_b48.py build_mechanisms
+fig15_mechanisms,48.5.mu,fixed_in_advance,,"48.5, every arm fixed in advance: the figkit figure drew no mark hollow",scripts/story_b48.py build_mechanisms
+fig15_mechanisms,47.6.mu,fixed_in_advance,,"47.6, every arm fixed in advance: the figkit figure drew no mark hollow",scripts/story_b48.py build_mechanisms
+s01_split_all_scene_sets,split.main.mu,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s01_split_all_scene_sets,split.onepick.mu,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s01_split_all_scene_sets,split.matched2.mu,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s01_split_all_scene_sets,split.matched1.mu,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s01_split_all_scene_sets,split.varied.mu,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s01_split_all_scene_sets,split.natural.mu,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s02_parts_all,part.jpp.mu,post_hoc,,"the parts runs on the one-pick scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.jpp_noword.mu,post_hoc,,"the parts runs on the one-pick scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.word.mu,post_hoc,,"the parts runs on the one-pick scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.pca.mu,post_hoc,,"the parts runs on the one-pick scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.other_scene.mu,post_hoc,,"the parts runs on the one-pick scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.wu.mu,fixed_in_advance,,"the logit-lens, input-embedding and random-atom dictionaries from the main test, fixed in advance: the figkit figure drew no mark hollow",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.embed.mu,fixed_in_advance,,"the logit-lens, input-embedding and random-atom dictionaries from the main test, fixed in advance: the figkit figure drew no mark hollow",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.rand.mu,fixed_in_advance,,"the logit-lens, input-embedding and random-atom dictionaries from the main test, fixed in advance: the figkit figure drew no mark hollow",scripts/readme_story_figures.py s02_parts
+s03_order_split,order.main_before.mu,post_hoc,,"the main test split by order, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s03_order_split
+s03_order_split,order.main_after.mu,post_hoc,,"the main test split by order, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s03_order_split
+s03_order_split,order.clean_before.mu,fixed_in_advance,,the clean one-pick scenes (45m): the figkit figure drew no mark hollow,scripts/readme_story_figures.py s03_order_split
+s03_order_split,order.clean_after.mu,fixed_in_advance,,the clean one-pick scenes (45m): the figkit figure drew no mark hollow,scripts/readme_story_figures.py s03_order_split
+s08b_pointer_moves_and_neutral_sentence,moves.mu,post_hoc,,"supplementary to Fig. 8, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s08b_pointer_moves
+s08b_pointer_moves_and_neutral_sentence,shift.mu,post_hoc,,"supplementary to Fig. 8, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s08b_pointer_moves
+fig08_first_locker,first.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig09_transfer,format.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig09_transfer,refit.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig10_what_is_left,left.jpp.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig10_what_is_left,left.idout.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig10_what_is_left,left.wrong.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig15_mechanisms,48.2.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig15_mechanisms,48.3.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig15_mechanisms,48.4.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig15_mechanisms,48.5.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig15_mechanisms,47.6.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s01_split_all_scene_sets,split.main.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s01_split_all_scene_sets,split.onepick.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s01_split_all_scene_sets,split.matched2.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s01_split_all_scene_sets,split.matched1.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s01_split_all_scene_sets,split.varied.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s01_split_all_scene_sets,split.natural.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s02_parts_all,part.jpp.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s02_parts_all,part.jpp_noword.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s02_parts_all,part.word.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s02_parts_all,part.pca.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s02_parts_all,part.other_scene.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s02_parts_all,part.wu.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s02_parts_all,part.embed.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s02_parts_all,part.rand.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s03_order_split,order.main_before.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s03_order_split,order.main_after.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s03_order_split,order.clean_before.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s03_order_split,order.clean_after.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s08b_pointer_moves_and_neutral_sentence,moves.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+s08b_pointer_moves_and_neutral_sentence,shift.nl,post_hoc,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig08_first_locker,first.q122,post_hoc,,"45a, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f08_first_locker
+fig09_transfer,format.q122,post_hoc,,"(a) the pointer fit on simple scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f09_transfer
+fig09_transfer,refit.q122,fixed_in_advance,,"(b) 45d, fixed in advance: the figkit figure drew no mark hollow",scripts/readme_story_figures.py f09_transfer
+fig10_what_is_left,left.jpp.q122,post_hoc,,"the sanity swap's removals (both-removed runs, batch 40; 45e on the matched scenes chosen after the data): the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f10_left
+fig10_what_is_left,left.idout.q122,post_hoc,,"the sanity swap's removals (both-removed runs, batch 40; 45e on the matched scenes chosen after the data): the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f10_left
+fig10_what_is_left,left.wrong.q122,post_hoc,,"the sanity swap's removals (both-removed runs, batch 40; 45e on the matched scenes chosen after the data): the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py f10_left
+fig15_mechanisms,48.2.q122,fixed_in_advance,,"48.2, every arm fixed in advance: the figkit figure drew no mark hollow",scripts/story_b48.py build_mechanisms
+fig15_mechanisms,48.3.q122,fixed_in_advance,,"48.3, every arm fixed in advance: the figkit figure drew no mark hollow",scripts/story_b48.py build_mechanisms
+fig15_mechanisms,48.4.q122,fixed_in_advance,,"48.4, every arm fixed in advance: the figkit figure drew no mark hollow",scripts/story_b48.py build_mechanisms
+fig15_mechanisms,48.5.q122,fixed_in_advance,,"48.5, every arm fixed in advance: the figkit figure drew no mark hollow",scripts/story_b48.py build_mechanisms
+fig15_mechanisms,47.6.q122,fixed_in_advance,,"47.6, every arm fixed in advance: the figkit figure drew no mark hollow",scripts/story_b48.py build_mechanisms
+s01_split_all_scene_sets,split.main.q122,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s01_split_all_scene_sets,split.onepick.q122,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s01_split_all_scene_sets,split.matched2.q122,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s01_split_all_scene_sets,split.matched1.q122,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s01_split_all_scene_sets,split.varied.q122,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s01_split_all_scene_sets,split.natural.q122,post_hoc,,supplementary to Fig. 1; no rule set before these settings' data: the figkit figure drew it hollow (post hoc),scripts/readme_story_figures.py s01_split
+s02_parts_all,part.jpp.q122,post_hoc,,"the parts runs on the one-pick scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.jpp_noword.q122,post_hoc,,"the parts runs on the one-pick scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.word.q122,post_hoc,,"the parts runs on the one-pick scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.pca.q122,post_hoc,,"the parts runs on the one-pick scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.other_scene.q122,post_hoc,,"the parts runs on the one-pick scenes, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.wu.q122,fixed_in_advance,,"the logit-lens, input-embedding and random-atom dictionaries from the main test, fixed in advance: the figkit figure drew no mark hollow",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.embed.q122,fixed_in_advance,,"the logit-lens, input-embedding and random-atom dictionaries from the main test, fixed in advance: the figkit figure drew no mark hollow",scripts/readme_story_figures.py s02_parts
+s02_parts_all,part.rand.q122,fixed_in_advance,,"the logit-lens, input-embedding and random-atom dictionaries from the main test, fixed in advance: the figkit figure drew no mark hollow",scripts/readme_story_figures.py s02_parts
+s03_order_split,order.main_before.q122,post_hoc,,"the main test split by order, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s03_order_split
+s03_order_split,order.main_after.q122,post_hoc,,"the main test split by order, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s03_order_split
+s03_order_split,order.clean_before.q122,fixed_in_advance,,the clean one-pick scenes (45m): the figkit figure drew no mark hollow,scripts/readme_story_figures.py s03_order_split
+s03_order_split,order.clean_after.q122,fixed_in_advance,,the clean one-pick scenes (45m): the figkit figure drew no mark hollow,scripts/readme_story_figures.py s03_order_split
+s08b_pointer_moves_and_neutral_sentence,moves.q122,post_hoc,,"supplementary to Fig. 8, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s08b_pointer_moves
+s08b_pointer_moves_and_neutral_sentence,shift.q122,post_hoc,,"supplementary to Fig. 8, after the data: the figkit figure drew it hollow (post hoc)",scripts/readme_story_figures.py s08b_pointer_moves
