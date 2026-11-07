@@ -5,7 +5,7 @@
 
 ## In one minute
 
-- **The lookup reads the bridge word by an address (where the item's locker sits) plus an identity code, both outside the lens; never the value.** Removing, adding or swapping the address moves the lookup; the lens cannot read it. Five models, three families for the address; the identity code outside the lens on four (the 122B below its gate); prose, JSON, tables, the fact passages, 50 neutral sentences. In Python code and tool output (the 9B and the 27B; exploratory, not in the hand-checked sample): a probe reads the address and removing it cuts position answers beyond a random part; added alone it brings few position answers back (its only route is the original answer); the swap was not run there.
+- **The lookup reads the bridge word by an address (where the item's locker sits) plus an identity code, both outside the lens; never the value.** Removing, adding or swapping the address moves the lookup; the lens cannot read it. The address on five models, three families, in the locker scenes, a swap holding across up to 50 neutral sentences; on the varied prose, JSON and table scenes it carries the lookup only once refit per format, and not on the 27B (scope: [^code]). The identity code outside the lens on four models (the 122B below its gate), in prose, JSON, tables and the fact passages. In Python code and tool output (the 9B and the 27B; exploratory, not in the hand-checked sample): a probe reads the address and removing it cuts position answers beyond a random part; added alone it brings few position answers back (its only route is the original answer); the swap was not run there.
 - **The recall takes the item's name through the lens part;** on the 9B and Lightning partly the address too.
 - **The lens part holds the item names** ("−carbon, +oxygen"), almost never the answer in our scenes; the answer when it is a word tied to the entity (the fact passages). At the last token the item is readable but not used.
 - **Scale and order:** the 122B's lookup ignores the lens part ({{pt|lk_excess_k25_122b}} at 25 lens directions, {{pt|lk_excess_k100_122b}} at 100, where the 27B reaches {{pt|lk_excess_k100_27b}}); asking the question first matters on the 27B, not on the 122B †.
@@ -581,7 +581,7 @@ With the locker sentence after the pick, the link is made in the locker sentence
 ![After the pick, the change copied into the locker sentences switches the lookup, layer by layer](figures/depth/06_link_layers.png)
 {{caption|depth/06_link_layers}}
 
-Where the switches are carried (claim 11): for the lookup almost all at the bridge word at L; the lookups the change at L misses, with the locker after the pick, were read from the bridge word before L ([the ledger card](docs/depth/EXPERIMENTS.md#t47-4)).
+Where the switches are carried, on the main test: for the lookup almost all at the bridge word at L. The figure does not split them by sentence order, so it supports claim 11 only indirectly; the direct evidence, that the lookups the change at L misses with the locker after the pick were read from the bridge word before L, is claim 11's row of the key numbers ("carried before L", In one minute) and [the ledger card](docs/depth/EXPERIMENTS.md#t47-4).
 
 ![Where each reader's switches are carried: the bridge word at L, before L, after L, elsewhere](figures/depth/s07_cumulative.png)
 {{caption|depth/s07_cumulative}}
