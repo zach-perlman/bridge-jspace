@@ -96,8 +96,8 @@ Each hypothesis we committed to, with its verdict and source: [hypotheses ledger
 
 - **The proposal (19 Oct).**
   - H0, deflationary ("inside" means only the bridge's own word): **failed** for recalled entities, **held in part** for computed numbers.
-  - H1, use: **held** at the bridge word, the 27B in part.
-  - H2, answer source: **held in part** (not separable from H1).
+  - H1, use: **not separable** from H2; where they come apart, the data follow H2.
+  - H2, answer source: **favored, not proven**.
   - H3, any lookup in the chain puts the bridge outside: **failed**.
 - **The sprint plan (20 Oct).**
   - C1, memory steps need the workspace, lookups do not: **held**, graded across models.
