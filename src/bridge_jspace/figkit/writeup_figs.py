@@ -70,6 +70,63 @@ def table(rows, cols, label_w: float, **kw) -> Table:
     return Table(rows, cols, label_w=label_w, pad=pad_for(label_w, [c.width for c in cols]), **kw)
 
 
+VALUE_GAP = 7.0  # points between a dot's edge and its value (tables.build sets dottable.VALUE_GAP for this target)
+LOWER = 0.27  # a row's lower line (rows units): notes go there, under dots lifted by LIFT
+
+
+def lower(ax, x, i, text, ha="center", color=MUTED, zebra=None):
+    """A grey note on row i's lower line, its box the row's colour: the lines under it stop there (figkit/lint.py
+    crossings exempts it from lines, never from marks)."""
+    bg = (T.ZEBRA if i % 2 == 0 else "white") if zebra is None else (T.ZEBRA if zebra else "white")
+    if ha == "center":  # kept inside its panel
+        r = ax.figure.canvas.get_renderer()
+        probe = ax.text(x, i + LOWER, text, ha="center", fontsize=FS["small"])
+        bb = probe.get_window_extent(r).transformed(ax.transData.inverted())
+        probe.remove()
+        lim = ax.get_xlim()
+        x += max(0.0, lim[0] - bb.x0) - max(0.0, bb.x1 - lim[1])
+    t = ax.text(x, i + LOWER, text, ha=ha, va="center", fontsize=FS["small"], color=color, zorder=6,
+                bbox={"boxstyle": "square,pad=0.15", "facecolor": bg, "edgecolor": "none"})  # fmt: skip
+    t._masks_lines = True
+    return t
+
+
+def value(ax, x, y, cell, color, vfmt, i=None, size=9.5, zebra=None):
+    """A dot's value beside its whisker, VALUE_GAP points clear of its marker, on the first side where it touches no
+    line or mark drawn so far (figkit/lint.py hit: draw a row's dots before its values) and stays inside the panel; if
+    neither side does, on row i's lower line."""
+    fig = ax.figure
+    r = fig.canvas.get_renderer()
+    obstacles = lint.drawn_obstacles(fig)
+    lim = ax.get_xlim()
+    text = T.clean(vfmt.format(x))
+    tcol = color if color != C["control"] else MUTED
+    px_pt = fig.dpi / 72
+    cx = ax.transData.transform((x, y))[0]
+    for side in ("right", "left"):
+        sgn = 1 if side == "right" else -1
+        x0 = (cell[2] if side == "right" else cell[1]) if cell and cell[1] is not None else x
+        ex = ax.transData.transform((x0, y))[0]
+        # from the whisker's end, but never closer to the marker than its edge plus VALUE_GAP
+        pts = max(5.0, (size / 2 + VALUE_GAP) - sgn * (ex - cx) / px_pt)
+        a = ax.annotate(text, (x0, y), xytext=(sgn * pts, 0), textcoords="offset points",
+                        ha="left" if side == "right" else "right", va="center", fontsize=FS["value"], color=tcol,
+                        annotation_clip=False, zorder=6)  # fmt: skip
+        bb = a.get_window_extent(r)
+        d = bb.transformed(ax.transData.inverted())
+        if lim[0] <= d.x0 and d.x1 <= lim[1] and not lint.hit(bb, obstacles):
+            return a
+        a.remove()
+    row = y if i is None else i
+    for ha in ("center", "right", "left"):  # the lower line: where it crosses no line, else centred with lines stopped
+        t = lower(ax, x, row, text, ha=ha, color=tcol, zebra=zebra)
+        d = t.get_window_extent(r).transformed(ax.transData.inverted())
+        if lim[0] <= d.x0 and d.x1 <= lim[1] and not lint.hit(t.get_window_extent(r), obstacles):
+            return t
+        t.remove()
+    return lower(ax, x, row, text, color=tcol, zebra=zebra)
+
+
 HOLLOW_NO_KEY = "a hollow mark without the key item 'post hoc'"
 
 
@@ -81,6 +138,7 @@ def stack(tables: list[Table], name: str) -> None:
     def lint_upper(fig, path):
         PROBLEMS.extend(p for p in lint.table_problems(fig, Path(path).stem, need_xlabel=True, need_cue=True,
                                                        min_pt=FS["small"]) if not p.endswith(HOLLOW_NO_KEY))  # fmt: skip
+        PROBLEMS.extend(lint.crossings(fig, Path(path).stem))
 
     hook = T.BEFORE_SAVE
     with tempfile.TemporaryDirectory() as tmp:
@@ -110,15 +168,15 @@ NOT_CLAIMED = {"mu": "not claimed: shared with the logit lens", "q122": "not cla
 LIFT = 0.18  # a row with a grey note under its name: its marks move up with the name (0.09 in of a 0.5 in row)
 
 
-def _groups(*titles: tuple[float, str], top: float = 0.08, note: tuple[float, str] | None = None):
-    """Bold group headers above the column titles, each at an x in inches; note: one grey line under them."""
+def _groups(*titles: tuple[float, str], top: float = 0.08, notes: tuple[tuple[float, str], ...] = ()):
+    """Bold group headers above the column titles, each at an x in inches; notes: grey lines under them, one each."""
 
     def f(fig):
         w, h = fig.get_figwidth(), fig.get_figheight()
         for x, word in titles:
             fig.text(x / w, 1 - top / h, word, ha="left", va="top", fontsize=FS["title"], weight="bold", color=INK)
-        if note:
-            fig.text(note[0] / w, 1 - (top + 0.30) / h, note[1], ha="left", va="top", fontsize=FS["sub"], color=MUTED)
+        for k, (x, word) in enumerate(notes):
+            fig.text(x / w, 1 - (top + 0.30 * (k + 1)) / h, word, ha="left", va="top", fontsize=FS["sub"], color=MUTED)
 
     return f
 
@@ -222,7 +280,7 @@ def _band_diff(k: str):
 
 def fig05_controls() -> None:
     rows = [Row(NAME[m]) for m, _ in DAN]
-    label_w, w_lens, w_ctl, w_diff = 1.0, 1.22, 1.22, 1.55
+    label_w, w_lens, w_ctl, w_diff = 1.15, 1.2, 1.15, 1.55
 
     def band_cell(key):
         def f(m):
@@ -243,8 +301,9 @@ def fig05_controls() -> None:
         _ctrl_col("logit lens", band_cell("u"), colour="control", width=w_ctl, hollow_of=zach_post_hoc, **pts),
         _ctrl_col("PCA", band_cell("pc"), colour="control", width=w_ctl, hollow_of=zach_post_hoc, **pts),
         Col(w_diff, "difference", "", lambda i, _r: _band_diff(ZK[DAN[i][0]]), text=True),
-    ], label_w=label_w, head=0.7, title_top=0.4, **COMPACT)  # fmt: skip
-    top.extra.append(_groups((0.12, "Band · fact passages")))
+    ], label_w=label_w, head=0.95, title_top=0.68, **COMPACT)  # fmt: skip
+    top.extra.append(_groups((0.12, "Band · fact passages"),
+                             notes=((0.12, "recall − lookup gap under each removal (points)"),)))
 
     def layer_cell(q):
         return lambda m: D.s(m, q, "fig02")
@@ -257,33 +316,41 @@ def fig05_controls() -> None:
         *(_ctrl_col(layer_name.get(k, name), layer_cell(q), colour="control", width=w_ctl, **share)
           for k, name, q in F.LAYER_CTRL),
         Col(w_diff, "difference", "", lambda i, _r: F.layer_diff_parts(DAN[i][0]), text=True),
-    ], label_w=label_w, head=1.15, title_top=0.7, **COMPACT,
+    ], label_w=label_w, head=1.3, title_top=0.94, **COMPACT,
         key=[("●", C["lens"], "lens part"), ("●", C["control"], "same-size control"), ("○", INK, "post hoc"),
              ("", MUTED, "difference: lens part − largest control [95%]")])  # fmt: skip
     # fig01's one-layer shares come from the conflict-test runs, which had no same-size control (0.50 there, 0.37 here
     # for the 9B): this panel's runs are the earlier x0_pcaeq / x0_parts ones
     bottom.extra.append(_groups((0.12, "One layer · locker scenes"),
-                                note=(0.12, "earlier runs with a same-size control; Fig. 1's runs had none")))  # fmt: skip
+                                notes=((0.12, "recall's switches blocked beyond a random part (share)"),
+                                       (0.12, "earlier runs with a same-size control; Fig. 1's runs had none"))))  # fmt: skip
     stack([top, bottom], "fig05_controls")
 
 
 # ---- Fig. 4: the twin set (note 41; data/figures/writeup/data.csv fig04.*) -----------------------------------------------
 TWIN_MODELS = (("q9", "Qwen 9B"), ("q27", "Qwen 27B"), ("nl", "Lightning"))
-TWIN_CONDS = (("unedited", "unedited", INK), ("paper10", "knock-out", None), ("paper10_rot", "rotated", C["control"]),
-              ("paper10_keepA", "knock-out, answer span kept", C["lens"]))  # fmt: skip
+TWIN_CONDS = (("paper10", "knock-out", None), ("paper10_rot", "rotated", C["control"]),
+              ("paper10_keepA", "answer span kept", C["answer"]))  # fmt: skip
 
 
 def _missing(ax, i, xlim):
-    ax.text(sum(xlim) / 2, i, "source missing", ha="center", va="center", fontsize=FS["small"], color=MUTED)
+    """'source missing' at the cell's right end, where no rule runs; its box the row's colour hides the grid lines."""
+    t = ax.text(xlim[1], i, "source missing", ha="right", va="center", fontsize=FS["small"], color=MUTED, zorder=6,
+                bbox={"boxstyle": "square,pad=0.15", "facecolor": T.ZEBRA if round(i) % 2 == 0 else "white",
+                      "edgecolor": "none"})  # fmt: skip
+    t._masks_lines = True
 
 
 def fig04_twin_set() -> None:
-    """Per model a header row, then one sub-row per condition: accuracy on the recall twins and on the lookup twins,
-    and the recall - lookup gap of the knock-out (and of the rotated control, grey) with its 95% interval. One
-    population: the registered one (every gated item, v4 draw 4001)."""
-    rows, at = [], []  # at: (model key, condition key or None for the header row)
+    """Per model a header row (its item counts, recall / lookup), then one sub-row per condition: accuracy on the
+    recall twins and on the lookup twins, and the recall - lookup gap of the knock-out (and of the rotated control,
+    grey) with its 95% interval. The unedited accuracy is one grey line under the column titles (its range over every
+    model and reader). One population: the registered one (every gated item, v4 draw 4001)."""
+    rows, at, heads = [], [], []  # at: (model key, condition key or None for the header row)
     for k, name in TWIN_MODELS:
-        rows.append(Row(name))
+        heads.append(len(rows))
+        nr, nl = writeup_n(f"fig04.recall.unedited.{k}"), writeup_n(f"fig04.lookup.unedited.{k}")
+        rows.append(Row(f"{name} · {nr} / {nl} items" if nr and nl else name))
         at.append((k, None))
         for cond, label, _ in TWIN_CONDS:
             rows.append(Row("", sub=label))
@@ -296,19 +363,14 @@ def fig04_twin_set() -> None:
         def f(ax, _r):
             for i, (k, cond) in enumerate(at):
                 if cond is None:
-                    c = w(f"fig04.{reader}.unedited.{k}")
-                    n = writeup_n(f"fig04.{reader}.unedited.{k}")
-                    if n:
-                        ax.text(acc_lim[0] + 2, i, f"{n} items", ha="left", va="center", fontsize=FS["small"],
-                                color=MUTED)  # fmt: skip
                     continue
                 c = w(f"fig04.{reader}.{cond}.{k}")
                 if c is None:
                     _missing(ax, i, acc_lim)
                     continue
                 col = dict((cd, cl) for cd, _l, cl in TWIN_CONDS)[cond] or knock
-                dot(ax, c[0], i, col, value=c[0], vfmt="{:.0f}", vside="left" if c[0] > 50 else "right",
-                    size=8 if col == C["control"] else 9.5)  # fmt: skip
+                dot(ax, c[0], i, col, size=8 if col == C["control"] else 9.5)
+                value(ax, c[0], i, None, col, "{:.0f}")
 
         return f
 
@@ -320,31 +382,44 @@ def fig04_twin_set() -> None:
             if c is None:
                 _missing(ax, i, gap_lim)
                 continue
-            ctl = cond == "paper10_rot"
-            dot(ax, c[0], i, C["control"] if ctl else INK, cell=c, value=c[0], vfmt="{:.1f}",
-                size=8 if ctl else 9.5, vside="left" if c[0] > 30 else "right")  # fmt: skip
+            col = C["control"] if cond == "paper10_rot" else INK
+            dot(ax, c[0], i, col, cell=c, size=8 if col == C["control"] else 9.5)
+            value(ax, c[0], i, c, col, "{:.1f}")
 
     t = table(rows, [
-        Col(2.15, "Recall twins", "share answered right", accuracy("recall"), acc_lim, [0, 50, 100],
+        Col(1.9, "Recall twins", "share answered right", accuracy("recall"), acc_lim, [0, 50, 100],
             xlabel="accuracy (%)", cue="→ more answers right"),
-        Col(2.15, "Lookup twins", "share answered right", accuracy("lookup"), acc_lim, [0, 50, 100],
+        Col(1.9, "Lookup twins", "share answered right", accuracy("lookup"), acc_lim, [0, 50, 100],
             xlabel="accuracy (%)", cue="→ more answers right"),
-        Col(2.25, "Gap", "recall − lookup, 95% interval", gap, gap_lim, [0, 30, 60],
+        Col(1.9, "Gap", "recall − lookup", gap, gap_lim, [0, 30, 60],
             xlabel="accuracy drop (points)", cue="→ recall drops more"),
-    ], label_w=1.15, labels=False, row_h=WRITEUP_MIN_ROW, group=5,
-        subtitle="one population: every gated item of one draw (the registered one)")  # fmt: skip
+    ], label_w=1.75, row_h=WRITEUP_MIN_ROW, group=4, skip_lines=tuple(heads),
+        key=[("", MUTED, "whiskers: 95% interval")])  # fmt: skip
+    unedited = [c[0] for r in ("recall", "lookup") for k, _ in TWIN_MODELS if (c := w(f"fig04.{r}.unedited.{k}"))]
+    if len(unedited) == 2 * len(TWIN_MODELS):  # "every model" only when every cell has its source
+        lo, hi = round(min(unedited)), round(max(unedited))
+        span = f"{lo}%" if lo == hi else f"{lo}–{hi}%"
+
+        def line(fig):  # in the direct-label row, under the column titles, where no line runs
+            y = t.head + T.LABEL_ROW / 2
+            fig.text(_x_of(t, 0) / fig.get_figwidth(), 1 - y / fig.get_figheight(),
+                     f"unedited: {span} right on every model", ha="left", va="center", fontsize=FS["sub"],
+                     color=MUTED)  # fmt: skip
+
+        t.extra.append(line)
     t.render(f"{OUT}/fig04_twin_set.png", dpi=DPI)
 
 
 # ---- Fig. 10: what the recall loses is its answer's own directions (notes 41, 50, 57, 68; fig10.*) ---------------------
 def fig10_answer_span() -> None:
-    """(a) Keeping only the answer span: the share of the recall's damage undone (teal), against a random keep
-    orthogonal to the answers holding at least as much energy (grey). (b) Removing only the answer span, beyond
-    energy-matched random, as a multiple of the full damage (dashed: all of it); (c) the same on the codename set. A row
-    whose random part fell short of its energy says so under its name, with the stored shares."""
+    """(a) Keeping only the answer span: the share of the recall's damage undone (brick, the answer span's colour in
+    every figure), against a random keep orthogonal to the answers holding at least as much energy (grey). (b) Removing
+    only the answer span, beyond energy-matched random, as a multiple of the full damage (dashed: all of it); (c) the
+    same on the codename set. A row whose random part fell short of its energy says so on its lower line, with the
+    stored shares."""
 
     def note(ax, i, xlim, text):  # a grey note on the lower line of a row whose marks are lifted
-        ax.text(sum(xlim) / 2, i + 0.27, text, ha="center", va="center", fontsize=FS["small"], color=MUTED)
+        lower(ax, sum(xlim) / 2, i, text)
 
     def matched(panel, k):  # the share of items whose random part reached its target energy, if short of all
         s = w(f"fig10.span_only_matched.{panel}.{k}")
@@ -356,21 +431,25 @@ def fig10_answer_span() -> None:
 
     rows = [Row(n) for _, n in TWIN_MODELS]
     y_of = lambda i: i - (LIFT if lifted(TWIN_MODELS[i][0]) else 0)  # noqa: E731
-    keep_lim, mult_lim = (-0.4, 1.12), (0.6, 1.7)
+    keep_lim, mult_lim = (-0.4, 1.12), (0.6, 1.8)
 
     def keep(ax, _r):
         for i, (k, _) in enumerate(TWIN_MODELS):
             y, ctl, span = y_of(i), w(f"fig10.keep_ctrl.{k}"), w(f"fig10.keep_span.{k}")
+            drawn = ctl is not None and ctl[0] is not None
             if ctl is None:
                 _missing(ax, y, keep_lim)
-            elif ctl[0] is None:  # the reading's label: neither random keep holds keepA's energy
+            elif not drawn:  # the reading's label: neither random keep holds keepA's energy
                 note(ax, i, keep_lim, "no energy-matched control")
             else:
-                dot(ax, ctl[0], y, C["control"], cell=ctl, value=ctl[0], size=8)
-            if span is None:
+                dot(ax, ctl[0], y, C["control"], cell=ctl, size=8)
+            if span is not None:
+                dot(ax, span[0], y, C["answer"], cell=span)
+                value(ax, span[0], y, span, C["answer"], "{:.2f}", i=i)
+            else:
                 _missing(ax, y, keep_lim)
-                continue
-            dot(ax, span[0], y, C["lens"], cell=span, value=span[0], vside="left")
+            if drawn:
+                value(ax, ctl[0], y, ctl, C["control"], "{:.2f}", i=i, size=8)
 
     def removal(panel):
         def f(ax, _r):
@@ -381,7 +460,8 @@ def fig10_answer_span() -> None:
                 if c is None:
                     _missing(ax, y_of(i), mult_lim)
                     continue
-                dot(ax, c[0], y_of(i), C["recall"], cell=c, value=c[0], vside="right" if c[2] < 1.45 else "left")
+                dot(ax, c[0], y_of(i), C["answer"], cell=c)
+                value(ax, c[0], y_of(i), c, C["answer"], "{:.2f}", i=i)
                 if (s := matched(panel, k)) is not None:
                     note(ax, i, mult_lim, f"matched on {s:.0%}")
 
@@ -394,7 +474,7 @@ def fig10_answer_span() -> None:
         Col(2.15, "Remove answer span", "beyond matched random", removal("v4"), **mult),
         Col(2.15, "Same, codename set", "independent fact sample", removal("codename"), **mult),
     ], label_w=1.15,
-        key=[[("●", C["lens"], "keeping only the answer span"), ("●", C["recall"], "removing only the answer span")],
+        key=[[("●", C["answer"], "the answer span: kept alone (left), removed alone (middle, right)")],
              [("●", C["control"], "a random keep orthogonal to the answers, at least as much energy")],
              [("", MUTED, "matched on N%: the items whose random part reached its target energy (under-matched)")]])  # fmt: skip
     t.render(f"{OUT}/fig10_answer_span.png", dpi=DPI)
@@ -406,18 +486,20 @@ def fig11_orthogonal() -> None:
     hollow: not a registered reading on this question), the answers' own J++ directions (brick). Panel 2: the cleaned,
     data-built city subspace beyond energy-matched random, with the registered bar."""
     rows = [Row(n) for _, n in TWIN_MODELS]
-    one_lim, sub_lim = (-4, 96), (-6, 22)
+    one_lim, sub_lim = (-4, 96), (-6, 27)
     conds = (("city", C["lens"], False), ("city_perp", C["neutral"], True), ("answers", C["answer"], False))
 
     def onehop(ax, _r):
         for i, (k, _) in enumerate(TWIN_MODELS):
-            for key, col, post_hoc in conds:
-                c = w(f"fig11.onehop.{key}.{k}")
+            cells = [(w(f"fig11.onehop.{key}.{k}"), col, post_hoc) for key, col, post_hoc in conds]
+            for c, col, post_hoc in cells:  # a row's dots first, so each value avoids them all
                 if c is None:
                     _missing(ax, i, one_lim)
-                    continue
-                dot(ax, c[0], i, col, hollow=post_hoc, cell=c, value=c[0], vfmt="{:.1f}",
-                    vside="left" if key == "city" and c[1] is not None and c[1] >= 30 else "right")  # fmt: skip
+                else:
+                    dot(ax, c[0], i, col, hollow=post_hoc, cell=c)
+            for c, col, _ in cells:
+                if c is not None:
+                    value(ax, c[0], i, c, col, "{:.1f}")
 
     def subspace(ax, _r):
         T.vrule(ax, 15, len(rows))
@@ -427,7 +509,8 @@ def fig11_orthogonal() -> None:
             if c is None:
                 _missing(ax, i, sub_lim)
                 continue
-            dot(ax, c[0], i, C["neutral"], cell=c, value=c[0], vfmt="{:.1f}", vside="left" if c[0] > 5 else "right")
+            dot(ax, c[0], i, C["neutral"], cell=c)
+            value(ax, c[0], i, c, C["neutral"], "{:.1f}")
 
     t = table(rows, [
         Col(3.45, "One-hop question", "“{city} is in the country of”", onehop, one_lim, [0, 40, 80],
@@ -453,7 +536,7 @@ def figA1_agents() -> None:
     95%), one x scale for all five tasks. A cell whose registered reading is descriptive is grey and says so on its
     lower line (grey, not hollow: hollow means post hoc only)."""
     rows = [Row(n) for _, n in TWIN_MODELS]
-    lim = (-25, 70)
+    lim = (-25, 80)
 
     def role(key):
         row = _quantities().get(key, "")
@@ -469,16 +552,17 @@ def figA1_agents() -> None:
                     _missing(ax, i, lim)
                     continue
                 word = role(key)
-                y = i - (LIFT if word else 0)
-                dot(ax, c[0], y, C["control"] if word else C["recall"], cell=c, value=c[0], vfmt="{:.1f}",
-                    vside="left" if c[0] > 25 else "right")  # fmt: skip
-                if word:
-                    ax.text(sum(lim) / 2, i + 0.27, word, ha="center", va="center", fontsize=FS["small"], color=MUTED)
+                y = i - LIFT  # every row lifted: its lower line holds the cell's word or a value with no room beside
+                ink = C["control"] if word else C["recall"]
+                dot(ax, c[0], y, ink, cell=c)
+                value(ax, c[0], y, c, ink, "{:.1f}", i=i)
+                if word:  # right of the dashed zero rule, so no line stops at it
+                    lower(ax, 4, i, word, ha="left")
 
         return f
 
     t = table(rows, [Col(1.3, title, sub, task(col), lim, [0, 30, 60], xlabel=xl, cue="→ needed more", zero=False)
-                     for col, title, sub, xl in AGENT_COLS], label_w=1.0,
+                     for col, title, sub, xl in AGENT_COLS], label_w=1.0, labels=False, head=0.75,
               key=[[("●", C["recall"], "the knock-out's accuracy drop minus a control's, 95% whiskers")],
                    [("●", C["control"], "descriptive: no registered reading for this cell")]])  # fmt: skip
     t.render(f"{OUT}/figA1_agents.png", dpi=DPI)

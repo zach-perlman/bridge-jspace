@@ -180,6 +180,68 @@ def table_problems(fig, name: str, need_xlabel: bool = False, need_cue: bool = F
     return sorted(set(out))
 
 
+MARK_CLEAR = 4.0  # points of white between a marker's edge and any text (a label closer reads as sitting on its dot)
+
+
+def crossings(fig, name: str) -> list[str]:
+    """Text over a line or a mark (the write-up's rule, review of batch 2): no text's box may touch an axis spine, a zero
+    line, a dashed rule, a whisker, a connector, or come within MARK_CLEAR of a marker. Grid lines are exempt, and so
+    are the lines (not the marks) under a text whose box masks them (a row's sub-line, marked `_masks_lines`: the lines
+    stop above it)."""
+    fig.canvas.draw()
+    r = fig.canvas.get_renderer()
+    texts = [t for t in fig.findobj(match=lambda a: hasattr(a, "get_text") and hasattr(a, "get_rotation"))
+             if t.get_text().strip() and t.get_visible()]  # fmt: skip
+    obstacles = drawn_obstacles(fig)
+    out = []
+    for t in texts:
+        what = hit(t.get_window_extent(r), obstacles, lines=not getattr(t, "_masks_lines", False))
+        if what:
+            out.append(f"{name}: text {what} {t.get_text()[:25]!r}")
+    return sorted(set(out))
+
+
+def drawn_obstacles(fig) -> tuple[list, list]:
+    """What a text may not touch, in display pixels: (line paths with their half widths: spines, rules, whiskers,
+    connectors; grid lines left out) and (marker centres with their radii)."""
+    from bridge_jspace.palette import GRID
+
+    px = fig.dpi / 72
+    paths, marks = [], []
+    for ax in fig.axes:
+        for s in ax.spines.values():
+            if s.get_visible():
+                paths.append((s.get_transform().transform_path(s.get_path()), s.get_linewidth() * px / 2))
+        for ln in ax.lines:
+            if not ln.get_visible() or _hex(ln.get_color()) == GRID.lower():
+                continue
+            if ln.get_linestyle() not in ("None", "", " ") and len(ln.get_xydata()) > 1:
+                paths.append((ln.get_transform().transform_path(ln.get_path()), ln.get_linewidth() * px / 2))
+            if ln.get_marker() not in ("None", None, "", " "):
+                rad = (ln.get_markersize() + ln.get_markeredgewidth()) * px / 2
+                marks += [(p, rad + MARK_CLEAR * px) for p in ln.get_transform().transform(ln.get_xydata())]
+    return paths, marks
+
+
+def hit(bb, obstacles, lines: bool = True) -> str:
+    """'on a mark' / 'crosses a line' if a text's display box `bb` touches one of `obstacles`, else ''."""
+    import numpy as np
+    from matplotlib.transforms import Bbox
+
+    if bb.width <= 2 or bb.height <= 2:
+        return ""
+    paths, marks = obstacles
+    for c, rad in marks:
+        if np.hypot(max(bb.x0 + 1 - c[0], 0, c[0] - bb.x1 + 1), max(bb.y0 + 1 - c[1], 0, c[1] - bb.y1 + 1)) < rad:
+            return "on a mark"
+    if lines:
+        for path, half in paths:
+            if path.intersects_bbox(Bbox.from_extents(bb.x0 + 1 - half, bb.y0 + 1 - half, bb.x1 - 1 + half,
+                                                      bb.y1 - 1 + half), filled=False):  # fmt: skip
+                return "crosses a line"
+    return ""
+
+
 def png_problems(path, width: int = 1600, aspect: tuple[float, float] = (1.0, 2.6)) -> list[str]:
     """A saved write-up PNG: exactly `width` px wide, width:height inside `aspect`, opaque white background (the
     corners and any alpha)."""

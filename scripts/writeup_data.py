@@ -112,7 +112,8 @@ def fig11_rows() -> list[dict]:
     """Panel 1 (note 62, the one-hop question "{city} is in the country of", gated items, descriptive): accuracy loss in
     points of the city's J++ directions, of the same directions made orthogonal to the answers (no interval stored), and
     of the answers' own J++ directions. Panel 2 (note 67's registered R1, mid band): the cleaned data-built city subspace
-    minus energy-matched random directions, points, item interval (the bridge-clustered one beside it in the source)."""
+    minus energy-matched random directions, points, bridge-clustered interval (ci_bridges, the one Amendment 85
+    addendum 2 registers; the item interval is stored beside it)."""
     out = []
     for model, p in TWIN_PREFIX.items():
         k = SHORT[model]
@@ -131,9 +132,10 @@ def fig11_rows() -> list[dict]:
         src67 = f"{SD_READ}/{p}sd67_ko_test_v1_note67.json"
         r = json.loads((REPO / src67).read_text())["readings"]["R1_bands"][SD_BAND[model]]
         out.append(_row(f"fig11.clean_subspace.{k}", "fig11_orthogonal", model,
-                        f"cleaned city subspace minus energy-matched random, band {SD_BAND[model]} (registered R1, bar 15)",
-                        r["value"], *r["ci"], n=r["n"], unit="points",
-                        source=f'{src67} readings.R1_bands["{SD_BAND[model]}"].value, ci (scripts/nn_sd67_read.py)'))  # fmt: skip
+                        f"cleaned city subspace minus energy-matched random, band {SD_BAND[model]} (registered R1, bar 15); "
+                        f"bridge-clustered interval; item interval {r['ci']}", r["value"], *r["ci_bridges"], n=r["n"],
+                        unit="points", source=f'{src67} readings.R1_bands["{SD_BAND[model]}"].value, ci_bridges '
+                        "(scripts/nn_sd67_read.py)"))  # fmt: skip
     return out
 
 

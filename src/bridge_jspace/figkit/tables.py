@@ -70,8 +70,13 @@ MIN_PT = {"writeup": WRITEUP.label}  # the write-up's floor: nothing under 11 pt
 
 def build(target: str, ids: list[str] | None = None) -> list[str]:
     min_pt = MIN_PT.get(target, 0.0)
-    T.BEFORE_SAVE = lambda fig, path: PROBLEMS.extend(
-        lint.table_problems(fig, Path(path).stem, need_xlabel=True, need_cue=True, min_pt=min_pt))
+
+    def before_save(fig, path):
+        PROBLEMS.extend(lint.table_problems(fig, Path(path).stem, need_xlabel=True, need_cue=True, min_pt=min_pt))
+        if target == "writeup":  # text never crosses a line or a mark (the write-up's rule)
+            PROBLEMS.extend(lint.crossings(fig, Path(path).stem))
+
+    T.BEFORE_SAVE = before_save
     out = OUT[target]
     out.mkdir(parents=True, exist_ok=True)
     X.OUT, F.DPI = str(out), DPI[target]
@@ -80,10 +85,11 @@ def build(target: str, ids: list[str] | None = None) -> list[str]:
     W.OUT = str(out)
     CV.PROBLEMS.clear()
     W.PROBLEMS.clear()
-    fs, min_row = dict(T.FS), T.MIN_ROW_H
+    fs, min_row, gap, vbox = dict(T.FS), T.MIN_ROW_H, T.VALUE_GAP, T.VALUE_BOX
     if target == "writeup":
         T.FS.update(W.FS)
         T.MIN_ROW_H = WRITEUP_MIN_ROW
+        T.VALUE_GAP, T.VALUE_BOX = W.VALUE_GAP, False
     done = []
     try:
         for i in TARGET[target]:
@@ -96,7 +102,7 @@ def build(target: str, ids: list[str] | None = None) -> list[str]:
     finally:
         T.FS.clear()
         T.FS.update(fs)
-        T.MIN_ROW_H = min_row
+        T.MIN_ROW_H, T.VALUE_GAP, T.VALUE_BOX = min_row, gap, vbox
     PROBLEMS.extend(CV.PROBLEMS)
     PROBLEMS.extend(W.PROBLEMS)
     return done

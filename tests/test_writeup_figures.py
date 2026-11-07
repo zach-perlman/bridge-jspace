@@ -112,6 +112,48 @@ def test_png_problems_aspect_range(tmp_path, height, ok):
     assert (lint.png_problems(p, 1600, WRITEUP_ASPECT) == []) is ok
 
 
+def _panel():
+    import matplotlib.pyplot as plt
+
+    fig = plt.figure(figsize=(4, 2), dpi=100)
+    ax = fig.add_axes((0.1, 0.2, 0.8, 0.7), xlim=(-10, 10), ylim=(1, -1))
+    ax.plot([0, 0], [1, -1], color=T.MUTED)  # a zero line
+    ax.plot([5], [0], "o", ms=9.5, color=T.INK)  # a dot
+    return fig, ax
+
+
+def test_crossings_flags_text_over_a_line_or_on_a_mark():
+    """Review of batch 2: text never crosses a line (spine, zero line, rule) or sits on a mark."""
+    fig, ax = _panel()
+    ax.text(0, 0.5, "267 items", ha="center", va="center")
+    ax.text(5.6, 0, "6.2", ha="left", va="center")
+    probs = lint.crossings(fig, "x")
+    assert any("crosses a line '267 items'" in p for p in probs)
+    assert any("on a mark '6.2'" in p for p in probs)
+
+
+def test_crossings_lets_a_masking_note_stop_the_lines_but_not_the_marks():
+    fig, ax = _panel()
+    t = ax.text(0, 0.6, "descriptive", ha="center", va="center")
+    t._masks_lines = True
+    ax.text(-8, -0.6, "clear", ha="left", va="center")
+    assert lint.crossings(fig, "x") == []
+    t.set_position((5, 0.1))
+    assert any("on a mark" in p for p in lint.crossings(fig, "x"))
+
+
+def test_grid_lines_are_exempt():
+    fig, ax = _panel()
+    ax.plot([-5, -5], [1, -1], color=T.GRID)
+    ax.text(-5, 0.5, "on the grid", ha="center", va="center")
+    assert lint.crossings(fig, "x") == []
+
+
+@pytest.mark.parametrize(("n", "skip", "spans"), [(4, (), [(0, 4)]), (8, (0, 4), [(1, 4), (5, 8)]), (3, (2,), [(0, 2)])])
+def test_lines_stop_at_skipped_rows(n, skip, spans):
+    assert T.runs(n, skip) == spans
+
+
 def test_writeup_rejects_a_squeezed_row(tmp_path, monkeypatch):
     """Amendment 1: every dot-table row of the write-up is at least WRITEUP_MIN_ROW tall."""
     monkeypatch.setattr(T, "MIN_ROW_H", WRITEUP_MIN_ROW)

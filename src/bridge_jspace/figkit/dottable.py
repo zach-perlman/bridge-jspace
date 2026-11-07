@@ -38,6 +38,10 @@ FS_DEFAULT = {"name": 13, "title": 13, "sub": 11.5, "rowsub": 11, "subrow": 11.5
               "cue": 10.5, "key": 11.5, "text": 12.5, "value": 11.5, "head": 12, "small": 10.5}  # fmt: skip
 FS = dict(FS_DEFAULT)
 MIN_ROW_H = 0.0  # inches; a target may set a floor (the write-up: 0.32) and a shorter row is an error, not a lint line
+# a value label beside its dot: VALUE_GAP points from the marker's edge (None: 9 points from its centre); VALUE_BOX: a
+# box the row's colour behind it (the write-up has none: a box guessed from the row index showed white on grey stripes)
+VALUE_GAP: float | None = None
+VALUE_BOX = True
 
 
 @dataclass
@@ -85,6 +89,7 @@ class Table:
     sub_lift: bool = False  # text columns follow a row's name up when the row has a grey sub-line under it; the
     # sub-line, which then runs under the panels, gets the row's background so grid lines do not cross it
     hollow_key: bool = True  # False: a stacked panel whose figure carries "○ post hoc" in another panel's key
+    skip_lines: tuple = ()  # rows the panels' grid and zero lines stop at (a group's header row, whose label runs long)
 
     def render(self, path: str, dpi: int = 160) -> None:
         """Draw twice: a dry run finds out whether a hollow mark is used, then the real figure carries the key item
@@ -148,8 +153,9 @@ class Table:
             if r.sub:
                 box = {"boxstyle": "square,pad=0.1", "facecolor": ZEBRA if (i // self.group) % 2 == 0 and self.zebra
                        else "white", "edgecolor": "none"} if self.sub_lift else None  # masks the grid lines it crosses  # fmt: skip
-                fig.text(fx(0.12), y - 0.17 / height, r.sub, ha="left", va="center", fontsize=FS["rowsub"], color=MUTED,
-                         bbox=box, zorder=5)  # fmt: skip
+                st = fig.text(fx(0.12), y - 0.17 / height, r.sub, ha="left", va="center", fontsize=FS["rowsub"],
+                              color=MUTED, bbox=box, zorder=5)  # fmt: skip
+                st._masks_lines = box is not None  # figkit/lint.py crossings: the lines stop at its box
 
         if self.subtitle:
             fig.text(fx(0.12), fy(0.1), self.subtitle, ha="left", va="top", fontsize=FS["sub"], color=MUTED)
@@ -187,10 +193,11 @@ class Table:
                                 textcoords="offset points", ha="center", va="top", fontsize=FS["cue"], color=MUTED,
                                 annotation_clip=False)  # fmt: skip
                     ax._cue = c.cue  # the table lint (figkit/lint.py) requires one per panel
-                for t in ax.get_xticks():
-                    ax.plot([t, t], [n - 0.5, -0.5], color=GRID, lw=0.8, zorder=0)
-                if c.zero and c.xlim[0] < 0 < c.xlim[1]:
-                    ax.plot([0, 0], [n - 0.5, -0.5], color=MUTED, lw=0.9, zorder=1)
+                for a, b in runs(n, self.skip_lines):
+                    for t in ax.get_xticks():
+                        ax.plot([t, t], [b - 0.5, a - 0.5], color=GRID, lw=0.8, zorder=0)
+                    if c.zero and c.xlim[0] < 0 < c.xlim[1]:
+                        ax.plot([0, 0], [b - 0.5, a - 0.5], color=MUTED, lw=0.9, zorder=1)
                 c.draw(ax, self.rows)
             x += c.width + self.pad
         for ri, row in enumerate(key_rows):
@@ -209,6 +216,16 @@ class Table:
                 BEFORE_SAVE(fig, path)
             fig.savefig(path, dpi=dpi, facecolor="white")
         plt.close(fig)
+
+
+def runs(n: int, skip=()) -> list[tuple[int, int]]:
+    """The row spans [a, b) a vertical line runs over: all n rows, cut at the skipped ones."""
+    out, a = [], 0
+    for i in [*sorted(skip), n]:
+        if i > a:
+            out.append((a, i))
+        a = max(a, i + 1)
+    return out
 
 
 def rich(fig, x, y, parts, ha="left", size=None):
@@ -238,7 +255,8 @@ def dot(ax, x, y, color, hollow=False, size=9.5, cell=None, value=None, vfmt="{:
     if value is not None:
         x0 = cell[2] if (cell and cell[2] is not None and vside == "right") else x
         x0 = cell[1] if (cell and cell[1] is not None and vside == "left") else x0
-        pts = 9 if x0 == x else 5
+        pts = (9 if VALUE_GAP is None else size / 2 + VALUE_GAP) if x0 == x else 5
+        box = box and VALUE_BOX
         ax.annotate(
             clean(vfmt.format(value)),
             (x0, y),
@@ -294,8 +312,9 @@ def band(ax, lo, hi, n, word=None):
         ax.text((lo + hi) / 2, n - 0.5 - 0.12, word, ha="center", va="bottom", fontsize=FS["small"], color=MUTED, zorder=1)
 
 
-def vrule(ax, x, n, word=None, ha="left"):
-    ax.plot([x, x], [n - 0.5, -0.5], color="#8C8C8C", ls=(0, (4, 3)), lw=1.1, zorder=1)
+def vrule(ax, x, n, word=None, ha="left", skip=()):
+    for a, b in runs(n, skip):
+        ax.plot([x, x], [b - 0.5, a - 0.5], color="#8C8C8C", ls=(0, (4, 3)), lw=1.1, zorder=1)
     if word:
         ax.text(x + (0.01 if ha == "left" else -0.01) * (ax.get_xlim()[1] - ax.get_xlim()[0]), n - 0.5 - 0.1, word,
                 ha=ha, va="bottom", fontsize=FS["small"], color=MUTED)  # fmt: skip
