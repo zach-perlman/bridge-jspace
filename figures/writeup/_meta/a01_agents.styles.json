@@ -6,7 +6,7 @@
  },
  "registry": {
   "path": "data/figures/status.csv",
-  "sha256": "d991f162df6abe9eb006520f736b40638bfc0ab1b5fc93b005b50f69e29572b3"
+  "sha256": "b4030bbfe7e60d184247b89a2a7a7d47ca4a4a091eadaafa2ccce2b19a462753"
  },
  "figure": "figA1_agents",
  "target": "post",
@@ -14,7 +14,7 @@
  "publishable": true,
  "text_only": false,
  "png": {
-  "pixels_sha256": "65d191a7c0ef7353769ea94eff648119136bf7d9aaf4900f46bfbb4cfc968d9c",
+  "pixels_sha256": "289c7a0845317cc90533b32d68e829520eba41dcc87030da6942ebd5fe6d8e26",
   "dpi": 200
  },
  "roles": [
@@ -23,8 +23,8 @@
  "controls": [],
  "cells": {
   "copy.nl": {
-   "timing": "fixed_in_advance",
-   "claim": "descriptive"
+   "timing": "post_hoc",
+   "claim": "claimed"
   },
   "copy.q27": {
    "timing": "fixed_in_advance",
@@ -35,7 +35,7 @@
    "claim": "descriptive"
   },
   "pick.nl": {
-   "timing": "fixed_in_advance",
+   "timing": "post_hoc",
    "claim": "claimed"
   },
   "pick.q27": {
@@ -47,7 +47,7 @@
    "claim": "claimed"
   },
   "produce.nl": {
-   "timing": "fixed_in_advance",
+   "timing": "post_hoc",
    "claim": "claimed"
   },
   "produce.q27": {
@@ -59,7 +59,7 @@
    "claim": "claimed"
   },
   "verify.nl": {
-   "timing": "fixed_in_advance",
+   "timing": "post_hoc",
    "claim": "claimed"
   },
   "verify.q27": {
@@ -92,9 +92,9 @@
    "kind": "dot",
    "role": "recall",
    "cell": "copy.nl",
-   "timing": "fixed_in_advance",
-   "claim": "descriptive",
-   "hollow": false
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
   },
   {
    "kind": "dot",
@@ -116,9 +116,9 @@
    "kind": "dot",
    "role": "recall",
    "cell": "pick.nl",
-   "timing": "fixed_in_advance",
+   "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": false
+   "hollow": true
   },
   {
    "kind": "dot",
@@ -140,9 +140,9 @@
    "kind": "dot",
    "role": "recall",
    "cell": "verify.nl",
-   "timing": "fixed_in_advance",
+   "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": false
+   "hollow": true
   },
   {
    "kind": "dot",
@@ -164,13 +164,14 @@
    "kind": "dot",
    "role": "recall",
    "cell": "produce.nl",
-   "timing": "fixed_in_advance",
+   "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": false
+   "hollow": true
   }
  ],
  "key": [
-  "whiskers: 95% interval"
+  "whiskers: 95% interval",
+  "○ post hoc"
  ],
  "numbers": {
   "figA1.copy.q9": "6.2",

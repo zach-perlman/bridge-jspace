@@ -13,7 +13,7 @@ entity, does that depend on whether the final fact is recalled or stated, and in
   stated, under controls fixed before the run. → [1](#1-recall-needs-the-lens-part-reading-the-stated-fact-does-not)
 - **What recall needs is its answer's own directions.** Keeping only the answer span's directions undoes
   {{w|fig10.keep_span.nl}} to {{w|fig10.keep_span.q27}} of that damage; removals orthogonal to the answer cost nothing,
-  even on a one-hop question about the subject (post hoc on two of three models). →
+  even on a one-hop question about the subject (post hoc on all three models). →
   [7](#7-what-recall-needs-the-answers-own-directions), [8](#8-removals-orthogonal-to-the-answer)
 - **At the entity's mention, the lens part carries which entity it is, not its fact.** Taken from one neutral sentence
   about another entity, it moves the answer as much as when taken from that entity's own passage; a probe that reads
@@ -583,8 +583,8 @@ cannot see the subject.
 
 <details><summary>Method, controls and limits</summary>
 
-*The one-hop removals of the city and of the answers fixed in advance; the orthogonal removal post hoc on the 9B and
-27B; the data-built subspace fixed in advance (rule R1, bar 15 points)<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.q27 -->.*
+*The one-hop removals of the city and of the answers fixed in advance; the orthogonal removal post hoc on all three
+models; the data-built subspace fixed in advance (rule R1, bar 15 points)<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.q27 -->.*
 
 - **One-hop question.** The city's lens directions cost {{wci|fig11.onehop.city.q9}} / {{wci|fig11.onehop.city.q27}} /
   {{wci|fig11.onehop.city.nl}} points (9B / 27B / Lightning), the answers' own directions
@@ -613,7 +613,7 @@ choose among given words need it much less.
 <details><summary>Method, controls and limits</summary>
 
 - **Produce** the answer: {{wci|figA1.produce.q9}} / {{wci|figA1.produce.q27}} / {{wci|figA1.produce.nl}} points beyond
-  a rotated part (9B / 27B / Lightning).
+  a rotated part (9B / 27B / Lightning; Lightning's cells post hoc ○).
 - **Pick** the true one of two: {{wci|figA1.pick.q9}} / {{wci|figA1.pick.q27}} / {{wci|figA1.pick.nl}}.
 - **Verify** a claim, against the harshest control: {{wci|figA1.verify.q9}} / {{wci|figA1.verify.q27}} /
   {{wci|figA1.verify.nl}}.

@@ -232,15 +232,48 @@ def f14_split(writeup: list[dict]) -> list[dict]:
 # preregistration registered Lightning's runs; the depth tests are post hoc (figkit/data.py hollow() is depth-only)
 PREREG = "docs/breadth/prereg_replication_1022.md"
 CHAIN = f"{PREREG} Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit)"
-TWIN_NOTES = f"{PREREG} Amendment 58 notes 15 and 17, Lightning addendum"
 BREADTH = {  # (figure, cell prefix) -> the registration it cites
     ("fig01_main_split", "band."): CHAIN, ("r1_c1_split", "band."): CHAIN, ("key", "band."): CHAIN,
     ("fig05_controls", "band."): CHAIN, ("fig05a_controls_band", "band."): CHAIN, ("f2_controls", "band."): CHAIN,
     ("fig12_pointer", ""): CHAIN, ("r4_pointer", ""): CHAIN,
     ("t12_two_by_two", "t12.2."): CHAIN, ("t12_two_by_two", "t12.3."): CHAIN,
-    ("fig04_twin_set", ""): TWIN_NOTES, ("fig10_answer_span", ""): TWIN_NOTES, ("fig11_orthogonal", ""): TWIN_NOTES,
     ("fig06_nine_models", ""): CHAIN, ("f3_nine_models", ""): CHAIN,
 }  # fmt: skip
+
+
+def _reg(line: str, committed: str, run: str, started: str) -> str:
+    return (f"{PREREG}: \"{line}\" (first committed {committed}); Lightning's run {run} started {started} "
+            "(manifest written_utc)")  # fmt: skip
+
+
+# Dan, 8 Nov (Q2b): a Lightning cell of fig04, fig10, fig11 is fixed in advance only if a registration committed before
+# its run started names the test and the model (or states a rule whose words cover the cell); else post hoc. Commit
+# times: the oldest commit holding the registration's heading (git log --all -S); run starts: the run's manifest.
+_N41 = _reg("Amendment 67 ... Models: 9B, 27B, Lightning ... Note 41: random-span placebo and output-side check for "
+            "note 37", "2026-10-30T08:06:54Z", "results/ablate_v2/nem35l_jsuite_v4_test_chat_ko41_cand2_v1",
+            "2026-10-30T08:29:29Z")  # fmt: skip
+_N50 = _reg("Amendment 72 ... notes 49-55 ... One deterministic run per model: 9B, 27B and Lightning",
+            "2026-10-30T09:09:40Z", "results/ablate_v2/nem35l_jsuite_v4_test_chat_ko49_cand2_v1", "2026-10-30T12:13:41Z")
+_N57 = _reg("Amendment 79 ... note 57 on Lightning and the 27B", "2026-10-30T12:28:40Z",
+            "results/ablate_v2/nem35l_jsuite_v4_test_chat_ko57_cand2_v1", "2026-10-30T13:43:39Z")
+_N68 = _reg("Amendment 89, addendum ... note 68 on the 9B and Lightning (confirmatory)", "2026-10-30T23:38:36Z",
+            "results/ablate_v2/nem35l_jsuite_v5al_test_chat_ko57_cand2_v1", "2026-10-31T00:00:38Z")
+_N62 = _reg("Note 62 ... 9B and Lightning primary", "2026-10-30T18:28:05Z", "results/sd_necessity/nem35l_sd62_ko_test_v1",
+            "2026-10-30T18:58:17Z")
+_N67 = _reg("Note 67 (as decided) ... 9B primary, Lightning confirmatory", "2026-10-30T19:39:34Z",
+            "results/sd_necessity/nem35l_sd67_ko_test_v1", "2026-10-30T21:21:03Z")
+Q2B = {  # (figure, cell prefix) -> the registration it rests on (every one committed before the run started)
+    ("fig04_twin_set", "recall.paper10"): _N41, ("fig04_twin_set", "lookup.paper10"): _N41,
+    ("fig04_twin_set", "gap."): _N41, ("fig10_answer_span", "keep."): _N41,
+    ("fig10_answer_span", "keep_ctrl."): _N50, ("fig10_answer_span", "remove.v4."): _N57,
+    ("fig10_answer_span", "remove.codename."): _N68,
+    ("fig11_orthogonal", "onehop.city."): _N62, ("fig11_orthogonal", "onehop.answers."): _N62,
+    ("fig11_orthogonal", "subspace."): _N67,
+}  # fmt: skip
+# figA1 (Q2c): Dan's decision is post hoc; the prereg does name Lightning for both agent tests before their runs
+Q2C = ("Note 59 ... Lightning confirmatory (first committed 2026-10-30T17:20:51Z; run nem35l_sd59 started "
+       "2026-10-30T17:41:33Z); Note 65 (as decided) ... Lightning confirmatory (2026-10-30T19:39:34Z; run nem35l_sd65 "
+       "started 2026-10-30T20:53:52Z)")  # fmt: skip
 DEPTH_FIGS = {"fig08a_address_read_remove", "fig08b_address_swap_lens", "f6_address", "fig13_last_token",
               "f6a_address_read_remove", "f6b_address_swap_lens", "fig07_routes", "r5_routes", "appB_f18_code_tool",
               "r3_last_token", "r1_dan_split", "fig05b_controls_layer", "fig01b_settings", "fig01c_zeroing",
@@ -263,20 +296,26 @@ def lightning(rows_: list[dict]) -> list[dict]:
             continue
         fig, cell = r["figure"], r["cell"]
         cite = next((c for (f, pre), c in BREADTH.items() if f == fig and cell.startswith(pre)), None)
-        if cite is not None:
+        q2b = next((c for (f, pre), c in Q2B.items() if f == fig and cell.startswith(pre)), None)
+        if q2b is not None:  # the claim (descriptive) stays; the timing follows the registration
+            r = {**r, "status": r["status"] if r["status"] == "descriptive" else "fixed_in_advance",
+                 "reason": "Lightning: a registration committed before the run names the test and the model",
+                 "source": f"{q2b}; Dan 8 Nov (Q2b)"}  # fmt: skip
+        elif cite is not None:
             if r["status"] == "descriptive":
                 out.append(r)
                 continue
             r = {**r, "status": "fixed_in_advance", "reason": "Lightning's breadth test, registered before its data",
                  "source": f"{cite}; Dan 7 Nov (decision 8)"}  # fmt: skip
-            if cite == TWIN_NOTES:
-                UNCLEAR.add(f"{fig}: {TWIN_NOTES} register note 15 (bridge or answer) on Lightning; whether they cover "
-                            "this figure's cells is not stated cell by cell")  # fmt: skip
         elif fig in DEPTH_FIGS or cell.startswith("layer.") or any(f == fig and cell.startswith(p) for f, p in DEPTH_PREFIX):
             r = {**r, "status": "post_hoc", "reason": "Lightning's depth test: after the data",
                  "source": "Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()"}  # fmt: skip
         elif fig == "figA1_agents":
-            UNCLEAR.add(f"figA1_agents ({cell}): no amendment names Lightning's agent transcripts; kept as before")
+            r = {**r, "status": "post_hoc", "reason": "Lightning's agent transcripts: post hoc (Dan, 8 Nov, Q2c)",
+                 "source": "Dan 8 Nov (Q2c)"}  # fmt: skip
+            DISAGREEMENTS.append(f"figA1_agents Lightning cells: post hoc by Dan's Q2c (premise: no amendment covers "
+                                 f"them), but {PREREG} names Lightning for both agent tests before their runs: {Q2C}. "
+                                 "By the Q2b rule they would be fixed in advance.")  # fmt: skip
         out.append(r)
     return out
 

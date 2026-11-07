@@ -4,7 +4,7 @@
 *When a model answers a two-step question about an entity, does it need the directions the J++ lens reads at that
 entity, does that depend on whether the final fact is recalled or stated, and in which models?*
 
-**Status:** every number is sourced from the run files (checked by tests); a 46-item hand-check changed no headline claim ([findings](../review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->; human recomputation (VERIFIED.md) not yet done. Built at b56c9132 from the run files.
+**Status:** every number is sourced from the run files (checked by tests); a 46-item hand-check changed no headline claim ([findings](../review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->; human recomputation (VERIFIED.md) not yet done. Built at 79b853a9 from the run files.
 
 ## In one minute
 
@@ -14,7 +14,7 @@ entity, does that depend on whether the final fact is recalled or stated, and in
   stated, under controls fixed before the run. → [1](#1-recall-needs-the-lens-part-reading-the-stated-fact-does-not)
 - **What recall needs is its answer's own directions.** Keeping only the answer span's directions undoes
   0.91<!-- src: data/figures/writeup/data.csv | fig10.keep_span.nl --> to 0.95<!-- src: data/figures/writeup/data.csv | fig10.keep_span.q27 --> of that damage; removals orthogonal to the answer cost nothing,
-  even on a one-hop question about the subject (post hoc on two of three models). →
+  even on a one-hop question about the subject (post hoc on all three models). →
   [7](#7-what-recall-needs-the-answers-own-directions), [8](#8-removals-orthogonal-to-the-answer)
 - **At the entity's mention, the lens part carries which entity it is, not its fact.** Taken from one neutral sentence
   about another entity, it moves the answer as much as when taken from that entity's own passage; a probe that reads
@@ -617,8 +617,8 @@ cannot see the subject.
 
 <details><summary>Method, controls and limits</summary>
 
-*The one-hop removals of the city and of the answers fixed in advance; the orthogonal removal post hoc on the 9B and
-27B; the data-built subspace fixed in advance (rule R1, bar 15 points)<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.q27 -->.*
+*The one-hop removals of the city and of the answers fixed in advance; the orthogonal removal post hoc on all three
+models; the data-built subspace fixed in advance (rule R1, bar 15 points)<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.q27 -->.*
 
 - **One-hop question.** The city's lens directions cost 41.5 [35.3, 47.3]<!-- src: data/figures/writeup/data.csv | fig11.onehop.city.q9 --> / 29.2 [24.3, 34.5]<!-- src: data/figures/writeup/data.csv | fig11.onehop.city.q27 --> /
   25.2 [21.3, 29.4]<!-- src: data/figures/writeup/data.csv | fig11.onehop.city.nl --> points (9B / 27B / Lightning), the answers' own directions
@@ -639,7 +639,7 @@ picking the true one of two or verifying a claim.
 
 ![Agents: removing the lens part costs producing an answer far more than picking or verifying one](../../figures/writeup/a01_agents.png)
 
-*Inside agent transcripts, one relation: the recall's answers turned wrong by the knock-out minus a control's, in points, when the step is to copy a given answer, pick the true one of two, verify a Yes/No claim, or produce the answer alone (minus the rotated control, or the harshest control for verify). Whiskers: 95% intervals; grey tags: cells read without a rule fixed in advance (descriptive). No transcript is quoted.<!-- src: plotstyle.toml | 95% interval -->*
+*Inside agent transcripts, one relation: the recall's answers turned wrong by the knock-out minus a control's, in points, when the step is to copy a given answer, pick the true one of two, verify a Yes/No claim, or produce the answer alone (minus the rotated control, or the harshest control for verify). Whiskers: 95% intervals; hollow: post hoc (Lightning); grey tags: cells read without a rule fixed in advance (descriptive). No transcript is quoted.<!-- src: plotstyle.toml | 95% interval -->*
 
 **Takeaway.** The recall's need for the lens part is a need to produce the remembered word; tasks that only check or
 choose among given words need it much less.
@@ -647,7 +647,7 @@ choose among given words need it much less.
 <details><summary>Method, controls and limits</summary>
 
 - **Produce** the answer: 35.7 [27.4, 43.8]<!-- src: data/figures/writeup/data.csv | figA1.produce.q9 --> / 36.6 [27.4, 45.1]<!-- src: data/figures/writeup/data.csv | figA1.produce.q27 --> / 50.8 [41.4, 60.3]<!-- src: data/figures/writeup/data.csv | figA1.produce.nl --> points beyond
-  a rotated part (9B / 27B / Lightning).
+  a rotated part (9B / 27B / Lightning; Lightning's cells post hoc ○).
 - **Pick** the true one of two: 10.1 [−1.1, 21.4]<!-- src: data/figures/writeup/data.csv | figA1.pick.q9 --> / 4.5 [2.5, 6.5]<!-- src: data/figures/writeup/data.csv | figA1.pick.q27 --> / 2.3 [1.2, 3.8]<!-- src: data/figures/writeup/data.csv | figA1.pick.nl -->.
 - **Verify** a claim, against the harshest control: −16.3 [−20.0, −11.8]<!-- src: data/figures/writeup/data.csv | figA1.verify.q9 --> / 3.8 [−1.9, 9.7]<!-- src: data/figures/writeup/data.csv | figA1.verify.q27 --> /
   3.7 [1.5, 6.0]<!-- src: data/figures/writeup/data.csv | figA1.verify.nl -->.

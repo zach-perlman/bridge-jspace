@@ -6,7 +6,7 @@
  },
  "registry": {
   "path": "data/figures/status.csv",
-  "sha256": "d991f162df6abe9eb006520f736b40638bfc0ab1b5fc93b005b50f69e29572b3"
+  "sha256": "b4030bbfe7e60d184247b89a2a7a7d47ca4a4a091eadaafa2ccce2b19a462753"
  },
  "figure": "fig11_orthogonal",
  "target": "post",
@@ -14,7 +14,7 @@
  "publishable": true,
  "text_only": false,
  "png": {
-  "pixels_sha256": "ad05893ade55ddc73bd1f7483654b3a8e5bdd5a8320f02bb41e8ecf2588d9288",
+  "pixels_sha256": "8cc023a22fb55fd259d603ccbb11326b1504cee6e6fb277c49c81a36b2b05566",
   "dpi": 200
  },
  "roles": [
@@ -49,7 +49,7 @@
    "claim": "claimed"
   },
   "onehop.city_perp.nl": {
-   "timing": "fixed_in_advance",
+   "timing": "post_hoc",
    "claim": "claimed"
   },
   "onehop.city_perp.q27": {
@@ -158,9 +158,9 @@
    "kind": "dot",
    "role": "neutral",
    "cell": "onehop.city_perp.nl",
-   "timing": "fixed_in_advance",
+   "timing": "post_hoc",
    "claim": "claimed",
-   "hollow": false
+   "hollow": true
   },
   {
    "kind": "dot",
