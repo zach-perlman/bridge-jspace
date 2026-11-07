@@ -4,7 +4,7 @@ Built by `make readme` with [styles-plot](https://github.com/danorel/styles-plot
 
 | № | figure | what it shows | status |
 |---|---|---|---|
-| 01 | <a href="01_needed.png"><img src="01_needed.png" width="260" alt="01_needed"></a> | Removing 10 J++ directions breaks recalled facts, not stated ones, in three models from two families | 2 of 12 cells post hoc · UNVERIFIED |
+| 01 | <a href="01_needed.png"><img src="01_needed.png" width="260" alt="01_needed"></a> | Removing the lens part (its 10 directions) breaks recalled facts, not stated ones, in three models from two families, far beyond the largest same-size control | 2 of 12 cells post hoc · UNVERIFIED |
 | 02 | <a href="02_datasets.png"><img src="02_datasets.png" width="260" alt="02_datasets"></a> | The Qwens' split on every dataset we built, with the logit lens near zero | UNVERIFIED |
 | 02b | <a href="02b_datasets.png"><img src="02b_datasets.png" width="260" alt="02b_datasets"></a> | The Qwens' split on every dataset we built, with the logit lens near zero | 5 of 15 cells post hoc · UNVERIFIED |
 | 03a | <a href="03a_robust.png"><img src="03a_robust.png" width="260" alt="03a_robust"></a> | The split holds on every relation, every start, both test halves, three renderings and by probability | UNVERIFIED |

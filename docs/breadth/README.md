@@ -35,7 +35,7 @@ entity, does that depend on whether the final fact is recalled or stated, and in
   Whether the model depends on those directions is a separate, model-specific question.
 
 **Status.** This is Zach's half (breadth): nine models on our dataset jsuite v2, plus the Qwens on every earlier dataset,
-as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at 83d4953f from the run files.
+as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at b830e65f from the run files.
 
 ## Setup
 
@@ -114,7 +114,7 @@ Does removing what the lens reads cost recall more than reading?
   - M − K is +51 [46, 55] (27B), +43 [37, 49] (9B) and +53 [48, 59] (Lightning).
   - Stated facts drop 3, 5 and 4 points.
 
-![Removing 10 J++ directions breaks recalled facts, not stated ones, in three models from two families](../../figures/breadth/01_needed.png)
+![Removing the lens part (its 10 directions) breaks recalled facts, not stated ones, in three models from two families, far beyond the largest same-size control](../../figures/breadth/01_needed.png)
 *Fig. 1.*
 
 - **It is specific to the lens's directions.**

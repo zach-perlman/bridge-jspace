@@ -80,7 +80,7 @@ Does removing what the lens reads cost recall more than reading?
   - M − K is {{vci|ko.q27.mk}} (27B), {{vci|ko.q9.mk}} (9B) and {{vci|ko.nl.mk}} (Lightning).
   - Stated facts drop {{v|ko.q27.klost}}, {{v|ko.q9.klost}} and {{v|ko.nl.klost}} points.
 
-![Removing 10 J++ directions breaks recalled facts, not stated ones, in three models from two families](../../figures/breadth/01_needed.png)
+![Removing the lens part (its 10 directions) breaks recalled facts, not stated ones, in three models from two families, far beyond the largest same-size control](../../figures/breadth/01_needed.png)
 *Fig. 1.*
 
 - **It is specific to the lens's directions.**

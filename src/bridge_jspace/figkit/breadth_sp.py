@@ -68,13 +68,15 @@ def fig01_needed() -> sp.Figure:
     v = vocab()
     rows = models_with("ko.{}.mk")
     lens = {m: est(b(f"ko.{i}.mk"), f"mk.{i}", f"ko.{i}.mk", label=True) for i, m in rows}
-    series = [sp.Series("control", {m: est(c, f"mk.{i}", f"ko.{i}.{k}", interval=True)
-                                    for i, m in rows if (c := b(f"ko.{i}.{k}"))}, control=name)
-              for k, name in CONTROLS01]  # fmt: skip
-    # one column per arm: grey dots of different controls in one column could not be told apart
+    # README brief F3: the controls on the lens part's axis, as the grey tick of the largest (one grey per line)
+    ticks = {
+        m: max(c[0] for k, _n in CONTROLS01 if (c := b(f"ko.{i}.{k}")))
+        for i, m in rows
+        if any(b(f"ko.{i}.{k}") for k, _n in CONTROLS01)
+    }
     top = sp.DotTable([m for _i, m in rows], [
-        sp.DotColumn("lens part knocked out", "gap", (-8, 72), (0, 30, 60), series=[sp.Series("neutral", lens, word="lens part knocked out")]),
-        *(sp.DotColumn(s.control, "gap", (-8, 72), (0, 30, 60), series=[s]) for s in series),
+        sp.DotColumn("lens part knocked out", "gap", (-8, 72), (0, 30, 60),
+                     series=[sp.Series("neutral", lens, word="lens part knocked out")], ticks=ticks),
     ])  # fmt: skip
     strong = [(i, m) for i, m in rows if i in ("q9", "q27", "nl")]
     vb = v.with_entities("finals", [(k, name) for k, name, _r in FINALS])
@@ -87,8 +89,9 @@ def fig01_needed() -> sp.Figure:
                 cells[role][k] = sp.Est(c[0], cell=f"lost.{i}", key=f"ko.{i}.lost{k}", label=True)
         cols.append(sp.DotColumn(v.entity("models", m).name, "drop", (-2, 62), (0, 30, 60),
                                  series=[sp.Series("lookup", cells["lookup"]), sp.Series("recall", cells["recall"])]))  # fmt: skip
-    bottom = sp.DotTable([k for k, *_ in FINALS], cols, kind="finals",
-                         note="accuracy drop under the lens part's top-10 knock-out, by where the answer is")  # fmt: skip
+    # one group: one shared axis title under the three models (README brief §3, principle 4)
+    bottom = sp.DotTable([k for k, *_ in FINALS], [sp.ColumnGroup(
+        "accuracy drop under the lens part's top-10 knock-out, by where the answer is", cols)], kind="finals")  # fmt: skip
     return sp.Figure("breadth_fig01_needed", vb).add(top, bottom)
 
 

@@ -2,18 +2,18 @@
  "styles_plot": "0.1.12",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "90badacf159489ad7fb76752de9fd48539a486e5f3ff851522e031a36c13e0f1"
+  "sha256": "e00b715ab579bc1d4ae21e2057bd08685334e1be8f9b3b01c18d7190a68df22e"
  },
  "registry": {
   "path": "data/figures/status.csv",
-  "sha256": "f64b92bb3ae44c173976bd9c35cc470510c21e9993572bdd397791c066430d3f"
+  "sha256": "5dfb962ab3a4c8a0db03609f84aa50343f5ce4dd2be0fa61cb86866ed5bf3c49"
  },
  "figure": "breadth_fig01_needed",
  "target": "readme",
  "mode": "strict",
  "publishable": true,
  "png": {
-  "pixels_sha256": "78d2b79e63ad8f16dfe78a30711754bc587038a5421760731e4240572694d5b3",
+  "pixels_sha256": "fbeecc1f87c7758204185e6a7e3ff998cd7b7e9fa827a8c90a8e7a1b1a36c024",
   "dpi": 160
  },
  "roles": [
@@ -21,11 +21,7 @@
   "neutral",
   "recall"
  ],
- "controls": [
-  "PCA",
-  "logit lens",
-  "rotated"
- ],
+ "controls": [],
  "cells": {
   "lost.nl": {
    "timing": "fixed_in_advance",
@@ -145,190 +141,6 @@
    "kind": "dot",
    "role": "neutral",
    "cell": "mk.ol",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "mk.q9",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "mk.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "mk.mu",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "mk.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "mk.q122",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "mk.ds",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "mk.mi",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "mk.nb",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "mk.ol",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "mk.q9",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "mk.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "mk.mu",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "mk.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "mk.q122",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "mk.ds",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "mk.mi",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "mk.nb",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "mk.ol",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "mk.q9",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "mk.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "mk.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "mk.ds",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "mk.mi",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -455,7 +267,7 @@
   }
  ],
  "key": [
-  "grey: PCA · logit lens · rotated",
+  "grey tick: the largest same-size control",
   "whiskers: 95% interval",
   "○ post hoc"
  ],
