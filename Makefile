@@ -1,4 +1,4 @@
-.PHONY: readme figures-kit figures-writeup writeup-examples install fmt lint typecheck test test-all test-model check run data-report review-serve review-export review-summary review-verified verify-checks verify-independent verify-pack examples-render examples-serve enqueue queue-status queue-pull queue-worker queue-cancel queue-stats autonomy autonomy-status autonomy-off
+.PHONY: readme figures-writeup writeup-examples install fmt lint typecheck test test-all test-model check run data-report review-serve review-export review-summary review-verified verify-checks verify-independent verify-pack examples-render examples-serve enqueue queue-status queue-pull queue-worker queue-cancel queue-stats autonomy autonomy-status autonomy-off
 
 # make run CONFIG=scripts/exp10_lens_sanity/config.yaml ARGS="model=configs/models/qwen3.6-27b.yaml"
 run:                ## experiment in a detached tmux session, log in log/
@@ -121,42 +121,30 @@ examples-render:    ## examples/<exp>/ from the latest examples runs; SEED=29 ad
 examples-serve:     ## render, then serve examples/ on http://localhost:$(PORT) and open it (PORT=8000)
 	uv run python -m bridge_jspace.examples serve $(or $(PORT),8000)
 
-figures-kit:        ## the setup figures (p0a, p0b) and the table figures for the slides (figures/slides/) and the README
-	uv run python -m bridge_jspace.figkit.build --target slide
-	uv run python -m bridge_jspace.figkit.build --target readme
-	uv run python -m bridge_jspace.figkit.tables --target slide
-
-figures-writeup:    ## the LessWrong post's figures (figures/writeup/, 1600 px) with their contact sheet and checks
+figures-writeup:    ## the LessWrong post's figures (figures/writeup/, styles-plot, post target) with their index, sheets and checks
 	uv run python scripts/writeup_data.py
-	uv run python scripts/convert_status_registry.py
-	uv run python -m bridge_jspace.figkit.tables --target writeup
+	uv run python scripts/status_registry.py
 	uv run python -m bridge_jspace.figkit.writeup_sp
 	uv run styles-plot check figures/writeup --vocab plotstyle.toml
-	uv run styles-plot sheet figures/writeup --order figures/writeup/order.txt
-	uv run python scripts/check_style.py --writeup
-	uv run python scripts/check_figure_terms.py --writeup
-	uv run pytest -q tests/test_writeup_figures.py tests/test_figure_grammar.py tests/test_writeup_sp.py
+	uv run styles-plot sheet figures/writeup -o figures/writeup/_sheets --order figures/writeup/_meta/order.txt
+	uv run pytest -q tests/test_writeup_sp.py tests/test_figure_layout.py
 
 writeup-examples:    ## the write-up's real prompts and answers per experiment (docs/writeup/examples.md) and its checks
 	uv run python scripts/writeup_examples.py
 	uv run python scripts/check_figure_terms.py --examples
 	uv run pytest -q tests/test_writeup_examples.py
 
-readme: figures-kit ## both READMEs from their templates (root: docs/readme/, depth: docs/depth/), figures and contact sheets
-	uv run python -m bridge_jspace.figkit.tables --target readme
-	uv run python -m bridge_jspace.figkit.tables --target depth
-	uv run python scripts/readme_root.py build
+readme:             ## the three READMEs from their templates (root, docs/depth, docs/breadth), then their figure sets (styles-plot)
+	uv run python scripts/readme_root.py
 	uv run python scripts/readme_build.py
-	uv run python scripts/convert_status_registry.py
+	uv run python scripts/report_breadth.py --render
+	uv run python scripts/status_registry.py
 	uv run python -m bridge_jspace.figkit.readme_sp
 	uv run python -m bridge_jspace.figkit.depth_sp
 	uv run python -m bridge_jspace.figkit.breadth_sp
-	uv run python -c "from bridge_jspace.figkit import readme_sp as R; R.write_order(R.REPO / 'README.md', R.OUT); R.write_order(R.REPO / 'docs/depth/README.md', R.DEPTH); R.write_order(R.REPO / 'docs/breadth/README.md', R.REPO / 'figures/breadth')"
-	-uv run styles-plot check figures/readme --vocab plotstyle.toml
-	-uv run styles-plot check figures/depth --vocab plotstyle.toml
-	-uv run styles-plot check figures/breadth --vocab plotstyle.toml
-	uv run styles-plot sheet figures/readme --order figures/readme/order.txt
-	uv run styles-plot sheet figures/depth --order figures/depth/order.txt
-	uv run styles-plot sheet figures/breadth --order figures/breadth/order.txt
-	uv run python scripts/check_style.py --report | tail -1
-	uv run pytest -q tests/test_readme_sources.py tests/test_readme_cards.py tests/test_readme_sp.py
+	for s in readme depth breadth; do \
+		uv run styles-plot check figures/$$s --vocab plotstyle.toml || exit 1; \
+		uv run styles-plot sheet figures/$$s -o figures/$$s/_sheets --order figures/$$s/_meta/order.txt || exit 1; \
+	done
+	uv run python scripts/check_figure_terms.py
+	uv run pytest -q tests/test_readme_sources.py tests/test_readme_cards.py tests/test_readme_sp.py tests/test_figure_layout.py

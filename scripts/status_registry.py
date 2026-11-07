@@ -1,6 +1,6 @@
-"""Write data/figures/status.csv: one row per (figure, cell) a v2 figure draws, with its status (fixed_in_advance,
-post_hoc, descriptive, not_claimed), its tag ("not claimed: <reason>" where the post does not claim the cell), the
-reason and the source of that status (figure grammar v2, docs/shared/figure_style.md B).
+"""Write data/figures/status.csv, the styles-plot status registry (plotstyle.toml [registry]): one row per (figure, cell)
+a figure draws, with its timing (fixed_in_advance, post_hoc), its claim (claimed, descriptive, not_claimed with its
+reason), the reason and the source of that status. Built as (status, tag) rows and converted on writing (convert).
 
 The statuses are read from the rules the figures already followed, each cited in `source`:
 - figkit/data.hollow: Lightning post hoc everywhere, the 122B post hoc where its gate was lowered;
@@ -21,8 +21,8 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "src"))
 
-from bridge_jspace.figkit import data as D  # noqa: E402
-from bridge_jspace.figkit import writeup_figs as WF  # noqa: E402
+from bridge_jspace import figdata as D  # noqa: E402
+from bridge_jspace import figdata as WF  # noqa: E402
 from bridge_jspace.palette import MODELS  # noqa: E402
 
 OUT = REPO / "data" / "figures" / "status.csv"
@@ -591,13 +591,32 @@ def rows() -> list[dict]:
                       *depth_set_d(), *breadth_set(readme)])
 
 
+COLUMNS = ("figure", "cell", "timing", "claim", "claim_reason", "reason", "source")  # styles-plot's registry schema
+NOT_CLAIMED_TAG = "not claimed: "
+
+
+def convert(row: dict) -> dict:
+    """A row as built here (status, tag) in the styles-plot schema: timing = post_hoc where the status is post_hoc, else
+    fixed_in_advance; claim = not_claimed (its reason the tag's text) where a tag says so, descriptive where the status
+    is descriptive, else claimed."""
+    status, tag = row["status"], row["tag"]
+    if tag and not tag.startswith(NOT_CLAIMED_TAG):
+        raise ValueError(f"{row['figure']} {row['cell']}: unknown tag {tag!r}")
+    if status not in ("fixed_in_advance", "post_hoc", "descriptive", "not_claimed"):
+        raise ValueError(f"{row['figure']} {row['cell']}: unknown status {status!r}")
+    claim = "not_claimed" if tag else "descriptive" if status == "descriptive" else "claimed"
+    return {"figure": row["figure"], "cell": row["cell"],
+            "timing": "post_hoc" if status == "post_hoc" else "fixed_in_advance", "claim": claim,
+            "claim_reason": tag.removeprefix(NOT_CLAIMED_TAG), "reason": row["reason"], "source": row["source"]}  # fmt: skip
+
+
 if __name__ == "__main__":
     rs = rows()
     OUT.parent.mkdir(parents=True, exist_ok=True)
     with OUT.open("w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=list(rs[0]))
+        w = csv.DictWriter(f, COLUMNS, lineterminator="\n")
         w.writeheader()
-        w.writerows(rs)
+        w.writerows(convert(r) for r in rs)
     print(f"wrote {len(rs)} rows to {OUT.relative_to(REPO)}")
     listed = [*sorted(set(DISAGREEMENTS)), *(f"not clearly covered: {u}" for u in sorted(UNCLEAR))]
     (OUT.parent / "status_disagreements.txt").write_text("\n".join(listed) + "\n")

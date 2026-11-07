@@ -20,7 +20,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 sys.path.insert(0, str(REPO / "src"))
-from bridge_jspace.figkit import specs as S  # noqa: E402
+from bridge_jspace import figdata as S  # noqa: E402
 from scripts import f2_differences as F2  # noqa: E402
 
 OUT = REPO / "data" / "figures" / "writeup" / "data.csv"

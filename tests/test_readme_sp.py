@@ -14,7 +14,7 @@ import styles_plot as sp
 from bridge_jspace.figkit import breadth_sp as BS
 from bridge_jspace.figkit import depth_sp as DS
 from bridge_jspace.figkit import readme_sp as RS
-from scripts import convert_status_registry as CR
+from scripts import status_registry as SR
 
 SETS = {**RS.FIGS, **DS.FIGS, **BS.FIGS}
 
@@ -22,7 +22,7 @@ SETS = {**RS.FIGS, **DS.FIGS, **BS.FIGS}
 @pytest.fixture(scope="module")
 def saved(tmp_path_factory):
     out = tmp_path_factory.mktemp("readme_sp")
-    return {fid: sp.save(f(), out / f"{fid}.png", target=RS.TARGET) for fid, f in SETS.items()}
+    return {fid: sp.save(f(), out / f"{fid}.png", target=RS.TARGET, root=out) for fid, f in SETS.items()}
 
 
 def test_every_figure_saves_strict(saved):
@@ -39,7 +39,7 @@ def test_one_data_key_prints_one_string_across_figures(saved):
 
 
 def test_an_alias_has_the_write_up_figures_cells():
-    with CR.OUT.open(newline="") as f:
+    with SR.OUT.open(newline="") as f:
         rows = list(csv.DictReader(f))
     cells = defaultdict(set)
     for r in rows:

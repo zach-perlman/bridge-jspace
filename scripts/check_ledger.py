@@ -11,14 +11,10 @@ well formed:
 - every number's source comment resolves: `<value><!-- src: <path> | <part> :: ... :: <value> -->` (in a table row
   the separator is written `\\|`): the path exists, all parts stand on one line of that file, and the last part is the
   text right before the comment, so a number cannot drift from the file it was copied from;
-- every card has one figure, right after its Method (before its rule; Dan's restructure brief, 29 Oct 08:55), with an
-  italic caption and its file present, or in its place one line "*No figure: <why>.*" (morning brief 30 Oct, S8); internal links resolve to any <a id> on the page (cards and the Appendix);
+- internal links resolve to any <a id> on the page (cards and the Appendix); the cards' figures are not checked here (the
+  ledger figures were retired on 7 Nov; every doc's figure links are checked by tests/test_figure_layout.py);
 - the coverage table equals scripts/ledger_coverage.py's output (the committed matrix), and the verdict tables (the
-  coverage map as markdown) its verdict_tables();
-- four model slots (Dan's figures brief, 29 Oct 10:00): on a card whose figure is a ledger figure, a model with a
-  number in the card's table has data in the figure, a model without one has a grey slot (data/figures/depth/ledger/slots.json,
-  written by scripts/ledger_figures.py); a verdict-folder figure on a card is a problem; the README's shared figures
-  (figures/story, figures/supp) are left to the README build.
+  coverage map as markdown) its verdict_tables().
 
 Exit 1 with one line per problem.
 
@@ -27,7 +23,6 @@ uv run python scripts/check_ledger.py
 
 from __future__ import annotations
 
-import json
 import re
 import sys
 from pathlib import Path
@@ -75,104 +70,14 @@ def source_problems(text: str, repo: Path = REPO) -> list[str]:
     return out
 
 
-def figure_problems(head: str, body: str, repo: Path = REPO) -> list[str]:
-    """A card's one figure (Dan 01:15): right after its Method, before its rule (Dan, 29 Oct 08:55), its file present
-    (the link is written from docs/depth/), an italic caption on the next line."""
-    lines = body.splitlines()
-    imgs = [i for i, line in enumerate(lines) if re.match(r"^!\[[^\]]+\]\([^)]+\)", line)]
-    if not imgs:  # a card whose numbers are its table (morning brief 30 Oct, S8: four numbers or fewer, no figure)
-        marks = [i for i, line in enumerate(lines) if re.fullmatch(r"\*No figure: .+\*", line.strip())]
-        method = next((k for k, line in enumerate(lines) if line.startswith("- **Method.**")), -1)
-        rule = next((k for k, line in enumerate(lines) if line.startswith("- **Rule, fixed in advance.**")), -1)
-        if len(marks) == 1 and method < marks[0] < rule:
-            return []
-        return [f"no figure and no '*No figure: ...*' line after the method in: {head}"]
-    if len(imgs) != 1:
-        return [f"{len(imgs)} figures in: {head}"]
-    i = imgs[0]
-    method = next(k for k, line in enumerate(lines) if line.startswith("- **Method.**"))
-    rule = next(k for k, line in enumerate(lines) if line.startswith("- **Rule, fixed in advance.**"))
-    out = [] if method < i < rule else [f"the figure is not right after the method in: {head}"]
-    target = re.match(r"^!\[[^\]]+\]\(([^)]+)\)", lines[i]).group(1)  # type: ignore[union-attr]
-    if not (LEDGER.parent / target).resolve().exists():
-        out.append(f"figure file missing: {target}")
-    if i + 1 >= len(lines) or not re.fullmatch(r"\*[^*].*\*", lines[i + 1].strip()):
-        out.append(f"no italic caption under the figure in: {head}")
-    return out
-
-
-SLOTS = REPO / "data" / "figures" / "depth" / "ledger" / "slots.json"
-TABLE_SLOTS = REPO / "data" / "figures" / "depth" / "ledger" / "table_slots.json"  # the models each t_* figure draws
 COLUMN_MODELS = ("9B", "27B", "Muse", "Lightning", "122B")  # the 122B checked like the others (Dan 12:50)
 # a cell that says the model has no result here (Dan's grey labels, the tables' words for a missing cell)
 NO_RESULT = ("not ", "running", "pending", "dropped", "read pending", "see the readme", "–", "no outcomes")
 
 
-def table_columns(body: str) -> dict[str, str]:
-    """The card's first result table: per model column, "number" if a cell holds a number (a below-gate ○ number
-    counts), else "none" (not run / not tested / not designed, empty or words only)."""
-    m = re.search(r"^- \*\*Result\.\*\*(.*?)^- \*\*Read\.\*\*", body, re.M | re.S)
-    rows = [r for r in (m.group(1) if m else "").splitlines() if r.strip().startswith("|")]
-    if len(rows) < 3:
-        return {}
-    split = lambda r: [c.strip() for c in re.sub(r"<!--.*?-->", "", r).strip().strip("|").split("|")]  # noqa: E731
-    head = split(rows[0])
-    cols = {j: next(k for k in COLUMN_MODELS if k in h) for j, h in enumerate(head) if any(k in h for k in COLUMN_MODELS)}
-    out = {k: "none" for k in cols.values()}
-    for r in rows[2:]:
-        if not re.match(r"^\s*\|", r) or r.strip().startswith("|---"):
-            continue
-        cells = split(r)
-        for j, k in cols.items():
-            c = cells[j].replace("**", "").strip() if j < len(cells) else ""
-            if re.fullmatch(r"L\d+", c):  # a layer alone (the layer fixed in advance) is not a result
-                continue
-            if c and re.search(r"\d", c) and not c.lower().startswith(NO_RESULT):
-                out[k] = "number"
-    return out
-
-
-def slot_problems(head: str, body: str, slots: dict | None = None) -> list[str]:
-    """Dan's figures brief (29 Oct 10:00), on the cards whose figure is a ledger figure: a number in a model's column of
-    the card's table means the figure has that model's data (or its below-gate data); a column with no number means the
-    figure shows that model's grey slot. A verdict-folder figure on a card is a borrowed figure; the README's shared
-    figures (figures/story, figures/supp) are the README build's and are not checked here."""
-    m = re.search(r"^!\[[^\]]+\]\(([^)]+)\)", body, re.M)
-    if not m:
-        return []
-    target = m.group(1)
-    if "/results/" in target:
-        return [f"a borrowed verdict figure (make a four-slot ledger figure) in: {head}"]
-    fm = re.search(r"figures/depth/ledger/([\w-]+)\.png$", target)
-    if not fm:
-        return []
-    name = fm.group(1)
-    if name.startswith("t_"):  # a table-style figure (figkit/ledger_tables.py): S1, only what ran is drawn
-        drawn = json.loads(TABLE_SLOTS.read_text()).get(name) if TABLE_SLOTS.exists() else None
-        if drawn is None:
-            return [f"no record for {name} (rerun python -m bridge_jspace.figkit.ledger_tables) in: {head}"]
-        cols = table_columns(body)
-        return ([f"{name}: the table has {m}'s numbers but the figure does not draw it" for m, st in cols.items()
-                 if st == "number" and m not in drawn]
-                + [f"{name}: the figure draws {m} but the table has no number for it" for m in drawn
-                   if cols and cols.get(m) != "number"])  # fmt: skip
-    if slots is None:
-        slots = json.loads(SLOTS.read_text()) if SLOTS.exists() else {}
-    if name not in slots:
-        return [f"no slot record for {name} (rerun scripts/ledger_figures.py) in: {head}"]
-    out = []
-    for model, status in table_columns(body).items():
-        have = slots[name].get(model, "")
-        if status == "number" and have not in ("data", "below gate"):
-            out.append(f"{name}: the table has {model}'s numbers but the figure shows {have or 'no slot'}")
-        if status == "none" and not have.startswith("grey"):
-            out.append(f"{name}: the table has no number for {model} but the figure shows {have or 'no slot'}, "
-                       f"not a grey slot")  # fmt: skip
-    return out
-
-
 def problems(text: str, repo: Path = REPO) -> list[str]:
-    out = [f"missing path: {p}" for p in cited_paths(text) if not (repo / p).exists()]
+    # figures are not sources: their links are checked with every doc's (tests/test_figure_layout.py)
+    out = [f"missing path: {p}" for p in cited_paths(text) if not p.startswith("figures/") and not (repo / p).exists()]
     anchors = []
     for head, body in entries(text):
         m = ANCHOR.search(head)
@@ -190,8 +95,6 @@ def problems(text: str, repo: Path = REPO) -> list[str]:
             first = next((line for line in body.splitlines() if line.strip()), "")
             if not TAG_LINE.match(first):
                 out.append(f"no status tag line under the heading of: {head}")
-            out += figure_problems(head, body, repo)
-            out += slot_problems(head, body)
     every =re.findall(r'<a id="([a-z0-9-]+)"></a>', text)
     out += [f"duplicate anchor: {a}" for a in sorted({a for a in every if every.count(a) > 1})]
     links = set(re.findall(r"\]\(#([a-z0-9-]+)\)", text))

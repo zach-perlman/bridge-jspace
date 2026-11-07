@@ -12,7 +12,7 @@ import sys
 
 import styles_plot as sp
 
-from bridge_jspace.figkit import data as D
+from bridge_jspace import figdata as D
 from bridge_jspace.figkit import depth_sp_b as DB
 from bridge_jspace.figkit import depth_sp_c as DC
 from bridge_jspace.figkit import depth_sp_d as DD

@@ -382,11 +382,7 @@ def main(argv: list[str] | None = None) -> int:
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(readme)
     print(f"{out.relative_to(REPO)}: {len(readme.splitlines())} lines from {grid.relative_to(REPO)}")
-    if out == PAGE:  # figures/depth/contact_sheet.png: the page's figures in page order at the page width
-        from bridge_jspace.figkit.build import page_sheet
-
-        shown = re.findall(r"^!\[[^\]]*\]\(((?:\.\./)*figures/[^)]+\.png)\)", readme.split("## Appendix A")[0], re.M)
-        page_sheet([(out.parent / f).resolve() for f in shown], REPO / "figures" / "depth" / "contact_sheet.png")
+    # the contact sheets (figures/depth/_sheets/) come from `styles-plot sheet` (make readme)
     if a.runs:
         (REPO / "RUNS.md").write_text(RT.build(grid))
         print("RUNS.md written")

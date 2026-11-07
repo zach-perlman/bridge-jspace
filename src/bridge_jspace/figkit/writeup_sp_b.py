@@ -8,10 +8,10 @@ import re
 
 import styles_plot as sp
 
-from bridge_jspace.figkit import claim_figs as CF
-from bridge_jspace.figkit import data as D
-from bridge_jspace.figkit import deck_figs as F
-from bridge_jspace.figkit import writeup_figs as W
+from bridge_jspace import figdata as CF
+from bridge_jspace import figdata as D
+from bridge_jspace import figdata as F
+from bridge_jspace import figdata as W
 from bridge_jspace.figkit.writeup_sp_base import MODEL, ZK, est, need, vocab
 
 DAN = [m for m, _ in D.DAN]

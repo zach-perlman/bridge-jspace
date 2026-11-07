@@ -8,7 +8,7 @@ from pathlib import Path
 
 import styles_plot as sp
 
-from bridge_jspace.figkit import writeup_figs as W
+from bridge_jspace import figdata as W
 
 REPO = Path(__file__).resolve().parents[3]
 ZK = W.ZK  # model key -> short id (the registry's cell suffix)

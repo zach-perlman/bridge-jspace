@@ -12,7 +12,6 @@ import re
 from pathlib import Path
 
 from scripts import check_figure_terms as C
-from scripts import readme_story_figures as F
 
 REPO = Path(__file__).resolve().parents[1]
 PAGE = REPO / "docs" / "depth" / "README.md"
@@ -116,11 +115,6 @@ def test_converted_figures_belong_to_one_card_only():
             assert page.count(f"]({target})") == 1, (head, target)
 
 
-def test_page_figures_are_the_contact_sheet():
-    shown = {Path(t).stem for t in IMAGE.findall(text().split("## Appendix A")[0])}
-    assert shown == set(F.README_NAMES), shown ^ set(F.README_NAMES)
-
-
 def test_no_internal_ids_in_the_body():
     hits = C.readme_ids(C.readme_body_lines(PAGE.read_text()))
     assert not hits, hits
@@ -150,13 +144,3 @@ def test_claims_table_grades_and_hand_check():
     assert "VERIFIED.md (human recomputation) not yet filled" in text()
 
 
-def test_deck_figures_exist():
-    """The figure kit's deck figures (src/bridge_jspace/figkit/specs.py): one PNG each in figures/slides/ and
-    figures/readme/, nothing but PNGs in either folder."""
-    from bridge_jspace.figkit.specs import SPECS
-
-    for folder in ("slides", "readme"):
-        d = REPO / "figures" / folder
-        missing = [i for i in SPECS if not (d / f"{i}.png").exists()]
-        assert not missing, (folder, missing)
-        assert {p.suffix for p in d.iterdir()} == {".png"}, folder

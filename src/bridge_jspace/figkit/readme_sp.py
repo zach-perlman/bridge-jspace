@@ -8,17 +8,15 @@ uv run python -m bridge_jspace.figkit.readme_sp [ids...]
 
 from __future__ import annotations
 
-import re
 import sys
-from pathlib import Path
 
 import styles_plot as sp
 
-from bridge_jspace.figkit import claim_figs as CF
-from bridge_jspace.figkit import data as D
-from bridge_jspace.figkit import depth_figs as DF
+from bridge_jspace import figdata as CF
+from bridge_jspace import figdata as D
+from bridge_jspace import figdata as DF
+from bridge_jspace import figdata as S
 from bridge_jspace.figkit import layout as L
-from bridge_jspace.figkit import specs as S
 from bridge_jspace.figkit import writeup_sp as WS
 from bridge_jspace.figkit import writeup_sp_b as WB
 from bridge_jspace.figkit.writeup_sp_base import REPO, ZK, est, need, vocab
@@ -231,7 +229,7 @@ def t12_two_by_two() -> sp.Figure:
             if c:
                 ctl[m] = est(c, cell, key=f"t12.{j}.control.{k}")
         control = "rotated" if j == 3 else "a random part"
-        cols.append(sp.DotColumn(header.capitalize(), "gap_effect", (-0.25, 1.0), DF.XTICKS,
+        cols.append(sp.DotColumn(header.capitalize(), "gap_effect", (-0.25, 1.0), (0, 0.5, 1),
                                  series=[sp.Series("control", ctl, control=control), sp.Series("neutral", gap, word=header.capitalize())]))  # fmt: skip
     t = sp.DotTable(DAN, [sp.ColumnGroup("One layer", cols[:2]), sp.Gutter(), sp.ColumnGroup("Band of layers", cols[2:])])
     return sp.Figure("t12_two_by_two", vocab()).add(t)

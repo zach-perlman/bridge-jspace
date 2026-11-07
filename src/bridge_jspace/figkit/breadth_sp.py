@@ -17,7 +17,7 @@ from functools import cache
 
 import styles_plot as sp
 
-from bridge_jspace.figkit import data as D
+from bridge_jspace import figdata as D
 from bridge_jspace.figkit import layout as L
 from bridge_jspace.figkit import readme_sp as RS
 from bridge_jspace.figkit.writeup_sp_base import REPO, vocab

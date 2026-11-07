@@ -7,7 +7,6 @@ import csv
 import io
 import json
 import re
-from pathlib import Path
 
 import pytest
 
@@ -247,71 +246,6 @@ def test_the_matcher_catches_each_banned_variant(text):
 )  # fmt: skip
 def test_the_matcher_passes_the_canonical_strings(text):
     assert not banned([("example", text)]), banned([("example", text)])
-
-
-@pytest.fixture(scope="module")
-def figure_texts(tmp_path_factory) -> dict[str, list[str]]:
-    """Every text drawn on every figure the README or docs/depth/x0_details.md shows, by figure: the README figures (Figs.
-    0-11, 1b and 3b), the supplementary ones, x0_figures' and x0_status_pack's f6. Rendered from the run files with
-    savefig caught, so nothing is written (the scripts' data.csv and Fig. 11's scorecard.csv go to a temporary
-    folder)."""
-    import matplotlib
-    from matplotlib.figure import Figure
-    from matplotlib.text import Text
-
-    from scripts import readme_story_figures as F
-    from scripts import story_style as S
-    from scripts import x0_figures as XF
-    from scripts import x0_status_pack as SP
-    from scripts.figs import common as FC
-
-    if not (F.pins.RESULTS_DIR / "x6_routes").exists():
-        pytest.skip("the run files are not in results/")
-    tmp = tmp_path_factory.mktemp("figures")
-    texts: dict[str, list[str]] = {}
-
-    def grab(fig, fname, *args, **kwargs) -> None:
-        texts[Path(str(fname)).stem] = [t.get_text() for t in fig.findobj(Text) if t.get_text().strip()]
-
-    with pytest.MonkeyPatch.context() as mp, matplotlib.rc_context():
-        mp.setattr(Figure, "savefig", grab)
-        for mod, name, value in ((S, "ROWS", []), (S, "OUT", tmp), (S, "SUPP", tmp / "supp"), (SP, "OUT", SP.OUT),
-                                 (SP, "SHOW_CLOSED", SP.SHOW_CLOSED), (FC, "LOOKUP", FC.LOOKUP),
-                                 (FC, "RECALL", FC.RECALL)):  # fmt: skip
-            mp.setattr(mod, name, value)  # restored on exit: the renders below set them
-        p = S.setup()
-        for f in (*F.README_FIGS, *F.SUPP_FIGS):
-            f(p)
-        XF.render(tmp / "x0_necessity")
-        SP.render(tmp / "status", ["f6"])
-        from bridge_jspace.figkit import tables as TB
-
-        mp.setitem(TB.OUT, "depth", tmp)
-        TB.build("depth")  # the page's table-style figures (scripts/readme_story_figures.py README_NAMES)
-    return texts
-
-
-@pytest.mark.slow  # renders every README figure
-def test_every_shown_figure_uses_the_glossary(figure_texts):
-    from scripts import readme_story_figures as F
-
-    # the README's figures (Fig. 8b is Fig. 8 (a) since batch 45) and the second contact sheet's (supplementary +
-    # docs/depth/x0_details.md's)
-    shown = {*F.README_NAMES, *(Path(n).name for n in F.SHEET_MORE)}
-    assert shown <= set(figure_texts), shown - set(figure_texts)
-    flat = [(name, t) for name, ts in figure_texts.items() for t in ts]
-    assert not banned(flat), banned(flat)
-
-
-def test_readme_figures_have_no_retired_term(figure_texts):
-    """scripts/check_figure_terms.py's retired terms on the README and supplementary figures (docs/depth/x0_details.md's
-    figures keep their run names as provenance)."""
-    from scripts import check_figure_terms as C
-    from scripts import readme_story_figures as F
-
-    readme = {*F.README_NAMES, *(Path(n).name for n in F.SHEET_MORE if n.startswith("supp/"))}
-    flat = [(name, t) for name, ts in figure_texts.items() if name in readme for t in ts]
-    assert flat and not C.retired(flat), C.retired(flat)
 
 
 def caption_texts() -> list[tuple[str, str]]:

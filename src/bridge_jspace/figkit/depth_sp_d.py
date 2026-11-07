@@ -11,8 +11,8 @@ from itertools import pairwise
 
 import styles_plot as sp
 
-from bridge_jspace.figkit import curve_figs as CV
-from bridge_jspace.figkit import data as D
+from bridge_jspace import figdata as CV
+from bridge_jspace import figdata as D
 from bridge_jspace.figkit.writeup_sp_base import ZK, est, need, vocab
 
 DAN = [m for m, _ in D.DAN]

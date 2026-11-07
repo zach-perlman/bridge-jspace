@@ -11,14 +11,13 @@ from __future__ import annotations
 import csv
 import sys
 from functools import cache
-from pathlib import Path
 
 import styles_plot as sp
 
-from bridge_jspace.figkit import data as D
-from bridge_jspace.figkit import specs as S
-from bridge_jspace.figkit import terms as TM
-from bridge_jspace.figkit import writeup_figs as W
+from bridge_jspace import figdata as D
+from bridge_jspace import figdata as S
+from bridge_jspace import figdata as TM
+from bridge_jspace import figdata as W
 from bridge_jspace.figkit import layout as L
 from bridge_jspace.figkit import writeup_sp_b, writeup_sp_c
 from bridge_jspace.figkit.writeup_sp_base import MODEL, REPO, ZK, est, need, vocab
@@ -130,7 +129,7 @@ def fig04_twin_set() -> sp.Figure:
 def fig09_order() -> sp.Figure:
     """Per model two lanes, the sentence (locker or fact) before the pick and after it, both in the lookup's colour: a
     second condition of the lookup is a lane named in words, never a shade. Left locker scenes, right fact passages."""
-    from bridge_jspace.figkit import claim_figs as CF
+    from bridge_jspace import figdata as CF
 
     models = [m for m, _ in D.DAN if D.s(m, CF.ORDER_Q.format("before the pick"), "fig03")]
     when = (("first", "before the pick"), ("after", "after the pick"))

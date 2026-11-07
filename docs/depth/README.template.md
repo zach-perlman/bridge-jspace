@@ -337,9 +337,7 @@ Hand-checked on a sample: 46 items across views a-g (5-10 per view, fixed in adv
   - the swap: the difference between two lockers' mean address codes, at one, two and four times its size (s = 1, 2, 4), against a random vector of the same size; read: lookups sent to the swapped-in locker, and recalls that change.
 - **Rule, fixed in advance.** Removing and adding: the routes test's, "a route counts as used if its share is ≥ 0.20 with lower bound ≥ 0.10". The swap: "at s = 1 the target share minus the random direction's ≥ 0.15 with lower bound > 0" (read at s = 1; see the caveats). The distance test: "distance-robust: position share and probe within 0.1 of no neutral sentences at every distance, swap success within 0.15". The probe: none, descriptive, post hoc. Lightning and the 122B (and the 27B's, Muse's and Lightning's distance runs): the same rules, copied, no prediction.
 
-![The address carries the position route; swapping it moves the lookup](figures/readme/06_address_read_remove.png)
-
-![The address carries the position route; swapping it moves the lookup](figures/readme/07_address_swap_lens.png)
+![The address carries the position route; swapping it moves the lookup](figures/readme/06_address_read_remove.png) ![The address carries the position route; swapping it moves the lookup](figures/readme/07_address_swap_lens.png)
 *Column 1: the probe at the bridge word reads which locker sentence holds the item's locker (locker before the pick), against the layout-only baseline (grey tick). Column 2: lookups answering by position with the address removed, against a random part removed (grey). Column 3: lookups sent to the swapped-in locker at about a real change's size, against a random vector (grey). Column 4: how far above 200 random vectors the lens's 25 directions rebuild the address swap and, as the positive control, an item change of the same size (z; grey band: the random vectors' range). Post hoc ○: Lightning, and the 122B where its gate was lowered (FP8). Adding the address alone: the Result.*
 
 - **Result.**
@@ -520,9 +518,7 @@ Hand-checked on a sample: 46 items across views a-g (5-10 per view, fixed in adv
 - **Method.** The lookup's switch under the change at the bridge word, by sentence order; on Zach's passages, the fact sentence before vs after; with the locker after the pick, the change at the bridge word against the same change copied into the locker sentences, by layer. Post hoc, a 2 × 2 (Result): the original prompt's locker sentence before or after the pick, and the changed prompt's.
 - **Rule, fixed in advance.** None for the split (read after the data, descriptive); Zach's split and the copy test's arms were fixed in advance.
 
-![Locker after the pick: the link is made in the locker sentences](figures/depth/05_order.png)
-
-![Locker after the pick: the link is made in the locker sentences](figures/depth/06_link_layers.png)
+![Locker after the pick: the link is made in the locker sentences](figures/depth/05_order.png) ![Locker after the pick: the link is made in the locker sentences](figures/depth/06_link_layers.png)
 *Lookups switched by the change at the bridge word, by sentence order (A: ours; B: Zach's passages); by layer, the change at the bridge word against the change copied into the locker sentences (C). {{q|95%}} intervals (cluster bootstrap over bridge entities), n per panel; Lightning hollow ○ (gate chosen after its pre-check); the 122B not run in B and (C). Panel A was hand-checked on a sample (view g); B and (C) were not. The post hoc 2 × 2 (both orders) is in the Result below and in the deck's f10b figure.*
 
 - **Result.**
@@ -546,9 +542,7 @@ Hand-checked on a sample: 46 items across views a-g (5-10 per view, fixed in adv
 - **Method.** At each layer: the lookup's and the recall's switches blocked without the J++ part beyond a random part; the position answers under the whole change when another item moves; the accuracy of a locker probe. Three marks per model: the layer where the probe reads the address, where position answers start, and the last layer the lookup needs the J++ part.
 - **Rule, fixed in advance.** "(a) the handoff: the lookup's last layer needing the J++ part is no later than its first layer of position answers; (b) the address is readable before it is used; (d) the lookup never answers with the value."
 
-![The address is readable before the lookup uses it](figures/depth/07_depth.png)
-
-![The address is readable before the lookup uses it](figures/depth/08_depth_more.png)
+![The address is readable before the lookup uses it](figures/depth/07_depth.png) ![The address is readable before the lookup uses it](figures/depth/08_depth_more.png)
 *Per model, one panel, x = the layer as a share of the model's depth (the layer under each tick): the locker probe's accuracy (grey), the position answers under the whole change (orange), the lookup's switches blocked without the J++ part beyond a random part (purple); whiskers {{q|95%}} intervals; faded: layers where the whole change switches under {{q|0.30}} (outside the gate); triangles on the top edge: the address readable (probe at least {{q|0.80}}) and the position answers begin (at least {{q|0.20}}). The lookup barely needs the lens part at any layer (largest effect at most {{q|0.2}} except the 27B). The 27B is its full grid, where the lookup's rule-(a) layer falls after the position answers begin; Lightning and the 122B hollow ○. The anatomy is not among the hand-checked views.*
 
 - **Result.**

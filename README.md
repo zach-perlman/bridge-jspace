@@ -30,9 +30,9 @@ A recent interpretability tool, the J++ lens, reads a language model's hidden st
 | **Fact passages** | | Question: **The composer who wrote The Magic Flute** was of which nationality? | | |
 | | lookup | "… **Mozart** was Austrian by birth. …" | Austrian | in the passage |
 | | recall | "… A reader asked a question about **Mozart** in the letters page. …" | Austrian | from memory |
-| **Locker scenes** | | The locker of carbon is 3. The locker of helium is 5. Eric picked **carbon**. | | |
-| | lookup | Which locker belongs to Eric's pick? | 3 | in the scene |
-| | recall | What is the atomic number of Eric's pick? | 6 | from memory |
+| **Locker scenes** | | The locker of carbon is 3. The locker of helium is 5. Eric picked **carbon**.<!-- src: docs/depth/README.md \| The locker of carbon is 3. The locker of helium is 5. --> | | |
+| | lookup | Which locker belongs to Eric's pick? | 3<!-- src: docs/depth/README.md \| Which locker belongs to Eric's pick?" (3, found in the prompt) --> | in the scene |
+| | recall | What is the atomic number of Eric's pick? | 6<!-- src: docs/depth/README.md \| What is the atomic number of Eric's pick?" (6, from memory) --> | from memory |
 
 *The two kinds of prompt. Top: a fact passage, where the final fact is stated in the passage or left to memory. Bottom: a locker scene, where the same bridge word feeds a lookup question and a recall question.*
 
