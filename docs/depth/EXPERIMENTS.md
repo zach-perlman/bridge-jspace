@@ -588,7 +588,8 @@ Test batch 52 A · opened 29 Oct · status: descriptive · hand-check: not in sa
 - **Method.** Each of the 25 lens directions labelled by a word classifier (the bridge words with their spellings, the answer words, other classes); the share of the rebuilt energy per class, against a chance baseline.
 
 ![The lens part holds the two bridge words, almost never the answer](../../figures/readme/05_atoms.png)
-*The README's figure: the lens part's rebuilt energy at the bridge word, by the word each of its 25 directions decodes to; right: the reader's answer word's share. Main test at L; Lightning hollow (○); the 122B at L33 (coverage †).*
+
+*One bar per model: the lens part's directions, each counted by the word it decodes to, as shares of the energy they rebuild. The old and the new bridge word are the two teal segments, named above them; another scene word and no scene word are grey. The answer word (brick) has no visible segment: its share is printed at the right. Lightning hollow (○, post hoc).*
 
 - **Rule, fixed in advance.** None: descriptive inventory, no rule.
 
@@ -839,8 +840,13 @@ Test x0_probe v4 · opened not stated · status: post hoc (descriptive) · hand-
 
 ![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/readme/06_address_read_remove.png)
 
+*Left: a probe at the bridge word reads which locker sentence holds the item's locker (the address, amber), against a probe trained on the layout only (grey). Right: the lookups that still answer by position when the address is removed from the patch (amber), against a random part of the same size removed instead (grey); lower means more blocked. Whiskers: 95% intervals. Hollow (○): Lightning, and the 122B where its gate was lowered (post hoc).*
+
 ![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/readme/07_address_swap_lens.png)
-*The README's address figure; this card is its first column: the probe at the bridge word against the layout-only baseline (grey tick), locker before the pick. whiskers: 95% intervals; Lightning ○; the 122B ○ where its gate was lowered post hoc or lookup-only.*
+
+*Left: the lookups sent to the new locker when another locker's address is swapped in at about a real change's size (amber), against a random vector of the same size (grey). Right: how far above 200 random vectors the lens's 25 directions rebuild that swap (amber), against a change of item of the same size (blue, the positive control), in z; grey band: the range of the 200 random vectors. Hollow (○): Lightning, and the 122B where its gate was lowered (post hoc).*
+
+This card is the figure's first column.
 
 - **Rule, fixed in advance.** None: descriptive, added after the data (Dan, 24 Oct evening). The reading stated beside: "(b) high in locker-before with (a) at chance -> the word stores an address. Locker-after: the locker sentence follows the word, so the stratum is a control by construction." Lightning: a coverage run, no prediction.
 
@@ -873,8 +879,13 @@ Test address swap by dose · opened 29 Oct · status: rule fixed in advance · h
 
 ![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/readme/06_address_read_remove.png)
 
+*Left: a probe at the bridge word reads which locker sentence holds the item's locker (the address, amber), against a probe trained on the layout only (grey). Right: the lookups that still answer by position when the address is removed from the patch (amber), against a random part of the same size removed instead (grey); lower means more blocked. Whiskers: 95% intervals. Hollow (○): Lightning, and the 122B where its gate was lowered (post hoc).*
+
 ![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/readme/07_address_swap_lens.png)
-*The README's address figure; this card is its third column: lookups sent to the swapped-in locker at about a real change's size, against a random vector (grey). whiskers: 95% intervals; Lightning ○; the 122B ○ where its gate was lowered post hoc or lookup-only. The dose curves are in the verdicts.*
+
+*Left: the lookups sent to the new locker when another locker's address is swapped in at about a real change's size (amber), against a random vector of the same size (grey). Right: how far above 200 random vectors the lens's 25 directions rebuild that swap (amber), against a change of item of the same size (blue, the positive control), in z; grey band: the range of the 200 random vectors. Hollow (○): Lightning, and the 122B where its gate was lowered (post hoc).*
+
+This card is the figure's third column.
 
 - **Rule, fixed in advance.** "at s = 1 the target share minus the random direction's >= 0.15 with lower CI > 0; [...] among writes that move the lookup to another locker target / (target + third) >= 0.80, a model counting only with >= 30 such writes, fewer than two counting = can't tell; [...] target minus random >= 0.10 in each of the 6 (j, k) pairs" (jobs/c3/x8_a_9b.yaml; each over the 9B, the 27B, the 122B and Muse). Lightning: a coverage run on that rule, no prediction.
 
@@ -1034,8 +1045,13 @@ Test 47.0 · opened not stated · status: descriptive · hand-check: not in samp
 
 ![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/readme/06_address_read_remove.png)
 
+*Left: a probe at the bridge word reads which locker sentence holds the item's locker (the address, amber), against a probe trained on the layout only (grey). Right: the lookups that still answer by position when the address is removed from the patch (amber), against a random part of the same size removed instead (grey); lower means more blocked. Whiskers: 95% intervals. Hollow (○): Lightning, and the 122B where its gate was lowered (post hoc).*
+
 ![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/readme/07_address_swap_lens.png)
-*The README's address figure; this card is its fourth column: how far above 200 random vectors the lens's 25 directions rebuild the address swap and, as the positive control, an item change of the same size (z; grey band: the random vectors' range). whiskers: 95% intervals; Lightning ○; the 122B ○ where its gate was lowered post hoc or lookup-only.*
+
+*Left: the lookups sent to the new locker when another locker's address is swapped in at about a real change's size (amber), against a random vector of the same size (grey). Right: how far above 200 random vectors the lens's 25 directions rebuild that swap (amber), against a change of item of the same size (blue, the positive control), in z; grey band: the range of the 200 random vectors. Hollow (○): Lightning, and the 122B where its gate was lowered (post hoc).*
+
+This card is the figure's fourth column.
 
 - **Rule, fixed in advance.** Descriptive, with the reading fixed in advance: ""Not verbalizable": reconstruction at k = 25 within 2x the random null's share, no ordinal token in the top-20 beyond the null's 5th-percentile rank, and the KL under the write within the null's 95th percentile, on all three models." Lightning: a coverage run on that reading, no prediction.
 
@@ -1067,7 +1083,7 @@ Test 53.2 · opened not stated · status: rule fixed in advance · hand-check: n
 
 ![The address is decodable but under-represented in the lens directions](../../figures/readme/11_monitor.png)
 
-*The README's figure: probes for which locker sentence holds the bridge's locker at the last token, at the layer where the full state peaks: the lens part against a random part of the same energy (grey) and the full state (tick), with 25 and 100 lens directions. Whiskers: 95% intervals; Lightning ○. The bridge word and the JSON scenes: the table.*
+*The locker probe's accuracy for the address at the last token, per model, for the lens part as used throughout (left) and with four times as many directions (right): the lens part (teal) against a random part of the same energy (grey), with 95% intervals; the lens part's value and interval, and the full state's accuracy, in their own columns. Lightning hollow (○, post hoc).*
 
 <details><summary>Why we asked, data, method and the rule fixed in advance</summary>
 
@@ -1519,9 +1535,11 @@ Test 47.8 · opened not stated · status: rule fixed in advance · hand-check: n
 
 ![The address is readable before the lookup uses it](../../figures/depth/07_depth.png)
 
+*By depth (x: the layer as a share of the model's depth), on the three models whose gates were fixed in advance: the locker probe's accuracy and the position answers under the whole change when another item moves (orange, named at their ends), and the lookup's switches blocked without the lens part beyond a random part of the same size (teal); shading 95% intervals; grey band: the layers that pass the gate. The 9B in its own block: its interval runs below zero outside its gate.*
+
 ![The address is readable before the lookup uses it](../../figures/depth/08_depth_more.png)
 
-*Per model, one panel, x = the layer as a share of the model's depth: the locker probe's accuracy, the position answers under the whole change, the lookup's switches blocked without the lens part beyond a random part; 95% intervals; faded: layers where the whole change switches under 0.30 (outside the gate); triangles: the address readable (probe at least 0.80) and the position answers begin (at least 0.20). The lookup barely needs the lens part at any layer (largest effect at most 0.2 except the 27B); the recall is not drawn. The 27B is its full grid, where rule (a) fails; Lightning and the 122B ○. The layer-by-layer anatomy with every clause is also in the supplementary figure.*
+*As the figure above, on Lightning and the 122B, whose gates were chosen after the data (all estimates post hoc); Lightning in its own block: its interval runs far below zero outside its gate.*
 
 <details><summary>Why we asked, data, method and the rule fixed in advance</summary>
 
@@ -1598,7 +1616,8 @@ Test 51.10 · opened 28 Oct · status: rule fixed in advance · hand-check: in s
 - **Method.** Read: a probe on the lens part of the state, layer by layer, against the full state and chance. Write: at the read peak, Zach's swap or the lens part of the change (gain up to 2), against a random part and his rotated control; the whole-state patch as reference.
 
 ![At the last token the entity is in the lens, but the answer is not computed through it](../../figures/readme/12_last_token.png)
-*The README's figure: at the last token, per model, at the layer where the read peaks (under the name): left, the probe's accuracy for the recall's entity on the lens part, against chance (dashed); right, recalls that switch when the lens part is written in, against the whole-state patch (grey). Lightning ○. The lookup's cells: the table.*
+
+*Per model, at the layer where the read peaks (under the name). Left: a probe's accuracy for the recall's entity on the lens part of the last token's state, with its 95% interval; dashed: chance. Right: the recalls switched when only the lens part is swapped in (teal) against the whole state swapped in (grey); the lens part's value in the last column. Lightning hollow (○, post hoc).*
 
 - **Rule, fixed in advance.** "read: through-the-lens probe >= 0.8 and lens top-5 >= 0.5 at some layer before the answer digit's layer, while the full-residual probe >= 0.9 there. write: at the layer of the read peak, his swap or the J++ part of the change (gain <= 2) switches >= 0.5 of what the whole-state patch switches at that layer, with the random part <= 0.10."
 
