@@ -128,7 +128,7 @@ ROLE_MEANING = {
     "address": "the address and the position route",
     "identity": "the identity route; a change of item",
     "answer": "the answer span; the answers' own directions",
-    "neutral": "a method of no role (a probe's subspace)",
+    "neutral": "a quantity of no role, such as a difference",
     "mention": "the bridge's mention, as a place in the prompt",
     "question": "the question, as a place in the prompt",
     "control": "a control or baseline, and nothing else",

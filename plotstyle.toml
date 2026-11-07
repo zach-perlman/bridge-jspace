@@ -38,7 +38,7 @@ meaning = "the answer span; the answers' own directions"
 [roles.neutral]
 slot = "slate"
 word = "neutral"
-meaning = "a method of no role (a probe's subspace)"
+meaning = "a quantity of no role, such as a difference"
 
 [controls]
 names = ["rotated", "logit lens", "PCA", "a random part", "energy-matched random", "a random vector", "layout-only probe", "10 random heads", "no change", "random lens directions", "the whole state swapped in", "the full state"]

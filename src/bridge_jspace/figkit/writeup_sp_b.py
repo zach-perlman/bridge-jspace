@@ -176,7 +176,7 @@ def fig10_answer_span() -> sp.Figure:
         if ctl is None:
             keep_ctrl[m] = sp.Missing("source missing")
         elif ctl[0] is not None:
-            keep_ctrl[m] = est(ctl, f"keep.{k}", key=f"fig10.keep_ctrl.{k}", label=True)
+            keep_ctrl[m] = est(ctl, f"keep_ctrl.{k}", key=f"fig10.keep_ctrl.{k}", label=True)
         else:  # the reading's label: neither random keep holds the kept span's energy
             keep_span[m] = sp.Est(span[0], span[1], span[2], cell=f"keep.{k}", key=f"fig10.keep_span.{k}", label=True,
                                   note="no energy-matched control") if span else keep_span[m]  # fmt: skip

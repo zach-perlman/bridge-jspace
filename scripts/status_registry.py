@@ -31,6 +31,8 @@ SHORT = {"qwen3.5-9b": "q9", "qwen3.6-27b": "q27", "muse-glimmer-30b": "mu", "ne
          "qwen3.5-122b-a10b": "q122"}  # fmt: skip
 TWIN = ("qwen3.5-9b", "qwen3.6-27b", "nemotron-3.5-lightning")
 DISAGREEMENTS: list[str] = []
+DAN_7NOV = "Dan, 7 Nov (decision 9)"
+ANSWER_SPAN = "answer span kept: a descriptive number under a fixed label (note 41 keep table)"
 
 
 def row(fig, cell, status, reason, source, tag=""):
@@ -55,26 +57,24 @@ def fig01() -> list[dict]:
         else:
             out.append(row("fig01_main_split", f"band.{k}", "fixed_in_advance", "the band test, fixed in advance on the "
                            "three models", f"{README} Fig. 1 row"))  # fmt: skip
-            if m == "nemotron-3.5-lightning":
-                lightning_note("fig01_main_split (band test)")
         out.append(by_hollow("fig01_main_split", f"layer.{k}", m, what="one layer, the conflict test"))
     return out
 
 
 def fig04() -> list[dict]:
-    lightning_note("fig04_twin_set")
     out = []
     for m in TWIN:
         k = SHORT[m]
         for cond in ("paper10", "paper10_rot", "paper10_keepA"):
             for reader in ("recall", "lookup"):
+                if cond == "paper10_keepA":
+                    out.append(row("fig04_twin_set", f"{reader}.{cond}.{k}", "descriptive", ANSWER_SPAN, DAN_7NOV))
+                    continue
                 out.append(row("fig04_twin_set", f"{reader}.{cond}.{k}", "fixed_in_advance",
                                "the twin set's readings, fixed in advance (note 41)", f"{README} Fig. 4 row"))  # fmt: skip
         for cond in ("paper10", "paper10_rot"):
             out.append(row("fig04_twin_set", f"gap.{cond}.{k}", "fixed_in_advance",
                            "the twin set's gap, fixed in advance (note 41)", f"{README} Fig. 4 row"))  # fmt: skip
-        DISAGREEMENTS.append(f"answer span kept ({k}): {README} Fig. 4 says fixed in advance (note 41); its Fig. 10 "
-                             "row says the keep is a descriptive number under a fixed label (note 41 keep table)")
     return out
 
 
@@ -88,13 +88,7 @@ def fig09() -> list[dict]:
     return out
 
 
-def lightning_note(fig: str) -> None:
-    DISAGREEMENTS.append(f"Lightning in {fig}: {README} says fixed in advance (no post hoc mark); figkit/data.py hollow() "
-                         "says Lightning is post hoc everywhere. The registry keeps the README's status.")
-
-
 def fig12() -> list[dict]:
-    lightning_note("fig12_pointer")
     return [row("fig12_pointer", f"{cond}.{SHORT[m]}", "fixed_in_advance", "the pointer runs, fixed in advance",
                 f"{README} Fig. 12 row (no post hoc mark)")
             for m in TWIN for cond in ("swap", "neutral", "noown", "rot")]  # fmt: skip
@@ -137,9 +131,6 @@ def styles_plot_port() -> list[dict]:
             out.append(fixed("fig05_controls", f"band.{k}", "the band test", f"{src}writeup_figs.py fig05_controls"))
         out.append(fixed("fig05_controls", f"layer.{k}", "one layer, the earlier same-size runs",
                          f"{src}writeup_figs.py fig05_controls"))  # fmt: skip
-        if m == "nemotron-3.5-lightning":
-            DISAGREEMENTS.append("Lightning in fig05_controls: the figkit figure drew its cells filled; "
-                                 "figkit/data.py hollow() says Lightning is post hoc everywhere. Kept as drawn.")
         out.append(by_hollow("fig08a_address_read_remove", f"probe.{k}", m, what="the locker probe"))
         out.append(by_hollow("fig08a_address_read_remove", f"remove.{k}", m, lowered=True, what="the address removed"))
         out.append(by_hollow("fig08b_address_swap_lens", f"swap.{k}", m, lowered=True, what="the address swap"))
@@ -163,7 +154,9 @@ def styles_plot_port() -> list[dict]:
                 out.append(fixed("appB_f9_where", f"{band_}.{j}.{k}", "where in the prompt", f"{src}writeup_appendix.py"))
     for m in TWIN:
         k = SHORT[m]
-        out.append(fixed("fig10_answer_span", f"keep.{k}", "keep the answer span", f"{src}writeup_figs.py"))
+        out.append(row("fig10_answer_span", f"keep.{k}", "descriptive", ANSWER_SPAN, DAN_7NOV))
+        out.append(row("fig10_answer_span", f"keep_ctrl.{k}", "fixed_in_advance", "the answer span's random keep, "
+                       "fixed in advance (note 50 P1)", DAN_7NOV))  # fmt: skip
         for panel in ("v4", "codename"):
             out.append(fixed("fig10_answer_span", f"remove.{panel}.{k}", "remove the answer span", f"{src}writeup_figs.py"))
         for key_ in ("city", "answers"):
@@ -222,9 +215,62 @@ def readme_set(writeup: list[dict]) -> list[dict]:
     return out
 
 
+def fig05_split(writeup: list[dict]) -> list[dict]:
+    """Fig. 5 drawn as two figures (Dan, 7 Nov): fig05a the band test's cells, fig05b the one-layer test's."""
+    return [{**r, "figure": "fig05a_controls_band" if r["cell"].startswith("band.") else "fig05b_controls_layer"}
+            for r in writeup if r["figure"] == "fig05_controls"]  # fmt: skip
+
+
+# Lightning's status per test (Dan, 7 Nov, decision 8): the breadth tests are fixed in advance where the
+# preregistration registered Lightning's runs; the depth tests are post hoc (figkit/data.py hollow() is depth-only)
+PREREG = "docs/breadth/prereg_replication_1022.md"
+CHAIN = f"{PREREG} Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit)"
+TWIN_NOTES = f"{PREREG} Amendment 58 notes 15 and 17, Lightning addendum"
+BREADTH = {  # (figure, cell prefix) -> the registration it cites
+    ("fig01_main_split", "band."): CHAIN, ("r1_c1_split", "band."): CHAIN, ("key", "band."): CHAIN,
+    ("fig05_controls", "band."): CHAIN, ("fig05a_controls_band", "band."): CHAIN, ("f2_controls", "band."): CHAIN,
+    ("fig12_pointer", ""): CHAIN, ("r4_pointer", ""): CHAIN,
+    ("t12_two_by_two", "t12.2."): CHAIN, ("t12_two_by_two", "t12.3."): CHAIN,
+    ("fig04_twin_set", ""): TWIN_NOTES, ("fig10_answer_span", ""): TWIN_NOTES, ("fig11_orthogonal", ""): TWIN_NOTES,
+}  # fmt: skip
+DEPTH_FIGS = {"fig08a_address_read_remove", "fig08b_address_swap_lens", "f6_address", "fig13_last_token",
+              "r3_last_token", "r1_dan_split", "fig05b_controls_layer"}  # fmt: skip
+DEPTH_PREFIX = (("t12_two_by_two", "t12.0."), ("t12_two_by_two", "t12.1."))
+
+
+def lightning(rows_: list[dict]) -> list[dict]:
+    out = []
+    for r in rows_:
+        if not r["cell"].endswith(".nl"):
+            out.append(r)
+            continue
+        fig, cell = r["figure"], r["cell"]
+        cite = next((c for (f, pre), c in BREADTH.items() if f == fig and cell.startswith(pre)), None)
+        if cite is not None:
+            if r["status"] == "descriptive":
+                out.append(r)
+                continue
+            r = {**r, "status": "fixed_in_advance", "reason": "Lightning's breadth test, registered before its data",
+                 "source": f"{cite}; Dan 7 Nov (decision 8)"}  # fmt: skip
+            if cite == TWIN_NOTES:
+                UNCLEAR.add(f"{fig}: {TWIN_NOTES} register note 15 (bridge or answer) on Lightning; whether they cover "
+                            "this figure's cells is not stated cell by cell")  # fmt: skip
+        elif fig in DEPTH_FIGS or cell.startswith("layer.") or any(f == fig and cell.startswith(p) for f, p in DEPTH_PREFIX):
+            r = {**r, "status": "post_hoc", "reason": "Lightning's depth test: after the data",
+                 "source": "Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()"}  # fmt: skip
+        elif fig == "figA1_agents":
+            UNCLEAR.add(f"figA1_agents ({cell}): no amendment names Lightning's agent transcripts; kept as before")
+        out.append(r)
+    return out
+
+
+UNCLEAR: set[str] = set()
+
+
 def rows() -> list[dict]:
     writeup = [*key(), *fig01(), *fig04(), *fig09(), *fig12(), *appB_f17(), *styles_plot_port()]
-    return [*writeup, *readme_set(writeup)]
+    writeup += fig05_split(writeup)
+    return lightning([*writeup, *readme_set(writeup)])
 
 
 if __name__ == "__main__":
@@ -235,6 +281,9 @@ if __name__ == "__main__":
         w.writeheader()
         w.writerows(rs)
     print(f"wrote {len(rs)} rows to {OUT.relative_to(REPO)}")
-    (OUT.parent / "status_disagreements.txt").write_text("\n".join(sorted(set(DISAGREEMENTS))) + "\n")
+    listed = [*sorted(set(DISAGREEMENTS)), *(f"not clearly covered: {u}" for u in sorted(UNCLEAR))]
+    (OUT.parent / "status_disagreements.txt").write_text("\n".join(listed) + "\n")
     for d in sorted(set(DISAGREEMENTS)):
         print("disagreement:", d)
+    for u in sorted(UNCLEAR):
+        print("not clearly covered:", u)

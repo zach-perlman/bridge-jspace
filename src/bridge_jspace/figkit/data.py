@@ -19,7 +19,10 @@ SHORT = {"qwen3.5-9b": "9b", "qwen3.6-27b": "27b", "muse-glimmer-30b": "muse", "
 
 
 def hollow(model: str, lowered_test: bool = False) -> bool:
-    """After the data: Lightning everywhere; the 122B where its gate was lowered (routes, address, swap)."""
+    """After the data, for the depth tests only (one layer, routes, address, last token): Lightning; the 122B where its
+    gate was lowered (routes, address, swap). Lightning's breadth tests (band test, twin set, pointer, Fig. 10, 11,
+    5a) were registered before their data (docs/breadth/prereg_replication_1022.md; Dan, 7 Nov): their status is in
+    data/figures/status_sp.csv, not here. Kept as it was for the figkit builders."""
     return model == "nemotron-3.5-lightning" or (lowered_test and model == "qwen3.5-122b-a10b")
 
 

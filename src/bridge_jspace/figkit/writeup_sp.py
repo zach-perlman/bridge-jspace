@@ -45,9 +45,10 @@ def _band_columns(models, label_gap=True) -> list:
                 sp.Series("recall", {m: est(D.b(f"ko.{ZK[m]}.lostM"), f"band.{ZK[m]}", interval=False) for m in models})],
         connect=("lookup", "recall"),
     )  # fmt: skip
+    # a gap is a difference: the neutral role, never the recall's black (Dan, 7 Nov, decision 10)
     gap = sp.DotColumn(
         "gap: recall − lookup", "gap", (-4, 98), (0, 30, 60),
-        series=[sp.Series("recall", {m: est(D.b(f"ko.{ZK[m]}.mk"), f"band.{ZK[m]}", key=f"ko.{ZK[m]}.mk",
+        series=[sp.Series("neutral", {m: est(D.b(f"ko.{ZK[m]}.mk"), f"band.{ZK[m]}", key=f"ko.{ZK[m]}.mk",
                                             label=label_gap) for m in models})],
         ticks={m: need(S.ctrl(ZK[m]), f"ctrl {m}") for m in models},
     )  # fmt: skip
@@ -67,7 +68,7 @@ def fig01_main_split() -> sp.Figure:
         connect=("lookup", "recall"), band=(-0.1, 0.1),
     )  # fmt: skip
     layer_gap = sp.DotColumn("gap: recall − lookup", "gap_share", (-0.1, 1.1), (0, 0.5, 1),
-                             series=[sp.Series("recall", {m: _layer_gap(m) for m in models})])  # fmt: skip
+                             series=[sp.Series("neutral", {m: _layer_gap(m) for m in models})])  # fmt: skip
     table = sp.DotTable(models, [sp.ColumnGroup(BAND, _band_columns(models)), sp.Gutter(),
                                  sp.ColumnGroup(LAYER, [shares, layer_gap])])  # fmt: skip
     return sp.Figure("fig01_main_split", vocab()).add(table)
@@ -100,6 +101,8 @@ def fig04_twin_set() -> sp.Figure:
                 if c is not None:
                     cells[(m, cond)] = est(c, f"{unit_key}.{cond}.{ZK[m]}", key=data_key(cond, ZK[m]), label=True,
                                            interval=unit_key == "gap")  # fmt: skip
+            # Dan wants "answer span kept" as the brick word (decision 11): it does not fit one strip line beside the
+            # reader's word (SP606, 0.1.4), so the role word stays until the library allows it
             out.append(sp.Series(role or reader, cells, control="rotated" if role == "control" else None))
         return out
 
@@ -108,7 +111,7 @@ def fig04_twin_set() -> sp.Figure:
                             series=series(reader, LANES, reader, lambda c, k: f"fig04.{reader}.{c}.{k}"))  # fmt: skip
 
     gap = sp.DotColumn("gap: recall − lookup", "gap", (-12, 74), (0, 30, 60),
-                       series=series("recall", LANES[:2], "gap", lambda c, k: f"fig04.gap.{c}.{k}"))  # fmt: skip
+                       series=series("neutral", LANES[:2], "gap", lambda c, k: f"fig04.gap.{c}.{k}"))  # fmt: skip
     unedited = [c[0] for r in ("recall", "lookup") for m in models if (c := W.w(f"fig04.{r}.unedited.{ZK[m]}"))]
     note = ""
     if len(unedited) == 2 * len(models):  # "every model" only when every cell has its source

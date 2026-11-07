@@ -2,23 +2,24 @@
  "styles_plot": "0.1.4",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "57e754780b6822dfe673d9bee1f943d24fa9b8be7127e8eae951f0ba14122093"
+  "sha256": "d266df066fc6799a63f1b887fe803ae0451cfbd294377a071b6e0ee0b8d41758"
  },
  "registry": {
   "path": "data/figures/status_sp.csv",
-  "sha256": "ccaa0d1a249eebab33efbbcf2fe71ede4df8c0d8856b96ab156db7caf8e4fc53"
+  "sha256": "9f4eba7b24674b8c7535f65e4dc8110392d6a9b60cd015dff95ad08ce2bf4375"
  },
  "figure": "fig04_twin_set",
  "target": "post",
  "mode": "strict",
  "publishable": true,
  "png": {
-  "sha256": "26d89f40acc26393fa29f5a278dc7dd725f4da87567f74b4c89c5f358647441d",
+  "sha256": "c8d0d337ac91f2ea182f895ad3931cbc742a1ce94880531860b2a23968d18cbf",
   "dpi": 200
  },
  "roles": [
   "answer",
   "lookup",
+  "neutral",
   "recall"
  ],
  "controls": [
@@ -63,15 +64,15 @@
   },
   "lookup.paper10_keepA.nl": {
    "timing": "fixed_in_advance",
-   "claim": "claimed"
+   "claim": "descriptive"
   },
   "lookup.paper10_keepA.q27": {
    "timing": "fixed_in_advance",
-   "claim": "claimed"
+   "claim": "descriptive"
   },
   "lookup.paper10_keepA.q9": {
    "timing": "fixed_in_advance",
-   "claim": "claimed"
+   "claim": "descriptive"
   },
   "lookup.paper10_rot.nl": {
    "timing": "fixed_in_advance",
@@ -99,15 +100,15 @@
   },
   "recall.paper10_keepA.nl": {
    "timing": "fixed_in_advance",
-   "claim": "claimed"
+   "claim": "descriptive"
   },
   "recall.paper10_keepA.q27": {
    "timing": "fixed_in_advance",
-   "claim": "claimed"
+   "claim": "descriptive"
   },
   "recall.paper10_keepA.q9": {
    "timing": "fixed_in_advance",
-   "claim": "claimed"
+   "claim": "descriptive"
   },
   "recall.paper10_rot.nl": {
    "timing": "fixed_in_advance",
@@ -144,7 +145,7 @@
    "role": "answer",
    "cell": "recall.paper10_keepA.q9",
    "timing": "fixed_in_advance",
-   "claim": "claimed",
+   "claim": "descriptive",
    "hollow": false
   },
   {
@@ -168,7 +169,7 @@
    "role": "answer",
    "cell": "recall.paper10_keepA.q27",
    "timing": "fixed_in_advance",
-   "claim": "claimed",
+   "claim": "descriptive",
    "hollow": false
   },
   {
@@ -192,7 +193,7 @@
    "role": "answer",
    "cell": "recall.paper10_keepA.nl",
    "timing": "fixed_in_advance",
-   "claim": "claimed",
+   "claim": "descriptive",
    "hollow": false
   },
   {
@@ -216,7 +217,7 @@
    "role": "answer",
    "cell": "lookup.paper10_keepA.q9",
    "timing": "fixed_in_advance",
-   "claim": "claimed",
+   "claim": "descriptive",
    "hollow": false
   },
   {
@@ -240,7 +241,7 @@
    "role": "answer",
    "cell": "lookup.paper10_keepA.q27",
    "timing": "fixed_in_advance",
-   "claim": "claimed",
+   "claim": "descriptive",
    "hollow": false
   },
   {
@@ -264,12 +265,12 @@
    "role": "answer",
    "cell": "lookup.paper10_keepA.nl",
    "timing": "fixed_in_advance",
-   "claim": "claimed",
+   "claim": "descriptive",
    "hollow": false
   },
   {
    "kind": "dot",
-   "role": "recall",
+   "role": "neutral",
    "cell": "gap.paper10.q9",
    "timing": "fixed_in_advance",
    "claim": "claimed",
@@ -285,7 +286,7 @@
   },
   {
    "kind": "dot",
-   "role": "recall",
+   "role": "neutral",
    "cell": "gap.paper10.q27",
    "timing": "fixed_in_advance",
    "claim": "claimed",
@@ -301,7 +302,7 @@
   },
   {
    "kind": "dot",
-   "role": "recall",
+   "role": "neutral",
    "cell": "gap.paper10.nl",
    "timing": "fixed_in_advance",
    "claim": "claimed",

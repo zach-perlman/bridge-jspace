@@ -2,22 +2,22 @@
  "styles_plot": "0.1.4",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "8fe1656cd5ecb1632fdba5856f3917d55bd1e44e67042e5421014828b4b54596"
+  "sha256": "d266df066fc6799a63f1b887fe803ae0451cfbd294377a071b6e0ee0b8d41758"
  },
  "registry": {
   "path": "data/figures/status_sp.csv",
-  "sha256": "eb4118e02adaf9936d6f46f7689ba2ed9ba06d3ec5e93b746e76ebdc1e81f179"
+  "sha256": "9f4eba7b24674b8c7535f65e4dc8110392d6a9b60cd015dff95ad08ce2bf4375"
  },
  "figure": "t12_two_by_two",
  "target": "readme",
  "mode": "strict",
  "publishable": true,
  "png": {
-  "sha256": "fb387a4021ff5f9f804348f3718db9d19db78715fbc7d4678500ce69d5291974",
+  "sha256": "753ebe8b11007acb671b25c08fefceda4a8b322da2eb5898ad2489c4b3c44151",
   "dpi": 160
  },
  "roles": [
-  "recall"
+  "neutral"
  ],
  "controls": [
   "a random part",
@@ -81,7 +81,7 @@
    "claim": "claimed"
   },
   "t12.3.nl": {
-   "timing": "post_hoc",
+   "timing": "fixed_in_advance",
    "claim": "claimed"
   },
   "t12.3.q122": {
@@ -108,7 +108,7 @@
   },
   {
    "kind": "dot",
-   "role": "recall",
+   "role": "neutral",
    "cell": "t12.0.q9",
    "timing": "fixed_in_advance",
    "claim": "claimed",
@@ -124,7 +124,7 @@
   },
   {
    "kind": "dot",
-   "role": "recall",
+   "role": "neutral",
    "cell": "t12.0.q27",
    "timing": "fixed_in_advance",
    "claim": "claimed",
@@ -140,7 +140,7 @@
   },
   {
    "kind": "dot",
-   "role": "recall",
+   "role": "neutral",
    "cell": "t12.0.mu",
    "timing": "fixed_in_advance",
    "claim": "claimed",
@@ -156,7 +156,7 @@
   },
   {
    "kind": "dot",
-   "role": "recall",
+   "role": "neutral",
    "cell": "t12.0.nl",
    "timing": "post_hoc",
    "claim": "claimed",
@@ -172,7 +172,7 @@
   },
   {
    "kind": "dot",
-   "role": "recall",
+   "role": "neutral",
    "cell": "t12.0.q122",
    "timing": "fixed_in_advance",
    "claim": "claimed",
@@ -188,7 +188,7 @@
   },
   {
    "kind": "dot",
-   "role": "recall",
+   "role": "neutral",
    "cell": "t12.1.q9",
    "timing": "fixed_in_advance",
    "claim": "claimed",
@@ -204,7 +204,7 @@
   },
   {
    "kind": "dot",
-   "role": "recall",
+   "role": "neutral",
    "cell": "t12.1.q27",
    "timing": "fixed_in_advance",
    "claim": "claimed",
@@ -220,7 +220,7 @@
   },
   {
    "kind": "dot",
-   "role": "recall",
+   "role": "neutral",
    "cell": "t12.1.nl",
    "timing": "post_hoc",
    "claim": "claimed",
@@ -236,7 +236,7 @@
   },
   {
    "kind": "dot",
-   "role": "recall",
+   "role": "neutral",
    "cell": "t12.1.q122",
    "timing": "fixed_in_advance",
    "claim": "claimed",
@@ -252,7 +252,7 @@
   },
   {
    "kind": "dot",
-   "role": "recall",
+   "role": "neutral",
    "cell": "t12.2.q9",
    "timing": "fixed_in_advance",
    "claim": "claimed",
@@ -268,7 +268,7 @@
   },
   {
    "kind": "dot",
-   "role": "recall",
+   "role": "neutral",
    "cell": "t12.2.q27",
    "timing": "fixed_in_advance",
    "claim": "claimed",
@@ -284,7 +284,7 @@
   },
   {
    "kind": "dot",
-   "role": "recall",
+   "role": "neutral",
    "cell": "t12.2.mu",
    "timing": "fixed_in_advance",
    "claim": "claimed",
@@ -300,7 +300,7 @@
   },
   {
    "kind": "dot",
-   "role": "recall",
+   "role": "neutral",
    "cell": "t12.2.q122",
    "timing": "fixed_in_advance",
    "claim": "claimed",
@@ -316,7 +316,7 @@
   },
   {
    "kind": "dot",
-   "role": "recall",
+   "role": "neutral",
    "cell": "t12.3.q9",
    "timing": "fixed_in_advance",
    "claim": "claimed",
@@ -332,7 +332,7 @@
   },
   {
    "kind": "dot",
-   "role": "recall",
+   "role": "neutral",
    "cell": "t12.3.q27",
    "timing": "fixed_in_advance",
    "claim": "claimed",
@@ -348,7 +348,7 @@
   },
   {
    "kind": "dot",
-   "role": "recall",
+   "role": "neutral",
    "cell": "t12.3.mu",
    "timing": "fixed_in_advance",
    "claim": "claimed",
@@ -358,17 +358,17 @@
    "kind": "dot",
    "role": "control",
    "cell": "t12.3.nl",
-   "timing": "post_hoc",
+   "timing": "fixed_in_advance",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
-   "role": "recall",
+   "role": "neutral",
    "cell": "t12.3.nl",
-   "timing": "post_hoc",
+   "timing": "fixed_in_advance",
    "claim": "claimed",
-   "hollow": true
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -380,7 +380,7 @@
   },
   {
    "kind": "dot",
-   "role": "recall",
+   "role": "neutral",
    "cell": "t12.3.q122",
    "timing": "fixed_in_advance",
    "claim": "claimed",

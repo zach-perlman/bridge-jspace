@@ -55,7 +55,7 @@ def r1_dan_split() -> sp.Figure:
         connect=("lookup", "recall"), band=(-0.1, 0.1),
     )  # fmt: skip
     gap = sp.DotColumn("gap: recall − lookup", "gap_share", (-0.1, 1.1), (0, 0.5, 1),
-                       series=[sp.Series("recall", {m: WS._layer_gap(m) for m in DAN})])  # fmt: skip
+                       series=[sp.Series("neutral", {m: WS._layer_gap(m) for m in DAN})])  # fmt: skip
     t = sp.DotTable(DAN, [sp.ColumnGroup("One layer · locker scenes", [shares, gap])])
     return sp.Figure("r1_dan_split", vocab()).add(t)
 
@@ -222,7 +222,7 @@ def t12_two_by_two() -> sp.Figure:
                 ctl[m] = est(c, cell, key=f"t12.{j}.control.{k}")
         control = "rotated" if j == 3 else "a random part"
         cols.append(sp.DotColumn(header.capitalize(), "gap_effect", (-0.25, 1.35), DF.XTICKS,
-                                 series=[sp.Series("control", ctl, control=control), sp.Series("recall", gap)]))  # fmt: skip
+                                 series=[sp.Series("control", ctl, control=control), sp.Series("neutral", gap)]))  # fmt: skip
     t = sp.DotTable(DAN, [sp.ColumnGroup("One layer", cols[:2]), sp.Gutter(), sp.ColumnGroup("Band of layers", cols[2:])])
     return sp.Figure("t12_two_by_two", vocab()).add(t)
 
