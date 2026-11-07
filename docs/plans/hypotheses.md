@@ -95,11 +95,11 @@ Design: a 2 × 2 of use × answer source, each cell with the intermediate stated
 - **Numbers (gap, points).** Olmo-Hybrid 7B +1<!-- src: docs/breadth/data.csv | old.oh7.olmoh7_big2_ko_v1 -->, Olmo-3 7B +4<!-- src: docs/breadth/data.csv | old.o7.olmo3d7_big2_ko_v1 -->: neither holds, so the hybrid-architecture prediction is refuted.
 - **Within Qwen (amendments 3, 4):** the hybrid Qwen3.5-9B holds C1 (above) and the dense Qwen3-32B stays below the bar (+22<!-- src: docs/breadth/data.csv | old.q32.qwen3_32b_full2_ko_v1 --> and +17<!-- src: docs/breadth/data.csv | old.q32.qwen3_32b_fresh2_ko_v1 -->): **held** within Qwen, not across families.
 
-### The Muse puzzle (22 Oct): removal barely touches Muse's recalls while writing redirects them: **failed** on the dataset of record
+### The Muse puzzle (22 Oct): removal barely touches Muse's recalls while writing redirects them: **did not reproduce** on jsuite v2
 
 - **As stated (progress report, 22 Oct, verbatim):** "the knock-out barely touches recalls, while writing redirects 43–50%. Two readings: the knock-out never removes the bridge, or Muse carries it redundantly." (The 43–50% is the report's steering number, not in this repo's data files.) The diagnostic was pre-registered ([amendment 6C](../breadth/prereg_replication_1022.md)).
 - **Numbers.** On the toy suite Muse's gap is +7<!-- src: docs/breadth/data.csv | old.mu.muse30_full2_ko_v1 -->; on jsuite v2 it is +60 [55, 65]<!-- src: docs/breadth/data.csv | ko.mu.mk -->, of which the logit lens's own 10 directions take +35<!-- src: docs/breadth/data.csv | ko.mu.u -->.
-- **Read.** On the dataset of record the removal does break Muse's recalls, but more than half of it is shared with the logit lens, so the dependence is not specific to J++. The writing half of the puzzle rested on steering cells withdrawn on 24 Oct (C2).
+- **Read.** The puzzle did not reproduce on jsuite v2: there the removal does break Muse's recalls (+60 [55, 65]<!-- src: docs/breadth/data.csv | ko.mu.mk -->), but +35<!-- src: docs/breadth/data.csv | ko.mu.u --> of it is shared with the logit lens, so the dependence is not specific to J++. The writing half of the puzzle rested on steering cells withdrawn on 24 Oct (C2).
 
 ### Gemma 4 31B: **not tested in the final design** (untestable)
 
