@@ -40,7 +40,28 @@ Built by `make readme` with [styles-plot](https://github.com/danorel/styles-plot
 | 34 | <a href="34_transfer.png"><img src="34_transfer.png" width="260" alt="34_transfer"></a> | `depth/34_transfer.png` | 4 of 7 cells post hoc · UNVERIFIED |
 | 35 | <a href="35_two_codes.png"><img src="35_two_codes.png" width="260" alt="35_two_codes"></a> | Position scenes leave position without the address; identity scenes go to position without the lens part (post hoc) | all post hoc · UNVERIFIED |
 | 36 | <a href="36_earlier_mention.png"><img src="36_earlier_mention.png" width="260" alt="36_earlier_mention"></a> | The recall also reads the lens part at the item's earlier mention | 4 of 10 cells post hoc · UNVERIFIED |
-| 37 | <a href="37_address_added_alone.png"><img src="37_address_added_alone.png" width="260" alt="37_address_added_alone"></a> | Added alone, the address brings position answers back, except on the 27B | 2 of 5 cells post hoc · UNVERIFIED |
+| 37 | <a href="37_address_added_alone.png"><img src="37_address_added_alone.png" width="260" alt="37_address_added_alone"></a> | Added by itself, the address brings position answers back, except on the 27B | 2 of 5 cells post hoc · UNVERIFIED |
+| 38 | <a href="38_item_not_answer.png"><img src="38_item_not_answer.png" width="260" alt="38_item_not_answer"></a> |  | 2 of 5 cells post hoc · UNVERIFIED |
+| 39 | <a href="39_lightning_layers.png"><img src="39_lightning_layers.png" width="260" alt="39_lightning_layers"></a> |  | all post hoc · UNVERIFIED |
+| 40 | <a href="40_ladder.png"><img src="40_ladder.png" width="260" alt="40_ladder"></a> |  | 2 of 5 cells post hoc · UNVERIFIED |
+| 41 | <a href="41_follows_both.png"><img src="41_follows_both.png" width="260" alt="41_follows_both"></a> |  | 1 of 4 cells post hoc · UNVERIFIED |
+| 42 | <a href="42_number_answer.png"><img src="42_number_answer.png" width="260" alt="42_number_answer"></a> |  | 2 of 5 cells post hoc · UNVERIFIED |
+| 43 | <a href="43_answer_map.png"><img src="43_answer_map.png" width="260" alt="43_answer_map"></a> |  | 2 of 5 cells post hoc · UNVERIFIED |
+| 44 | <a href="44_value_formats.png"><img src="44_value_formats.png" width="260" alt="44_value_formats"></a> |  | 1 of 4 cells post hoc · UNVERIFIED |
+| 45 | <a href="45_identity_code.png"><img src="45_identity_code.png" width="260" alt="45_identity_code"></a> |  | UNVERIFIED |
+| 46 | <a href="46_subset27b.png"><img src="46_subset27b.png" width="260" alt="46_subset27b"></a> |  | UNVERIFIED |
+| 47 | <a href="47_report_first_position.png"><img src="47_report_first_position.png" width="260" alt="47_report_first_position"></a> |  | 1 of 3 cells post hoc · UNVERIFIED |
+| 48 | <a href="48_last_token_swap.png"><img src="48_last_token_swap.png" width="260" alt="48_last_token_swap"></a> |  | 1 of 4 cells post hoc · UNVERIFIED |
+| 49 | <a href="49_last_conflict.png"><img src="49_last_conflict.png" width="260" alt="49_last_conflict"></a> |  | 2 of 5 cells post hoc · UNVERIFIED |
+| 50 | <a href="50_last_conflict_words.png"><img src="50_last_conflict_words.png" width="260" alt="50_last_conflict_words"></a> |  | 1 of 4 cells post hoc · UNVERIFIED |
+| 51 | <a href="51_attention_blocks.png"><img src="51_attention_blocks.png" width="260" alt="51_attention_blocks"></a> |  | all post hoc · UNVERIFIED |
+| 52 | <a href="52_fact_answer_control.png"><img src="52_fact_answer_control.png" width="260" alt="52_fact_answer_control"></a> |  | UNVERIFIED |
+| 53 | <a href="53_every_layer.png"><img src="53_every_layer.png" width="260" alt="53_every_layer"></a> |  | 1 of 3 cells post hoc · UNVERIFIED |
+| 54 | <a href="54_fact_routes.png"><img src="54_fact_routes.png" width="260" alt="54_fact_routes"></a> |  | 3 of 5 cells post hoc · UNVERIFIED |
+| 55 | <a href="55_read_window.png"><img src="55_read_window.png" width="260" alt="55_read_window"></a> |  | 1 of 3 cells post hoc · UNVERIFIED |
+| 56 | <a href="56_person_probe.png"><img src="56_person_probe.png" width="260" alt="56_person_probe"></a> |  | 2 of 4 cells post hoc · UNVERIFIED |
+| 57 | <a href="57_any_item.png"><img src="57_any_item.png" width="260" alt="57_any_item"></a> |  | 1 of 4 cells post hoc · UNVERIFIED |
+| 58 | <a href="58_described_gap.png"><img src="58_described_gap.png" width="260" alt="58_described_gap"></a> |  | 2 of 5 cells post hoc · UNVERIFIED |
 | s01 | <a href="s01_split_all_scene_sets.png"><img src="s01_split_all_scene_sets.png" width="260" alt="s01_split_all_scene_sets"></a> | `depth/s01_split_all_scene_sets.png` | all post hoc · UNVERIFIED |
 | s02 | <a href="s02_parts_all.png"><img src="s02_parts_all.png" width="260" alt="s02_parts_all"></a> | `depth/s02_parts_all.png` | 20 of 32 cells post hoc · UNVERIFIED |
 | s03 | <a href="s03_order_split.png"><img src="s03_order_split.png" width="260" alt="s03_order_split"></a> | `depth/s03_order_split.png` | 8 of 14 cells post hoc · UNVERIFIED |

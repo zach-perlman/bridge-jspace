@@ -448,6 +448,33 @@ def depth_set_e() -> list[dict]:
     return out
 
 
+LEDGER = "docs/depth/EXPERIMENTS.md"
+# models a ledger card ran as a coverage run, with no prediction (the card says so): after the data
+COVERAGE = {"t49-3": {"q27"}, "z3": {"q27", "nl"}, "t51-5": {"nl"}, "b52-b": {"nl"}, "t51-4": {"nl"}}
+
+
+def depth_set_f() -> list[dict]:
+    """The ledger cards' figures (figkit/depth_sp_f.py, docs pass P3-3): each card's rule was fixed in advance (its
+    Rule line in docs/depth/EXPERIMENTS.md); Lightning and the 122B after the data on depth tests (hollow() with the
+    lowered gate); a model the card ran as a coverage run with no prediction, after the data."""
+    from bridge_jspace.figkit import depth_sp_f as DF
+
+    out = []
+    for card, fid in DF.CARD.items():
+        if fid not in DF.FIGS:
+            continue
+        for m, _ in MODELS:
+            k = SHORT[m]
+            if k in COVERAGE.get(card, ()):
+                out.append(row(fid, f"c.{k}", "post_hoc", f"{card}: a coverage run, no prediction",
+                               f"{LEDGER}#{card}"))  # fmt: skip
+            else:
+                r = by_hollow(fid, f"c.{k}", m, lowered=True, what=f"{card}, its rule fixed in advance")
+                r["source"] = f"{LEDGER}#{card}; {r['source']}"
+                out.append(r)
+    return out
+
+
 BREADTH_FIGS = {"breadth_fig01_needed": ("mk", "lost"), "breadth_fig03a_robust": ("robust",), "breadth_fig03b_robust": ("robust",), "breadth_fig04_where": ("pos", "prof"),
                 "breadth_fig05_carries": ("swap",), "breadth_fig09_dose": ("dose",), "breadth_fig02_datasets": ("data", "var"),
                 "breadth_fig07_lookup": ("look",), "breadth_fig08_readable": ("read",)}  # fmt: skip
@@ -607,7 +634,7 @@ def rows() -> list[dict]:
     writeup += fig05_split(writeup) + f14_split(writeup)
     readme = readme_set(writeup)
     return lightning([*writeup, *readme, *depth_set(writeup), *depth_set_b(), *depth_set_c(),
-                      *depth_set_d(), *depth_set_e(), *breadth_set(readme)])
+                      *depth_set_d(), *depth_set_e(), *depth_set_f(), *breadth_set(readme)])
 
 
 COLUMNS = ("figure", "cell", "timing", "claim", "claim_reason", "reason", "source")  # styles-plot's registry schema

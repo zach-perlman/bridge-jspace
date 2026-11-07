@@ -435,8 +435,51 @@ title = "answers turned wrong (share)"
 quantity = "answers turned wrong"
 format = "share"
 
+# the ledger cards' figures (figkit/depth_sp_f.py)
+[units.drop_beyond_share]
+title = "answers turned wrong beyond random (share)"
+quantity = "answers turned wrong"
+format = "share"
+
+[units.readable]
+title = "items with the answer in the lens top 5, best layer before the answer (share)"
+quantity = "items readable"
+format = "share"
+
+[units.changed]
+title = "answers changed by adding the answer's lens directions (share)"
+quantity = "answers changed"
+format = "share"
+
+[units.gap_answers]
+title = "gap: recall − lookup (share of answers)"
+quantity = "gap"
+format = "share"
+
+[units.reports]
+title = "share of reports"
+quantity = "reports"
+format = "share"
+
 [terms]
 canonical = [
+    # the ledger cards' figures (figkit/depth_sp_f.py): headers, lanes, colour words, rows
+    "the recall's switches", "without the lens part", "lens part out, answer kept", "answer directions only",
+    "rung 2", "rung 3", "the recall, locker sentence first", "the recall, locker sentence after",
+    "the lookup, every scene", "both changed", "one changed alone", "the lens part's item", "the address's item",
+    "the recall", "the lookup", "question after the scene", "question before the scene", "readable",
+    "changed by adding its directions", "our scenes", "the fact passages", "by position", "by value", "by identity", "prose",
+    "JSON", "a table", "lookups moved", "another item's version", "the item's own code", "pre-specified code",
+    "centered code", "position answers left", "position answers brought back", "without a random part",
+    "without the address", "the address alone", "reports naming the first position", "the earlier wording",
+    "a digit asked for", "a word asked for", "the address swapped in at the last token",
+    "the earlier layer tested", "the later layer tested", "three layers before the answer",
+    "two layers before the answer", "one layer before the answer", "the read peak", "block 19", "block 26",
+    "blocks 19 and 26", "every block after L", "a control block", "the follow-up span", "a control span",
+    "PP", "PM", "MP", "MM", "at one layer", "at every layer up to L", "fact sentence first", "fact sentence after",
+    "pooled over the locker sentence", "the best single token", "half the test layer", "the test layer",
+    "without the address fit on animals", "without the address refit on that kind", "animals", "fruits", "names",
+    "the change at one layer", "removal everywhere",
     # the example cards' columns (scripts/examples.py)
     "answers moved to the other entity's fact", "probe", "lens part and its same-size controls",
     "Band of layers · fact passages: the recall − lookup gap under each removal",

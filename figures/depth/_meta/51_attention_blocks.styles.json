@@ -1,0 +1,151 @@
+{
+ "styles_plot": "0.1.14",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "6f1e533b800e6321e22c5d4e22dea4e0bb58e7b1810a27c5b5c7ba56f9fd5c3b"
+ },
+ "registry": {
+  "path": "data/figures/status.csv",
+  "sha256": "3621bc13dcaa184116d28c991f7b53d9407de3fbc6e6eeb6c9b6d71966fbab4e"
+ },
+ "figure": "fig53_attention_blocks",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "text_only": false,
+ "png": {
+  "pixels_sha256": "7130d1a0e20b0e55616b63be3914d5b72f22b48ddeeb6c5df86ba113d56994cf",
+  "dpi": 160
+ },
+ "roles": [
+  "lookup",
+  "recall"
+ ],
+ "controls": [],
+ "cells": {
+  "c.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "c.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "c.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "c.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "c.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "c.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "c.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "c.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "c.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "c.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "c.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "c.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "c.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "c.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "c.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "all estimates post hoc",
+  "whiskers: 95% interval"
+ ],
+ "numbers": {},
+ "problems": []
+}

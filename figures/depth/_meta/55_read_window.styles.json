@@ -1,0 +1,88 @@
+{
+ "styles_plot": "0.1.14",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "6f1e533b800e6321e22c5d4e22dea4e0bb58e7b1810a27c5b5c7ba56f9fd5c3b"
+ },
+ "registry": {
+  "path": "data/figures/status.csv",
+  "sha256": "3621bc13dcaa184116d28c991f7b53d9407de3fbc6e6eeb6c9b6d71966fbab4e"
+ },
+ "figure": "fig57_read_window",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "text_only": false,
+ "png": {
+  "pixels_sha256": "39b003ac7c73dfa4635d1c3aa29d0d9273a5342095c1d754513c9960d92abf94",
+  "dpi": 160
+ },
+ "roles": [
+  "lookup",
+  "recall"
+ ],
+ "controls": [],
+ "cells": {
+  "c.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "c.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "c.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "line",
+   "role": "lookup",
+   "cell": "c.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "recall",
+   "cell": "c.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "lookup",
+   "cell": "c.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "recall",
+   "cell": "c.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "lookup",
+   "cell": "c.nl",
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "recall",
+   "cell": "c.nl",
+   "timing": "post_hoc",
+   "claim": "claimed"
+  }
+ ],
+ "key": [],
+ "numbers": {
+  "fig57_read_window.gate": "0.30"
+ },
+ "problems": []
+}

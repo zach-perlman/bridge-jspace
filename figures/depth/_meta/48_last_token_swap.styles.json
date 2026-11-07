@@ -1,0 +1,87 @@
+{
+ "styles_plot": "0.1.14",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "6f1e533b800e6321e22c5d4e22dea4e0bb58e7b1810a27c5b5c7ba56f9fd5c3b"
+ },
+ "registry": {
+  "path": "data/figures/status.csv",
+  "sha256": "3621bc13dcaa184116d28c991f7b53d9407de3fbc6e6eeb6c9b6d71966fbab4e"
+ },
+ "figure": "fig50_last_token_swap",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "text_only": false,
+ "png": {
+  "pixels_sha256": "6ce706edffcbab0702c2246e17bd9f4a395a1ef35f3b17104435c8f09f4e7cf7",
+  "dpi": 160
+ },
+ "roles": [
+  "address"
+ ],
+ "controls": [],
+ "cells": {
+  "c.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "c.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "c.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "c.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "c.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "c.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "c.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "c.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  }
+ ],
+ "key": [
+  "whiskers: 95% interval",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "fig50_last_token_swap.bridge_fit_swap_at_l_4_dose_2_lookups_sent_to_the_target.q9": "0.00",
+  "fig50_last_token_swap.bridge_fit_swap_at_l_4_dose_2_lookups_sent_to_the_target.q27": "0.00",
+  "fig50_last_token_swap.bridge_fit_swap_at_l_4_dose_2_lookups_sent_to_the_target.mu": "0.45",
+  "fig50_last_token_swap.bridge_fit_swap_at_l_4_dose_2_lookups_sent_to_the_target.nl": "0.00"
+ },
+ "problems": []
+}

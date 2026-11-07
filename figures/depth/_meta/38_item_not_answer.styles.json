@@ -1,0 +1,174 @@
+{
+ "styles_plot": "0.1.14",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "6f1e533b800e6321e22c5d4e22dea4e0bb58e7b1810a27c5b5c7ba56f9fd5c3b"
+ },
+ "registry": {
+  "path": "data/figures/status.csv",
+  "sha256": "3621bc13dcaa184116d28c991f7b53d9407de3fbc6e6eeb6c9b6d71966fbab4e"
+ },
+ "figure": "fig40_item_not_answer",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "text_only": false,
+ "png": {
+  "pixels_sha256": "5bea87a39b746295e003750ec5bd5f47566e596371338549b9f351a5b36b69b4",
+  "dpi": 160
+ },
+ "roles": [
+  "recall"
+ ],
+ "controls": [],
+ "cells": {
+  "c.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "c.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "c.q122": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "c.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "c.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "c.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "c.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "c.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "c.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "c.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "c.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "c.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "c.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "c.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "c.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "c.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "c.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "c.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "c.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "c.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  }
+ ],
+ "key": [
+  "whiskers: 95% interval",
+  "○ post hoc"
+ ],
+ "numbers": {},
+ "problems": []
+}

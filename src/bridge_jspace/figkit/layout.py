@@ -41,7 +41,13 @@ ORDER: dict[str, list[tuple[str, str]]] = {
         "fig10_what_is_left", "fig10b_enrichment", "fig10c_binding", "fig10c2_binding_added", "fig10d_heads",
         "fig10e_second_route", "fig13_attention", "fig14_learned", "fig09_transfer", "fig24_two_codes",
         # docs pass P2-4 (7 Nov): the figures of claims 3 and 7, appended so no later file is renumbered
-        "fig03d_earlier_mention", "fig05e_address_added_alone")),
+        "fig03d_earlier_mention", "fig05e_address_added_alone",
+        # docs pass P3-3 (7 Nov): the ledger cards' figures (figkit/depth_sp_f.py), appended likewise
+        "fig40_item_not_answer", "fig41_lightning_layers", "fig42_ladder", "fig43_follows_both",
+        "fig44_number_answer", "fig45_answer_map", "fig46_value_formats", "fig47_identity_code", "fig48_subset27b",
+        "fig49_report_first_position", "fig50_last_token_swap", "fig51_last_conflict", "fig52_last_conflict_words",
+        "fig53_attention_blocks", "fig54_fact_answer_control", "fig55_every_layer", "fig56_fact_routes",
+        "fig57_read_window", "fig58_person_probe", "fig59_any_item", "fig60_described_gap")),
               *(("supp", i) for i in (
                   "s01_split_all_scene_sets", "s02_parts_all", "s03_order_split", "s03d_link_copy_variants", "s03f_link_copy_27b", "s03g_link_copy_muse",
                   "s03e_cumulative", "s07_recall_follows_swap", "s07b_lens_readout",
