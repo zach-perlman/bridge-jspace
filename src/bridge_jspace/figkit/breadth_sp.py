@@ -2,8 +2,8 @@
 row of docs/breadth/data.csv (scripts/report_breadth.py, readers in scripts/breadth_data.py), read by key; the old
 builder (scripts/fig_neel.py) drew them on the pod. Models are rows in the vocabulary's order (the old figures sorted
 them by strength and coloured them by model: here a colour is a role), conditions are columns or lanes, verdict texts
-stay in the README (Dan, 7 Nov). fig06_pointer is the README's r4_pointer (the same pointer runs and the probe's
-subspace); fig11_scorecard becomes a markdown table and is not drawn.
+stay in the README (Dan, 7 Nov). Fig. 6 is the root README's r4_pointer (figures/readme/04_pointer.png: the same
+pointer runs and the probe's subspace; one figure, linked from both READMEs); fig11_scorecard becomes a markdown table and is not drawn.
 
 uv run python -m bridge_jspace.figkit.breadth_sp [ids...]
 """
@@ -504,14 +504,9 @@ def fig10c_beyond() -> sp.Figure:
     return sp.Figure("breadth_fig10c_beyond", vocab()).add(t)
 
 
-def _pointer():
-    fig = RS.FIGS["r4_pointer"]()
-    fig.id = "breadth_fig06_pointer"
-    return fig
-
 
 FIGS = {"fig01_needed": fig01_needed, "fig03a_robust": fig03a_robust, "fig03b_robust": fig03b_robust,
-        "fig04_where": fig04_where, "fig05_carries": fig05_carries, "fig06_pointer": _pointer, "fig09_dose": fig09_dose,
+        "fig04_where": fig04_where, "fig05_carries": fig05_carries, "fig09_dose": fig09_dose,
         "fig02_datasets": fig02_datasets, "fig02b_datasets": fig02b_datasets, "fig10a1_beyond": fig10a1_beyond,
         "fig10a2_beyond": fig10a2_beyond, "fig10b_beyond": fig10b_beyond, "fig10c_beyond": fig10c_beyond,
         "fig07_lookup": fig07_lookup, "fig08_readable": fig08_readable}  # fmt: skip

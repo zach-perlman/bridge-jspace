@@ -260,7 +260,7 @@ If the mention's J-part is swapped for another entity's, does the answer follow,
   probe's subspace moves {{v|probe.q27.probe}} / {{v|probe.q9.probe}} / {{v|probe.nl.probe}}, against J++'s
   {{v|probe.q27.swap}} / {{v|probe.q9.swap}} / {{v|probe.nl.swap}}.
 
-![A J-part from one neutral sentence carries as much as one from the passage; a probe's subspace carries almost nothing](../../figures/breadth/06_pointer.png)
+![A lens part from one neutral sentence carries as much as one from the passage; a probe's subspace carries almost nothing](../../figures/readme/04_pointer.png)
 *Fig. 6.*
 
 - **The fact is looked up later.** At the answer position, the lens first reads X's fact on half the items at:

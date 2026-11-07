@@ -47,7 +47,7 @@ ORDER: dict[str, list[tuple[str, str]]] = {
                   "s05b_routes_kept", "s12_das_muse"))],
     "breadth": [("main", i) for i in (
         "fig01_needed", "fig02_datasets", "fig02b_datasets", "fig03a_robust", "fig03b_robust",
-        "fig04_where", "fig05_carries", "fig06_pointer", "fig07_lookup", "fig08_readable", "fig09_dose",
+        "fig04_where", "fig05_carries", "fig07_lookup", "fig08_readable", "fig09_dose",
         "fig10a1_beyond", "fig10a2_beyond", "fig10b_beyond", "fig10c_beyond")],
     # real items as images, picked by a stated rule (scripts/examples.py); the root README shows them
     # e3_chains waits for styles-plot to exempt verbatim prompt text from the run-id check (SP403)

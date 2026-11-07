@@ -433,6 +433,7 @@ format = "share"
 [terms]
 canonical = [
     # the example cards' columns (scripts/examples.py)
+    "answers moved to the other entity's fact", "probe",
     "before", "the lens part removed everywhere", "a rotated part removed everywhere", "without the address",
     "identity route: the item's own locker; position route: the locker now at the item's old place; value: the new number",
     "Δ: the bridge word's state in the changed prompt minus the original's, at one layer",

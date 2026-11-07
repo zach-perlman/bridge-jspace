@@ -123,39 +123,33 @@ R4 = (("swap", "swap", "another entity's own passage", "lens"),
       ("neutral", "neutral_pts", "one neutral sentence about another entity", "lens"),
       ("noown", "noown_pts", "without another entity's own-word directions", "lens"),
       ("rot", "rot_pts", "rotated", "control"))  # fmt: skip
-
+# F4's rows: the source of the swapped-in part (row key, data key, role, short label)
+R4_ROWS = (("swap", "swap", "lens", "its own passage"), ("neutral", "neutral_pts", "lens", "a neutral sentence"),
+           ("noown", "noown_pts", "lens", "without its own-word directions"),
+           ("probe", "probe_pts", "neutral", "a probe's subspace"), ("rot", "rot_pts", "control", "rotated"))
+R4_GROUP = "answers moved to the other entity's fact"
 
 def r4_pointer() -> sp.Figure:
-    """Answers moved to another entity's fact: its lens part swapped in from its own passage, from one neutral sentence
-    about it, without its own-word directions, rotated (grey), and a probe's subspace that reads the fact (slate); the
-    paired difference neutral sentence − own passage beside."""
-    sub = {m: f"{WS._ptr_n(ZK[m])} items" for m in TWIN if WS._ptr_n(ZK[m])}
+    """Answers moved to another entity's fact (README brief F4): rows are the source of the swapped-in part (its own
+    passage, one neutral sentence about it, without its own-word directions: the lens part; a probe's subspace that
+    reads the fact, slate; rotated, grey), one panel per model on one shared axis. The paired difference neutral
+    sentence − own passage is in the caption, by key."""
+    v = vocab().with_entities("sources", [(k, name) for k, *_r, name in R4_ROWS])
     cols = []
-    for cond, key, header, role in R4:
-        cells = {}
-        for m in TWIN:
-            c = D.b(f"ptr.{ZK[m]}.{key}")
-            cells[m] = (est(c, f"{cond}.{ZK[m]}", key=f"ptr.{ZK[m]}.{key}", label=True) if c
-                        else sp.Missing("no run"))  # fmt: skip
-        cols.append(sp.DotColumn(header, "moved", (-8, 96), (0, 40, 80),
-                                 series=[sp.Series(role, cells, control="rotated" if role == "control" else None)]))  # fmt: skip
-    probe = {}
     for m in TWIN:
-        c = D.b(f"probe.{ZK[m]}.probe_pts")
-        probe[m] = (est(c, f"probe.{ZK[m]}", key=f"probe.{ZK[m]}.probe_pts", label=True) if c
-                    else sp.Missing("no run"))  # fmt: skip
-    cols.append(sp.DotColumn("a probe's subspace", "moved", (-8, 96), (0, 40, 80),
-                             series=[sp.Series("neutral", probe, word="a probe's subspace")]))  # fmt: skip
-
-    def diff(m):
-        key = f"ptr.{ZK[m]}.neutral_minus_swap"
-        d = D.b(key)
-        return sp.Est(d[0], d[1], d[2], key=key) if d else sp.Missing("no run")
-
-    cols.append(sp.TextColumn("neutral sentence − own passage", "moved_difference", {m: diff(m) for m in TWIN},
-                              unit_title=False))  # fmt: skip
-    t = sp.DotTable(TWIN, cols, row_sub=sub, note="another entity: one of the same kind · answers moved to its fact")
-    return sp.Figure("r4_pointer", vocab()).add(t)
+        k = ZK[m]
+        by_role: dict[str, dict] = {}
+        for row, key, role, _name in R4_ROWS:
+            c = D.b(f"probe.{k}.probe_pts" if row == "probe" else f"ptr.{k}.{key}")
+            cell = f"probe.{k}" if row == "probe" else f"{row}.{k}"
+            dkey = f"probe.{k}.probe_pts" if row == "probe" else f"ptr.{k}.{key}"
+            by_role.setdefault(role, {})[row] = (est(c, cell, key=dkey, label=True) if c else sp.Missing("no run"))
+        series = [sp.Series("lens", by_role["lens"]), sp.Series("neutral", by_role["neutral"], word="probe"),
+                  sp.Series("control", by_role["control"], control="rotated")]  # fmt: skip
+        cols.append(sp.DotColumn(v.entity("models", m).name, "moved", (-8, 96), (0, 40, 80), series=series))
+    t = sp.DotTable([r for r, *_ in R4_ROWS], [sp.ColumnGroup(R4_GROUP, cols)], kind="sources",
+                    note="another entity: one of the same kind · answers moved to its fact")  # fmt: skip
+    return sp.Figure("r4_pointer", v).add(t)
 
 
 # ---- f5_atoms: what the lens part decodes to --------------------------------------------------------------------------

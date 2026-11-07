@@ -474,10 +474,9 @@ def breadth_set(readme: list[dict]) -> list[dict]:
     """The breadth README's figures (figkit/breadth_sp.py): a cell is fixed in advance where Zach's preregistration
     registered that model's tests before its data (BREADTH_CITE; Lightning by lightning(), Amendment 45 note 2; Muse
     30B and Qwen 122B per cell, MU_Q122). Which cells each amendment covers is per model, not checked cell by cell
-    (listed). fig06_pointer is the README's r4_pointer (its rows copied)."""
+    (listed). The breadth README shows the root README's r4_pointer (figures/readme/04_pointer.png), not a copy."""
     ids = [*SHORT.values(), "ds", "mi", "nb", "ol"]  # the breadth-only models' ids (plotstyle.toml)
-    out = [{**r, "figure": "breadth_fig06_pointer", "source": f"{r['source']} (as r4_pointer, drawn for docs/breadth)"}
-           for r in readme if r["figure"] == "r4_pointer"]  # fmt: skip
+    out: list[dict] = []
     for fig, cids in BREADTH_FIGS.items():
         UNCLEAR.add(f"{fig}: the amendments register each model's tests; this figure's cells are not listed one by one")
         for k in ids:

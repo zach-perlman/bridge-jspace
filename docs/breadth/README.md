@@ -35,7 +35,7 @@ entity, does that depend on whether the final fact is recalled or stated, and in
   Whether the model depends on those directions is a separate, model-specific question.
 
 **Status.** This is Zach's half (breadth): nine models on our dataset jsuite v2, plus the Qwens on every earlier dataset,
-as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at c2c0ef82 from the run files.
+as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at abd7664b from the run files.
 
 ## Setup
 
@@ -294,7 +294,7 @@ If the mention's J-part is swapped for another entity's, does the answer follow,
   probe's subspace moves +8 / +6 / +2, against J++'s
   +75 / +80 / +62.
 
-![A J-part from one neutral sentence carries as much as one from the passage; a probe's subspace carries almost nothing](../../figures/breadth/06_pointer.png)
+![A lens part from one neutral sentence carries as much as one from the passage; a probe's subspace carries almost nothing](../../figures/readme/04_pointer.png)
 *Fig. 6.*
 
 - **The fact is looked up later.** At the answer position, the lens first reads X's fact on half the items at:

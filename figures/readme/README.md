@@ -6,7 +6,7 @@ Built by `make readme` with [styles-plot](https://github.com/danorel/styles-plot
 |---|---|---|---|
 | 01 | <a href="01_tools.png"><img src="01_tools.png" width="260" alt="01_tools"></a> | Three tools, one target: the lens part at the bridge. | UNVERIFIED |
 | 02 | <a href="02_main_split.png"><img src="02_main_split.png" width="260" alt="02_main_split"></a> | Taking the lens part out breaks recalled answers, not lookup ones | 3 of 10 cells post hoc · UNVERIFIED |
-| 02b | <a href="02b_main_split_gaps.png"><img src="02b_main_split_gaps.png" width="260" alt="02b_main_split_gaps"></a> |  | 3 of 10 cells post hoc · UNVERIFIED |
+| 02b | <a href="02b_main_split_gaps.png"><img src="02b_main_split_gaps.png" width="260" alt="02b_main_split_gaps"></a> | The gap is far above the largest same-size control on every model in the band test, and above zero on every model at one layer | 3 of 10 cells post hoc · UNVERIFIED |
 | 03 | <a href="03_controls.png"><img src="03_controls.png" width="260" alt="03_controls"></a> | Random, rotated, logit-lens and PCA directions cost far less than the lens part | 2 of 9 cells post hoc · UNVERIFIED |
 | 04 | <a href="04_pointer.png"><img src="04_pointer.png" width="260" alt="04_pointer"></a> | Another entity's lens part moves the recall from any context, a probe's subspace that reads the fact does not | UNVERIFIED |
 | 05 | <a href="05_atoms.png"><img src="05_atoms.png" width="260" alt="05_atoms"></a> | The lens part's 25 directions are the two bridge words, almost never the answer word | 1 of 5 cells post hoc · UNVERIFIED |
