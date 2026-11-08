@@ -7,7 +7,7 @@
  },
  "registry": {
   "path": "data/figures/status.csv",
-  "sha256": "b50c31676735b81f8e968bb90792a75984f83c5540fe87769e7aa9bbae69dd59"
+  "sha256": "0ee2c3f3b64d214937f976aa6f9599275e60cc2bc77b208d39c41a14d76008ab"
  },
  "figure": "fig03d_earlier_mention",
  "target": "readme",
@@ -15,13 +15,15 @@
  "publishable": true,
  "text_only": false,
  "png": {
-  "pixels_sha256": "1ba4c734f0b0253837d386419094567aab2815c0a6fb1ed050285261da3416b9",
+  "pixels_sha256": "541527023edf233022bdebeccc1b7a9ac1b79144fe9f1919be83381eb99a7ae0",
   "dpi": 160
  },
  "roles": [
   "recall"
  ],
- "controls": [],
+ "controls": [
+  "a random part"
+ ],
  "cells": {
   "item.mu": {
    "timing": "fixed_in_advance",
@@ -62,13 +64,49 @@
   "other.q9": {
    "timing": "fixed_in_advance",
    "claim": "claimed"
+  },
+  "random.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "random.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "random.q122": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "random.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "random.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
   }
  },
  "marks": [
   {
    "kind": "dot",
+   "role": "control",
+   "cell": "random.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
    "role": "recall",
    "cell": "item.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "random.q27",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -83,6 +121,14 @@
   },
   {
    "kind": "dot",
+   "role": "control",
+   "cell": "random.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
    "role": "recall",
    "cell": "item.mu",
    "timing": "fixed_in_advance",
@@ -91,8 +137,24 @@
   },
   {
    "kind": "dot",
+   "role": "control",
+   "cell": "random.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
    "role": "recall",
    "cell": "item.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "random.q122",
    "timing": "post_hoc",
    "claim": "claimed",
    "hollow": true
@@ -147,16 +209,21 @@
   }
  ],
  "key": [
-  "grey tick: the largest same-size control",
+  "grey: a random part",
   "whiskers: 95% interval",
   "○ post hoc"
  ],
  "numbers": {
   "f03d.item.q9": "0.26",
+  "f03d.random.q9": "0.01",
   "f03d.item.q27": "0.49",
+  "f03d.random.q27": "0.08",
   "f03d.item.mu": "0.51",
+  "f03d.random.mu": "0.09",
   "f03d.item.nl": "0.21",
+  "f03d.random.nl": "−0.01",
   "f03d.item.q122": "0.17",
+  "f03d.random.q122": "0.02",
   "f03d.other.q9": "−0.01",
   "f03d.other.q27": "0.00",
   "f03d.other.mu": "0.02",

@@ -320,8 +320,8 @@ CLAIM_CARD = {
     7: "Can the address be read, removed, added and swapped?",
     8: "Can the address be read, removed, added and swapped?",
     9: "Can the lens read the address?",
-    10: "Does the bridge word redirect the lookup only when its locker sentence came first?",
-    11: "Does the bridge word redirect the lookup only when its locker sentence came first?",
+    10: "Does the bridge word redirect most lookups when its locker sentence came first, and few when after?",
+    11: "Does the bridge word redirect most lookups when its locker sentence came first, and few when after?",
     12: "Is the address readable before the lookup uses it, on every model?",
 }
 # † cells: not in the hand-checked sample. The 122B's coverage runs (no prediction, not among the hand-checked views)

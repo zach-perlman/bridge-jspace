@@ -469,12 +469,13 @@ def depth_set_d() -> list[dict]:
 def depth_set_e() -> list[dict]:
     """The figures of claims 3 and 7 (figkit/depth_sp_e.py, docs pass P2-4): 45p fixed in advance on the 9B, 27B and
     Muse (docs/depth/EXPERIMENTS.md#t45p), Lightning below its gate and the 122B a coverage run with no prediction
-    (after the data); the routes test's keep-only arms by hollow() with the lowered gate (the 122B's runs at 0.75), as
+    (after the data), its arm 3 (a random part of the same share, the grey dot) timed as the test; the routes test's
+    keep-only arms by hollow() with the lowered gate (the 122B's runs at 0.75), as
     the address figure (writeup fig08a) draws them."""
     out = []
     for m, _ in MODELS:
         k = SHORT[m]
-        for cid in ("item", "other"):
+        for cid in ("item", "other", "random"):
             out.append(fixed("fig03d_earlier_mention", f"{cid}.{k}", "45p, set before its data",
                              "docs/depth/EXPERIMENTS.md#t45p") if k in ("q9", "q27", "mu") else
                        post_hoc("fig03d_earlier_mention", f"{cid}.{k}", "45p, below its gate or a coverage run",

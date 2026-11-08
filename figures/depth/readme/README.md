@@ -39,7 +39,7 @@ Built by `make readme` with [styles-plot](https://github.com/danorel/styles-plot
 | 33 | <a href="33_learned.png"><img src="33_learned.png" width="260" alt="33_learned"></a> | `depth/33_learned.png` | UNVERIFIED |
 | 34 | <a href="34_transfer.png"><img src="34_transfer.png" width="260" alt="34_transfer"></a> | `depth/34_transfer.png` | 4 of 7 cells post hoc · UNVERIFIED |
 | 35 | <a href="35_two_codes.png"><img src="35_two_codes.png" width="260" alt="35_two_codes"></a> | Position scenes leave position without the address; identity scenes go to position without the lens part (post hoc) | all post hoc · UNVERIFIED |
-| 36 | <a href="36_earlier_mention.png"><img src="36_earlier_mention.png" width="260" alt="36_earlier_mention"></a> | The recall also reads the lens part at the item's earlier mention | 4 of 10 cells post hoc · UNVERIFIED |
+| 36 | <a href="36_earlier_mention.png"><img src="36_earlier_mention.png" width="260" alt="36_earlier_mention"></a> | The recall also reads the lens part at the item's earlier mention | 6 of 15 cells post hoc · UNVERIFIED |
 | 37 | <a href="37_address_added_alone.png"><img src="37_address_added_alone.png" width="260" alt="37_address_added_alone"></a> | Added by itself, the address brings position answers back, except on the 27B | 2 of 5 cells post hoc · UNVERIFIED |
 | s01 | <a href="s01_split_all_scene_sets.png"><img src="s01_split_all_scene_sets.png" width="260" alt="s01_split_all_scene_sets"></a> | `depth/s01_split_all_scene_sets.png` | all post hoc · UNVERIFIED |
 | s02 | <a href="s02_parts_all.png"><img src="s02_parts_all.png" width="260" alt="s02_parts_all"></a> | `depth/s02_parts_all.png` | 20 of 32 cells post hoc · UNVERIFIED |

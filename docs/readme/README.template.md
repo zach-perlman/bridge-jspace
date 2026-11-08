@@ -24,9 +24,9 @@ Gurnee et al. (2026) argue that the J++ lens reads a "workspace" holding the mid
 
 ## Setup
 
-Take one scene: "The locker of carbon is 3. The locker of helium is 5. … Eric picked **carbon**."<!-- src: docs/depth/README.md | The locker of carbon is 3. The locker of helium is 5. --> Asked which locker belongs to Eric's pick, the model looks up 3 in the text<!-- src: docs/depth/README.md | Which locker belongs to Eric's pick?" (3, found in the prompt) -->. Asked the atomic number of Eric's pick, it recalls 6 from memory<!-- src: docs/depth/README.md | What is the atomic number of Eric's pick?" (6, from memory) -->. Both questions pass through the bridge, *carbon*. The fact passages pose the same contrast with real facts, giving the bridge's fact or leaving it to memory. Five models are tested on locker scenes, nine on fact passages.
+An illustrative scene: "The locker of carbon is 3. The locker of helium is 5. … Eric picked **carbon**."<!-- src: docs/depth/README.md | The locker of carbon is 3. The locker of helium is 5. --> Asked which locker belongs to Eric's pick, the model looks up 3 in the text<!-- src: docs/depth/README.md | Which locker belongs to Eric's pick?" (3, found in the prompt) -->. Asked the atomic number of Eric's pick, it recalls 6 from memory<!-- src: docs/depth/README.md | What is the atomic number of Eric's pick?" (6, from memory) -->. Both questions pass through the bridge, *carbon*. The fact passages pose the same contrast with real facts, giving the bridge's fact or leaving it to memory. Five models are tested on locker scenes, nine on fact passages.
 
-Real items, each picked by a fixed rule (rules and item ids in `data/figures/examples/data.csv`). The fact passage is chosen to show the typical flip, and its caption says how often that flip occurs.
+Real test items, each picked by a fixed rule (rules and item ids in `data/figures/examples/data.csv`). The fact passage is chosen to show the typical flip; its caption says how often it occurs.
 
 ![One real locker scene, Qwen 27B: the whole change switches both readers; without the lens part the lookup still switches and the recall does not](figures/depth/examples/01_locker_scene.png)
 

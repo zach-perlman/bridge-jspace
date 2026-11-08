@@ -513,7 +513,7 @@ Test 45p · opened 27 Oct · status: rule fixed in advance · hand-check: not in
 
 ![The recall also reads the item at its earlier mention](../../figures/depth/readme/36_earlier_mention.png)
 
-*Claim 3: the recall's switches blocked against the change at the bridge word alone (arm 1) when the new item's tokens at its earlier mention also have their own lens part removed (left), and when another item's tokens have theirs removed (right); grey tick: the same tokens with a random part of the same share removed. Clean one-pick scenes with the item's locker sentence before the pick; whiskers 95% intervals; Lightning hollow ○ (below its gate, descriptive), the 122B hollow ○ (a coverage run, no prediction).*
+*Claim 3: the recall's switches blocked against the change at the bridge word alone (arm 1) when the new item's tokens at its earlier mention also have their own lens part removed (left), and when another item's tokens have theirs removed (right); grey dot, joined to the item's: the same tokens with a random part of the same share removed. Clean one-pick scenes with the item's locker sentence before the pick; whiskers 95% intervals; Lightning hollow ○ (below its gate, descriptive), the 122B hollow ○ (a coverage run, no prediction).*
 
 - **Rule, fixed in advance.** "the recall reads the earlier mention if the recall's switch drop in (2) exceeds (3) by at least 0.2 and (4) by at least 0.15 (loss_k = 1 - S_k / S_1, point estimates), on at least 2 of 3 models; a model whose base edit switches fewer than 30 recalls is not tested."
 
@@ -1783,9 +1783,9 @@ More from the reading:
 
 ## Part IV. Where and when the link is made
 
-### Does the bridge word redirect the lookup only when its locker sentence came first? <a id="order"></a>
+### Does the bridge word redirect most lookups when its locker sentence came first, and few when after? <a id="order"></a>
 
-`in README` *Used in: README Part IV card "Does the bridge word redirect the lookup only when its locker sentence came first?" (the split).*
+`in README` *Used in: README Part IV card "Does the bridge word redirect most lookups when its locker sentence came first, and few when after?" (the split).*
 
 Test the split by sentence order · opened 29 Oct · status: post hoc (descriptive) · hand-check: in sample (view g) · files: `results/x0_composition/split-by-order-20261026T173323Z/split.md` · recompute: `scripts/x0_composition.py` (the command in its docstring) · also: Lightning's
 
@@ -1845,7 +1845,7 @@ More from the reading:
 
 ### When the locker comes after the pick, is the link made in the locker sentences? <a id="t45q"></a>
 
-`in README` `below gate: Lightning` *Used in: README Part IV card "Does the bridge word redirect the lookup only when its locker sentence came first?" (the copy).*
+`in README` `below gate: Lightning` *Used in: README Part IV card "Does the bridge word redirect most lookups when its locker sentence came first, and few when after?" (the copy).*
 
 Test 45q · opened 27 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x45b_binding/x45q-20261027T005345Z/x45q.md` · recompute: `scripts/x45b_binding.py` (the command in its docstring) · also: the copy test, opened 27 Oct
 
