@@ -234,6 +234,19 @@ quantity = "share of the change"
 format = "share"
 cue = false
 
+# two text columns whose qualifier moved from the header into the unit title (SP613: headers on two lines)
+[units.identity_cut_beyond_wrong_pair]
+title = "beyond the wrong pair (share of the change)"
+quantity = "identity answers cut"
+format = "share"
+cue = false
+
+[units.address_energy_inside]
+title = "the hand-built address's, inside the learned address (share)"
+quantity = "energy inside"
+format = "share"
+cue = false
+
 [units.position_lost]
 title = "position answers cut beyond random (share)"
 quantity = "position answers cut"
@@ -746,6 +759,26 @@ canonical = [
     "sent one locker on",
     "half",
     "the 25% bar",
+    # shorter column headers, on two lines (SP613, styles-plot 0.2)
+    "random heads",
+    "full state",
+    "− largest control",
+    "share of change",
+    "shift against no sentence",
+    "the bar",
+    "whole change",
+    "identity answers cut",
+    "energy inside",
+    "heads",
+    "48.4: heads passing the rest",
+    "neutral − own passage",
+    "lens part",
+    "lens part swapped in",
+    "whole state",
+    "the rest",
+    "another entity's lens part swapped in, against the same-size controls",
+    "pick sentence's other tokens",
+    "random directions",
 ]
 templates = [
     # the README headline's read line (figkit/readme_sp.py READ_HEADLINE)

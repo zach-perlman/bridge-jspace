@@ -50,7 +50,7 @@ def fig08_first_locker() -> sp.Figure:
     cols = [sp.DotColumn("answers by identity", "identity_share", (0.3, 1.08), (0.4, 0.7, 1),
                          series=[sp.Series("identity", ident)]),
             sp.TextColumn("by position", "identity_share", pos, unit_title=False),
-            sp.TextColumn("code shift against no sentence", "code_shift", shift, unit_title=False)]  # fmt: skip
+            sp.TextColumn("shift against no sentence", "code_shift", shift, unit_title=False)]  # fmt: skip
     t = sp.DotTable(models, cols, lanes=[sp.Lane(k_, label) for k_, _w, label in SENTENCES])
     return sp.Figure("fig08_first_locker", vocab()).add(t)
 
@@ -142,8 +142,8 @@ def fig10_what_is_left() -> sp.Figure:
     cols = [sp.DotColumn("lookups still switching", "still_switching", (-0.05, 1.15), (0, 0.5, 1),
                          series=[sp.Series("control", rand, control="a random part"), sp.Series("lookup", part)],
                          connect=("control", "lookup")),
-            sp.TextColumn("share of the change", "change_share", share, unit_title=False),
-            sp.TextColumn("identity answers cut beyond the wrong pair", "change_share", routes, unit_title=False)]  # fmt: skip
+            sp.TextColumn("share", "change_share", share),
+            sp.TextColumn("identity answers cut", "identity_cut_beyond_wrong_pair", routes)]  # fmt: skip
     t = sp.DotTable(models, cols, lanes=[sp.Lane(k_, label) for k_, _w, label in REMOVALS])
     return sp.Figure("fig10_what_is_left", vocab()).add(t)
 
@@ -196,7 +196,9 @@ def fig15_mechanisms() -> sp.Figure:
                 "48.3", "neutral", (0, 1), (0, 0.5, 1), label=False)]),
     ])  # fmt: skip
     bottom = sp.DotTable(models, [
-        sp.TextColumn("48.4: heads passing the rest", "heads_of_five", heads, unit_title=False),
+        # a group, as each other test here: its header wraps over its span, the column header stays short (SP613)
+        sp.ColumnGroup("48.4: heads passing the rest", [sp.TextColumn("heads", "heads_of_five", heads,
+                                                                      unit_title=False)]),
         sp.ColumnGroup("48.5: the address as a second route", [
             col("recalls naming the target's item", "named",
                 "48.5, (ii) (i) and the pointer write: recall names the written locker's item", "48.5", "recall",
@@ -205,7 +207,7 @@ def fig15_mechanisms() -> sp.Figure:
         sp.ColumnGroup("47.6: blocking the pick sentence", [
             sp.DotColumn("identity answers kept", "identity_kept", (0, 0.75), (0, 0.3, 0.6),
                          series=[sp.Series("identity", kept)]),
-            sp.TextColumn("the rule's bar", "identity_kept", bar476, unit_title=False)]),
+            sp.TextColumn("the bar", "identity_kept", bar476, unit_title=False)]),
     ], note=f"48.4's bar fixed in advance: {HEADS_BAR} of 5")  # fmt: skip
     return sp.Figure("fig15_mechanisms", v).add(top, bottom)
 
@@ -339,7 +341,7 @@ def s08b_pointer_moves_and_neutral_sentence() -> sp.Figure:
     top = sp.DotTable(models, [
         sp.DotColumn("position answers, only the address kept", "position_share", (-0.03, 0.75), (0, 0.3, 0.6),
                      series=[sp.Series("address", keep)]),
-        sp.TextColumn("the whole change", "position_share", whole, unit_title=False),
+        sp.TextColumn("whole change", "position_share", whole, unit_title=False),
     ], lanes=[sp.Lane(k_, label) for k_, _w, label in MOVES])  # fmt: skip
     shift = {}
     cols = []

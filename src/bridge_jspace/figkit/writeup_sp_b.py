@@ -81,12 +81,14 @@ def fig05_controls() -> sp.Figure:
     ])], note="the recall − lookup gap under each removal")  # fmt: skip
 
     names = {"rand": "random lens directions"}
+    HEADER = {"rand": "random directions"}
     layer_cols = [col("lens part", "lens", {m: D.s(m, "J++ part: recall extra loss", "fig02") for m in DAN}, *shares,
                       layer, lambda m: f"fig05.layer.lens.{ZK[m]}")]  # fmt: skip
     for k, name, q in F.LAYER_CTRL:
         keys = {m: f"fig05.layer.{k}.{ZK[m]}" for m in DAN}
-        layer_cols.append(col(names.get(k, name), "control", {m: D.s(m, q, "fig02") for m in DAN}, *shares, layer,
-                              keys.get, control=names.get(k, name)))  # fmt: skip
+        # the header on two lines (SP613): "random directions"; the key keeps the control's full name
+        layer_cols.append(col(HEADER.get(k, names.get(k, name)), "control", {m: D.s(m, q, "fig02") for m in DAN},
+                              *shares, layer, keys.get, control=names.get(k, name)))  # fmt: skip
     bottom = sp.DotTable(DAN, [sp.ColumnGroup("One layer · locker scenes", [
         *layer_cols,
         sp.TextColumn("lens part − largest control", "share_difference", {m: layer_diff(m) for m in DAN}),
@@ -264,7 +266,7 @@ def fig13_last_token() -> sp.Figure:
                                 sp.Series("lens", lens, word="lens part swapped in")],
                         connect=("lens", "control"))  # fmt: skip
     # the lens part's values in their own column, as the figkit figure printed them apart from the dots
-    values = sp.TextColumn("lens part swapped in", "recalls", lens, role="lens", unit_title=False)
+    values = sp.TextColumn("lens part", "recalls", lens, role="lens", unit_title=False)
     return sp.Figure("fig13_last_token", v).add(sp.DotTable(models, [probe, used, values], row_sub=sub))
 
 

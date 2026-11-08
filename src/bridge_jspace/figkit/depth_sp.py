@@ -131,7 +131,7 @@ def _parts(fig, fid, parts, share: bool) -> sp.Figure:
                          series=[sp.Series("lookup", lookup), sp.Series("recall", recall)],
                          connect=("lookup", "recall"), band=(-0.1, 0.1))]  # fmt: skip
     if share:
-        cols.append(sp.TextColumn("share of the change", "change_share", shares, unit_title=False))
+        cols.append(sp.TextColumn("share", "change_share", shares))
     t = sp.DotTable(models, cols, lanes=[sp.Lane(k, label) for k, _s, label in parts])
     return sp.Figure(fid, vocab()).add(t)
 
@@ -371,7 +371,7 @@ def fig14_learned() -> sp.Figure:
             series=[sp.Series("control", rand_m, control="a random subspace"), sp.Series("address", moved)],
         ),
         sp.TextColumn("the whole change", "recalls", whole, unit_title=False),
-        sp.TextColumn("hand-built address's energy inside", "change_share", energy, unit_title=False),
+        sp.TextColumn("energy inside", "address_energy_inside", energy),
     ]
     t = sp.DotTable(models, cols, note="a 4-dimensional address learned on the address test pairs")
     return sp.Figure(f, vocab()).add(t)

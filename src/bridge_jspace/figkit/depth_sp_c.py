@@ -156,7 +156,7 @@ def s05b_routes_kept() -> sp.Figure:
 
 # ---- s03e: where the missing switches sit (47.4), a decomposition --------------------------------------------------------
 S03E_TERMS = (("a", "the bridge word at L"), ("before_L", "the bridge word before L"),
-              ("propagation", "every layer after L"), ("pick_other", "the pick sentence's other tokens"),
+              ("propagation", "every layer after L"), ("pick_other", "pick sentence's other tokens"),
               ("outside", "outside the pick sentence"))  # fmt: skip
 S03E_SETS = (("main", "the main test"), ("clean", "the clean one-pick scenes"))
 
@@ -180,7 +180,9 @@ def s03e_cumulative() -> sp.Figure:
                     if c:
                         cells[(m, s)] = est(c, f"cumulative.{s}.{ZK[m]}", key=f"s03e.{reader}.{term}.{s}.{ZK[m]}")
             series.append(sp.Series(reader, cells))
-        cols.append(sp.DotColumn(header, "switch_terms", (-0.2, 1.05), (0, 0.5, 1), series=series))
+        # the pick sentence's header on two lines (SP613): weight 1.1-1.19 per styles-plot 0.2.1
+        cols.append(sp.DotColumn(header, "switch_terms", (-0.2, 1.05), (0, 0.5, 1), series=series,
+                                 weight=1.15 if term == "pick_other" else 1.0))  # fmt: skip
     t = sp.DotTable(models, cols, lanes=[sp.Lane(k, label) for k, label in S03E_SETS])
     return sp.Figure(f, vocab()).add(t)
 

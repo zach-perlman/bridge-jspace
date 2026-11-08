@@ -111,7 +111,7 @@ def _controls_table(models, lens, controls, unit, lim, ticks, diff, diff_unit, g
     for lane, name, cells in controls:
         series.append(sp.Series("control", {(m, lane): c for m, c in cells.items()}, control=name))
     col = sp.DotColumn(group, unit, lim, ticks, series=series)  # the lanes name the lens part and each control
-    text = sp.TextColumn("lens part − largest control", diff_unit, {(m, "lens"): diff(m) for m in models},
+    text = sp.TextColumn("− largest control", diff_unit, {(m, "lens"): diff(m) for m in models},
                          unit_title=False)  # fmt: skip
     lanes = [sp.Lane("lens", "lens part"), *(sp.Lane(lane, name) for lane, name, _ in controls)]
     # the test names the panel; what is measured is in the caption (one line fewer: the aspect minimum)
@@ -287,7 +287,7 @@ def f11_monitor() -> sp.Figure:
                             connect=("control", "lens"))  # fmt: skip
         cols += [sp.ColumnGroup(f"{n} lens directions", [
             dots, sp.TextColumn("lens part", "probe_accuracy", lens, role="lens", unit_title=False),
-            sp.TextColumn("the full state", "probe_accuracy", full, unit_title=False)]), sp.Gutter()]  # fmt: skip
+            sp.TextColumn("full state", "probe_accuracy", full, unit_title=False)]), sp.Gutter()]  # fmt: skip
     t = sp.DotTable(models, cols[:-1], note="the locker probe's accuracy for the address at the last token")
     return sp.Figure("f11_monitor", vocab()).add(t)
 

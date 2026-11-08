@@ -67,6 +67,7 @@ def fig01_main_split() -> sp.Figure:
         series=[sp.Series("lookup", {m: est(S.conflict(m, "lookup"), f"layer.{ZK[m]}") for m in models}),
                 sp.Series("recall", {m: est(S.conflict(m, "recall"), f"layer.{ZK[m]}") for m in models})],
         connect=("lookup", "recall"), band=(-0.1, 0.1),
+        weight=1.28,  # the header on two lines (SP613): 1.27-1.29 per styles-plot 0.2.1, the neighbours' headers allow
     )  # fmt: skip
     layer_gap = sp.DotColumn("gap: recall − lookup", "gap_share", (-0.1, 1.1), (0, 0.5, 1),
                              series=[sp.Series("neutral", {m: _layer_gap(m) for m in models}, word=GAP)])  # fmt: skip
@@ -193,7 +194,7 @@ def fig12_pointer() -> sp.Figure:
                       note="another entity: one of the same kind · answers moved to its fact")  # fmt: skip
     bottom = sp.DotTable(models, [panel("noown", "without another entity's own-word directions"),
                                   panel("rot", "rotated"),
-                                  sp.TextColumn("neutral sentence − own passage", "moved_difference",
+                                  sp.TextColumn("neutral − own passage", "moved_difference",
                                                 {m: diff(m) for m in models}, unit_title=False)],
                          note="the lens-part swap runs: a different item set from Fig. 6's swap")  # fmt: skip
     return sp.Figure("fig12_pointer", vocab()).add(top, bottom)
@@ -249,7 +250,7 @@ def appB_f17b_heads() -> sp.Figure:
         rules=[sp.Rule(BAR, TM.RULE_BAR, unit="cut", key="heads.bar")],
     )  # fmt: skip
     table = sp.DotTable(list(models), [heads, sp.TextColumn("top 10 heads", "cut", top, unit_title=False),
-                                       sp.TextColumn("10 random heads", "cut", ran, unit_title=False)],
+                                       sp.TextColumn("random heads", "cut", ran, unit_title=False)],
                         note="under the address swap")  # fmt: skip
     return sp.Figure("appB_f17b_heads", v).add(table)
 

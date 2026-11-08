@@ -151,6 +151,8 @@ def fig03b_robust() -> sp.Figure:
 # ---- fig05: carries -------------------------------------------------------------------------------------------------
 SWAP_CONTROLS = (("paste", "the whole state swapped in"), ("swap_comp", "the rest swapped in"),
                  ("swap_rot", "rotated"), ("swap_u", "logit lens"))  # fmt: skip
+# the columns' headers on two lines (SP613); the key's "grey: …" line keeps each control's full name
+SWAP_HEADER = {"the whole state swapped in": "whole state", "the rest swapped in": "the rest"}
 
 
 def _swap_key(i: str) -> str | None:
@@ -170,9 +172,10 @@ def fig05_carries() -> sp.Figure:
                         control=name) for k, name in SWAP_CONTROLS]  # fmt: skip
     # one column per arm, as fig01
     t = sp.DotTable([m for _i, m, _s in rows], [
-        sp.DotColumn("another entity's lens part swapped in", "moved", (-6, 80), (0, 30, 60),
-                     series=[sp.Series("lens", lens)]),
-        *(sp.DotColumn(s.control, "moved", (-6, 80), (0, 30, 60), series=[s]) for s in series)])  # fmt: skip
+        sp.DotColumn("lens part swapped in", "moved", (-6, 80), (0, 30, 60), series=[sp.Series("lens", lens)],
+                     weight=1.15),  # the header on two lines (SP613): weight >= 1.1 per styles-plot 0.2.1
+        *(sp.DotColumn(SWAP_HEADER.get(s.control, s.control), "moved", (-6, 80), (0, 30, 60), series=[s])
+          for s in series)], note="another entity's lens part swapped in, against the same-size controls")  # fmt: skip
     # B: is it just the answer token? The swap, the swap with the answer's direction taken out, the answer's direction
     # alone, and that direction rotated (grey), for the 27B and 9B (P → M finals)
     v = vocab().with_entities("answer_swaps", ANS)
