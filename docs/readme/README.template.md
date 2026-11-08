@@ -360,8 +360,8 @@ On an {{r|repro.hw.cpu}} laptop ({{r|repro.hw.cores}} cores, {{r|repro.hw.ram_gb
 | tier | time | disk | reads |
 |---|---|---|---|
 | read only | {{r|repro.read.time_s}} s | {{r|repro.read.files_mb}} MB of files, {{r|repro.read.git_mb}} MB of history | docs, figures, data/figures |
-| one | {{r|repro.t1.readme_s}} s for `make readme`, {{r|repro.t1.sync_s}} s for `uv sync` | {{r|repro.t1.files_mb}} MB of files, {{r|repro.t1.git_mb}} MB of history | {{r|repro.t1.results_folders}} run folders, {{r|repro.t1.results_mb}} MB |
-| two | {{r|repro.t2.test_s}} s, {{r|repro.t2.passed}} tests passed | {{r|repro.t2.files_mb}} MB of files, {{r|repro.t2.git_mb}} MB of history | {{r|repro.t2.run_folders}} run folders, {{r|repro.t2.run_mb}} MB |
+| one | {{r|repro.t1.readme_s}} s, exit {{r|repro.t1.exit}} | {{r|repro.t1.files_mb}} MB of files, {{r|repro.t1.git_mb}} MB of history | {{r|repro.t1.results_folders}} run folders, {{r|repro.t1.results_mb}} MB |
+| two | {{r|repro.t2.test_s}} s, exit {{r|repro.t2.exit}}, {{r|repro.t2.passed}} tests passed | {{r|repro.t2.files_mb}} MB of files, {{r|repro.t2.git_mb}} MB of history | {{r|repro.t2.run_folders}} run folders, {{r|repro.t2.run_mb}} MB |
 | three | not re-run | a GPU of {{r|repro.t3.gpu_gb_27b}} GB for the 27B | the pinned models |
 
 </details>

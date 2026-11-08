@@ -356,13 +356,13 @@ To read the docs and figures only: `git clone --filter=blob:none --sparse https:
 
 <details><summary>Measured in fresh clones</summary>
 
-On an Apple M5<!-- src: data/figures/reproduce.csv | repro.hw.cpu --> laptop (10<!-- src: data/figures/reproduce.csv | repro.hw.cores --> cores, 24<!-- src: data/figures/reproduce.csv | repro.hw.ram_gb --> GB RAM), at commit 6e2000f5<!-- src: data/figures/reproduce.csv | repro.commit -->, by `scripts/measure_reproduce.py`.
+On an Apple M5<!-- src: data/figures/reproduce.csv | repro.hw.cpu --> laptop (10<!-- src: data/figures/reproduce.csv | repro.hw.cores --> cores, 24<!-- src: data/figures/reproduce.csv | repro.hw.ram_gb --> GB RAM), at commit f72d8a7b<!-- src: data/figures/reproduce.csv | repro.commit -->, by `scripts/measure_reproduce.py`.
 
 | tier | time | disk | reads |
 |---|---|---|---|
 | read only | 2<!-- src: data/figures/reproduce.csv \| repro.read.time_s --> s | 72<!-- src: data/figures/reproduce.csv \| repro.read.files_mb --> MB of files, 52<!-- src: data/figures/reproduce.csv \| repro.read.git_mb --> MB of history | docs, figures, data/figures |
-| one | 10<!-- src: data/figures/reproduce.csv \| repro.t1.readme_s --> s for `make readme`, 6<!-- src: data/figures/reproduce.csv \| repro.t1.sync_s --> s for `uv sync` | 512<!-- src: data/figures/reproduce.csv \| repro.t1.files_mb --> MB of files, 137<!-- src: data/figures/reproduce.csv \| repro.t1.git_mb --> MB of history | 124<!-- src: data/figures/reproduce.csv \| repro.t1.results_folders --> run folders, 383<!-- src: data/figures/reproduce.csv \| repro.t1.results_mb --> MB |
-| two | 2.5<!-- src: data/figures/reproduce.csv \| repro.t2.test_s --> s, 199<!-- src: data/figures/reproduce.csv \| repro.t2.passed --> tests passed | 135<!-- src: data/figures/reproduce.csv \| repro.t2.files_mb --> MB of files, 31<!-- src: data/figures/reproduce.csv \| repro.t2.git_mb --> MB of history | 47<!-- src: data/figures/reproduce.csv \| repro.t2.run_folders --> run folders, 96<!-- src: data/figures/reproduce.csv \| repro.t2.run_mb --> MB |
+| one | 68<!-- src: data/figures/reproduce.csv \| repro.t1.readme_s --> s, exit 0<!-- src: data/figures/reproduce.csv \| repro.t1.exit --> | 516<!-- src: data/figures/reproduce.csv \| repro.t1.files_mb --> MB of files, 137<!-- src: data/figures/reproduce.csv \| repro.t1.git_mb --> MB of history | 124<!-- src: data/figures/reproduce.csv \| repro.t1.results_folders --> run folders, 383<!-- src: data/figures/reproduce.csv \| repro.t1.results_mb --> MB |
+| two | 2.5<!-- src: data/figures/reproduce.csv \| repro.t2.test_s --> s, exit 0<!-- src: data/figures/reproduce.csv \| repro.t2.exit -->, 199<!-- src: data/figures/reproduce.csv \| repro.t2.passed --> tests passed | 135<!-- src: data/figures/reproduce.csv \| repro.t2.files_mb --> MB of files, 31<!-- src: data/figures/reproduce.csv \| repro.t2.git_mb --> MB of history | 47<!-- src: data/figures/reproduce.csv \| repro.t2.run_folders --> run folders, 96<!-- src: data/figures/reproduce.csv \| repro.t2.run_mb --> MB |
 | three | not re-run | a GPU of 80<!-- src: data/figures/reproduce.csv \| repro.t3.gpu_gb_27b --> GB for the 27B | the pinned models |
 
 </details>
