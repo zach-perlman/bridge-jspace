@@ -1,0 +1,24 @@
+# No version or date-released yet: both are added with the release tag.
+cff-version: 1.2.0
+message: "If you use this code or its results, please cite it as below."
+title: "Recall goes through the workspace, lookup goes around it"
+type: software
+authors:
+  - family-names: Perlman
+    given-names: Zach
+  - family-names: Orel
+    given-names: Danyil
+repository-code: "https://github.com/zach-perlman/bridge-jspace"
+license: MIT
+references:
+  - type: article
+    title: "Verbalizable Representations Form a Global Workspace in Language Models"
+    authors:
+      - family-names: Gurnee
+    year: 2026
+    journal: "Transformer Circuits Thread"
+    url: "https://transformer-circuits.pub/2026/workspace/index.html"
+    identifiers:
+      - type: other
+        value: "arXiv:2607.15495"
+        description: "arXiv identifier"
