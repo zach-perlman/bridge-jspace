@@ -74,7 +74,7 @@ The knock-out breaks recalled answers and leaves looked-up ones nearly intact. O
 
 ![Random, rotated, logit-lens and PCA directions cost far less than the lens part](figures/readme/03_controls.png)
 
-*Same-size controls cost far less than the lens part. Left: the recall − lookup gap when the knock-out removes the lens part (teal) or a same-size control (grey: a rotated part, the logit lens's or the top principal directions). Right: the lens part minus its largest control, paired on the same items.*
+*Same-size controls cost far less than the lens part. Per model, one lane each: the recall − lookup gap when the knock-out removes the lens part (teal) or a same-size control (grey: a rotated part, the logit lens's or the top principal directions). The column at the right: the lens part minus its largest control, paired on the same items.*
 
 <details><summary>Test, results, controls and limits</summary>
 

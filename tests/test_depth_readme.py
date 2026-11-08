@@ -47,16 +47,20 @@ def test_alt_texts_are_unique():
 
 def test_the_same_png_has_the_same_caption_everywhere():
     seen: dict[str, str] = {}
+    compared = 0
     for page in PAGES:
         lines = page.read_text().splitlines()
         for i, line in enumerate(lines):
             for _alt, src in IMAGE.findall(line):
                 png = Path(src).name if "figures/" not in src else src.split("figures/", 1)[1]
-                nxt = lines[i + 1] if i + 1 < len(lines) else ""
+                # the caption is the next non-blank line (the breadth page leaves a blank line after the image)
+                nxt = next((ln.strip() for ln in lines[i + 1 :] if ln.strip()), "")
                 cap = nxt if nxt.startswith("*") and nxt.endswith("*") else ""
                 if cap and png in seen:
                     assert seen[png] == cap, (page.name, png)
+                    compared += 1
                 seen.setdefault(png, cap) if cap else None
+    assert compared, "no PNG is shown with a caption on two pages: the test compares nothing"
 
 
 QUOTED = re.compile(r"\"[^\"\n]*\"|“[^”\n]*”")  # verbatim rule quotes keep their own order
