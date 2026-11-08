@@ -25,7 +25,9 @@ scripts/
   data_report.py          the counts data/README.md quotes (`make data-report`)
   prefetch.py             download a model YAML's snapshot + lenses, retrying on HF rate limits
   run.sh                  an experiment in a detached tmux session, log in log/
-configs/models/           one YAML per model: HF revision + lens files (qwen3.5-0.8b / 2b / 4b, qwen3.6-27b)
+configs/models/           part A's model YAMLs, HF revision + lens files: six (muse-glimmer-30b,
+                          olmo-hybrid-7b-instruct-dpo, qwen3.5-0.8b / 2b / 4b, qwen3.6-27b); the other models
+                          are TARGETS entries in src/bridge_jspace/pins.py, chosen with BJ_TARGET (default qwen3.6-27b)
 data/                     pinned inputs; catalogue in data/README.md, provenance in data/SOURCES.md
 results/<exp>/<stamp>/    raw run outputs (never edited); analysis-*/ = re-aggregations; map in results/README.md
 figures/<track>/<set>/    the published figures by track (breadth, depth, common), one numbered set per document
@@ -35,6 +37,30 @@ tests/                    unit tests (`make check`) and model tests on Qwen3.5-0
 infra/setup_pod.sh        GPU box bootstrap
 cache/, log/              not committed: smoke runs and intermediates, run logs
 ```
+
+## Reproduce
+The README's three tiers in detail. Each tier was timed in its own fresh sparse clone of commit 42698e30 on 8 Nov 2026, on an Apple M5 laptop (10 cores, 24 GB, macOS 26.5.1), uv's package cache empty; the values below are the keys of [data/figures/reproduce.csv](data/figures/reproduce.csv), written by `uv run python scripts/measure_reproduce.py --cold-uv-cache`, and the sparse sets are `TIERS` in that script (`python3 scripts/measure_reproduce.py paths <tier>` prints one). The whole tracked `results/` is 14.9 GB in 18,841 files; no tier needs all of it.
+
+**Read only (no Python).** About 5 s and 125 MB (71 MB of files, 54 MB of `.git`). 45 of the README's 46 local links resolve; the one that does not is `predictions/README.md` (add `predictions` to the sparse set for it).
+```bash
+git clone --filter=blob:none --sparse https://github.com/zach-perlman/bridge-jspace
+cd bridge-jspace && git sparse-checkout set docs figures data/figures
+```
+
+**Tier one: the figures and READMEs from tracked numbers (CPU).** `make readme` reads 91 run folders of `results/` (328 MB), found by tracing every file its scripts open: the numbers the READMEs cite, the run folders behind them (`scripts/provenance_counts.py` reads their manifests) and one figure the depth ledger links. Clone 18 s, `uv sync` 5 s, `make readme` 157 s. On disk: 460 MB of files, a 868 MB uv env, and a 2.3 GB `.git`: `provenance_counts.py` runs `git archive bd43870f^ scripts src …`, which in a blob-less clone fetches almost every blob of that commit, `results/` included. The run reproduces the committed outputs: the only change is the build stamp ("Built at <commit>") in docs/depth/README.md and docs/breadth/README.md.
+```bash
+git clone --filter=blob:none --sparse https://github.com/zach-perlman/bridge-jspace && cd bridge-jspace
+git sparse-checkout set scripts && git sparse-checkout set $(python3 scripts/measure_reproduce.py paths tier1)
+uv sync && make readme
+```
+
+**Tier two: the headline numbers from the run files (CPU).** `scripts/verify_headlines.py` recomputes the part A and part B headlines (exp02-exp23) against values typed into the script, not the current README's numbers. It reads 37 run folders (111 MB). Clone 4 s, `uv sync` 1 s, the script 5.7 s; 140 MB of files, 30 MB of `.git`. It stops with exit code 1: `results/exp02_swaps/main_v4b200_jpp_chat64/outcomes.jsonl` is in no commit (nor in the local results/ of the main checkout). Run check by check (`uv run python scripts/measure_reproduce.py each .`), 282 of its 311 checks match, 1 differs (exp03, "fresh items: random direction 3%, answer changed, J++": 0.006 against 0.0) and 28 need one of 13 run files that are in no commit.
+```bash
+git sparse-checkout set scripts && git sparse-checkout set $(python3 scripts/measure_reproduce.py paths tier2)
+uv sync && uv run python scripts/verify_headlines.py
+```
+
+**Tier three: the runs (GPU).** `make run CONFIG=…` on a GPU box (see "Running an experiment", "Job queue on the GPU box" and "GPU box" below). Qwen3.5-4B fits a 24 GB card; Qwen3.6-27B needs one 80 GB card. Not re-run for this page.
 
 ## Checks
 ```bash
@@ -55,6 +81,13 @@ make review-summary           # docs/review/review_summary.md from the marks (ve
 make review-verified          # VERIFIED.md's generated block from the marks (Dan runs it after his marks)
 make examples-render SEED=29  # also examples/review-seed-29/: the items read, for the write-up
 ```
+
+## Writing results
+The shared documentation standard is [docs/STANDARD.md](docs/STANDARD.md). This repo's rules on top of it:
+
+- The three READMEs are generated. Edit their templates, [docs/readme/README.template.md](docs/readme/README.template.md) (the root README), [docs/depth/README.template.md](docs/depth/README.template.md) and [docs/breadth/README.template.md](docs/breadth/README.template.md), then run `make readme`. Never edit README.md, docs/depth/README.md or docs/breadth/README.md by hand: the next build overwrites them.
+- Never type a number. Every number comes from a data file by key, through a template marker that prints the value with its source comment. Each builder's docstring lists its markers: `scripts/readme_root.py` (root), `scripts/readme_build.py` (depth), `scripts/report_breadth.py` (breadth). A new number goes into its data file first, with its source, and the template cites its key.
+- Keep every `<!-- src: ... -->` comment: it names the file and key a number came from, and `tests/test_readme_sources.py` resolves each one in the root README.
 
 ## Running an experiment
 Every run goes through one config and a detached tmux session; the manifest is written before the run and the run
