@@ -4,15 +4,16 @@
 *When a model answers a two-step question about an entity, does it need the directions the J++ lens reads at that
 entity? Does that depend on whether the final fact is recalled or stated, and in which models?*
 
-**Status.** Every number is sourced from the run files, and tests check it. A 46-item hand-check changed no headline claim ([findings](../review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->. Human recomputation (VERIFIED.md) is not yet done. Built at 1cff845d from the run files.
+**Status.** Every number is sourced from the run files, and tests check it. A 46-item hand-check changed no headline claim ([findings](../review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->. Human recomputation (VERIFIED.md) is not yet done. Built at cd63b264 from the run files.
 
-## In one minute
+<a id="in-one-minute"></a>
+## TL;DR
 
 - **Recall needs a handful of lens-readable directions; reading the same fact does not**. Removing the top 10 J++ directions drops recall 42.6 to 53.1 points more than lookup. This holds on three models from two families → [1](#1-recall-needs-the-lens-part-reading-the-stated-fact-does-not).
 - **What recall needs is its answer's own directions**. Keeping only them undoes nearly all of the damage, and removals orthogonal to the answer cost nothing (post hoc) → [7](#7-what-recall-needs-the-answers-own-directions), [8](#8-removals-orthogonal-to-the-answer).
 - **At the mention, the lens part carries which entity it is, not its fact**. Across nine models, how much recall needs the lens part is graded → [4](#4-what-the-lens-part-carries-at-the-mention-which-entity-it-is), [10](#10-every-model-every-test).
 
-[Root README](../../README.md) · [Depth report](../depth/README.md) · [Hypotheses](../plans/hypotheses.md) · [Pre-registration](prereg_replication_1022.md) · [Every number](data.csv) · [Examples](../../figures/breadth/examples/README.md) · Code: [MIT](../../LICENSE) · Data: each file keeps its source's licence ([data/SOURCES.md](../../data/SOURCES.md))
+[Root README](../../README.md) · [Depth report](../depth/README.md) · [Hypotheses](../plans/hypotheses.md) · [Pre-registration](prereg_replication_1022.md) · [Every number](data.csv) · [Examples](../../figures/breadth/examples/README.md) · Code: [MIT](../../LICENSE) · [Data licences](../../data/SOURCES.md)
 
 <details><summary>The claims in more detail: models, longer chains, monitoring</summary>
 
@@ -32,8 +33,8 @@ entity? Does that depend on whether the final fact is recalled or stated, and in
   entity without needing it, share it with the logit lens, or show no effect when scored by probability. Three more
   cannot be tested: any lens removal breaks them. → [10](#10-every-model-every-test)
 - **Longer chains: the rule "a chain needs the lens part when its last hop is recalled" holds on Lightning, not
-  cleanly on the 27B.** Lightning meets it on every set and on the second seed (its natural set post hoc). The 27B meets
-  it on three of the four chains ending in a recall, but P → P → M costs only 8.2 [-4, 21]
+  cleanly on the 27B.** Lightning meets it on every set and on the second seed. On its natural set, less templated
+  passages (generated, with Wikipedia filler), it meets it post hoc. The 27B meets it on three of the four chains ending in a recall, but P → P → M costs only 8.2 [-4, 21]
   points beyond the all-passage chain, and M → M → P costs 20.5 [5, 35], which was not
   predicted. The 9B's chains cannot be read: its all-passage chain alone drops
   45.8 points. → [6](#6-beyond-two-hops-longer-chains-and-numbers-computed-from-the-passage)
@@ -59,16 +60,15 @@ Every hypothesis this track tested is in the [hypotheses ledger](../plans/hypoth
   The bridge is read from the passage (**P**), tracked through it (**T**), or described, and so recalled (**M**).
 - **Two readers, one question.** The final fact is either **stated** in the passage (the lookup reads it) or left to
   **memory** (the recall). Same question, same answer, same passage otherwise.
-- **Remove everywhere.** At every token, at each layer of one mid-depth band, project out the 10 directions the J++
-  lens reads most there (the lens part). The headline number is the **recall − lookup gap**: the recall's accuracy
-  drop minus the lookup's, in points.
-One real fact passage, as the model reads it:
+- **Remove everywhere.** At every token, at each layer of one mid-depth band, project out the 10 directions the J++ lens reads most there (the lens part). The headline number is the **recall − lookup gap**, the recall's accuracy drop minus the lookup's, in points.
+
+One real fact passage, as the model reads it.
 
 ![One real fact passage, Qwen 27B: without the lens part the recalled answer turns wrong and the looked-up one holds](../../figures/breadth/examples/01_fact_passage.png)
 
 *Without the lens part the recall turns wrong and the lookup holds; a rotated part turns neither. One pair of fact passages, Qwen 27B (the bridge in bold): the lookup's passage gives the fact, the recall's does not. This flip shows on 164<!-- src: data/figures/examples/data.csv | e2.pairs_flip --> of the 338<!-- src: data/figures/examples/data.csv | e2.pairs_both_right --> pairs answered right before the removal.*
 
-Every removal is compared with removals of the same size: random, the logit lens's own and the residual's top directions.
+Every removal is compared with removals of the same size along random directions, the logit lens's own and the residual's top directions.
 
 <details><summary>The controls, a three-hop example, the five finals, the test split and the definitions</summary>
 
@@ -139,7 +139,7 @@ The test split and, per model, the items it answers right unedited (the items ev
 
 ![Removing the lens part (its 10 directions) breaks recalled facts, not looked-up ones, in three models from two families, far beyond the largest same-size control](../../figures/breadth/readme/01_needed.png)
 
-*Removing the lens part breaks recalled facts, not looked-up ones, far beyond the largest same-size control. Top: per model, the recall − lookup gap in points when its directions are removed at every token over the band (slate); grey tick: the largest control. Bottom, three models: answers turned wrong by where the answer is (lookup violet, recall black). Hollow ○: post hoc.*
+*Removing the lens part breaks recalled facts, not looked-up ones, far beyond the largest same-size control. Top, the recall − lookup gap in points per model (slate; grey tick, the largest control). Bottom, answers turned wrong on three models by where the answer is (lookup violet, recall black). Hollow ○, post hoc.*
 
 **Takeaway.** The recall − lookup gap is 50.9 [46, 55] (27B), 42.6 [37, 49] (9B) and 53.1 [48, 59]
 (Lightning). The drop tracks where the answer is, growing from the fact stated to nothing stated to recall.
@@ -187,7 +187,7 @@ more than any removal of the same size.
 
 ![The Qwens' split on every dataset we built, with the logit lens near zero](../../figures/breadth/readme/02_datasets.png)
 
-*The Qwens' split on every dataset we built, with the logit lens near zero. One row per dataset or variant: the recall − lookup gap in points under the lens part's removal (slate); grey: the logit lens's own directions, where run; dashed: the bar fixed in advance. The plain J-lens row is on the 27B only.*
+*The Qwens' split on every dataset we built, with the logit lens near zero. The recall − lookup gap in points per dataset or variant (slate), and with the logit lens's own directions where run (grey); dashed, the bar fixed in advance. The plain J-lens row is the 27B's only.*
 
 **Takeaway.** The split is a property of the models, not of one set. The logit lens stays near zero wherever it was
 run. Keeping the bridge's own word restores only a part of it (the plan's kill test).
@@ -225,7 +225,7 @@ The other models on the datasets they ran:
 
 ![The other models on the datasets they ran: Muse and the 122B above the bar on the later sets, the Olmos and Qwen3-32B below it](../../figures/breadth/readme/02b_datasets.png)
 
-*The other models: Muse and the 122B above the bar on the later sets, the Olmos and Qwen3-32B below it. One row per model, one column per dataset: the recall − lookup gap in points; dashed: the bar fixed in advance; "no run" where a model did not run a set. Hollow ○: post hoc.*
+*Muse and the 122B pass the bar on the later sets; the Olmos and Qwen3-32B do not. The recall − lookup gap in points per model and dataset; dashed, the bar fixed in advance; "no run" where a model did not run a set. Hollow ○, post hoc.*
 
 - **Every relation.**
   - On the 27B, the gap runs from 36.0 (languages) to 72.0 (dishes).
@@ -242,7 +242,7 @@ The other models on the datasets they ran:
 
 ![The split holds on every start, both test halves, three renderings and by probability; a bridge never named adds to the recall's drop](../../figures/breadth/readme/03b_robust.png)
 
-*The split holds on every start, both test halves, three renderings and by probability; a bridge never named adds to the recall's drop. Top: the recall − lookup gap in points by start of the chain (P read, T tracked, M recalled) and by run. Bottom: the extra recall drop when the bridge's one passing mention is deleted.*
+*The split holds on every start, both test halves, three renderings and by probability; a bridge never named adds to the recall's drop. Top, the recall − lookup gap in points by chain start (P read, T tracked, M recalled) and by run. Bottom, the extra recall drop when the bridge's one passing mention is deleted.*
 
 - **A clean checkout reproduces it.** Rerun from a fresh worktree:
   - the 27B's and 9B's removals match row for row (0 of 22325 and
@@ -283,10 +283,9 @@ The other models on the datasets they ran:
 
 ![Depth and position: the mention at mid depth in the Qwens, mention and question in Lightning, the question late](../../figures/breadth/readme/04_where.png)
 
-*Depth and position: the mention at mid depth in the Qwens, mention and question in Lightning, the question late. Top: the recall − lookup gap in points when the lens part is removed over a sliding window of layers (slate; grey: rotated). Bottom, three models: the gap when the removal acts at every token, the mention, the passage or the question.*
+*The removal must act at the mention at mid depth in the Qwens, at mention and question in Lightning, and at the question late. Top, the recall − lookup gap by sliding window of layers (slate; grey, rotated). Bottom, on three models, the gap by where the removal acts (every token, mention, passage, question).*
 
-**Takeaway.** Where the removal must act depends on the model and on the depth: a monitor reading one position at one
-layer sees only part of what the recall uses.
+**Takeaway.** Where the removal must act depends on the model and on the depth. A monitor reading one position at one layer sees only part of what the recall uses.
 
 <details><summary>Method, controls and limits</summary>
 
@@ -329,7 +328,7 @@ bands in amendment 57.*
 
 ![A swapped lens part moves the answer to the other entity; it is not the answer token](../../figures/breadth/readme/05_carries.png)
 
-*A swapped lens part moves the answer to the other entity; it is not the answer token. Top: answers moved to the other entity's fact, for the lens part (teal) and same-kind swaps (grey: whole state, the rest, rotated, logit lens). Bottom (Qwen 27B, Qwen 9B): the whole lens part, without the answer's direction, that direction alone, and rotated.*
+*A swapped lens part moves the answer to the other entity; it is not the answer token. Top, answers moved to the other entity's fact by the lens part (teal) and same-kind swaps (grey; whole state, rest, rotated, logit lens). Bottom, Qwen 27B and 9B, the lens part whole, without the answer's direction, that direction alone, rotated.*
 
 **Takeaway.** At the mention the lens part is a reference to the entity, whatever context it came from; the fact is
 looked up later. Decodable, carried and needed come apart.
@@ -376,7 +375,7 @@ from one neutral sentence about it alike; a probe's subspace that reads the fact
 
 ![The fact appears at the answer position only after the band, for a swapped entity as for the original](../../figures/breadth/readme/07_lookup.png)
 
-*The fact appears at the answer position only after the band, for a swapped entity as for the original. Per model, by layer: the share of items whose lens top pick there is the fact of the entity in play, unedited (grey) and with another entity's lens part swapped in from its own passage or one neutral sentence (teal).*
+*The fact appears at the answer position only after the band, for a swapped entity as for the original. Per model and layer, the share of items whose lens top pick is the entity's fact. Grey, unedited; teal, another entity's lens part swapped in, from its passage or a neutral sentence.*
 
 - **Readable, carried and needed come apart.**
   - OLMo carries the entity (swap 41.4), but the removal costs only 5.4.
@@ -385,7 +384,7 @@ from one neutral sentence about it alike; a probe's subspace that reads the fact
 
 ![The lens reads the fact at the mention in every model; readable is not the same as needed](../../figures/breadth/readme/08_readable.png)
 
-*The lens reads the fact at the mention in every model; readable is not the same as needed. Per model: the share of items whose true attribute is ranked first when the lens part at the bridge's mention is read (teal) or the logit lens (grey), against the share of the depth.*
+*The lens reads the fact at the mention in every model; readable is not the same as needed. Per model and depth, the share of items whose true attribute ranks first, read from the lens part at the mention (teal) or the logit lens (grey).*
 
 </details>
 
@@ -393,7 +392,7 @@ from one neutral sentence about it alike; a probe's subspace that reads the fact
 
 ![The lens-specific part sits in the first 1-30 directions; in Bolt and DeepSeek a same-size removal costs about as much](../../figures/breadth/readme/09_dose.png)
 
-*The lens-specific part sits in the first lens directions; in Bolt and DeepSeek a same-size removal costs about as much. One column per number of lens directions removed, one row per model: the recall − lookup gap in points (slate); grey: the same number of directions rotated. Hollow ○: post hoc (Muse 30B).*
+*The lens-specific part sits in the first lens directions; in Bolt and DeepSeek a same-size removal costs about as much. The recall − lookup gap in points per model and number of lens directions removed (slate), against the same number rotated (grey). Hollow ○, post hoc (Muse 30B).*
 
 **Takeaway.** A fixed number of directions is not a fixed dose, and more directions add damage that is not specific;
 Bolt and DeepSeek are weak, not spread out.
@@ -468,10 +467,9 @@ In the 9B, Lightning and Ministral most of the lens-specific part sits in the fi
 
 ![Chains whose last hop recalls: the removal turns more answers wrong than in the all-passage chain, beyond its largest same-size control, on every chain but the 27B's P → P → M](../../figures/breadth/readme/10a1_beyond.png)
 
-*Chains whose last hop recalls: the removal turns more answers wrong than in the all-passage chain (P → P → P), beyond the largest same-size control (grey tick), on every chain but the 27B's P → P → M. Rows: jsuite v2, a second data seed, the natural three-hop set. Hollow ○: post hoc (Lightning's natural set).*
+*Chains whose last hop recalls lose more answers to the removal than the all-passage chain (P → P → P), beyond the largest same-size control (grey tick). The 27B's P → P → M is the exception. Rows, jsuite v2, a second seed and the natural three-hop set (hollow ○ for Lightning's, post hoc).*
 
-**Takeaway.** One model meets the chain rule cleanly; that is not enough for a general rule. What the data support:
-the lens part is needed where the last step recalls a fact about an entity in Lightning, and mostly so in the 27B.
+**Takeaway.** One model meets the chain rule cleanly; that is not enough for a general rule. The data support that the lens part is needed where the last step recalls a fact about an entity in Lightning, and mostly so in the 27B.
 
 <details><summary>Method, controls and limits</summary>
 
@@ -522,7 +520,7 @@ Chains whose last hop reads the passage, the same way:
 
 ![Chains whose last hop reads the passage: no extra cost beyond the controls on Lightning; on the 27B only when the first two hops recall](../../figures/breadth/readme/10a2_beyond.png)
 
-*Chains whose last hop reads the passage: no extra cost beyond the controls on Lightning; on the 27B only when the first two hops recall. Drawn as the chains whose last hop recalls: extra answers turned wrong beyond P → P → P, in points; grey tick: the largest same-size control. Hollow ○: post hoc (Lightning's natural set).*
+*Chains whose last hop reads the passage cost nothing beyond the controls on Lightning, and on the 27B only when the first two hops recall. Extra answers turned wrong beyond P → P → P, in points; grey tick, the largest same-size control. Hollow ○, post hoc (Lightning's natural set).*
 
 - **A number computed from the passage does not need the lens part to be reported.** Accuracy drop (points) reporting
   the number, minus a number read from the passage (digit tokens included in the removal):
@@ -571,7 +569,7 @@ Numbers counted, computed or recalled from the passage, then reported or used to
 
 ![A number made from the passage and then used: the extra cost under the removal, per model](../../figures/breadth/readme/10b_beyond.png)
 
-*A number made from the passage and then used: the extra cost under the removal, per model. Numbers counted, computed or recalled, then reported or used to recall: answers turned wrong beyond a number read from the passage, in points, under the lens part's removal (slate) and the rotated and logit-lens controls (grey).*
+*A number made from the passage and then used, and its extra cost under the removal. Numbers counted, computed or recalled, then reported or used to recall. Answers turned wrong beyond a number read from the passage, in points; slate, the lens part's removal; grey, the rotated and logit-lens controls.*
 
 - **What this says about H0.**
   - The lens part is needed where the last step recalls a fact about an entity, whatever the earlier steps were. It is
@@ -626,8 +624,7 @@ and removing only them does all of it.
 
 *Removals made orthogonal to the answers cost little. Left: a subspace for the subject built from the data (slate), beyond random, against the bar fixed in advance (dashed). Right, a one-hop question about the subject: removing its lens directions (teal), the answer span (brick), or its directions made orthogonal to the answers (slate, post hoc).*
 
-**Takeaway.** A removal that leaves the answer's directions intact cannot show that an intermediate step is used: it
-does not even touch a one-hop answer about the subject. Methods that remove only what is orthogonal to the answer
+**Takeaway.** A removal that leaves the answer's directions intact cannot show that an intermediate step is used. It does not even touch a one-hop answer about the subject. Methods that remove only what is orthogonal to the answer
 cannot see the subject.
 
 <details><summary>Method, controls and limits</summary>
@@ -654,7 +651,7 @@ own directions costs more, and removing its directions made orthogonal to the an
 
 ![Agents: removing the lens part costs producing an answer far more than picking or verifying one](../../figures/common/writeup/a01_agents.png)
 
-*Agents: removing the lens part costs producing an answer far more than picking or verifying one. Inside agent transcripts, one relation: the recall's answers turned wrong by the knock-out minus a control's, in points, per step (copy, pick, verify, produce). Grey tags: cells read without a rule fixed in advance (descriptive). No transcript is quoted.*
+*In agent tasks, removing the lens part costs producing an answer far more than picking or verifying one. The recall's answers turned wrong by the knock-out minus a control's, in points, per step (copy, pick, verify, produce), on one relation. Grey tags, descriptive cells (no rule fixed in advance). No transcript is quoted.*
 
 **Takeaway.** The recall's need for the lens part is a need to produce the remembered word; tasks that only check or
 choose among given words need it much less.
@@ -713,7 +710,8 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
 
 </details>
 
-## 11. What did not hold <a id="8-what-did-not-hold"></a>
+<a id="11-what-did-not-hold"></a><a id="8-what-did-not-hold"></a>
+## Where it does not hold
 
 Failed predictions, design errors and limits, each with its number.
 
@@ -782,7 +780,8 @@ Hand-checked numbers, clean-checkout reruns and the pre-registration, each below
 
 </details>
 
-## 13. Next
+<a id="13-next"></a>
+## Open questions
 
 Two runs remain, OLMo through the dose grid and a bridge computed from the passage.
 

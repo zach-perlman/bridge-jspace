@@ -5,13 +5,14 @@ entity? Does that depend on whether the final fact is recalled or stated, and in
 
 **Status.** Every number is sourced from the run files, and tests check it. A 46-item hand-check changed no headline claim ([findings](../review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->. Human recomputation (VERIFIED.md) is not yet done. Built at {{head}} from the run files.
 
-## In one minute
+<a id="in-one-minute"></a>
+## TL;DR
 
 - **Recall needs a handful of lens-readable directions; reading the same fact does not**. Removing the top 10 J++ directions drops recall {{a|ko.q9.mk}} to {{a|ko.nl.mk}} points more than lookup. This holds on three models from two families → [1](#1-recall-needs-the-lens-part-reading-the-stated-fact-does-not).
 - **What recall needs is its answer's own directions**. Keeping only them undoes nearly all of the damage, and removals orthogonal to the answer cost nothing (post hoc) → [7](#7-what-recall-needs-the-answers-own-directions), [8](#8-removals-orthogonal-to-the-answer).
 - **At the mention, the lens part carries which entity it is, not its fact**. Across nine models, how much recall needs the lens part is graded → [4](#4-what-the-lens-part-carries-at-the-mention-which-entity-it-is), [10](#10-every-model-every-test).
 
-[Root README](../../README.md) · [Depth report](../depth/README.md) · [Hypotheses](../plans/hypotheses.md) · [Pre-registration](prereg_replication_1022.md) · [Every number](data.csv) · [Examples](../../figures/breadth/examples/README.md) · Code: [MIT](../../LICENSE) · Data: each file keeps its source's licence ([data/SOURCES.md](../../data/SOURCES.md))
+[Root README](../../README.md) · [Depth report](../depth/README.md) · [Hypotheses](../plans/hypotheses.md) · [Pre-registration](prereg_replication_1022.md) · [Every number](data.csv) · [Examples](../../figures/breadth/examples/README.md) · Code: [MIT](../../LICENSE) · [Data licences](../../data/SOURCES.md)
 
 <details><summary>The claims in more detail: models, longer chains, monitoring</summary>
 
@@ -31,8 +32,8 @@ entity? Does that depend on whether the final fact is recalled or stated, and in
   entity without needing it, share it with the logit lens, or show no effect when scored by probability. Three more
   cannot be tested: any lens removal breaks them. → [10](#10-every-model-every-test)
 - **Longer chains: the rule "a chain needs the lens part when its last hop is recalled" holds on Lightning, not
-  cleanly on the 27B.** Lightning meets it on every set and on the second seed (its natural set post hoc). The 27B meets
-  it on three of the four chains ending in a recall, but P → P → M costs only {{vci|mod.q27.threehop.paper10.PPM-PPP}}
+  cleanly on the 27B.** Lightning meets it on every set and on the second seed. On its natural set, less templated
+  passages (generated, with Wikipedia filler), it meets it post hoc. The 27B meets it on three of the four chains ending in a recall, but P → P → M costs only {{vci|mod.q27.threehop.paper10.PPM-PPP}}
   points beyond the all-passage chain, and M → M → P costs {{vci|mod.q27.threehop.paper10.MMP-PPP}}, which was not
   predicted. The 9B's chains cannot be read: its all-passage chain alone drops
   {{v|mod.q9.threehop.paper10.loss.PPP}} points. → [6](#6-beyond-two-hops-longer-chains-and-numbers-computed-from-the-passage)
@@ -58,16 +59,15 @@ Every hypothesis this track tested is in the [hypotheses ledger](../plans/hypoth
   The bridge is read from the passage (**P**), tracked through it (**T**), or described, and so recalled (**M**).
 - **Two readers, one question.** The final fact is either **stated** in the passage (the lookup reads it) or left to
   **memory** (the recall). Same question, same answer, same passage otherwise.
-- **Remove everywhere.** At every token, at each layer of one mid-depth band, project out the 10 directions the J++
-  lens reads most there (the lens part). The headline number is the **recall − lookup gap**: the recall's accuracy
-  drop minus the lookup's, in points.
-One real fact passage, as the model reads it:
+- **Remove everywhere.** At every token, at each layer of one mid-depth band, project out the 10 directions the J++ lens reads most there (the lens part). The headline number is the **recall − lookup gap**, the recall's accuracy drop minus the lookup's, in points.
+
+One real fact passage, as the model reads it.
 
 ![One real fact passage, Qwen 27B: without the lens part the recalled answer turns wrong and the looked-up one holds](../../figures/breadth/examples/01_fact_passage.png)
 
 {{caption_short|breadth/examples/01_fact_passage}}
 
-Every removal is compared with removals of the same size: random, the logit lens's own and the residual's top directions.
+Every removal is compared with removals of the same size along random directions, the logit lens's own and the residual's top directions.
 
 <details><summary>The controls, a three-hop example, the five finals, the test split and the definitions</summary>
 
@@ -251,8 +251,7 @@ The other models on the datasets they ran:
 
 {{caption_short|breadth/readme/04_where}}
 
-**Takeaway.** Where the removal must act depends on the model and on the depth: a monitor reading one position at one
-layer sees only part of what the recall uses.
+**Takeaway.** Where the removal must act depends on the model and on the depth. A monitor reading one position at one layer sees only part of what the recall uses.
 
 <details><summary>Method, controls and limits</summary>
 
@@ -436,8 +435,7 @@ In the 9B, Lightning and Ministral most of the lens-specific part sits in the fi
 
 {{caption_short|breadth/readme/10a1_beyond}}
 
-**Takeaway.** One model meets the chain rule cleanly; that is not enough for a general rule. What the data support:
-the lens part is needed where the last step recalls a fact about an entity in Lightning, and mostly so in the 27B.
+**Takeaway.** One model meets the chain rule cleanly; that is not enough for a general rule. The data support that the lens part is needed where the last step recalls a fact about an entity in Lightning, and mostly so in the 27B.
 
 <details><summary>Method, controls and limits</summary>
 
@@ -592,8 +590,7 @@ and removing only them does all of it.
 
 {{caption_short|common/writeup/11_orthogonal}}
 
-**Takeaway.** A removal that leaves the answer's directions intact cannot show that an intermediate step is used: it
-does not even touch a one-hop answer about the subject. Methods that remove only what is orthogonal to the answer
+**Takeaway.** A removal that leaves the answer's directions intact cannot show that an intermediate step is used. It does not even touch a one-hop answer about the subject. Methods that remove only what is orthogonal to the answer
 cannot see the subject.
 
 <details><summary>Method, controls and limits</summary>
@@ -669,7 +666,8 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
 
 </details>
 
-## 11. What did not hold <a id="8-what-did-not-hold"></a>
+<a id="11-what-did-not-hold"></a><a id="8-what-did-not-hold"></a>
+## Where it does not hold
 
 Failed predictions, design errors and limits, each with its number.
 
@@ -738,7 +736,8 @@ Hand-checked numbers, clean-checkout reruns and the pre-registration, each below
 
 </details>
 
-## 13. Next
+<a id="13-next"></a>
+## Open questions
 
 Two runs remain, OLMo through the dose grid and a bridge computed from the passage.
 

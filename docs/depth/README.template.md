@@ -3,13 +3,16 @@
 
 *A two-step question passes through one word, the bridge. The recall asks what the model knows about the item, the lookup where the prompt put it. What does each read from that word, and what can a lens see?*
 
-## In one minute
+**Status.** The models are Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B, Nemotron 3.5 Lightning 30B-A3B and, where it ran, Qwen3.5-122B-A10B (FP8), from three families. Nemotron 3.5 Bolt is out of scope, because no J++ lens exists for it. Runs as of 29 Oct 2026, built at {{head}} from the run files. Hand-checked on a sample of 46 items across seven views, all consistent ([findings](docs/review/handcheck_findings.md)). None of its 6 issues changes a headline claim.<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g --> VERIFIED.md (human recomputation) is not yet filled.
+
+<a id="in-one-minute"></a>
+## TL;DR
 
 - **The recall follows the lens part of the bridge word; the lookup follows the rest**. On five models, removing the lens part blocks {{pt|rc_excess_122b}} to {{pt|rc_excess_muse}} of the recall's switches beyond a random part. For the lookup it is at most {{pt|lk_excess_27b}} in the locker scenes.
 - **The lookup finds the item by its identity or by an address, never by the number**. The address is a code for where the item's locker sentence sits. A probe reads it and a swap redirects the lookup, but the lens cannot read it. The 27B is weaker throughout.
 - **The bridge word redirects most lookups when its locker sentence came first, and few when it came after**.
 
-[Root README](README.md) · [Depth ledger](docs/depth/EXPERIMENTS.md) · [Hypotheses](docs/plans/hypotheses.md) · [Examples](figures/depth/examples/README.md) · [Breadth report](docs/breadth/README.md) · Code: [MIT](LICENSE) · Data: each file keeps its source's licence ([data/SOURCES.md](data/SOURCES.md))
+[Root README](README.md) · [Depth ledger](docs/depth/EXPERIMENTS.md) · [Hypotheses](docs/plans/hypotheses.md) · [Examples](figures/depth/examples/README.md) · [Breadth report](docs/breadth/README.md) · Code: [MIT](LICENSE) · [Data licences](data/SOURCES.md)
 
 {{scorecard}}
 *Each claim, its grade and each model's verdict. A claim's number links to its card. ○ marks a post hoc result, and † one outside the hand-checked sample. An empty cell says why.*
@@ -42,17 +45,11 @@
 | 11 | Lookups the change at L misses were read from the bridge word before L | 9B, 27B, Muse, Lightning, 122B | **B** | carried before L {{dp|e11_before_l|9b|47.4: main, locker after the pick: lookups carried by the bridge word before L}} / {{dp|e11_before_l|27b|47.4: main, locker after the pick: lookups carried by the bridge word before L}} / {{dp|e11_before_l|muse|47.4: main, locker after the pick: lookups carried by the bridge word before L}} / {{dp|e11_before_l|nemotron-3.5-lightning|47.4: main, locker after the pick: lookups carried by the bridge word before L}} ○ / {{dp|e11_before_l|122b|47.4: main, locker after the pick: lookups carried by the bridge word before L}} |
 | 12 | The address is readable before the lookup uses it | 9B, 27B, Muse, Lightning, 122B ○ | **B** | address readable from / used from layer {{dp|cards|9b|47.8: the address readable from}} / {{dp|cards|9b|47.8: the first layer of the position route}} (9B), {{dp|cards|27b|47.8 (full grid): the address readable from}} / {{dp|cards|27b|47.8 (full grid): the first layer of the position route}} (27B), {{dp|cards|muse|47.8: the address readable from}} / {{dp|cards|muse|47.8: the first layer of the position route}} (Muse), {{dp|cards|nemotron-3.5-lightning|47.8: the address readable from}} / {{dp|cards|nemotron-3.5-lightning|47.8: the first layer of the position route}} ○ (Lightning), {{dp|cards|122b|47.8: the address readable from}} / {{dp|cards|122b|47.8: the first layer of the position route}} ○ (122B); the handoff from the lens part is weak (the lookup's effect is small at every layer) and fails on the 27B's full grid (Part IV); whether the address travels to the last token: {{dp|cards|9b|51.4: the rule's reading}} (9B), {{dp|cards|27b|51.4: the rule's reading}} (27B), {{dp|cards|muse|51.4: the rule's reading}} (Muse), {{dp|cards|nemotron-3.5-lightning|51.4: the rule's reading}} ○ (Lightning) |
 
-[^code]: The address was found in the locker scenes: removing it cuts position answers beyond a random part on five models, and a swap moves lookups to the swapped-in locker, also across neutral sentences; on the varied scenes (prose, JSON, tables) the address fit on simple scenes does little, but refit on each format it carries the lookup again on the 9B, Muse and Lightning, not the 27B; on the fact passages the lookup rarely takes the position route the address serves (almost never on the 27B), and the natural passages were not tested; in Python code and tool output (exploratory, the 9B and the 27B) it is readable and needed, added alone it brings few position answers back, and the swap was not run there. Sources: the address card below (Part III), [refit per format](docs/depth/EXPERIMENTS.md#x45d), [the fact passages' routes](docs/depth/EXPERIMENTS.md#z3), [code and tool output](docs/depth/EXPERIMENTS.md#b53-7). The code and tool output runs are not in the hand-checked sample.
+[^code]: The address was found in the locker scenes: removing it cuts position answers beyond a random part on five models, and a swap moves lookups to the swapped-in locker, also across neutral sentences; on the varied scenes (prose, JSON, tables) the address fit on simple scenes does little, but refit on each format it carries the lookup again on the 9B, Muse and Lightning, not the 27B; on the fact passages the lookup rarely takes the position route the address serves (almost never on the 27B), and the less templated passages (generated, with Wikipedia filler) were not tested; in Python code and tool output (exploratory, the 9B and the 27B) it is readable and needed, added alone it brings few position answers back, and the swap was not run there. Sources: the address card below (Part III), [refit per format](docs/depth/EXPERIMENTS.md#x45d), [the fact passages' routes](docs/depth/EXPERIMENTS.md#z3), [code and tool output](docs/depth/EXPERIMENTS.md#b53-7). The code and tool output runs are not in the hand-checked sample.
 
-Weaker results are in Part VI, dropped readings under "Tested and dropped"; † marks a result whose view was not hand-checked (the last-token conflict test, the identity-and-address test, the 122B's coverage runs). Lightning ran on the rules already fixed for the other models, with no prediction of its own; its key numbers carry ○. Claim 8 said "every locker has its own code" until a test on held-out items left the code's size open; claim 12 said "identity route early, position route late" until the 27B's full grid failed the handoff; both stay B (claim 12: five models, one operation). The 122B's coverage runs (no prediction †) add it to claims 2, 8, 9, 11 and 12 and fail claim 3; claim 5's routes part is below its gate (the recall reads 0.797, the gate needs 0.80); a hollow ○ marks its runs with the gate lowered post hoc (routes, address, swap) or with the lookup-only gate (claims 9 and 12: the recall is not part of those tests); its varied scenes are mixed.
+Weaker results and dropped readings are under [Where it does not hold](#where-it-does-not-hold); † marks a result whose view was not hand-checked (the last-token conflict test, the identity-and-address test, the 122B's coverage runs). Lightning ran on the rules already fixed for the other models, with no prediction of its own; its key numbers carry ○. Claim 8 said "every locker has its own code" until a test on held-out items left the code's size open; claim 12 said "identity route early, position route late" until the 27B's full grid failed the handoff; both stay B (claim 12: five models, one operation). The 122B's coverage runs (no prediction †) add it to claims 2, 8, 9, 11 and 12 and fail claim 3; claim 5's routes part is below its gate (the recall reads 0.797, the gate needs 0.80); a hollow ○ marks its runs with the gate lowered post hoc (routes, address, swap) or with the lookup-only gate (claims 9 and 12: the recall is not part of those tests); its varied scenes are mixed.
 
 </details>
-
-**Status.**
-
-- **Models.** Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B, Nemotron 3.5 Lightning 30B-A3B and Qwen3.5-122B-A10B (FP8), where it ran. Three families. Nemotron 3.5 Bolt is out of scope, because no J++ lens exists for it.
-- **Runs.** As of 29 Oct 2026. Built at {{head}} from the run files.
-- **Hand-check.** Hand-checked on a sample of 46 items across seven views, all consistent ([findings](docs/review/handcheck_findings.md)). None of its 6 issues changes a headline claim.<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g --> VERIFIED.md (human recomputation) is not yet filled.
 
 <details><summary>Lightning's and the 122B's caveats</summary>
 
@@ -69,14 +66,16 @@ Every hypothesis this track tested is in the [hypotheses ledger](docs/plans/hypo
 - A readout of the lookup's code also steers it. **Held in part**, through the address ([ledger](docs/plans/hypotheses.md#a-pointer-readout-that-steers-the-lookup-depth-held-in-part)).
 - The lens steers only bridges a recall uses. **Withdrawn**, replaced by the swap ([ledger](docs/plans/hypotheses.md#c2-reading--using-the-lens-steers-recall-used-bridges-not-lookup-used-ones-withdrawn-24-oct)).
 
-## The question and the setup
+## Setup
+
+### The question and the setup
 
 ![One prompt, two questions about the same bridge word](figures/depth/readme/01_setup.png)
 {{caption_short|depth/readme/01_setup}}
 
-- **The prompt** (an illustrative scene of the main test's shape; [a real test scene](figures/depth/examples/01_locker_scene.png), picked by a fixed rule, is on the examples card): "The locker of carbon is 3. The locker of helium is 5. The locker of oxygen is 7. Hugo picked oxygen. Eric picked carbon. Eva picked helium."
+- **The prompt** is "The locker of carbon is 3. The locker of helium is 5. The locker of oxygen is 7. Hugo picked oxygen. Eric picked carbon. Eva picked helium." It is an illustrative scene of the main test's shape; [a real test scene](figures/depth/examples/01_locker_scene.png), picked by a fixed rule, is on the examples card.
 - **The lookup** asks "Which locker belongs to Eric's pick?" (3, found in the prompt). **The recall** asks "What is the atomic number of Eric's pick?" (6, from memory).
-- **The bridge** is the word both questions pass through: "carbon", Eric's pick.
+- **The bridge** is "carbon", Eric's pick, the word both questions pass through.
 <details><summary>The changed prompt, the question and Lightning's layer</summary>
 
 - **The changed prompt** swaps the two picks, so Eric picks oxygen and the answers become 7 and 8.
@@ -85,7 +84,7 @@ Every hypothesis this track tested is in the [hypotheses ledger](docs/plans/hypo
 
 </details>
 
-## How to read this page
+### How to read this page
 
 Each card asks one question, shows its figure and states its takeaway. Its data, method, rule and full result are folded under it. Every removal is compared with a random part of the same size.
 
@@ -116,7 +115,7 @@ Every removal and every addition is matched by the same operation on a random pa
 - **The address**: four directions at the bridge word that code where the item's locker sentence sits (Part III).
 - **Rules** are quoted as committed, internal metric names replaced by these terms; "post hoc" marks a rule or gate set after the results were seen.
 
-**Grades**: **A**, a rule fixed in advance held on at least three models with a specificity control and a variant design; **B**, on two models, or three with one operation, or descriptive on three with a random null. The grade of each claim is in the table under [In one minute](#in-one-minute).
+**Grades**: **A**, a rule fixed in advance held on at least three models with a specificity control and a variant design; **B**, on two models, or three with one operation, or descriptive on three with a random null. The grade of each claim is in the table under [TL;DR](#tldr).
 
 ![The figures' grammar: each colour's role, the marks, the controls' grey, and one row of the main split read aloud](figures/common/writeup/00_key.png)
 
@@ -128,7 +127,7 @@ Every removal and every addition is matched by the same operation on a random pa
 
 </details>
 
-## Data: the prompt sets
+### Data: the prompt sets
 
 Seven prompt sets, from the main test to the fact passages, each with one real item.
 
@@ -143,7 +142,7 @@ Every prompt is read in the model's chat template, thinking off, the reply begun
 | Routes scenes | three lockers, then three picks | another item's locker sentence trades places with a third and gets a new number; the asked pick becomes that item | {{dp|catalogue|9b|routes scenes: scenes used}} / {{dp|catalogue|27b|routes scenes: scenes used}} / {{dp|catalogue|muse|routes scenes: scenes used}} / {{dp|catalogue|nemotron-3.5-lightning|routes scenes: scenes used}} / {{dp|catalogue|122b|routes scenes: scenes used}} ○ | as above; digits | the routes test; removing, adding and swapping the address |
 | Six-locker scenes | six lockers, then three picks | the item's own locker sentence moves to another place and gets a new number; the pick stays | {{dp|catalogue|9b|six-locker scenes: scenes used}} / {{dp|cards|27b|47.2: test scenes}} / {{dp|catalogue|muse|six-locker scenes: scenes used}} / {{dp|catalogue|nemotron-3.5-lightning|six-locker scenes: scenes used}} / {{dp|cards|122b|47.2: test scenes}} | as above; digits | swaps between given lockers |
 | Varied scenes | prose, JSON or markdown tables; up to nine items, look-alike names, filler, paraphrased questions | the asked pick | {{dp|catalogue|9b|varied scenes: scenes used (prose, JSON and table)}} / {{dp|catalogue|27b|varied scenes: scenes used (prose, JSON and table)}} / {{dp|catalogue|muse|varied scenes: scenes used (prose, JSON and table)}} / {{dp|catalogue|nemotron-3.5-lightning|varied scenes: scenes used (prose, JSON and table)}} / {{num|x0b_n_122b}} | per format and level; failing cells left out; digits | the split in other texts, the refit address |
-| Natural passages | notes, news, forum posts and emails with distractor sentences | the one sentence binding a person to the bridge | {{dp|catalogue|9b|natural passages: scenes eligible}} / {{dp|catalogue|27b|natural passages: scenes eligible}} / {{dp|catalogue|muse|natural passages: scenes eligible}} / {{dp|catalogue|nemotron-3.5-lightning|natural passages: scenes eligible (below gate)}} below gate / {{dp|catalogue|122b|natural passages: scenes eligible}} | as above, the 9B's lowered post hoc; words, read by their first token | the split in natural text |
+| Natural passages | less templated passages (generated, with Wikipedia filler): notes, news, forum posts and emails with distractor sentences | the one sentence binding a person to the bridge | {{dp|catalogue|9b|natural passages: scenes eligible}} / {{dp|catalogue|27b|natural passages: scenes eligible}} / {{dp|catalogue|muse|natural passages: scenes eligible}} / {{dp|catalogue|nemotron-3.5-lightning|natural passages: scenes eligible (below gate)}} below gate / {{dp|catalogue|122b|natural passages: scenes eligible}} | as above, the 9B's lowered post hoc; words, read by their first token | the split in less templated text |
 | the fact passages | the fact passages: a named or a described bridge; the final fact stated in the lookup's passage, left out of the recall's | the sentence naming the bridge, or the description | named {{dp|catalogue|9b|Zach's passages, named bridge: passages used}} / {{dp|catalogue|27b|Zach's passages, named bridge: passages used}} / {{dp|catalogue|muse|Zach's passages, named bridge: passages used}} / {{dp|catalogue|nemotron-3.5-lightning|Zach's passages, named bridge: passages used}} / not run; described {{dp|catalogue|9b|Zach's passages, described bridge: passages used}} / {{dp|catalogue|27b|Zach's passages, described bridge: passages used}} / {{dp|catalogue|muse|Zach's passages, described bridge: passages used}} / not run / not run | per reader; words, read by their first token; about a third of the bridge names are several tokens | Part V |
 
 One item per set, copied from the run files (the original prompt; → the changed prompt's answer):
@@ -225,7 +224,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 
 *The two readers weight different parts of one word, and the recall has copies elsewhere.*
 
-*In the ledger, not on this page: [does each part, added by itself, move its reader?](docs/depth/EXPERIMENTS.md#t51-1) (the dose curves).*
+*The dose curves are in the ledger, not on this page ([does each part, added by itself, move its reader?](docs/depth/EXPERIMENTS.md#t51-1)).*
 
 ### In a conflict, which part of the bridge word does each reader follow?
 
@@ -309,7 +308,7 @@ The recall also reads the item's earlier mention (claim 3): taking the lens part
 ![The lens part's directions: the bridge words, almost never the answer](figures/common/readme/05_atoms.png)
 {{caption_short|common/readme/05_atoms}}
 
-**Takeaway.** The two bridge words carry about a tenth to a fifth of the rebuilt energy each, with the expected signs: the old word taken away, the new one added.
+**Takeaway.** The two bridge words carry about a tenth to a fifth of the rebuilt energy each, with the expected signs. The old word is taken away and the new one added.
 
 <details><summary>Result, read and caveats</summary>
 
@@ -324,7 +323,7 @@ The recall also reads the item's earlier mention (claim 3): taking the lens part
   | bridge-word directions with the expected sign (old −, new +) | {{dp|cards|9b|52 A: the bridge words' directions whose sign points the expected way (old -, new +)}} | {{dp|cards|27b|52 A: the bridge words' directions whose sign points the expected way (old -, new +)}} | {{dp|cards|muse|52 A: the bridge words' directions whose sign points the expected way (old -, new +)}} | {{dp|cards|nemotron-3.5-lightning|52 A: the bridge words' directions whose sign points the expected way (old -, new +)}} | {{dp|cards|122b|52 A: the bridge words' directions whose sign points the expected way (old -, new +)}} |
 
 - **Read.**
-  - The two bridge words carry about a tenth to a fifth of the rebuilt energy each, with the expected signs: the old word taken away, the new one added.
+  - The two bridge words carry about a tenth to a fifth of the rebuilt energy each, with the expected signs. The old word is taken away and the new one added.
   - The answer words carry almost nothing.
   - Most of the energy matches no word of the scene; some of it is the bridge's spellings the classifier missed.
 - **Caveats.**
@@ -547,7 +546,7 @@ A swapped-in address moves the lookup, yet reads through the lens like a random 
 ![An address swap moves the lookup, but the lens reads it like a random vector](figures/common/readme/07_address_swap_lens.png)
 {{caption_short|common/readme/07_address_swap_lens}}
 
-**Takeaway.** On all five models the address swap reads through the lens like a random vector of its size: no position word, no more rebuilt, little change in the readout.
+**Takeaway.** On all five models the address swap reads through the lens like a random vector of its size. It shows no position word, no more rebuilt and little change in the readout.
 
 <details><summary>Result, read and caveats</summary>
 
@@ -566,7 +565,7 @@ A swapped-in address moves the lookup, yet reads through the lens like a random 
   Post hoc, decomposed over each model's lens dictionary at its layer (the six address swaps and the address basis): the 25 lens directions capture {{q|6–13%}} of the address directions' energy, against {{q|5–10%}} for random vectors of the same size<!-- src: results/address_verbalizable/20261030T214526Z/tables.json | overlap -->.
 
 - **Read.**
-  - On all five models the address swap reads through the lens like a random vector of its size: no position word, no more rebuilt, little change in the readout.
+  - On all five models the address swap reads through the lens like a random vector of its size. It shows no position word, no more rebuilt and little change in the readout.
   - A change of item of the same size stands far outside the random range: the lens reads which item is at the bridge, not where its locker sits.
   - Asked for the position, the 27B's lens still does not show it, and its report needs the address more than the lens part.
   - Post hoc, the main result: the address lies almost entirely outside what the lens dictionary spans (the overlap is in the Result).
@@ -597,7 +596,7 @@ A swapped-in address moves the lookup, yet reads through the lens like a random 
 ![The lens part holds less of the address than random parts of its energy](figures/common/readme/11_monitor.png)
 {{caption_short|common/readme/11_monitor}}
 
-**Takeaway.** Neither monitor finds the address in the lens part. The lens readout does not show it. A probe on the lens part reads it less well than a probe on random parts of the same energy, on all five models (the 122B: coverage †). By the energy rule the address is under-represented in the lens directions.
+**Takeaway.** Neither monitor finds the address in the lens part. The lens readout does not show it. A probe on the lens part reads it less well than a probe on random parts of the same energy, on all five models (the 122B in a coverage run †). By the energy rule the address is under-represented in the lens directions.
 
 <details><summary>Result, read and caveats</summary>
 
@@ -621,7 +620,7 @@ A swapped-in address moves the lookup, yet reads through the lens like a random 
 
   Across models: the address at the bridge word, the full state reaches only {{dp|cards|across models|monitor: the address at the bridge word, the full state at its best layer, lowest over models and scene sets}}-{{dp|cards|across models|monitor: the address at the bridge word, the full state at its best layer, highest over models and scene sets}}, so neither "blind" nor "carries" can open there; the lookup's answer digit at the last token with 100 lens directions is "linearly decodable from many subspaces, J++ included" in {{dp|cards|across models|monitor: the lookup's answer digit at the last token, 100 lens directions: cells whose label is 'decodable from many subspaces'}} cells (four models, main test and JSON scenes); at the bridge word it stays near chance (at most {{dp|cards|across models|monitor: the lookup's answer digit at the bridge word, the full state at its best layer, highest over models and scene sets}}), and the energy rule there reads "no different from random directions of the same energy" with the full state under 0.8.
 - **Read.**
-  - Neither monitor finds the address in the lens part. The lens readout does not show it. A probe on the lens part reads it less well than a probe on random parts of the same energy, on all five models (the 122B: coverage †). By the energy rule the address is under-represented in the lens directions.
+  - Neither monitor finds the address in the lens part. The lens readout does not show it. A probe on the lens part reads it less well than a probe on random parts of the same energy, on all five models (the 122B in a coverage run †). By the energy rule the address is under-represented in the lens directions.
   - Against random parts of the same size the lens part reads the address about as well or a little worse ("J-space blind" on the 9B and Muse with twenty-five directions).
   - The lookup's answer digit at the last token is read from almost any part of the state, the lens part included; at the bridge word the digit is not there.
   - The positive controls work: at the bridge word the lens part carries the recall's answer on the four models with both cells.
@@ -664,7 +663,7 @@ A swapped-in address moves the lookup, yet reads through the lens like a random 
 ![The recall's entity at the last token: readable through the lens, not used](figures/common/readme/12_last_token.png)
 {{caption_short|common/readme/12_last_token}}
 
-**Takeaway.** At the last token the recall's bridge entity is readable through the lens on all five models (the 122B reads "(b) readable, not used" too: coverage †). But writing it through the lens does not switch it to the swapped-in entity's answer at a real change's size. The whole-state patch switches nearly every recall, the lens swap almost none; the 122B's whole-state patch switches less (the Result's table).
+**Takeaway.** At the last token the recall's bridge entity is readable through the lens on all five models (the 122B reads "(b) readable, not used" too, in a coverage run †). But writing it through the lens does not switch it to the swapped-in entity's answer at a real change's size. The whole-state patch switches nearly every recall, the lens swap almost none; the 122B's whole-state patch switches less (the Result's table).
 
 <details><summary>Result, read and caveats</summary>
 
@@ -809,7 +808,7 @@ On Lightning and the 122B, whose gates were chosen after the data, the address i
 
 ## Part V. Other datasets and operations
 
-*The depth track's removal on the fact passages and the breadth track's operation on the locker scenes. The 122B: coverage runs †.*
+*The depth track's removal on the fact passages and the breadth track's operation on the locker scenes. The 122B's runs here are coverage runs †.*
 
 ### Does the split hold on the fact passages, and do the breadth track's operation and the depth track's agree?
 
@@ -835,7 +834,7 @@ On Lightning and the 122B, whose gates were chosen after the data, the address i
 ![Both operations, both datasets, one direction](figures/depth/readme/09_two_by_two.png)
 {{caption_short|depth/readme/09_two_by_two}}
 
-**Takeaway.** On the true-fact passages the lookup follows the lens part too on the 9B and 27B: there the lookup can answer from memory, as the recall does.
+**Takeaway.** On the true-fact passages the lookup follows the lens part too on the 9B and 27B. There the lookup can answer from memory, as the recall does.
 
 <details><summary>Result, read and caveats</summary>
 
@@ -863,7 +862,7 @@ On Lightning and the 122B, whose gates were chosen after the data, the address i
   Full carrier (fact-after lookups, switches blocked beyond a random part): 9B {{d|cards|9b|51.7: fact-after lookups, full carrier: switches lost beyond a random part}} / 27B {{d|cards|27b|51.7: fact-after lookups, full carrier: switches lost beyond a random part}} / Lightning {{d|cards|nemotron-3.5-lightning|51.7: fact-after lookups, full carrier: switches lost beyond a random part}}. Not run on Muse and the 122B.
 
 - **Read.**
-  - On the true-fact passages the lookup follows the lens part too on the 9B and 27B: there the lookup can answer from memory, as the recall does.
+  - On the true-fact passages the lookup follows the lens part too on the 9B and 27B. There the lookup can answer from memory, as the recall does.
   - With made-up facts the split returns on the 9B, and it stays when the passages that hold the bridge's true value are left out; the 27B is in between.
   - Carried over every layer up to L, the fact-after lookups follow the lens part on the fact passages; their layout gives the lookup little or no position route.
   - Both operations point the same way on both datasets: the recall depends on the lens directions more than the lookup does.
@@ -877,9 +876,10 @@ On Lightning and the 122B, whose gates were chosen after the data, the address i
 
 </details>
 
-## Part VI. Weaker results and other failed tests
+<a id="part-vi-weaker-results-and-other-failed-tests"></a>
+## Where it does not hold
 
-Five weaker or failed tests, each in full in [the ledger](docs/depth/EXPERIMENTS.md).
+Five weaker or failed tests, each in full in [the ledger](docs/depth/EXPERIMENTS.md), then the readings we dropped.
 
 <details><summary>The five, one line each</summary>
 
@@ -893,7 +893,7 @@ Five weaker or failed tests, each in full in [the ledger](docs/depth/EXPERIMENTS
 
 </details>
 
-## Tested and dropped
+### Tested and dropped
 
 <details><summary>Tested and dropped</summary>
 
@@ -925,9 +925,11 @@ Recounts, automatic checks, reruns and a hand-check, each below. [The verify pac
 
 </details>
 
+**Reproduce.** See the [root README](README.md#reproduce).
+
 ## Related work and what is new
 
-New here: two readers of one word follow different parts of it. The address is the part the lens misses, and swapping it redirects the lookup.
+What is new here is that two readers of one word follow different parts of it. The address is the part the lens misses, and swapping it redirects the lookup.
 
 <details><summary>Prior work</summary>
 
