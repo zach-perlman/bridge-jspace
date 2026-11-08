@@ -9,7 +9,7 @@
 - **The lookup finds the item by its identity or by an address, never by the number**. The address is a code for where the item's locker sentence sits. A probe reads it and a swap redirects the lookup, but the lens cannot read it. The 27B is weaker throughout.
 - **The bridge word redirects most lookups when its locker sentence came first, and few when it came after**.
 
-[Root README](README.md) · [Depth ledger](docs/depth/EXPERIMENTS.md) · [Hypotheses](docs/plans/hypotheses.md) · [Examples](figures/depth/examples/README.md) · [Breadth report](docs/breadth/README.md) · [MIT licence](LICENSE)
+[Root README](README.md) · [Depth ledger](docs/depth/EXPERIMENTS.md) · [Hypotheses](docs/plans/hypotheses.md) · [Examples](figures/depth/examples/README.md) · [Breadth report](docs/breadth/README.md) · Code: [MIT](LICENSE) · Data: each file keeps its source's licence ([data/SOURCES.md](data/SOURCES.md))
 
 {{scorecard}}
 *Each claim, its grade and each model's verdict. A claim's number links to its card. ○ marks a post hoc result, and † one outside the hand-checked sample. An empty cell says why.*

@@ -7,7 +7,7 @@
 
 **Status.** Every number carries its source in the run files, checked by tests. A 46-item hand-check changed no headline claim ([findings](docs/review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->. [VERIFIED.md](VERIFIED.md) holds only checks from before the sprint (16 Oct); no human has yet recomputed the sprint's headline numbers.
 
-[Depth report](docs/depth/README.md) · [Breadth report](docs/breadth/README.md) · [Hypotheses ledger](docs/plans/hypotheses.md) · [Examples](figures/common/examples/README.md) · [Slides](docs/slides/) · MIT licence ([LICENSE](LICENSE))
+[Depth report](docs/depth/README.md) · [Breadth report](docs/breadth/README.md) · [Hypotheses ledger](docs/plans/hypotheses.md) · [Examples](docs/writeup/examples.md) · [Slides](docs/slides/) · Code: MIT ([LICENSE](LICENSE)) · Data: each file keeps its source's licence ([data/SOURCES.md](data/SOURCES.md))
 <!-- POST LINK: Dan adds at publication -->
 
 ## TL;DR
@@ -232,17 +232,17 @@ At the bridge the lens part works as a reference to the entity: what its words e
 
 Our committed guesses and their verdicts; the sources are in the [hypotheses ledger](docs/plans/hypotheses.md).
 
-- The bridge counts only through its own word → **failed** for recalled entities, **held in part** for computed numbers ([ledger row](docs/plans/hypotheses.md#h0-deflationary-failed-for-recalled-entities-held-in-part-for-computed-numbers)).
-- A bridge used to recall is inside, one used to look up is outside → **not separable** from the next guess ([ledger row](docs/plans/hypotheses.md#h1-use-not-separable-from-h2-on-the-main-tests-where-they-come-apart-the-data-follow-h2)).
-- A recalled answer keeps the bridge inside → **favored, not proven** ([ledger row](docs/plans/hypotheses.md#h2-answer-source-favored-not-proven)).
-- Any lookup in the chain puts the bridge outside → **failed** ([ledger row](docs/plans/hypotheses.md#h3-any-retrieval-from-context-failed)).
-- Memory steps need the lens part, prompt lookups do not → **held**, graded across models ([ledger row](docs/plans/hypotheses.md#c1-memory-steps-need-the-j-space-prompt-lookups-dont-held-graded-across-models)).
-- The lens steers recall-used bridges, not lookup-used ones → **withdrawn**, replaced by the swap ([ledger row](docs/plans/hypotheses.md#c2-reading--using-the-lens-steers-recall-used-bridges-not-lookup-used-ones-withdrawn-24-oct)).
-- A bridge in the prompt is written only when a recall uses it → **held in part** ([ledger row](docs/plans/hypotheses.md#c2-a-stated-or-computed-bridge-is-written-only-when-a-recall-uses-it-held-in-part)).
-- Computed bridges sit in the workspace → **not tested in the final design** ([ledger row](docs/plans/hypotheses.md#c3-computed-bridges-sit-in-the-j-space-beyond-their-own-word-not-tested-in-the-final-design)).
-- The split follows the Olmo architecture → **failed** ([ledger row](docs/plans/hypotheses.md#architecture-22-oct-c1-holds-on-olmo-hybrid-7b-and-fails-on-olmo-3-7b-failed)).
-- Muse's recalls survive the knock-out → **did not reproduce** on the main passage set ([ledger row](docs/plans/hypotheses.md#the-muse-puzzle-22-oct-removal-barely-touches-muses-recalls-while-writing-redirects-them-did-not-reproduce-on-jsuite-v2)).
-- An address readout steers the lookup → **held in part** ([ledger row](docs/plans/hypotheses.md#a-pointer-readout-that-steers-the-lookup-depth-held-in-part)).
+- The bridge counts only through its own word → **[failed](docs/plans/hypotheses.md#h0-deflationary-failed-for-recalled-entities-held-in-part-for-computed-numbers)** for recalled entities, **held in part** for computed numbers.
+- A bridge used to recall is inside the lens part, one used to look up is outside the lens part → **[not separable](docs/plans/hypotheses.md#h1-use-not-separable-from-h2-on-the-main-tests-where-they-come-apart-the-data-follow-h2)** from the next guess.
+- A recalled answer keeps the bridge inside the lens part → **[favored, not proven](docs/plans/hypotheses.md#h2-answer-source-favored-not-proven)**.
+- Any lookup in the chain puts the bridge outside the lens part → **[failed](docs/plans/hypotheses.md#h3-any-retrieval-from-context-failed)**.
+- Memory steps need the lens part, prompt lookups do not → **[held](docs/plans/hypotheses.md#c1-memory-steps-need-the-j-space-prompt-lookups-dont-held-graded-across-models)**, graded across models.
+- The lens steers recall-used bridges, not lookup-used ones → **[withdrawn](docs/plans/hypotheses.md#c2-reading--using-the-lens-steers-recall-used-bridges-not-lookup-used-ones-withdrawn-24-oct)**, replaced by the swap.
+- A bridge in the prompt is written only when a recall uses it → **[held in part](docs/plans/hypotheses.md#c2-a-stated-or-computed-bridge-is-written-only-when-a-recall-uses-it-held-in-part)**.
+- Computed bridges sit in the workspace → **[not tested in the final design](docs/plans/hypotheses.md#c3-computed-bridges-sit-in-the-j-space-beyond-their-own-word-not-tested-in-the-final-design)**.
+- The split follows the Olmo architecture → **[failed](docs/plans/hypotheses.md#architecture-22-oct-c1-holds-on-olmo-hybrid-7b-and-fails-on-olmo-3-7b-failed)**.
+- Muse's recalls survive the knock-out → **[did not reproduce](docs/plans/hypotheses.md#the-muse-puzzle-22-oct-removal-barely-touches-muses-recalls-while-writing-redirects-them-did-not-reproduce-on-jsuite-v2)** on the main passage set.
+- An address readout steers the lookup → **[held in part](docs/plans/hypotheses.md#a-pointer-readout-that-steers-the-lookup-depth-held-in-part)**.
 - Gemma and the Olmo post-training ladder → **not tested** ([Gemma](docs/plans/hypotheses.md#gemma-4-31b-not-tested-in-the-final-design-untestable), [ladder](docs/plans/hypotheses.md#the-olmo-3-7b-post-training-ladder-base-sft-dpo-instruct-not-tested-in-the-final-design)).
 
 ## Where it does not hold

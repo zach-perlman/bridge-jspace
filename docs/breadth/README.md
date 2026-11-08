@@ -4,7 +4,7 @@
 *When a model answers a two-step question about an entity, does it need the directions the J++ lens reads at that
 entity? Does that depend on whether the final fact is recalled or stated, and in which models?*
 
-**Status.** Every number is sourced from the run files, and tests check it. A 46-item hand-check changed no headline claim ([findings](../review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->. Human recomputation (VERIFIED.md) is not yet done. Built at 6cb20162 from the run files.
+**Status.** Every number is sourced from the run files, and tests check it. A 46-item hand-check changed no headline claim ([findings](../review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->. Human recomputation (VERIFIED.md) is not yet done. Built at 1cff845d from the run files.
 
 ## In one minute
 
@@ -12,7 +12,7 @@ entity? Does that depend on whether the final fact is recalled or stated, and in
 - **What recall needs is its answer's own directions**. Keeping only them undoes nearly all of the damage, and removals orthogonal to the answer cost nothing (post hoc) → [7](#7-what-recall-needs-the-answers-own-directions), [8](#8-removals-orthogonal-to-the-answer).
 - **At the mention, the lens part carries which entity it is, not its fact**. Across nine models, how much recall needs the lens part is graded → [4](#4-what-the-lens-part-carries-at-the-mention-which-entity-it-is), [10](#10-every-model-every-test).
 
-[Root README](../../README.md) · [Depth report](../depth/README.md) · [Hypotheses](../plans/hypotheses.md) · [Pre-registration](prereg_replication_1022.md) · [Every number](data.csv) · [Examples](../../figures/breadth/examples/README.md) · [MIT licence](../../LICENSE)
+[Root README](../../README.md) · [Depth report](../depth/README.md) · [Hypotheses](../plans/hypotheses.md) · [Pre-registration](prereg_replication_1022.md) · [Every number](data.csv) · [Examples](../../figures/breadth/examples/README.md) · Code: [MIT](../../LICENSE) · Data: each file keeps its source's licence ([data/SOURCES.md](../../data/SOURCES.md))
 
 <details><summary>The claims in more detail: models, longer chains, monitoring</summary>
 

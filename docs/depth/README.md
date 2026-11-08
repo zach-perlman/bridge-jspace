@@ -9,7 +9,7 @@
 - **The lookup finds the item by its identity or by an address, never by the number**. The address is a code for where the item's locker sentence sits. A probe reads it and a swap redirects the lookup, but the lens cannot read it. The 27B is weaker throughout.
 - **The bridge word redirects most lookups when its locker sentence came first, and few when it came after**.
 
-[Root README](../../README.md) · [Depth ledger](EXPERIMENTS.md) · [Hypotheses](../plans/hypotheses.md) · [Examples](../../figures/depth/examples/README.md) · [Breadth report](../breadth/README.md) · [MIT licence](../../LICENSE)
+[Root README](../../README.md) · [Depth ledger](EXPERIMENTS.md) · [Hypotheses](../plans/hypotheses.md) · [Examples](../../figures/depth/examples/README.md) · [Breadth report](../breadth/README.md) · Code: [MIT](../../LICENSE) · Data: each file keeps its source's licence ([data/SOURCES.md](../../data/SOURCES.md))
 
 | # | Claim | Grade | 9B | 27B | Muse | Lightning ○ | 122B |
 |---|---|---|---|---|---|---|---|
@@ -67,7 +67,7 @@ Weaker results are in Part VI, dropped readings under "Tested and dropped"; † 
 **Status.**
 
 - **Models.** Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B, Nemotron 3.5 Lightning 30B-A3B and Qwen3.5-122B-A10B (FP8), where it ran. Three families. Nemotron 3.5 Bolt is out of scope, because no J++ lens exists for it.
-- **Runs.** As of 29 Oct 2026. Built at 6cb20162 from the run files.
+- **Runs.** As of 29 Oct 2026. Built at 1cff845d from the run files.
 - **Hand-check.** Hand-checked on a sample of 46 items across seven views, all consistent ([findings](../review/handcheck_findings.md)). None of its 6 issues changes a headline claim.<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g --> VERIFIED.md (human recomputation) is not yet filled.
 
 <details><summary>Lightning's and the 122B's caveats</summary>
