@@ -20,8 +20,8 @@
 |---|---|---|---|---|---|---|---|
 | [Conflict test, main test](#lightning-conflict) | holds | in part: not confirmed | holds | holds | holds | yes | yes (view a) |
 | [Item or answer, main test](#t51-12) | holds: the entity | holds: the entity | holds: answer not read | holds: answer not read | holds: answer not read | yes | yes (view b) |
-| [Item or answer, his true facts](#t51-12) | in part: mixed | in part: mixed | – | in part: mixed | – | yes | yes (view b) |
-| [Item or answer, his made-up facts](#t51-12) | in part: mixed | in part: mixed | – | – | – | yes | yes (view b) |
+| [Item or answer, the fact passages' true facts](#t51-12) | in part: mixed | in part: mixed | – | in part: mixed | – | yes | yes (view b) |
+| [Item or answer, the fact passages' made-up facts](#t51-12) | in part: mixed | in part: mixed | – | – | – | yes | yes (view b) |
 | [Split in prose, JSON, tables](#x0b) | holds | holds | holds | holds | in part: mixed | yes | no |
 | [Split in natural passages](#x5) | holds ○ | in part: mixed | holds | – | holds | yes | no |
 | [Each part added by itself](#t51-1) | holds: (i), (ii) yes | in part: (i) no | holds: (i), (ii) yes | in part: (ii) no | holds: (i), (ii) yes | yes | no |
