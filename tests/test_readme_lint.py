@@ -22,6 +22,24 @@ def test_folds_comments_and_tables_stay_out_of_the_outside_counts(tmp_path):
     assert m["colons_outside"] == 1
 
 
+def test_a_hard_wrapped_caption_counts_in_full(tmp_path):
+    text = ("![alt](fig.png)\n\n*One two three four\nfive six seven\neight nine ten.*\n\nNot the caption.\n\n"
+            "![alt](b.png)\n*Eleven twelve.*\n![alt](c.png)\n\n- a list, not a caption*\n")  # fmt: skip
+    assert R.captions(text) == [10, 2]
+
+
+def test_a_track_report_gets_the_larger_word_budget(tmp_path):
+    assert R.role(R.REPO / "README.md") == "root"
+    assert R.role(R.REPO / "docs" / "track" / "README.md") == "track"
+    assert R.ROLE_TARGETS["root"]["words_outside"] == 2000
+    assert R.ROLE_TARGETS["track"]["words_outside"] == 2500
+    p = tmp_path / "README.md"
+    p.write_text("One two three four five six seven eight nine ten. " * 220, encoding="utf-8")  # 2,200 words
+    rel = str(p)  # absolute: REPO / p keeps it as is
+    assert R.main([rel]) == 0  # not the repo root's README: the track budget
+    assert R.main(["--role", "root", rel]) == 1
+
+
 def test_a_per_model_slash_list_is_counted(tmp_path):
     assert measure(tmp_path, "Recall drops 0.50 / 0.74 / 0.75 ○ beyond random.\n")["slash_outside"] == 1
     assert measure(tmp_path, "Recall and lookup answer from memory / from the prompt.\n")["slash_outside"] == 0

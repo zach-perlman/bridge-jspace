@@ -5,14 +5,18 @@ and image links stripped; "outside" = outside <details> folds.
   slash lists      per-model lists ("0.50 / 0.74 / 0.75 ○ / …": two or more numbers joined by " / ")
   long sentences   sentences over 30 and over 40 words, outside folds (tables and headings are not sentences)
   colons           colons outside folds
-  captions         the italic line right under an image: mean and longest, in words
+  captions         the italic paragraph under an image (every line up to the next blank line): mean and longest, in words
   ledger labels    notation the reader was not given (H0–H3, C1–C3, C2′, E1–E4, batch ids, "claim N"), outside link text
 
-uv run python scripts/readme_lint.py [README.md docs/depth/README.md …]
+The targets follow the file's role: "root" (the README.md at the repo root) or "track" (any other file, e.g. a track
+report's README.md in a subfolder); a track report may show 2,500 visible words instead of 2,000. --role overrides.
+
+uv run python scripts/readme_lint.py [--role root|track] [README.md docs/depth/README.md …]
 """
 
 from __future__ import annotations
 
+import argparse
 import re
 import sys
 from pathlib import Path
@@ -20,6 +24,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 TARGETS = {"words_outside": 2000, "words_total": 5000, "slash_outside": 0, "long30": 5, "long40": 0,
            "colons_outside": 25, "caption_mean": 50, "caption_max": 80, "labels": 0}  # fmt: skip
+ROLE_TARGETS = {"root": TARGETS, "track": {**TARGETS, "words_outside": 2500}}
 NUM = r"[−-]?\d+(?:\.\d+)?%?"
 SLASH = re.compile(rf"{NUM}(?:\s*\[[^\]]*\])?(?:\s*○)?(?:\s*/\s*{NUM}(?:\s*\[[^\]]*\])?(?:\s*○)?){{1,}}")
 LABEL = re.compile(r"(?<![\w-])(?:H[0-3]|C[1-3]′?|E[1-4]|[bt]\d{2}-\w+|claim \d+|claims \d+(?:, \d+)*)(?![\w-])")
@@ -63,17 +68,27 @@ def sentences(text: str) -> list[str]:
     return out
 
 
+IMAGE = re.compile(r"\s*!\[[^\]]*\]\(")
+
+
 def captions(text: str) -> list[int]:
+    """Word count of each image's caption: the paragraph under it (after at most one blank line), up to the next blank
+    line or image, when it is italic as a whole; a hard-wrapped caption counts in full."""
     lines = text.splitlines()
     out = []
     for i, ln in enumerate(lines):
-        if not re.match(r"\s*!\[[^\]]*\]\(", ln):
+        if not IMAGE.match(ln):
             continue
-        for nxt in lines[i + 1 : i + 3]:
-            s = nxt.strip()
-            if s.startswith("*") and s.endswith("*") and len(s) > 2:
-                out.append(len(WORD.findall(s)))
-                break
+        j = i + 1
+        if j < len(lines) and not lines[j].strip():
+            j += 1
+        para = []
+        while j < len(lines) and lines[j].strip() and not IMAGE.match(lines[j]):
+            para.append(lines[j].strip())
+            j += 1
+        s = " ".join(para)
+        if s.startswith("*") and not s.startswith("* ") and s.endswith("*") and len(s) > 2:  # "* " opens a list
+            out.append(len(WORD.findall(s)))
     return out
 
 
@@ -93,13 +108,24 @@ def measure(path: Path) -> dict[str, float]:
     }  # fmt: skip
 
 
-def main(paths: list[str]) -> int:
+def role(path: Path) -> str:
+    """The file's role: "root" for the README.md at the repo root, else "track"."""
+    return "root" if path.resolve() == (REPO / "README.md").resolve() else "track"
+
+
+def main(argv: list[str]) -> int:
+    ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    ap.add_argument("--role", choices=sorted(ROLE_TARGETS), help="targets to apply (default: from each file's path)")
+    ap.add_argument("paths", nargs="*", default=["README.md"])
+    args = ap.parse_args(argv)
     over = 0
-    for p in paths or ["README.md"]:
+    for p in args.paths:
+        r = args.role or role(REPO / p)
+        targets = ROLE_TARGETS[r]
         m = measure(REPO / p)
-        print(p)
+        print(f"{p} ({r})")
         for k, v in m.items():
-            t = TARGETS.get(k)
+            t = targets.get(k)
             flag = "" if t is None else ("  ok" if v <= t else f"  over (target ≤ {t})")
             over += bool(t is not None and v > t)
             print(f"  {k:15} {v}{flag}")
