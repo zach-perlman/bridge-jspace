@@ -1,0 +1,87 @@
+{
+ "styles_plot": "0.2.2",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "dfb8ad8ca5b78ad381cb3058de9bcbc1dd1cb2d03118402574c6db31063cc443",
+  "hash": "meaning"
+ },
+ "registry": {
+  "path": "data/figures/status.csv",
+  "sha256": "b50c31676735b81f8e968bb90792a75984f83c5540fe87769e7aa9bbae69dd59"
+ },
+ "figure": "fig06d_depth_more",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "text_only": false,
+ "png": {
+  "pixels_sha256": "fedb8c0a56b454071f6a774f41dac2c49da018a5c18bcd1d03630591330d754f",
+  "dpi": 160
+ },
+ "roles": [
+  "address",
+  "lens"
+ ],
+ "controls": [],
+ "cells": {
+  "depth.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "depth.q122": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "line",
+   "role": "address",
+   "cell": "depth.nl",
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "address",
+   "cell": "depth.nl",
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "lens",
+   "cell": "depth.nl",
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "address",
+   "cell": "depth.q122",
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "address",
+   "cell": "depth.q122",
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "lens",
+   "cell": "depth.q122",
+   "timing": "post_hoc",
+   "claim": "claimed"
+  }
+ ],
+ "key": [
+  "all estimates post hoc",
+  "grey band: layers that pass the gate (the whole change switches at least 0.30 of the lookups)",
+  "shading: 95% interval"
+ ],
+ "numbers": {},
+ "problems": []
+}

@@ -1,0 +1,232 @@
+{
+ "styles_plot": "0.2.2",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "dfb8ad8ca5b78ad381cb3058de9bcbc1dd1cb2d03118402574c6db31063cc443",
+  "hash": "meaning"
+ },
+ "registry": {
+  "path": "data/figures/status.csv",
+  "sha256": "b50c31676735b81f8e968bb90792a75984f83c5540fe87769e7aa9bbae69dd59"
+ },
+ "figure": "breadth_fig02b_datasets",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "text_only": false,
+ "png": {
+  "pixels_sha256": "4fa959e0a84156842993754ec9caaa7ae81e6366bee6fb4a970e3074186bad1c",
+  "dpi": 160
+ },
+ "roles": [
+  "neutral"
+ ],
+ "controls": [],
+ "cells": {
+  "other.natplus.mu": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "other.natural.o7": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "other.natural.oh7": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "other.toy.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "other.toy.o7": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "other.toy.oh7": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "other.toy.q122": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "other.toy.q32": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "other.toy2.q32": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "other.v1.mu": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "other.v1.ol": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "other.v1.q122": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "other.v2.mu": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "other.v2.ol": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "other.v2.q122": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "other.toy.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "other.toy.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "other.toy.q32",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "other.toy.oh7",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "other.toy.o7",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "other.toy2.q32",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "other.natural.oh7",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "other.natural.o7",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "other.natplus.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "other.v1.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "other.v1.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "other.v1.ol",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "other.v2.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "other.v2.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "other.v2.ol",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "whiskers: 95% interval",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "breadth.bar30": "30.0",
+  "old.mu.muse30_full2_ko_v1": "7.1",
+  "old.q122.qwen35_122b_full2_ko_v1": "9.3",
+  "old.q32.qwen3_32b_full2_ko_v1": "21.6",
+  "old.oh7.olmoh7_big2_ko_v1": "1.4",
+  "old.o7.olmo3d7_big2_ko_v1": "3.8",
+  "old.q32.qwen3_32b_fresh2_ko_v1": "17.2",
+  "old.oh7.olmoh7_natural_v1_chat_ko_v1": "0.9",
+  "old.o7.olmo3d7_natural_v1_chat_ko_v1": "17.0",
+  "natplus.mu": "63.3",
+  "v1.mu": "68.1",
+  "v1.q122": "37.2",
+  "v1.ol": "−3.3",
+  "ko.mu.mk": "59.9",
+  "ko.q122.mk": "48.5",
+  "ko.ol.mk": "5.4"
+ },
+ "problems": []
+}

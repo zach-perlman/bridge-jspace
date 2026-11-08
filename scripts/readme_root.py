@@ -12,7 +12,7 @@ Placeholders in docs/readme/README.template.md:
   {{p|key}}            data/figures/provenance.csv's count (scripts/provenance_counts.py), with its source comment
   {{e|key}}            data/figures/examples/data.csv's count for key (scripts/examples.py), with its source comment
   {{cred|key}}         the authors' credence for a claim, quoted from docs/plans/credences.md (linked)
-  {{fig|id}}           the README set's figure (figures/readme/NN_<name>.png, figkit/layout.py) under its claim as alt text
+  {{fig|id}}           the README set's figure (figures/common/readme/NN_<name>.png, figkit/layout.py) under its claim as alt text
   {{caption_short|set/stem}}  the figure's short caption (figkit/captions.py), expanded before the markers above
 
 uv run python scripts/readme_root.py      # README.md from the template (run `make readme` for figures + both)
@@ -150,7 +150,7 @@ def render(text: str) -> str:
         if kind == "s":
             model, quantity = arg.split("|", 1)
             return f"{S[(model, quantity)]:.2f}<!-- src: data/figures/depth/data.csv | {quantity} -->"
-        return f"![{CLAIMS[arg]}]({L.path('readme', arg).relative_to(REPO).as_posix()})"
+        return f"![{CLAIMS[arg]}]({L.path('common/readme', arg).relative_to(REPO).as_posix()})"
 
     return PH.sub(fill, text)
 

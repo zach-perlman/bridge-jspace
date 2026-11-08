@@ -1,0 +1,73 @@
+{
+ "styles_plot": "0.2.2",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "dfb8ad8ca5b78ad381cb3058de9bcbc1dd1cb2d03118402574c6db31063cc443",
+  "hash": "meaning"
+ },
+ "registry": {
+  "path": "data/figures/status.csv",
+  "sha256": "b50c31676735b81f8e968bb90792a75984f83c5540fe87769e7aa9bbae69dd59"
+ },
+ "figure": "fig06c_address_depth",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "text_only": false,
+ "png": {
+  "pixels_sha256": "426e9052931f69cd3db9cd061448d3a01c98a3212419ab05cccfdd95c9c2852a",
+  "dpi": 160
+ },
+ "roles": [
+  "address"
+ ],
+ "controls": [],
+ "cells": {
+  "overlap.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "overlap.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "line",
+   "role": "address",
+   "cell": "overlap.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "address",
+   "cell": "overlap.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "overlap.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "address",
+   "cell": "overlap.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [],
+ "numbers": {
+  "f06c.mean.q9": "0.28",
+  "f06c.mean.mu": "0.21"
+ },
+ "problems": []
+}

@@ -1,0 +1,249 @@
+{
+ "styles_plot": "0.2.2",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "dfb8ad8ca5b78ad381cb3058de9bcbc1dd1cb2d03118402574c6db31063cc443",
+  "hash": "meaning"
+ },
+ "registry": {
+  "path": "data/figures/status.csv",
+  "sha256": "b50c31676735b81f8e968bb90792a75984f83c5540fe87769e7aa9bbae69dd59"
+ },
+ "figure": "f11_monitor",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "text_only": false,
+ "png": {
+  "pixels_sha256": "af1d5492445cdff862e980fe8423172a1245605e4a1d4f5263ee1389169104e6",
+  "dpi": 160
+ },
+ "roles": [
+  "lens"
+ ],
+ "controls": [
+  "energy-matched random"
+ ],
+ "cells": {
+  "monitor.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "monitor.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "monitor.q122": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "monitor.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "monitor.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "monitor.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "monitor.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "monitor.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "monitor.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "monitor.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "monitor.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "monitor.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "monitor.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "monitor.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "monitor.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "monitor.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "monitor.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "monitor.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "monitor.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "monitor.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "monitor.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "monitor.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "monitor.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "monitor.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "monitor.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "grey: energy-matched random",
+  "whiskers: 95% interval",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "f11.lens.25.q9": "0.60",
+  "f11.lens.25.q9.interval": "[0.56, 0.64]",
+  "f11.lens.25.q27": "0.77",
+  "f11.lens.25.q27.interval": "[0.73, 0.80]",
+  "f11.lens.25.mu": "0.68",
+  "f11.lens.25.mu.interval": "[0.65, 0.71]",
+  "f11.lens.25.nl": "0.65",
+  "f11.lens.25.nl.interval": "[0.61, 0.69]",
+  "f11.lens.25.q122": "0.73",
+  "f11.lens.25.q122.interval": "[0.69, 0.77]",
+  "f11.full.25.q9": "0.88",
+  "f11.full.25.q27": "0.99",
+  "f11.full.25.mu": "0.94",
+  "f11.full.25.nl": "0.96",
+  "f11.full.25.q122": "0.96",
+  "f11.lens.100.q9": "0.72",
+  "f11.lens.100.q9.interval": "[0.69, 0.76]",
+  "f11.lens.100.q27": "0.85",
+  "f11.lens.100.q27.interval": "[0.82, 0.88]",
+  "f11.lens.100.mu": "0.80",
+  "f11.lens.100.mu.interval": "[0.76, 0.83]",
+  "f11.lens.100.nl": "0.79",
+  "f11.lens.100.nl.interval": "[0.75, 0.83]",
+  "f11.lens.100.q122": "0.85",
+  "f11.lens.100.q122.interval": "[0.83, 0.88]",
+  "f11.full.100.q9": "0.88",
+  "f11.full.100.q27": "0.99",
+  "f11.full.100.mu": "0.94",
+  "f11.full.100.nl": "0.96",
+  "f11.full.100.q122": "0.96"
+ },
+ "problems": []
+}

@@ -23,75 +23,75 @@ F1, F2, F3, F4 = ("Finding 1: recall needs the lens part", "Finding 2: lookup ru
 
 # (number, section, [(set, file stem)], what changed against the deck figure)
 ROWS = [
-    ("top", "TL;DR, under the title", [("writeup", "00_schematic")],
+    ("top", "TL;DR, under the title", [("common/writeup", "00_schematic")],
      "Same scene and three parts, now coloured words with dots instead of squares; each arrow carries its label"),
-    ("key", "How to read the numbers", [("writeup", "00_key")],
+    ("key", "How to read the numbers", [("common/writeup", "00_key")],
      "Roles in two columns with no \"mention\" or \"question\" colours (neutral is now a quantity of no role, such "
      "as a difference); every control named; one example row (Qwen 27B's band test) read aloud, \"removing the lens "
      "part everywhere\""),
-    ("1", F1, [("writeup", "01_main_split")],
+    ("1", F1, [("common/writeup", "01_main_split")],
      "Whiskers span the full interval (the deck's were one-sided); the gap is slate, not black; the one-layer header "
      "reads \"switches blocked beyond random\"; the largest control is a grey tick, not a number in brackets (the old "
      "caption's \"in brackets\" no longer applies); not-claimed tags under the band panels"),
     ("2", "Setup: the two datasets",
-     [("writeup", "02_datasets"), ("examples", "01_locker_scene"), ("examples", "02_fact_passage")],
+     [("common/writeup", "02_datasets"), ("depth/examples", "01_locker_scene"), ("breadth/examples", "01_fact_passage")],
      "The prompt table is unchanged in content; the example cards E1 and E2 are new: real items picked by a stated "
      "rule, each reader's answer under each operation"),
-    ("3", "Setup: the three tools", [("writeup", "03_tools")],
+    ("3", "Setup: the three tools", [("common/writeup", "03_tools")],
      "Grids over a real scene's last words (bridge word in bold) instead of blank cells; one teal box per test; the "
      "swap is teal (a lens part), not blue"),
-    ("4", F1, [("writeup", "04_twin_set")],
+    ("4", F1, [("common/writeup", "04_twin_set")],
      "Three labelled lanes per model (knock-out, rotated, answer span kept) instead of colour words; the answer-span "
      "lanes are tagged descriptive; the gap is slate with full whiskers"),
-    ("5", F1, [("writeup", "05a_controls_band"), ("writeup", "05b_controls_layer")],
+    ("5", F1, [("common/writeup", "05a_controls_band"), ("common/writeup", "05b_controls_layer")],
      "Split into two figures (band of layers, one layer); one column per control on the same scale; the post embeds "
      "both where it embedded fig05_controls"),
-    ("6", F1, [("writeup", "06_nine_models")],
+    ("6", F1, [("common/writeup", "06_nine_models")],
      "No grade column (verdicts are in the text); Bolt's larger swap and the 122B scored by probability get their "
      "own columns; gaps slate with the grey tick; two not-claimed tags"),
-    ("7", F2, [("examples", "03_routes"), ("writeup", "07_routes")],
+    ("7", F2, [("depth/examples", "02_routes"), ("common/writeup", "07_routes")],
      "The stack has no whiskers and no numbers in the bars; the position share's interval and the number's share sit "
      "in columns beside it; the E4 card shows the lockers each route predicts on a real scene"),
-    ("8", F2, [("writeup", "08a_address_read_remove"), ("writeup", "08b_address_swap_lens")],
+    ("8", F2, [("common/writeup", "08a_address_read_remove"), ("common/writeup", "08b_address_swap_lens")],
      "The layout-only probe is a grey dot (was a tick); the removal is a dumbbell to its random control; \"item "
      "change\" reads \"a change of item\"; no left-pointing cue"),
-    ("9", F2, [("writeup", "09_order")],
+    ("9", F2, [("common/writeup", "09_order")],
      "Two labelled lanes per model (sentence before, after the pick); full whiskers; no zero line"),
-    ("10", F3, [("writeup", "10_answer_span")],
+    ("10", F3, [("common/writeup", "10_answer_span")],
      "The random keep is a grey dot with its value; descriptive tags on the keep cells; the matched-share notes "
      "under their cells"),
-    ("11", F3, [("writeup", "11_orthogonal")],
+    ("11", F3, [("common/writeup", "11_orthogonal")],
      "Panels swapped (the data-built subspace first, with its bar fixed in advance); the orthogonal arm is a hollow "
      "slate dot (post hoc); colour words instead of legend lines"),
-    ("12", F4, [("writeup", "12_pointer")],
+    ("12", F4, [("common/writeup", "12_pointer")],
      "Two tables in one figure (was two pasted images); full whiskers; the difference is signed, its interval not"),
-    ("13", F4, [("writeup", "13_last_token")],
+    ("13", F4, [("common/writeup", "13_last_token")],
      "A column with the lens part's value; the whole state swapped in is a named grey control"),
-    ("A1", "Appendix A: agents", [("writeup", "a01_agents")],
+    ("A1", "Appendix A: agents", [("common/writeup", "a01_agents")],
      "Dots in the recall's colour throughout; descriptive cells tagged in grey words (no longer grey dots)"),
-    ("B1", "Appendix B", [("writeup", "a02_atoms")],
+    ("B1", "Appendix B", [("common/writeup", "a02_atoms")],
      "One dot column per word type (old bridge word, new bridge word, another scene word, no scene word) and the "
      "answer word's share"),
-    ("B2", "Appendix B", [("writeup", "a03_position_route")],
+    ("B2", "Appendix B", [("common/writeup", "a03_position_route")],
      "The top half of appB_f14_two_codes as its own figure; all estimates post hoc, said once in the key"),
-    ("B3", "Appendix B", [("writeup", "a04_identity_route")],
+    ("B3", "Appendix B", [("common/writeup", "a04_identity_route")],
      "The bottom half of appB_f14_two_codes as its own figure; all estimates post hoc"),
-    ("B4", "Appendix B", [("writeup", "a05_where")], "Values print in the points unit's decimals; a grey rotated dot per cell"),
-    ("B5", "Appendix B", [("writeup", "a06_order")],
+    ("B4", "Appendix B", [("common/writeup", "a05_where")], "Values print in the points unit's decimals; a grey rotated dot per cell"),
+    ("B5", "Appendix B", [("common/writeup", "a06_order")],
      "Two labelled lanes per model (question after, before the scene) instead of shades; gate words in the cells"),
-    ("B6", "Appendix B", [("writeup", "a07_facts")], "Two labelled lanes (true facts, made-up facts); made-up values printed"),
-    ("B7", "Appendix B", [("writeup", "a08_directions")], "One column per number of directions on the grey band"),
-    ("B8", "Appendix B", [("writeup", "a09_link_crossover")],
+    ("B6", "Appendix B", [("common/writeup", "a07_facts")], "Two labelled lanes (true facts, made-up facts); made-up values printed"),
+    ("B7", "Appendix B", [("common/writeup", "a08_directions")], "One column per number of directions on the grey band"),
+    ("B8", "Appendix B", [("common/writeup", "a09_link_crossover")],
      "Two lookup lines named at their ends; the cells fixed in advance as points with whiskers; a grey post-hoc tag "
      "per panel; no numbers-only table"),
-    ("B9", "Appendix B", [("writeup", "a10_attention")],
+    ("B9", "Appendix B", [("common/writeup", "a10_attention")],
      "Four labelled lanes per model; both controls grey and named; the colour word reads \"address swap\""),
-    ("B10", "Appendix B", [("writeup", "a11_heads")],
+    ("B10", "Appendix B", [("common/writeup", "a11_heads")],
      "The bar fixed in advance as a labelled dashed rule; the values in two columns"),
-    ("B11", "Appendix B", [("writeup", "a12_code_tool")],
+    ("B11", "Appendix B", [("common/writeup", "a12_code_tool")],
      "Redrawn from the depth figure: each arm in its own column against a random part; \"below gate\" where the "
      "9B's code probe was not run"),
-    ("B12", "Appendix B", [("writeup", "a13_six_lockers")],
+    ("B12", "Appendix B", [("common/writeup", "a13_six_lockers")],
      "Pairs as dots and a count column instead of bars; the shift vector's whisker is the range over start lockers"),
 ]  # fmt: skip
 
@@ -100,11 +100,11 @@ HEAD = """<!-- Generated by scripts/writeup_figure_map.py from the caption store
 
 For swapping the post's figures by hand (agents do not edit the Doc): in the post's order, each figure's number, the
 section it sits in, the file to upload, its caption, and what changed against the deck figure the Doc shows now (the
-figkit versions as of `25d7b48e`). Files are in `figures/writeup/` unless they start with `examples/` (the example
-cards, `figures/examples/`).
+figkit versions as of `25d7b48e`). Files are in `figures/common/writeup/` unless the path names another folder
+under `figures/` (the example cards, `depth/examples/` and `breadth/examples/`).
 
-- **Captions** come from one store per set (`figures/writeup/_meta/captions.toml`, `figures/examples/_meta/captions.toml`);
-  the same text is in each set's index (`figures/<set>/README.md`) and under each figure on the contact sheet
+- **Captions** come from one store per set (`figures/common/writeup/_meta/captions.toml`, `figures/{depth,breadth}/examples/_meta/captions.toml`);
+  the same text is in each set's index (`figures/<track>/<set>/README.md`) and under each figure on the contact sheet
   `docs/review/writeup_contact_sheet.png`.
 - **Sections** follow the order of results in the finishing-pass brief (Finding 1 recall needs the lens part,
   2 lookup runs on codes outside the lens, 3 recall needs its answer's own directions, 4 a lens reading reports
@@ -127,7 +127,7 @@ def cell(text: str) -> str:
 def main() -> None:
     lines = []
     for num, section, files, change in ROWS:
-        names = "<br>".join(f"`{'examples/' if s == 'examples' else ''}{stem}.png`" for s, stem in files)
+        names = "<br>".join(f"`{'' if s == 'common/writeup' else s + '/'}{stem}.png`" for s, stem in files)
         caps = "<br><br>".join(cell(RR.render(captions.caption(s, stem))) for s, stem in files)
         lines.append(f"| {num} | {section} | {names} | {caps} | {cell(change)} |")
     OUT.parent.mkdir(parents=True, exist_ok=True)

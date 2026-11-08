@@ -1,33 +1,33 @@
 figure,cell,timing,claim,claim_reason,reason,source
-key,band.q27,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models",figures/writeup/README.md Fig. 1 row (as Fig. 1; the key shows the mark only)
-key,band.mu,post_hoc,claimed,,the band test on this model was run after the data (README Fig. 1: hollow),figures/writeup/README.md Fig. 1 row; docs/breadth/data.csv (as Fig. 1; the key shows the mark only)
+key,band.q27,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models",figures/common/writeup/README.md Fig. 1 row (as Fig. 1; the key shows the mark only)
+key,band.mu,post_hoc,claimed,,the band test on this model was run after the data (README Fig. 1: hollow),figures/common/writeup/README.md Fig. 1 row; docs/breadth/data.csv (as Fig. 1; the key shows the mark only)
 key,layer.q27,fixed_in_advance,claimed,,"one layer, the conflict test: fixed in advance for qwen3.6-27b",src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as Fig. 1; the key shows the mark only)
-fig01_main_split,band.q9,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models",figures/writeup/README.md Fig. 1 row
+fig01_main_split,band.q9,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models",figures/common/writeup/README.md Fig. 1 row
 fig01_main_split,layer.q9,fixed_in_advance,claimed,,"one layer, the conflict test: fixed in advance for qwen3.5-9b",src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
-fig01_main_split,band.q27,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models",figures/writeup/README.md Fig. 1 row
+fig01_main_split,band.q27,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models",figures/common/writeup/README.md Fig. 1 row
 fig01_main_split,layer.q27,fixed_in_advance,claimed,,"one layer, the conflict test: fixed in advance for qwen3.6-27b",src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
-fig01_main_split,band.mu,post_hoc,not_claimed,shared with the logit lens,the band test on this model was run after the data (README Fig. 1: hollow),figures/writeup/README.md Fig. 1 row; docs/breadth/data.csv
+fig01_main_split,band.mu,post_hoc,not_claimed,shared with the logit lens,the band test on this model was run after the data (README Fig. 1: hollow),figures/common/writeup/README.md Fig. 1 row; docs/breadth/data.csv
 fig01_main_split,layer.mu,fixed_in_advance,claimed,,"one layer, the conflict test: fixed in advance for muse-glimmer-30b",src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 fig01_main_split,band.nl,fixed_in_advance,claimed,,"Lightning's breadth test, registered before its data","docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit); Dan 7 Nov (decision 8)"
 fig01_main_split,layer.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
-fig01_main_split,band.q122,post_hoc,not_claimed,gone when scored by probability,the band test on this model was run after the data (README Fig. 1: hollow),figures/writeup/README.md Fig. 1 row; docs/breadth/data.csv
+fig01_main_split,band.q122,post_hoc,not_claimed,gone when scored by probability,the band test on this model was run after the data (README Fig. 1: hollow),figures/common/writeup/README.md Fig. 1 row; docs/breadth/data.csv
 fig01_main_split,layer.q122,fixed_in_advance,claimed,,"one layer, the conflict test: fixed in advance for qwen3.5-122b-a10b",src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
-fig04_twin_set,recall.paper10.q9,fixed_in_advance,claimed,,"the twin set's readings, fixed in advance (note 41)",figures/writeup/README.md Fig. 4 row
-fig04_twin_set,lookup.paper10.q9,fixed_in_advance,claimed,,"the twin set's readings, fixed in advance (note 41)",figures/writeup/README.md Fig. 4 row
-fig04_twin_set,recall.paper10_rot.q9,fixed_in_advance,claimed,,"the twin set's readings, fixed in advance (note 41)",figures/writeup/README.md Fig. 4 row
-fig04_twin_set,lookup.paper10_rot.q9,fixed_in_advance,claimed,,"the twin set's readings, fixed in advance (note 41)",figures/writeup/README.md Fig. 4 row
+fig04_twin_set,recall.paper10.q9,fixed_in_advance,claimed,,"the twin set's readings, fixed in advance (note 41)",figures/common/writeup/README.md Fig. 4 row
+fig04_twin_set,lookup.paper10.q9,fixed_in_advance,claimed,,"the twin set's readings, fixed in advance (note 41)",figures/common/writeup/README.md Fig. 4 row
+fig04_twin_set,recall.paper10_rot.q9,fixed_in_advance,claimed,,"the twin set's readings, fixed in advance (note 41)",figures/common/writeup/README.md Fig. 4 row
+fig04_twin_set,lookup.paper10_rot.q9,fixed_in_advance,claimed,,"the twin set's readings, fixed in advance (note 41)",figures/common/writeup/README.md Fig. 4 row
 fig04_twin_set,recall.paper10_keepA.q9,fixed_in_advance,descriptive,,answer span kept: a descriptive number under a fixed label (note 41 keep table),"Dan, 7 Nov (decision 9)"
 fig04_twin_set,lookup.paper10_keepA.q9,fixed_in_advance,descriptive,,answer span kept: a descriptive number under a fixed label (note 41 keep table),"Dan, 7 Nov (decision 9)"
-fig04_twin_set,gap.paper10.q9,fixed_in_advance,claimed,,"the twin set's gap, fixed in advance (note 41)",figures/writeup/README.md Fig. 4 row
-fig04_twin_set,gap.paper10_rot.q9,fixed_in_advance,claimed,,"the twin set's gap, fixed in advance (note 41)",figures/writeup/README.md Fig. 4 row
-fig04_twin_set,recall.paper10.q27,fixed_in_advance,claimed,,"the twin set's readings, fixed in advance (note 41)",figures/writeup/README.md Fig. 4 row
-fig04_twin_set,lookup.paper10.q27,fixed_in_advance,claimed,,"the twin set's readings, fixed in advance (note 41)",figures/writeup/README.md Fig. 4 row
-fig04_twin_set,recall.paper10_rot.q27,fixed_in_advance,claimed,,"the twin set's readings, fixed in advance (note 41)",figures/writeup/README.md Fig. 4 row
-fig04_twin_set,lookup.paper10_rot.q27,fixed_in_advance,claimed,,"the twin set's readings, fixed in advance (note 41)",figures/writeup/README.md Fig. 4 row
+fig04_twin_set,gap.paper10.q9,fixed_in_advance,claimed,,"the twin set's gap, fixed in advance (note 41)",figures/common/writeup/README.md Fig. 4 row
+fig04_twin_set,gap.paper10_rot.q9,fixed_in_advance,claimed,,"the twin set's gap, fixed in advance (note 41)",figures/common/writeup/README.md Fig. 4 row
+fig04_twin_set,recall.paper10.q27,fixed_in_advance,claimed,,"the twin set's readings, fixed in advance (note 41)",figures/common/writeup/README.md Fig. 4 row
+fig04_twin_set,lookup.paper10.q27,fixed_in_advance,claimed,,"the twin set's readings, fixed in advance (note 41)",figures/common/writeup/README.md Fig. 4 row
+fig04_twin_set,recall.paper10_rot.q27,fixed_in_advance,claimed,,"the twin set's readings, fixed in advance (note 41)",figures/common/writeup/README.md Fig. 4 row
+fig04_twin_set,lookup.paper10_rot.q27,fixed_in_advance,claimed,,"the twin set's readings, fixed in advance (note 41)",figures/common/writeup/README.md Fig. 4 row
 fig04_twin_set,recall.paper10_keepA.q27,fixed_in_advance,descriptive,,answer span kept: a descriptive number under a fixed label (note 41 keep table),"Dan, 7 Nov (decision 9)"
 fig04_twin_set,lookup.paper10_keepA.q27,fixed_in_advance,descriptive,,answer span kept: a descriptive number under a fixed label (note 41 keep table),"Dan, 7 Nov (decision 9)"
-fig04_twin_set,gap.paper10.q27,fixed_in_advance,claimed,,"the twin set's gap, fixed in advance (note 41)",figures/writeup/README.md Fig. 4 row
-fig04_twin_set,gap.paper10_rot.q27,fixed_in_advance,claimed,,"the twin set's gap, fixed in advance (note 41)",figures/writeup/README.md Fig. 4 row
+fig04_twin_set,gap.paper10.q27,fixed_in_advance,claimed,,"the twin set's gap, fixed in advance (note 41)",figures/common/writeup/README.md Fig. 4 row
+fig04_twin_set,gap.paper10_rot.q27,fixed_in_advance,claimed,,"the twin set's gap, fixed in advance (note 41)",figures/common/writeup/README.md Fig. 4 row
 fig04_twin_set,recall.paper10.nl,fixed_in_advance,claimed,,Lightning: a registration committed before the run names the test and the model,"docs/breadth/prereg_replication_1022.md: ""Amendment 67 ... Models: 9B, 27B, Lightning ... Note 41: random-span placebo and output-side check for note 37"" (first committed 2026-10-30T08:06:54Z); Lightning's run results/ablate_v2/nem35l_jsuite_v4_test_chat_ko41_cand2_v1 started 2026-10-30T08:29:29Z (manifest written_utc); Dan 8 Nov (Q2b)"
 fig04_twin_set,lookup.paper10.nl,fixed_in_advance,claimed,,Lightning: a registration committed before the run names the test and the model,"docs/breadth/prereg_replication_1022.md: ""Amendment 67 ... Models: 9B, 27B, Lightning ... Note 41: random-span placebo and output-side check for note 37"" (first committed 2026-10-30T08:06:54Z); Lightning's run results/ablate_v2/nem35l_jsuite_v4_test_chat_ko41_cand2_v1 started 2026-10-30T08:29:29Z (manifest written_utc); Dan 8 Nov (Q2b)"
 fig04_twin_set,recall.paper10_rot.nl,fixed_in_advance,claimed,,Lightning: a registration committed before the run names the test and the model,"docs/breadth/prereg_replication_1022.md: ""Amendment 67 ... Models: 9B, 27B, Lightning ... Note 41: random-span placebo and output-side check for note 37"" (first committed 2026-10-30T08:06:54Z); Lightning's run results/ablate_v2/nem35l_jsuite_v4_test_chat_ko41_cand2_v1 started 2026-10-30T08:29:29Z (manifest written_utc); Dan 8 Nov (Q2b)"
@@ -56,14 +56,14 @@ fig09_order,locker.first.q122,fixed_in_advance,claimed,,sentence order: fixed in
 fig09_order,locker.after.q122,fixed_in_advance,claimed,,sentence order: fixed in advance for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 fig09_order,facts.first.q122,fixed_in_advance,claimed,,sentence order: fixed in advance for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 fig09_order,facts.after.q122,fixed_in_advance,claimed,,sentence order: fixed in advance for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
-fig12_pointer,swap.q9,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/writeup/README.md Fig. 12 row (no post hoc mark)
-fig12_pointer,neutral.q9,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/writeup/README.md Fig. 12 row (no post hoc mark)
-fig12_pointer,noown.q9,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/writeup/README.md Fig. 12 row (no post hoc mark)
-fig12_pointer,rot.q9,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/writeup/README.md Fig. 12 row (no post hoc mark)
-fig12_pointer,swap.q27,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/writeup/README.md Fig. 12 row (no post hoc mark)
-fig12_pointer,neutral.q27,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/writeup/README.md Fig. 12 row (no post hoc mark)
-fig12_pointer,noown.q27,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/writeup/README.md Fig. 12 row (no post hoc mark)
-fig12_pointer,rot.q27,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/writeup/README.md Fig. 12 row (no post hoc mark)
+fig12_pointer,swap.q9,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/common/writeup/README.md Fig. 12 row (no post hoc mark)
+fig12_pointer,neutral.q9,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/common/writeup/README.md Fig. 12 row (no post hoc mark)
+fig12_pointer,noown.q9,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/common/writeup/README.md Fig. 12 row (no post hoc mark)
+fig12_pointer,rot.q9,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/common/writeup/README.md Fig. 12 row (no post hoc mark)
+fig12_pointer,swap.q27,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/common/writeup/README.md Fig. 12 row (no post hoc mark)
+fig12_pointer,neutral.q27,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/common/writeup/README.md Fig. 12 row (no post hoc mark)
+fig12_pointer,noown.q27,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/common/writeup/README.md Fig. 12 row (no post hoc mark)
+fig12_pointer,rot.q27,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/common/writeup/README.md Fig. 12 row (no post hoc mark)
 fig12_pointer,swap.nl,fixed_in_advance,claimed,,"Lightning's breadth test, registered before its data","docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit); Dan 7 Nov (decision 8)"
 fig12_pointer,neutral.nl,fixed_in_advance,claimed,,"Lightning's breadth test, registered before its data","docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit); Dan 7 Nov (decision 8)"
 fig12_pointer,noown.nl,fixed_in_advance,claimed,,"Lightning's breadth test, registered before its data","docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit); Dan 7 Nov (decision 8)"
@@ -239,13 +239,13 @@ figA1_agents,verify.nl,fixed_in_advance,claimed,,Lightning: a registration commi
 figA1_agents,produce.nl,fixed_in_advance,claimed,,Lightning: a registration committed before the run names the test and the model,"docs/breadth/prereg_replication_1022.md: ""Note 59: safety-relevant agent settings ... 9B test and dev primary, Lightning confirmatory"" (first committed 2026-10-30T17:20:51Z); Lightning's run results/sd_necessity/nem35l_sd59_ko_test_v1 started 2026-10-30T17:41:33Z (manifest written_utc); Dan 8 Nov (Q2b)"
 figA1_agents,derive.nl,fixed_in_advance,claimed,,no Lightning run of this arm; the figure draws no mark,data/figures/writeup/data.csv
 fig06_nine_models,swap.q9,fixed_in_advance,claimed,,"the swap, registered before this model's data","docs/breadth/prereg_replication_1022.md Amendment 33 (jsuite_v2: the 27B and 9B at their pre-registered bands, before any v2 run)"
-fig06_nine_models,gap.q9,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models",figures/writeup/README.md Fig. 1 row (as Fig. 1)
+fig06_nine_models,gap.q9,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models",figures/common/writeup/README.md Fig. 1 row (as Fig. 1)
 fig06_nine_models,swap.q27,fixed_in_advance,claimed,,"the swap, registered before this model's data","docs/breadth/prereg_replication_1022.md Amendment 33 (jsuite_v2: the 27B and 9B at their pre-registered bands, before any v2 run)"
-fig06_nine_models,gap.q27,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models",figures/writeup/README.md Fig. 1 row (as Fig. 1)
-fig06_nine_models,gap.mu,post_hoc,not_claimed,shared with the logit lens,the band test on this model was run after the data (README Fig. 1: hollow),figures/writeup/README.md Fig. 1 row; docs/breadth/data.csv (as Fig. 1)
+fig06_nine_models,gap.q27,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models",figures/common/writeup/README.md Fig. 1 row (as Fig. 1)
+fig06_nine_models,gap.mu,post_hoc,not_claimed,shared with the logit lens,the band test on this model was run after the data (README Fig. 1: hollow),figures/common/writeup/README.md Fig. 1 row; docs/breadth/data.csv (as Fig. 1)
 fig06_nine_models,swap.nl,fixed_in_advance,claimed,,"Lightning's breadth test, registered before its data","docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit); Dan 7 Nov (decision 8)"
 fig06_nine_models,gap.nl,fixed_in_advance,claimed,,"Lightning's breadth test, registered before its data","docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit); Dan 7 Nov (decision 8)"
-fig06_nine_models,gap.q122,post_hoc,not_claimed,gone when scored by probability,the band test on this model was run after the data (README Fig. 1: hollow),figures/writeup/README.md Fig. 1 row; docs/breadth/data.csv (as Fig. 1)
+fig06_nine_models,gap.q122,post_hoc,not_claimed,gone when scored by probability,the band test on this model was run after the data (README Fig. 1: hollow),figures/common/writeup/README.md Fig. 1 row; docs/breadth/data.csv (as Fig. 1)
 fig06_nine_models,swap.ds,fixed_in_advance,claimed,,"the swap, registered before this model's data","docs/breadth/prereg_replication_1022.md Amendment 39 (DeepSeek-V4-Flash and Ministral 3 14B on v2, before any non-Qwen run)"
 fig06_nine_models,gap.ds,fixed_in_advance,claimed,,"the band test, registered before this model's data","docs/breadth/prereg_replication_1022.md Amendment 39 (DeepSeek-V4-Flash and Ministral 3 14B on v2, before any non-Qwen run)"
 fig06_nine_models,swap.mi,fixed_in_advance,claimed,,"the swap, registered before this model's data","docs/breadth/prereg_replication_1022.md Amendment 39 (DeepSeek-V4-Flash and Ministral 3 14B on v2, before any non-Qwen run)"
@@ -361,13 +361,13 @@ f14_two_codes,lens.nl,post_hoc,claimed,,"the two removals, every cell post hoc: 
 f14_two_codes,address.q122,post_hoc,claimed,,"the two removals, every cell post hoc: the figkit figure drew it hollow (post hoc)","src/bridge_jspace/figkit/writeup_claims.py appB_f14_two_codes (as appB_f14_two_codes, drawn for README.md)"
 f14_two_codes,lens.q122,post_hoc,claimed,,"the two removals, every cell post hoc: the figkit figure drew it hollow (post hoc)","src/bridge_jspace/figkit/writeup_claims.py appB_f14_two_codes (as appB_f14_two_codes, drawn for README.md)"
 f3_nine_models,swap.q9,fixed_in_advance,claimed,,"the swap, registered before this model's data","docs/breadth/prereg_replication_1022.md Amendment 33 (jsuite_v2: the 27B and 9B at their pre-registered bands, before any v2 run) (as fig06_nine_models, drawn for README.md)"
-f3_nine_models,gap.q9,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models","figures/writeup/README.md Fig. 1 row (as Fig. 1) (as fig06_nine_models, drawn for README.md)"
+f3_nine_models,gap.q9,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models","figures/common/writeup/README.md Fig. 1 row (as Fig. 1) (as fig06_nine_models, drawn for README.md)"
 f3_nine_models,swap.q27,fixed_in_advance,claimed,,"the swap, registered before this model's data","docs/breadth/prereg_replication_1022.md Amendment 33 (jsuite_v2: the 27B and 9B at their pre-registered bands, before any v2 run) (as fig06_nine_models, drawn for README.md)"
-f3_nine_models,gap.q27,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models","figures/writeup/README.md Fig. 1 row (as Fig. 1) (as fig06_nine_models, drawn for README.md)"
-f3_nine_models,gap.mu,post_hoc,not_claimed,shared with the logit lens,the band test on this model was run after the data (README Fig. 1: hollow),"figures/writeup/README.md Fig. 1 row; docs/breadth/data.csv (as Fig. 1) (as fig06_nine_models, drawn for README.md)"
+f3_nine_models,gap.q27,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models","figures/common/writeup/README.md Fig. 1 row (as Fig. 1) (as fig06_nine_models, drawn for README.md)"
+f3_nine_models,gap.mu,post_hoc,not_claimed,shared with the logit lens,the band test on this model was run after the data (README Fig. 1: hollow),"figures/common/writeup/README.md Fig. 1 row; docs/breadth/data.csv (as Fig. 1) (as fig06_nine_models, drawn for README.md)"
 f3_nine_models,swap.nl,fixed_in_advance,claimed,,"Lightning's breadth test, registered before its data","docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit); Dan 7 Nov (decision 8)"
 f3_nine_models,gap.nl,fixed_in_advance,claimed,,"Lightning's breadth test, registered before its data","docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit); Dan 7 Nov (decision 8)"
-f3_nine_models,gap.q122,post_hoc,not_claimed,gone when scored by probability,the band test on this model was run after the data (README Fig. 1: hollow),"figures/writeup/README.md Fig. 1 row; docs/breadth/data.csv (as Fig. 1) (as fig06_nine_models, drawn for README.md)"
+f3_nine_models,gap.q122,post_hoc,not_claimed,gone when scored by probability,the band test on this model was run after the data (README Fig. 1: hollow),"figures/common/writeup/README.md Fig. 1 row; docs/breadth/data.csv (as Fig. 1) (as fig06_nine_models, drawn for README.md)"
 f3_nine_models,swap.ds,fixed_in_advance,claimed,,"the swap, registered before this model's data","docs/breadth/prereg_replication_1022.md Amendment 39 (DeepSeek-V4-Flash and Ministral 3 14B on v2, before any non-Qwen run) (as fig06_nine_models, drawn for README.md)"
 f3_nine_models,gap.ds,fixed_in_advance,claimed,,"the band test, registered before this model's data","docs/breadth/prereg_replication_1022.md Amendment 39 (DeepSeek-V4-Flash and Ministral 3 14B on v2, before any non-Qwen run) (as fig06_nine_models, drawn for README.md)"
 f3_nine_models,swap.mi,fixed_in_advance,claimed,,"the swap, registered before this model's data","docs/breadth/prereg_replication_1022.md Amendment 39 (DeepSeek-V4-Flash and Ministral 3 14B on v2, before any non-Qwen run) (as fig06_nine_models, drawn for README.md)"
@@ -403,25 +403,25 @@ f6b_address_swap_lens,swap.nl,post_hoc,claimed,,Lightning's depth test: after th
 f6b_address_swap_lens,lens.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
 f6b_address_swap_lens,swap.q122,post_hoc,claimed,,the address swap: post hoc for qwen3.5-122b-a10b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=True) (as fig08b_address_swap_lens, drawn for README.md)"
 f6b_address_swap_lens,lens.q122,post_hoc,claimed,,the lens rebuild: post hoc for qwen3.5-122b-a10b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=True) (as fig08b_address_swap_lens, drawn for README.md)"
-r1_c1_split,band.q9,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models","figures/writeup/README.md Fig. 1 row (as fig01_main_split, drawn for README.md)"
+r1_c1_split,band.q9,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models","figures/common/writeup/README.md Fig. 1 row (as fig01_main_split, drawn for README.md)"
 r1_c1_split,layer.q9,fixed_in_advance,claimed,,"one layer, the conflict test: fixed in advance for qwen3.5-9b","src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig01_main_split, drawn for README.md)"
-r1_c1_split,band.q27,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models","figures/writeup/README.md Fig. 1 row (as fig01_main_split, drawn for README.md)"
+r1_c1_split,band.q27,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models","figures/common/writeup/README.md Fig. 1 row (as fig01_main_split, drawn for README.md)"
 r1_c1_split,layer.q27,fixed_in_advance,claimed,,"one layer, the conflict test: fixed in advance for qwen3.6-27b","src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig01_main_split, drawn for README.md)"
-r1_c1_split,band.mu,post_hoc,not_claimed,shared with the logit lens,the band test on this model was run after the data (README Fig. 1: hollow),"figures/writeup/README.md Fig. 1 row; docs/breadth/data.csv (as fig01_main_split, drawn for README.md)"
+r1_c1_split,band.mu,post_hoc,not_claimed,shared with the logit lens,the band test on this model was run after the data (README Fig. 1: hollow),"figures/common/writeup/README.md Fig. 1 row; docs/breadth/data.csv (as fig01_main_split, drawn for README.md)"
 r1_c1_split,layer.mu,fixed_in_advance,claimed,,"one layer, the conflict test: fixed in advance for muse-glimmer-30b","src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig01_main_split, drawn for README.md)"
 r1_c1_split,band.nl,fixed_in_advance,claimed,,"Lightning's breadth test, registered before its data","docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit); Dan 7 Nov (decision 8)"
 r1_c1_split,layer.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
-r1_c1_split,band.q122,post_hoc,not_claimed,gone when scored by probability,the band test on this model was run after the data (README Fig. 1: hollow),"figures/writeup/README.md Fig. 1 row; docs/breadth/data.csv (as fig01_main_split, drawn for README.md)"
+r1_c1_split,band.q122,post_hoc,not_claimed,gone when scored by probability,the band test on this model was run after the data (README Fig. 1: hollow),"figures/common/writeup/README.md Fig. 1 row; docs/breadth/data.csv (as fig01_main_split, drawn for README.md)"
 r1_c1_split,layer.q122,fixed_in_advance,claimed,,"one layer, the conflict test: fixed in advance for qwen3.5-122b-a10b","src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig01_main_split, drawn for README.md)"
-r1_c1_gaps,band.q9,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models","figures/writeup/README.md Fig. 1 row (as fig01_main_split, drawn for README.md)"
+r1_c1_gaps,band.q9,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models","figures/common/writeup/README.md Fig. 1 row (as fig01_main_split, drawn for README.md)"
 r1_c1_gaps,layer.q9,fixed_in_advance,claimed,,"one layer, the conflict test: fixed in advance for qwen3.5-9b","src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig01_main_split, drawn for README.md)"
-r1_c1_gaps,band.q27,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models","figures/writeup/README.md Fig. 1 row (as fig01_main_split, drawn for README.md)"
+r1_c1_gaps,band.q27,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models","figures/common/writeup/README.md Fig. 1 row (as fig01_main_split, drawn for README.md)"
 r1_c1_gaps,layer.q27,fixed_in_advance,claimed,,"one layer, the conflict test: fixed in advance for qwen3.6-27b","src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig01_main_split, drawn for README.md)"
-r1_c1_gaps,band.mu,post_hoc,not_claimed,shared with the logit lens,the band test on this model was run after the data (README Fig. 1: hollow),"figures/writeup/README.md Fig. 1 row; docs/breadth/data.csv (as fig01_main_split, drawn for README.md)"
+r1_c1_gaps,band.mu,post_hoc,not_claimed,shared with the logit lens,the band test on this model was run after the data (README Fig. 1: hollow),"figures/common/writeup/README.md Fig. 1 row; docs/breadth/data.csv (as fig01_main_split, drawn for README.md)"
 r1_c1_gaps,layer.mu,fixed_in_advance,claimed,,"one layer, the conflict test: fixed in advance for muse-glimmer-30b","src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig01_main_split, drawn for README.md)"
-r1_c1_gaps,band.nl,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models","figures/writeup/README.md Fig. 1 row (as fig01_main_split, drawn for README.md)"
+r1_c1_gaps,band.nl,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models","figures/common/writeup/README.md Fig. 1 row (as fig01_main_split, drawn for README.md)"
 r1_c1_gaps,layer.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
-r1_c1_gaps,band.q122,post_hoc,not_claimed,gone when scored by probability,the band test on this model was run after the data (README Fig. 1: hollow),"figures/writeup/README.md Fig. 1 row; docs/breadth/data.csv (as fig01_main_split, drawn for README.md)"
+r1_c1_gaps,band.q122,post_hoc,not_claimed,gone when scored by probability,the band test on this model was run after the data (README Fig. 1: hollow),"figures/common/writeup/README.md Fig. 1 row; docs/breadth/data.csv (as fig01_main_split, drawn for README.md)"
 r1_c1_gaps,layer.q122,fixed_in_advance,claimed,,"one layer, the conflict test: fixed in advance for qwen3.5-122b-a10b","src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig01_main_split, drawn for README.md)"
 f2_controls,band.q9,fixed_in_advance,claimed,,the band test: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/writeup_figs.py fig05_controls (as fig05_controls, drawn for README.md)"
 f2_controls,layer.q9,fixed_in_advance,claimed,,"one layer, the earlier same-size runs: the figkit figure drew no mark hollow","src/bridge_jspace/figkit/writeup_figs.py fig05_controls (as fig05_controls, drawn for README.md)"

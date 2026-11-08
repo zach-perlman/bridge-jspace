@@ -1,0 +1,5 @@
+# Short captions for the README pages (at most 60 words, takeaway first; src/bridge_jspace/figkit/captions.py).
+# The full caption of each figure is in captions.toml.
+
+01_fact_passage = "Without the lens part the recall turns wrong and the lookup holds; a rotated part turns neither. One pair of fact passages, Qwen 27B (the bridge in bold): the lookup's passage gives the fact, the recall's does not. This flip shows on {{e|e2.pairs_flip}} of the {{e|e2.pairs_both_right}} pairs answered right before the removal."
+02_chains = "On this entity only the chain ending in two recalls turns wrong, and only without the lens part. Three three-hop chains, Qwen 27B: each hop is read in the passage (P) or recalled (M). Answers before the removal, with the lens part removed, and with a rotated part removed."

@@ -139,7 +139,7 @@ Test Lightning conflict test · opened 29 Oct · status: rule fixed in advance �
 - **Data.** Main test, 200 scenes (the 60 scenes used to pick the layer excluded); ○ gate chosen after the 60-scene pre-check was seen: the main test's gate on all 516 scenes passed (lookup 0.957, recall 0.816). The 122B: the main test at L33, 200 scenes, its gate passed.
 - **Method.** The conflict test at the bridge word at each of 13 swept layers (L2 to L50), decided at L14: without the lens part, against without a random part of the same share.
 
-![On Lightning the recall follows the lens part; the lookup does not](../../figures/depth/02_one_layer_split.png)
+![On Lightning the recall follows the lens part; the lookup does not](../../figures/depth/readme/02_one_layer_split.png)
 
 *Switches blocked without the lens part beyond a random part, lookup and recall per model, main test at L (the 122B's L33: the 27B's relative depth carried over); right: the gap, recall minus lookup, with its 95% interval; grey band: within 0.10 of random (the lookup's bar).*
 
@@ -197,7 +197,7 @@ Test 51.12 · opened 28 Oct · status: rule fixed in advance · hand-check: in s
 
 The three arms side by side, per model:
 
-![The recall's drop without the lens part is the item, not its answer](../../figures/depth/38_item_not_answer.png)
+![The recall's drop without the lens part is the item, not its answer](../../figures/depth/ledger/01_item_not_answer.png)
 
 *The answer control, main test: the recall's switches blocked beyond a random part of the same size without the lens part, with the lens part removed but the answer word's directions kept, and with only the answer word's directions removed, one lane each per model. Whiskers 95% intervals; Lightning and the 122B hollow ○ (after the data).*
 
@@ -248,7 +248,7 @@ Test Lightning's layer · opened 29 Oct · status: rule fixed in advance · hand
 
 The sweep that picked the layer:
 
-![Lightning's layer sweep and the conflict test by layer](../../figures/depth/39_lightning_layers.png)
+![Lightning's layer sweep and the conflict test by layer](../../figures/depth/ledger/02_lightning_layers.png)
 
 *Lightning's layer sweep on the pre-check scenes: the share of each reader's answers switched by the whole change at the bridge word, lookup (violet) and recall (black), at every swept layer; dashed: the bar both readers must reach. All estimates post hoc (the gate was chosen after the pre-check).*
 
@@ -286,7 +286,7 @@ Test x0b · opened not stated · status: rule fixed in advance · hand-check: no
 - **Data.** Varied scenes, at most 40 per cell, only cells that pass the gate: 36 of 51<!-- src: results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.md \| Gate per cell :: 36 of 51 --> / 49 of 51<!-- src: results/x0b_generalize/x0b_v2_27b/verdict-20261024T192113Z/verdict.md \| Gate per cell :: 49 of 51 --> / 44 of 57<!-- src: results/x0b_generalize/muse30b_x0b_v2/verdict-20261026T022534Z/verdict.md \| Gate per cell :: 44 of 57 --> / 42 of 57<!-- src: results/x0b_generalize/nem35l_x52_x0b/verdict-20261029T014520Z/verdict.md \| Gate per cell :: 42 of 57 --> cells, 1010<!-- src: results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.md \| Gate per cell :: 1010 --> / 1635<!-- src: results/x0b_generalize/x0b_v2_27b/verdict-20261024T192113Z/verdict.md \| Gate per cell :: 1635 --> / 1388<!-- src: results/x0b_generalize/muse30b_x0b_v2/verdict-20261026T022534Z/verdict.md \| Gate per cell :: 1388 --> / 1105<!-- src: results/x0b_generalize/nem35l_x52_x0b/verdict-20261029T014520Z/verdict.md \| Gate per cell :: 1105 --> scenes (9B / 27B / Muse / Lightning).
 - **Method.** The conflict test unchanged, at L: without the lens part (25 directions), against without a random part of the same share; pooled over the cells.
 
-![The split carries over to other texts](../../figures/depth/s01_split_all_scene_sets.png)
+![The split carries over to other texts](../../figures/depth/readme/s01_split_all_scene_sets.png)
 
 *Every scene set, one panel per model (the 9B, the 27B, Muse, the 122B): per set (rows), the switches blocked without the lens part beyond a random part of the same size, lookup (violet) and recall (black), joined in each row. Whiskers: 95% intervals. All estimates post hoc.*
 
@@ -331,7 +331,7 @@ Test x5 · opened not stated · status: rule fixed in advance · hand-check: not
 - **Data.** Natural passages: 83<!-- src: results/x5_natural/qwen35_9b_x5_natural_g75/verdict-20261025T135050Z/verdict.md \| 83 items :: 83 --> / 137<!-- src: results/x5_natural/x5_natural_27b/verdict-20261024T232738Z/verdict.md \| 137 items :: 137 --> / 60<!-- src: results/x5_natural/muse30b_x5_natural/verdict-20261026T023226Z/verdict.md \| 60 items :: 60 --> items (9B / 27B / Muse); the 9B's gate was lowered after the data. Lightning not tested: its gate failed, and by the spec's rule there is no lowered rerun.
 - **Method.** The conflict test unchanged, at L: without the lens part, against without a random part of its share; the gap is the recall's drop minus the lookup's.
 
-![The split carries over to other texts](../../figures/depth/s01_split_all_scene_sets.png)
+![The split carries over to other texts](../../figures/depth/readme/s01_split_all_scene_sets.png)
 
 *Every scene set, one panel per model (the 9B, the 27B, Muse, the 122B): per set (rows), the switches blocked without the lens part beyond a random part of the same size, lookup (violet) and recall (black), joined in each row. Whiskers: 95% intervals. All estimates post hoc.*
 
@@ -377,7 +377,7 @@ Test 51.1 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 - **Data.** Main test, the scenes whose locker sentences come first: 75 / 69 / 68 / 59<!-- src: results/x51_dose/x52_dose-20261029T011635Z/verdict.md \| nem35l_x52_dose :: 59 --> (9B / 27B / Muse / Lightning; Lightning at L14, a coverage run on the same rule, no prediction).
 - **Method.** At the bridge word at L: the lens part alone at doses 0.5 to 3, against a random part of the same share at the same dose; the rest alone at doses 0.25 to 1.5, with and without the address.
 
-![By itself the lens part moves the recall; the rest moves the lookup](../../figures/depth/16_dose_lens.png)
+![By itself the lens part moves the recall; the rest moves the lookup](../../figures/depth/readme/16_dose_lens.png)
 
 *The lens part added by itself at the bridge word, one column per dose: per model, the switches beyond a random part of the same size, lookup (violet) and recall (black). Whiskers: 95% intervals; Lightning hollow (○, post hoc). The rest of the change added by itself is in 17_dose_rest.*
 
@@ -466,7 +466,7 @@ Test 49.2 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 
 The two rungs the rule compares, per reader and scene order:
 
-![The recall needs the lens part once its other copies go; the lookup never](../../figures/depth/40_ladder.png)
+![The recall needs the lens part once its other copies go; the lookup never](../../figures/depth/ledger/03_ladder.png)
 
 *The ladder at the two rungs its rule compares: the answers turned wrong beyond a random part of the same share when the lens part is taken out step by step, the recall in locker-first and in locker-after scenes and the lookup over every scene. Whiskers 95% intervals; Lightning and the 122B hollow ○.*
 
@@ -511,7 +511,7 @@ Test 45p · opened 27 Oct · status: rule fixed in advance · hand-check: not in
 - **Data.** Clean one-pick scenes whose new item's locker sentence comes before the asked pick: 186<!-- src: results/x45p/x45p-20261027T012017Z/x45p.md \| qwen35_9b_x45p :: 186 --> / 254<!-- src: results/x45p/x45p-20261027T012017Z/x45p.md \| x45p_27b :: 254 --> / 178<!-- src: results/x45p/x45p-20261027T012017Z/x45p.md \| muse30b_x45p :: 178 --> (9B / 27B / Muse). Lightning not tested: the clean one-pick design's gate fails on it.
 - **Method.** On the original prompt, the switches' drop loss_k = 1 - S_k / S_1 under: (1) the base edit, the whole change at the bridge word minus its lens part; (2) (1), and the new item's tokens in its locker sentence without their own lens part; (3) (1), and the same tokens without a random part of the same share; (4) (1), and another item's tokens without their own lens part.
 
-![The recall also reads the item at its earlier mention](../../figures/depth/36_earlier_mention.png)
+![The recall also reads the item at its earlier mention](../../figures/depth/readme/36_earlier_mention.png)
 
 *Claim 3: the recall's switches blocked against the change at the bridge word alone (arm 1) when the new item's tokens at its earlier mention also have their own lens part removed (left), and when another item's tokens have theirs removed (right); grey tick: the same tokens with a random part of the same share removed. Clean one-pick scenes with the item's locker sentence before the pick; whiskers 95% intervals; Lightning hollow ○ (below its gate, descriptive), the 122B hollow ○ (a coverage run, no prediction).*
 
@@ -557,7 +557,7 @@ Test 53.6 · opened 29 Oct · status: rule fixed in advance · hand-check: not i
 
 Which item the recall follows when the lens part and the address disagree:
 
-![Every recall follows both; on the 27B and Muse it mostly stays put](../../figures/depth/41_follows_both.png)
+![Every recall follows both; on the 27B and Muse it mostly stays put](../../figures/depth/ledger/04_follows_both.png)
 
 *The lens part from one scene (item B) and the address from another (item C) swapped in together (left) or alone (right): the share of the recall's answers that are B's (the lens part's item, teal) and C's (the address's item, orange), per model. Whiskers 95% intervals; Lightning hollow ○.*
 
@@ -612,7 +612,7 @@ Test 53.1 · opened 29 Oct · status: rule fixed in advance · hand-check: not i
 
 Both readers with a number answer, the question after and before the scene:
 
-![With a number answer the recall follows the entity](../../figures/depth/42_number_answer.png)
+![With a number answer the recall follows the entity](../../figures/depth/ledger/05_number_answer.png)
 
 *A number as the answer: the switches blocked without the lens part beyond a random part, the recall (left) and the lookup (right), with the question after the scene and, on the 27B and the 122B, before it. Whiskers 95% intervals; Lightning and the 122B hollow ○.*
 
@@ -705,7 +705,7 @@ Test 49.1 · opened not stated · status: rule fixed in advance · hand-check: n
 
 ### Do the two readers read two separate learned subspaces? <a id="t48-1"></a>
 
-`ledger only` *Used in: README Appendix A, a figure link ("Muse's learned subspaces", figures/depth/supp/s12_das_muse.png).*
+`ledger only` *Used in: README Appendix A, a figure link ("Muse's learned subspaces", figures/depth/readme/s14_das_muse.png).*
 
 Test 48.1 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x48_das/x52_das-20261029T040955Z/verdict.md` · recompute: `scripts/x48_das.py` (the command in its docstring) · also: DAS at the bridge word; the 27B's coverage run 29 Oct
 
@@ -716,7 +716,7 @@ Test 48.1 · opened not stated · status: rule fixed in advance · hand-check: n
 - **Data.** Pairs from the main test's locker-first scenes the whole change switches, split by bridge entity 60 / 20 / 20; the 27B's test pairs: lookup 10<!-- src: results/x48_das/x52_das-20261029T040955Z/verdict.md \| 10 (7) :: 10 -->, recall 8<!-- src: results/x48_das/x52_das-20261029T040955Z/verdict.md \| 8 (4) :: 8 -->.
 - **Method.** Distributed alignment search per reader at k = 1, 4, 16, 64 directions; k chosen on the select split; own and cross interchange accuracy (IIA) on the test entities' pairs, against random and shuffled-target subspaces; the subspaces' energy inside the lens part, the address and the embedding directions.
 
-![Neither reader has a learned subspace of its own](../../figures/depth/s14_das_muse.png)
+![Neither reader has a learned subspace of its own](../../figures/depth/readme/s14_das_muse.png)
 
 *Learned subspaces (DAS) at the bridge word on the 9B and Muse, per subspace size k (rows): the share of each reader's switches carried by its own learned subspace, the lookup's (violet) and the recall's (black), against a shuffled and a random subspace of the same size (grey). Whiskers: 95% intervals.*
 
@@ -756,7 +756,7 @@ Test batch 52 A · opened 29 Oct · status: descriptive · hand-check: not in sa
 - **Data.** Main test, 50 locker-first items per model (Lightning at L14, main test only); the fact passages, 50 per model (9B, 27B, Muse).
 - **Method.** Each of the 25 lens directions labelled by a word classifier (the bridge words with their spellings, the answer words, other classes); the share of the rebuilt energy per class, against a chance baseline.
 
-![The lens part holds the two bridge words, almost never the answer](../../figures/readme/05_atoms.png)
+![The lens part holds the two bridge words, almost never the answer](../../figures/common/readme/05_atoms.png)
 
 *One bar per model: the lens part's directions, each counted by the word it decodes to, as shares of the energy they rebuild. The old and the new bridge word are the two teal segments, named above them; another scene word and no scene word are grey. The answer word (brick) has no visible segment: its share is printed at the right. Lightning hollow (○, post hoc).*
 
@@ -801,7 +801,7 @@ Test batch 52 B · opened 29 Oct · status: rule fixed in advance · hand-check:
 
 Readable and usable, per reader and data set:
 
-![On the fact passages the answer is readable and usable; on ours rarely](../../figures/depth/43_answer_map.png)
+![On the fact passages the answer is readable and usable; on ours rarely](../../figures/depth/ledger/06_answer_map.png)
 
 *Where the answer word is readable through the lens (left: the share of items with it in the lens top 5 at the best layer before the answer; one value, no interval) and whether adding its lens directions there changes the answer (right; at the size the run chose), lookup (violet) and recall (black), on our scenes and on the fact passages. Whiskers 95% intervals; Lightning and the 122B hollow ○ (coverage runs).*
 
@@ -851,7 +851,7 @@ Test 47.1 · opened not stated · status: rule fixed in advance · hand-check: n
 - **Data.** Routes scenes (another item moved), 300 per model, for identity answers; the main test, 200 per model, for the readers' switches.
 - **Method.** The change's 100 best lens directions in order; directions 1-25, 26-100 or all 100 taken out at the bridge word at L, each against a random part of the same share.
 
-![The lookup's identity route runs outside the lens; the position route never touches it](../../figures/depth/18_identity_outside.png)
+![The lookup's identity route runs outside the lens; the position route never touches it](../../figures/depth/readme/18_identity_outside.png)
 
 *Claim 5: switches blocked beyond a random part of the same size, lookup (violet) and recall (black), per model and per part taken out at the bridge word: the lens part, lens directions 26–100 (fixed in advance, filled), PCA directions of the same size, logit-lens directions and random lens directions (run after the data, hollow ○); grey band: within 0.10 of random; whiskers 95% intervals.*
 
@@ -898,7 +898,7 @@ Test routes test · opened 29 Oct · status: rule fixed in advance · hand-check
 - **Data.** Routes scenes, 300 per model (Lightning at L14, its gate chosen after the 60-scene pre-check was seen, ○).
 - **Method.** The change from a prompt where another item's locker sentence moved and took a new number; each route predicts a different locker. Arms: the whole change; without the address, against without a random part of its share; the address added by itself, against a random part. A sanity swap (two picks swap, no move) first.
 
-![Every model's lookup takes identity or position, never the value](../../figures/readme/08_routes.png)
+![Every model's lookup takes identity or position, never the value](../../figures/common/readme/08_routes.png)
 
 *Shares of the lookup's answers by route when another item moves, per model: identity, position, other; 95% intervals over bridge entities, n = 300 scenes per model; Lightning and the 122B hollow ○ (post hoc gates). The routes scenes are not among the hand-checked views.*
 
@@ -949,7 +949,7 @@ Test 47.7 (c) · opened not stated · status: rule fixed in advance · hand-chec
 
 The position and value routes per format:
 
-![In prose, JSON and tables the lookup never takes the value](../../figures/depth/44_value_formats.png)
+![In prose, JSON and tables the lookup never takes the value](../../figures/depth/ledger/07_value_formats.png)
 
 *The routes test in prose, JSON and a table: the share of the lookup's answers that follow the moved item's position (orange) and its new value (slate), per model and format run. Whiskers 95% intervals; Lightning hollow ○.*
 
@@ -978,7 +978,7 @@ The position and value routes per format:
 
 ### Does a learned subspace carry the readers' codes, and is the learned address ours? <a id="t51-3"></a>
 
-`ledger only` *Used in: README Appendix A, a figure link ("learned subspaces", figures/depth/fig14_learned.png).*
+`ledger only` *Used in: README Appendix A, a figure link ("learned subspaces", figures/depth/readme/33_learned.png).*
 
 Test 51.3 · opened 28 Oct · status: rule fixed in advance (part descriptive) · hand-check: not in sample · files: `results/x51_das/verdict-20261028T194630Z/verdict.md` · recompute: `scripts/x51_das.py` (the command in its docstring)
 
@@ -989,7 +989,7 @@ Test 51.3 · opened 28 Oct · status: rule fixed in advance (part descriptive) �
 - **Data.** Identity pairs from the main, clean and routes scenes (9B: 514 recall pairs; 27B 374; Muse 300), test entities held out; routes position pairs for the address.
 - **Method.** Distributed alignment search: a subspace trained to carry the switch, its own interchange accuracy on test pairs, against a random subspace and a shuffled-target subspace of the same size.
 
-![Learned subspaces carry each reader's item switch; random ones none](../../figures/depth/33_learned.png)
+![Learned subspaces carry each reader's item switch; random ones none](../../figures/depth/readme/33_learned.png)
 
 *A small address subspace learned on the address test's pairs (its size in the figure's note), on the 9B, the 27B and Muse: the share of position switches it carries (amber) against a random subspace (grey); the recalls it moves; the whole change and the hand-built address's energy inside it in their own columns. Whiskers: 95% intervals.*
 
@@ -1039,7 +1039,7 @@ Test 53.8 · opened not stated · status: rule fixed in advance · hand-check: n
 
 The identity code against another item's version and a random vector:
 
-![Centered, the code moves lookups beyond random; raw, little or none](../../figures/depth/45_identity_code.png)
+![Centered, the code moves lookups beyond random; raw, little or none](../../figures/depth/ledger/08_identity_code.png)
 
 *The item's identity code from its locker sentence added at the bridge word: the share of lookups moved by the item's own code (blue), by another item's version of it (slate) and by a random vector (grey), with the code as fit in advance and centered. Whiskers 95% intervals.*
 
@@ -1095,11 +1095,11 @@ Test x0_probe v4 · opened not stated · status: post hoc (descriptive) · hand-
 - **Data.** Every scene of the topic scenes, split by whether the item's locker sentence comes before or after the asked pick (see the table's n in the verdicts).
 - **Method.** Probes on the bridge word's state at L, cross-validated by bridge entity: the locker sentence's place, the answer digit and the bridge's identity; baselines: the majority class, the pick's sentence index, the visible layout.
 
-![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/readme/06_address_read_remove.png)
+![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/common/readme/06_address_read_remove.png)
 
 *Left: a probe at the bridge word reads which locker sentence holds the item's locker (the address, amber), against a probe trained on the layout only (grey). Right: the lookups that still answer by position when the address is removed from the patch (amber), against a random part of the same size removed instead (grey); lower means more blocked. Whiskers: 95% intervals. Hollow (○): Lightning, and the 122B where its gate was lowered (post hoc).*
 
-![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/readme/07_address_swap_lens.png)
+![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/common/readme/07_address_swap_lens.png)
 
 *Left: the lookups sent to the new locker when another locker's address is swapped in at about a real change's size (amber), against a random vector of the same size (grey). Right: how far above 200 random vectors the lens's 25 directions rebuild that swap (amber), against a change of item of the same size (blue, the positive control), in z; grey band: the range of the 200 random vectors. Hollow (○): Lightning, and the 122B where its gate was lowered (post hoc).*
 
@@ -1146,11 +1146,11 @@ Test address swap by dose · opened 29 Oct · status: rule fixed in advance · h
 - **Data.** Routes scenes without a move, 300 per model, each swapped to two target lockers (600 swaps); Lightning at L14 (gate chosen after the 60-scene pre-check, ○).
 - **Method.** At the bridge word at L: the difference of two slot means, at one, two and four times its size; control: a random vector of the same size. Read: the lookup's answer (target locker, original, the third), and whether the recall's answer changes (the collateral).
 
-![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/readme/06_address_read_remove.png)
+![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/common/readme/06_address_read_remove.png)
 
 *Left: a probe at the bridge word reads which locker sentence holds the item's locker (the address, amber), against a probe trained on the layout only (grey). Right: the lookups that still answer by position when the address is removed from the patch (amber), against a random part of the same size removed instead (grey); lower means more blocked. Whiskers: 95% intervals. Hollow (○): Lightning, and the 122B where its gate was lowered (post hoc).*
 
-![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/readme/07_address_swap_lens.png)
+![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/common/readme/07_address_swap_lens.png)
 
 *Left: the lookups sent to the new locker when another locker's address is swapped in at about a real change's size (amber), against a random vector of the same size (grey). Right: how far above 200 random vectors the lens's 25 directions rebuild that swap (amber), against a change of item of the same size (blue, the positive control), in z; grey band: the range of the 200 random vectors. Hollow (○): Lightning, and the 122B where its gate was lowered (post hoc).*
 
@@ -1203,7 +1203,7 @@ Test 47.16 · opened not stated · status: rule fixed in advance · hand-check: 
 - **Data.** Routes scenes (another item moved), the same base scenes at every distance: 218<!-- src: results/x47_distance/x47_16-20261028T131501Z/x47_16.md \| qwen3.5-9b :: 218 --> / 300<!-- src: results/x47_distance/x52_distance-20261029T023426Z/x47_16.md \| qwen3.6-27b :: 300 --> / 199<!-- src: results/x47_distance/x52_distance-20261029T023426Z/x47_16.md \| nemotron-3.5-lightning :: 199 --> (9B / 27B / Lightning); Muse: its rerun r2 (Dan, 09:05), 279<!-- src: results/x47_distance/x52_distance-20261029T090323Z/x47_16.md \| muse-glimmer-30b :: 0.98 :: 279 --> scenes.
 - **Method.** At each distance, at the bridge word at L: the routes test's whole change, and without the address against a random part of its share; the address swap at dose 2 against a random vector of its size; a slot probe beside.
 
-![The address survives fifty neutral sentences](../../figures/depth/s10_pointer_moves_and_neutral_sentence.png)
+![The address survives fifty neutral sentences](../../figures/depth/readme/s10_pointer_moves_and_neutral_sentence.png)
 
 *Top: the position answers when only the address is kept, for moves to or from the first locker and between the second and the third (amber), per model, with the whole change's share beside. Bottom: the code's shift, in positions, with a neutral sentence before the first locker or between the lockers and the picks (amber). Whiskers: 95% intervals. All estimates post hoc.*
 
@@ -1326,7 +1326,7 @@ Test 53.5 · opened 29 Oct · status: rule fixed in advance · hand-check: not i
 
 The address removed and added alone on the 27B's position scenes, beside the 9B:
 
-![On its position scenes the 27B's address brings fewer answers back](../../figures/depth/46_subset27b.png)
+![On its position scenes the 27B's address brings fewer answers back](../../figures/depth/ledger/09_subset27b.png)
 
 *The 27B's scenes where its lookup goes by position, beside the 9B: the position answers left without the address and without a random part (grey), and brought back by the address alone and by a random part alone (grey). Whiskers 95% intervals.*
 
@@ -1368,11 +1368,11 @@ Test 47.0 · opened not stated · status: descriptive · hand-check: not in samp
 - **Data.** Routes scenes, 100 items per model, each swapped to both other lockers (200 cases); null: 200 random vectors of the same size.
 - **Method.** At the bridge word at L, the swap h + 2 (mu_k - mu_j): (a) the best rank of a position word (first, second, third, 1, 2, 3, ...) in the lens readout; (b) the share the lens's 25 best directions rebuild; (c) how far the readout moves (KL). Positive control: an item change of the same size.
 
-![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/readme/06_address_read_remove.png)
+![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/common/readme/06_address_read_remove.png)
 
 *Left: a probe at the bridge word reads which locker sentence holds the item's locker (the address, amber), against a probe trained on the layout only (grey). Right: the lookups that still answer by position when the address is removed from the patch (amber), against a random part of the same size removed instead (grey); lower means more blocked. Whiskers: 95% intervals. Hollow (○): Lightning, and the 122B where its gate was lowered (post hoc).*
 
-![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/readme/07_address_swap_lens.png)
+![The address: a probe reads it, a swap moves the lookup, the lens cannot see it](../../figures/common/readme/07_address_swap_lens.png)
 
 *Left: the lookups sent to the new locker when another locker's address is swapped in at about a real change's size (amber), against a random vector of the same size (grey). Right: how far above 200 random vectors the lens's 25 directions rebuild that swap (amber), against a change of item of the same size (blue, the positive control), in z; grey band: the range of the 200 random vectors. Hollow (○): Lightning, and the 122B where its gate was lowered (post hoc).*
 
@@ -1418,7 +1418,7 @@ Test 53.2 · opened not stated · status: rule fixed in advance · hand-check: n
 
 - **Question.** What can a probe on the lens subspace decode, against the full state: the bridge item's locker slot (the address) and the lookup's answer digit, with which item and the recall's answer as positive controls?
 
-![The address is decodable but under-represented in the lens directions](../../figures/readme/11_monitor.png)
+![The address is decodable but under-represented in the lens directions](../../figures/common/readme/11_monitor.png)
 
 *The locker probe's accuracy for the address at the last token, per model, for the lens part as used throughout (left) and with four times as many directions (right): the lens part (teal) against a random part of the same energy (grey), with 95% intervals; the lens part's value and interval, and the full state's accuracy, in their own columns. Lightning hollow (○, post hoc).*
 
@@ -1524,7 +1524,7 @@ Test 49.6 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 
 The report under each wording:
 
-![Reworded, the report reads slot 1 on every model tested](../../figures/depth/47_report_first_position.png)
+![Reworded, the report reads slot 1 on every model tested](../../figures/depth/ledger/10_report_first_position.png)
 
 *The model's report of where the item sits, reworded: the share of reports naming the first position under the earlier wording, when a digit is asked for and when a word is asked for, per model. Whiskers 95% intervals; Lightning hollow ○.*
 
@@ -1564,7 +1564,7 @@ Test 51.2 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 - **Data.** The attention test's items and swap (routes scenes): read pairs 330 / 300 / 284 / 250<!-- src: results/x51_heads/x52_heads-20261029T015136Z/verdict.md \| read pairs 250 :: 250 --> (9B / 27B / Muse / Lightning, at L14).
 - **Method.** Heads ranked by their attention move on the fit half, mean-ablated together on the read half at the last token (and the question tokens), against random head sets of the same size in the same layers.
 
-![No small set of heads carries the swapped address](../../figures/depth/30_heads.png)
+![No small set of heads carries the swapped address](../../figures/depth/readme/30_heads.png)
 
 *The heads that pass the most of each part under the swap, on the 9B (top) and Muse (bottom), rows read from the run: what each head passes (median ‖W_OV x‖ / ‖x‖) of the lens part (teal), the rest (slate) and the address (amber), against a random part and twice the lens part (grey). Whiskers: 95% intervals.*
 
@@ -1604,7 +1604,7 @@ Test 49.7 · opened not stated · status: rule fixed in advance · hand-check: n
 - **Data.** The address swap's routes items at dose 2, heads chosen on one half and read on the other: 330<!-- src: results/x49_attn/x49_7-20261028T154511Z/verdict.md \| Read pairs 330, switched 148 :: 330 --> / 300<!-- src: results/x49_attn/x49_7-20261028T154511Z/verdict.md \| Read pairs 300, switched 66 :: 300 --> / 286<!-- src: results/x49_attn/x49_7-20261028T154511Z/verdict.md \| Read pairs 286, switched 149 :: 286 --> / 250<!-- src: results/x49_attn/x52_attn-20261029T013321Z/verdict.md \| Read pairs 250, switched 125 :: 250 --> read pairs, of which 148<!-- src: results/x49_attn/x49_7-20261028T154511Z/verdict.md \| Read pairs 330, switched 148 :: 148 --> / 66<!-- src: results/x49_attn/x49_7-20261028T154511Z/verdict.md \| Read pairs 300, switched 66 :: 66 --> / 149<!-- src: results/x49_attn/x49_7-20261028T154511Z/verdict.md \| Read pairs 286, switched 149 :: 149 --> / 125<!-- src: results/x49_attn/x52_attn-20261029T013321Z/verdict.md \| Read pairs 250, switched 125 :: 125 --> switched (9B / 27B / Muse / Lightning).
 - **Method.** At every full-attention layer after L, every head: the attention mass moved from the original locker to the swapped-in one at the last token (the question tokens beside), on switched and non-switched pairs and under a random vector of the swap's size; the best head zeroed as a necessity check.
 
-![Heads move with the swap even where the lookup did not switch](../../figures/depth/32_attention.png)
+![Heads move with the swap even where the lookup did not switch](../../figures/depth/readme/32_attention.png)
 
 *The last token's attention on the old and the new locker sentence under the address swap (amber), on the scenes where the answer switched and where it stayed, against no change and a random vector (grey), per model. Whiskers: 95% intervals.*
 
@@ -1647,7 +1647,7 @@ Test 47.14 · opened not stated · status: rule fixed in advance · hand-check: 
 - **Data.** Hall scenes, the test half: 147<!-- src: results/x47_chain/x47_14-20261028T115841Z/x47_14.md \| qwen35_9b_x47_14 :: 147 --> / 146<!-- src: results/x47_chain/x52_chain-20261029T023424Z/x47_14.md \| x47_14_27b :: 146 --> / 153<!-- src: results/x47_chain/x47_14-20261028T115841Z/x47_14.md \| muse30_x47_14 :: 153 --> (9B / 27B / Muse). Lightning not tested: its gate failed (the hall question right on 0.736<!-- src: results/x47_chain/nem35l_x52_chain/gate.json \| "PPP" :: 0.736 --> of 500<!-- src: results/x47_chain/nem35l_x52_chain/gate.json \| "cases" :: 500 --> cases, under 0.80).
 - **Method.** The change at the digit token of the bridge's locker sentence at L: the hall address (U_num) taken out or retained alone, against random parts of its share; the hall question's answers sorted into identity, position and value; the locker question's answer as the collateral.
 
-![The hall is readable at the locker digit, yet a random part cuts nearly as much](../../figures/depth/25_chain.png)
+![The hall is readable at the locker digit, yet a random part cuts nearly as much](../../figures/depth/readme/25_chain.png)
 
 *Chained addresses, the hall before the locker: a probe for the hall address (amber) against a random part and a layout-only probe (grey); the hall answers by position without the hall address and with only the hall address kept; the whole change in its own column. Lightning not tested. Whiskers: 95% intervals.*
 
@@ -1692,7 +1692,7 @@ Test x45d · opened not stated · status: rule fixed in advance · hand-check: n
 
 The fitted address against one refit per format:
 
-![The address must be refit for each text format](../../figures/depth/34_transfer.png)
+![The address must be refit for each text format](../../figures/depth/readme/34_transfer.png)
 
 *Top, after the data: the switches blocked beyond a random part without the lens part (teal) and without the address fit on simple scenes (orange), per model and setting, all hollow ○. Bottom, rule 45d: per format, without the address fit on simple scenes (left) and refit on that format (right); a cell under its switch bar says so. Whiskers 95% intervals.*
 
@@ -1728,7 +1728,7 @@ Test 53.7 · opened not stated · status: rule fixed in advance (part descriptiv
 
 - **Question.** Does the address carry over to code and tool output: does a probe read it at the bridge word, and does the routes test find the lookup using it, when the scene is rendered as Python or as a tool's response?
 
-![In code and tool output the address carries the position route](../../figures/depth/04_code_tool.png)
+![In code and tool output the address carries the position route](../../figures/depth/readme/04_code_tool.png)
 
 *Python code and tool output on the 9B and the 27B (rows): the locker probe's accuracy for the address (amber) against a random part and a layout-only probe (grey); the lookups left on position without the address, and brought back with only the address kept. The 9B's code probe is below its gate. Whiskers: 95% intervals.*
 
@@ -1793,7 +1793,7 @@ Test the split by sentence order · opened 29 Oct · status: post hoc (descripti
 
 - **Question.** On the main test, does the change at the bridge word switch the lookup when the item's locker sentence came before the asked pick, and when it came after?
 
-![The bridge word switches the lookup when its locker came first](../../figures/readme/09_sentence_order.png)
+![The bridge word switches the lookup when its locker came first](../../figures/common/readme/09_sentence_order.png)
 
 *Lookups switched by the whole change when the locker sentence comes first and when it comes after the pick, per model, and (post hoc, hollow ○) with the changed prompt's locker sentence before or after the pick, for each original order. Whiskers: 95% cluster-bootstrap intervals over bridge entities; n per cell in the depth README; Lightning ○ (gate chosen after its pre-check). The sentence order is view g of the hand-checked sample; the 2 × 2 is post hoc and was not hand-checked.*
 
@@ -1856,7 +1856,7 @@ Test 45q · opened 27 Oct · status: rule fixed in advance · hand-check: not in
 - **Data.** Clean one-pick scenes (only the bridge token differs), locker after the pick: 201<!-- src: results/x45b_binding/x45q-20261027T005345Z/x45q.md \| qwen35_9b_x45q :: 201 / 0 / 201 / 201 :: 201 --> / 288<!-- src: results/x45b_binding/x45q-20261027T005345Z/x45q.md \| x45q_27b :: 288 / 0 / 288 / 288 :: 288 --> / 205<!-- src: results/x45b_binding/x45q-20261027T005345Z/x45q.md \| muse30b_x45q :: 205 / 0 / 205 / 205 :: 205 --> (9B / 27B / Muse). Lightning not tested: the clean one-pick design's gate fails on it.
 - **Method.** On the original prompt: (a) the change at the bridge word at L; (c) the changed prompt's states copied into every locker-sentence token at L; (d) the same at L/2; each read as a share of the lookups the changed prompt itself switches.
 
-![Locker after the pick: the link is made in the locker sentences](../../figures/depth/06_link_layers.png)
+![Locker after the pick: the link is made in the locker sentences](../../figures/depth/readme/06_link_layers.png)
 
 *With the locker sentence after the pick, by layer (x: the layer as a share of the model's depth): the lookups switched by the change at the bridge word and by the same change copied into the locker sentences, each line named at its end; dots: the cells fixed in advance, with their values; shading 95% intervals; the layer sweeps after the data (post hoc); the 9B, 27B and Muse.*
 
@@ -1944,7 +1944,7 @@ Test 47.4 · opened not stated · status: descriptive · hand-check: not in samp
 - **Data.** The main test and clean one-pick scenes, by sentence order: locker first 75 / 69 / 68 (main) and 151 / 202 / 143 (clean), locker after 68 / 61 / 69 (main) (9B / 27B / Muse). Lightning, main design: locker first 59<!-- src: results/x47_cumulative/x52_cumulative-20261029T044453Z/x47_4.md \| nemotron-3.5-lightning :: main :: lookup :: locker-first :: 59 -->, locker after 79<!-- src: results/x47_cumulative/x52_cumulative-20261029T044453Z/x47_4.md \| nemotron-3.5-lightning :: main :: lookup :: locker-after :: 79 -->; its clean design not tested (gate).
 - **Method.** Four arms on the original prompt: (a) the change at the bridge word at L; (b) the bridge word replaced at every layer up to L; (c) at every layer; (d) the whole asked pick sentence at every layer. The lookups (a) leaves unswitched split into before L (b minus a), the pick sentence's other tokens (d minus c) and outside the pick sentence (1 minus d).
 
-![Lookups the change misses are read at the bridge word before L](../../figures/depth/s07_cumulative.png)
+![Lookups the change misses are read at the bridge word before L](../../figures/depth/readme/s07_cumulative.png)
 
 *Claim 11: where each reader's switches under the change are carried, as shares of the switches (a term may be negative): the bridge word at L, the bridge word before L, every layer after L, the pick sentence's other tokens, and outside the pick sentence; lookup violet, recall black; the main test and the clean one-pick scenes; whiskers 95% intervals; Lightning hollow ○, its clean one-pick scenes below gate. The split by sentence order behind claim 11 is in the key numbers per claim and in the ledger card.*
 
@@ -1986,11 +1986,11 @@ Test 47.8 · opened not stated · status: rule fixed in advance · hand-check: n
 
 - **Question.** Layer by layer, when does the lookup stop needing the lens part, when does it start using the address, when is the address readable, and is the value ever used?
 
-![The address is readable before the lookup uses it](../../figures/depth/07_depth.png)
+![The address is readable before the lookup uses it](../../figures/depth/readme/07_depth.png)
 
 *By depth (x: the layer as a share of the model's depth), on the three models whose gates were fixed in advance: the locker probe's accuracy and the position answers under the whole change when another item moves (orange, named at their ends), and the lookup's switches blocked without the lens part beyond a random part of the same size (teal); shading 95% intervals; grey band: the layers that pass the gate. The 9B in its own block: its interval runs below zero outside its gate.*
 
-![The address is readable before the lookup uses it](../../figures/depth/08_depth_more.png)
+![The address is readable before the lookup uses it](../../figures/depth/readme/08_depth_more.png)
 
 *As the figure above, on Lightning and the 122B, whose gates were chosen after the data (all estimates post hoc); Lightning in its own block: its interval runs far below zero outside its gate.*
 
@@ -2052,7 +2052,7 @@ Test 51.4 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 
 The swap at the last token, per model:
 
-![The bridge word's code works at the last token only on Muse](../../figures/depth/48_last_token_swap.png)
+![The bridge word's code works at the last token only on Muse](../../figures/depth/ledger/11_last_token_swap.png)
 
 *The address fit at the bridge word swapped in at the last token, a few layers after L at twice a real change's size: the share of lookups sent to the target item, per model. Whiskers 95% intervals; Lightning hollow ○ (a coverage run).*
 
@@ -2094,7 +2094,7 @@ Test 51.10 · opened 28 Oct · status: rule fixed in advance · hand-check: in s
 - **Data.** Main test, the scenes whose locker sentences come first: 75 / 69 / 68 / 59<!-- src: results/x51_jread/x52_jread-20261029T005707Z/verdict.md \| n = 59 locker-first :: 59 --> (9B / 27B / Muse / Lightning; Lightning at L14, a coverage run on the same rule, no prediction).
 - **Method.** Read: a probe on the lens part of the state, layer by layer, against the full state and chance. Write: at the read peak, the breadth track's swap or the lens part of the change (gain up to 2), against a random part and his rotated control; the whole-state patch as reference.
 
-![At the last token the entity is in the lens, but the answer is not computed through it](../../figures/readme/12_last_token.png)
+![At the last token the entity is in the lens, but the answer is not computed through it](../../figures/common/readme/12_last_token.png)
 
 *Per model, at the layer where the read peaks (under the name). Left: a probe's accuracy for the recall's entity on the lens part of the last token's state, with its 95% interval; dashed: chance. Right: the recalls switched when only the lens part is swapped in (teal) against the whole state swapped in (grey); the lens part's value in the last column. Lightning hollow (○, post hoc).*
 
@@ -2148,7 +2148,7 @@ Test 53.3 · opened 29 Oct · status: rule fixed in advance · hand-check: not i
 
 Both readers at the last token:
 
-![At the read peak no lookup goes through the lens part](../../figures/depth/49_last_conflict.png)
+![At the read peak no lookup goes through the lens part](../../figures/depth/ledger/12_last_conflict.png)
 
 *The conflict test at the last token: the switches blocked without the lens part beyond a random part, lookup (left) and recall (right), at the two layers tested for each reader (its own layers, earlier first; the 122B at one). Whiskers 95% intervals; Lightning and the 122B hollow ○.*
 
@@ -2203,7 +2203,7 @@ Test 53.3b · opened 29 Oct · status: rule fixed in advance · hand-check: not 
 
 Both readers at the last token, with words as answers:
 
-![Near the output the test is uninformative; read peaks differ](../../figures/depth/50_last_conflict_words.png)
+![Near the output the test is uninformative; read peaks differ](../../figures/depth/ledger/13_last_conflict_words.png)
 
 *As the figure above with words as the answers: per model, three, two and one layers before the answer and at the read peak (the rule counts the two layers nearest the answer as uninformative). Whiskers 95% intervals; Lightning hollow ○.*
 
@@ -2266,7 +2266,7 @@ Test 53.4 · opened 29 Oct · status: rule fixed in advance · hand-check: not i
 
 Each block or span cut on Lightning:
 
-![Two attention blocks carry a third of Lightning's lookup switch](../../figures/depth/51_attention_blocks.png)
+![Two attention blocks carry a third of Lightning's lookup switch](../../figures/depth/ledger/14_attention_blocks.png)
 
 *Lightning: the switches blocked when attention blocks are cut, lookup (left) and recall (right), per block or span cut (rows), with a control block and a control span. Whiskers 95% intervals; all estimates post hoc.*
 
@@ -2320,7 +2320,7 @@ Test Z1 · opened 28 Oct · status: rule fixed in advance · hand-check: in samp
 
 - **Question.** On the fact passages with a named bridge, does the lookup let go of the lens part while the recall follows it?
 
-![On the named fact passages the lookup follows the lens part too](../../figures/readme/15_facts.png)
+![On the named fact passages the lookup follows the lens part too](../../figures/common/readme/15_facts.png)
 
 *The lookup on passages with true and with made-up facts, per model; whiskers: intervals on the true-fact values (Muse: too few lookup switches, not drawn).*
 
@@ -2388,7 +2388,7 @@ Test 53.1b · opened 29 Oct · status: rule fixed in advance · hand-check: not 
 
 The answer control per chain:
 
-![Named: both recalls mixed; described: the 27B's reads as the answer](../../figures/depth/52_fact_answer_control.png)
+![Named: both recalls mixed; described: the 27B's reads as the answer](../../figures/depth/ledger/15_fact_answer_control.png)
 
 *The answer control on the fact passages with the bridge named, per chain (P: read in the passage, M: recalled; the last letter is the hop the reader answers): the switches blocked without the lens part and with only the answer word's directions removed, lookup (violet) and recall (black). Whiskers 95% intervals.*
 
@@ -2440,7 +2440,7 @@ Test 51.7 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 
 One layer against every layer up to L:
 
-![Over every layer up to L, fact-after lookups follow the lens part](../../figures/depth/53_every_layer.png)
+![Over every layer up to L, fact-after lookups follow the lens part](../../figures/depth/ledger/16_every_layer.png)
 
 *The change at the bridge word at one layer (left) and at every layer up to L (right): the switches blocked without the lens part beyond a random part, lookup (violet) and recall (black), with the fact sentence before the pick and after it. Whiskers 95% intervals; Lightning hollow ○.*
 
@@ -2488,7 +2488,7 @@ Test Z3 · opened 28 Oct · status: rule fixed in advance · hand-check: not in 
 
 The three routes on the fact passages:
 
-![On the fact passages the lookup rarely takes the position route](../../figures/depth/54_fact_routes.png)
+![On the fact passages the lookup rarely takes the position route](../../figures/depth/ledger/17_fact_routes.png)
 
 *The routes test on the fact passages: the share of the lookup's answers by identity (blue), by position (orange) and by value (slate), at each model's layer tested and, where run, a later one. Whiskers 95% intervals; the 27B, Lightning and the 122B hollow ○ (coverage runs, or after the data).*
 
@@ -2531,7 +2531,7 @@ Test 51.5 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 
 Each reader's switches by layer on the fact passages:
 
-![On the 9B the fact passages are read over our layers; on the 27B not](../../figures/depth/55_read_window.png)
+![On the 9B the fact passages are read over our layers; on the 27B not](../../figures/depth/ledger/18_read_window.png)
 
 *The fact passages' read window: the share of each reader's answers switched by the whole change at the bridge name, one layer at a time, lookup (violet) and recall (black); dashed: the bar fixed in advance. Lightning post hoc (a coverage run).*
 
@@ -2572,7 +2572,7 @@ Test 47.3 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 - **Data.** Routes scenes with the asked pick described: 300 per model (15 / 15 / 9 bridge items). Lightning not tested: its gate failed. The answer control on these scenes (51.12's cue r2, 9B and 27B, 300 each) in the table; Lightning's was cancelled with 47.3.
 - **Method.** The change at the description's word at L, another item moved (C2); without the lens part against a random part of its share; value answers; the refit address's cut beside.
 
-![A described bridge: the split holds on two of the three models](../../figures/depth/19_described_bridge.png)
+![A described bridge: the split holds on two of the three models](../../figures/depth/readme/19_described_bridge.png)
 
 *A described bridge ("the one known for …") instead of a named one, per model: the switches blocked without the lens part beyond a random part, lookup (violet) and recall (black), over the grey band; the gap (slate) with its interval; the position answers cut beyond random without the address (amber). Lightning hollow (○, post hoc). Whiskers: 95% intervals.*
 
@@ -2783,7 +2783,7 @@ Test 49.3 · opened not stated · status: rule fixed in advance · hand-check: n
 
 The pooled probe against the best single token:
 
-![No probe reads who picked an item at its locker sentence](../../figures/depth/56_person_probe.png)
+![No probe reads who picked an item at its locker sentence](../../figures/depth/ledger/19_person_probe.png)
 
 *Who picked the item, read by a probe at its locker sentence: the accuracy pooled over the sentence (with its 95% interval) and at the best single token, at half the test layer and at it. The 27B and Lightning hollow ○ (a coverage run; below its gate).*
 
@@ -2943,7 +2943,7 @@ Test 47.11 · opened not stated · status: rule fixed in advance · hand-check: 
 
 The address fit on animals against one refit on each kind:
 
-![The animal-fit address does not carry over to other items as ruled](../../figures/depth/57_any_item.png)
+![The animal-fit address does not carry over to other items as ruled](../../figures/depth/ledger/20_any_item.png)
 
 *The address on other kinds of item: the position answers cut beyond random without the address fit on animals (left) and refit on each kind (right), per model and kind. Whiskers 95% intervals; Lightning hollow ○.*
 
@@ -3044,7 +3044,7 @@ Test Z2 · opened 28 Oct · status: rule fixed in advance · hand-check: not in 
 
 Both operations' gaps on the described bridge:
 
-![The breadth track's removal everywhere hits the recall more; the depth track's gap is unclear](../../figures/depth/58_described_gap.png)
+![The breadth track's removal everywhere hits the recall more; the depth track's gap is unclear](../../figures/depth/ledger/21_described_gap.png)
 
 *The fact passages with the bridge described: the gap, recall minus lookup, under the change at one layer (left, a share of switches) and under removal everywhere (right, a share of answers); the 122B not run at one layer. Whiskers 95% intervals; Lightning and the 122B hollow ○.*
 

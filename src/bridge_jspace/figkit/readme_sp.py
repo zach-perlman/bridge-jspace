@@ -1,4 +1,4 @@
-"""The root README's figures (figures/readme/) on styles-plot, for the readme target. Several are write-up figures
+"""The root README's figures (figures/common/readme/) on styles-plot, for the readme target. Several are write-up figures
 under the README's file name (ALIAS: the same declaration, the README's figure id, so the registry has their rows under
 both ids); the rest are declared here from the figkit builders' data (exemplars.py, deck_figs.py, claim_figs.py,
 depth_figs.py), same accessors, same file names.
@@ -19,9 +19,10 @@ from bridge_jspace import figdata as S
 from bridge_jspace.figkit import layout as L
 from bridge_jspace.figkit import writeup_sp as WS
 from bridge_jspace.figkit import writeup_sp_b as WB
-from bridge_jspace.figkit.writeup_sp_base import REPO, ZK, est, need, vocab
+from bridge_jspace.figkit.writeup_sp_base import ZK, est, need, vocab
 
-OUT = REPO / "figures" / "readme"
+GROUP = "common/readme"
+OUT = L.folder(GROUP)
 TARGET = "readme"
 DAN = [m for m, _ in D.DAN]
 TWIN = WB.TWIN
@@ -362,10 +363,10 @@ BLOCKED = {"f6_address": f6_address}
 
 
 def build(ids=None) -> list[str]:
-    """Save the README set strict into figures/readme/ (numbered files, figkit/layout.py); r1_dan_split and
+    """Save the README set strict into figures/common/readme/ (numbered files, figkit/layout.py); r1_dan_split and
     t12_two_by_two belong to the depth set (depth_sp builds them). Returns the failures."""
     # the README links f9_where as "Figure": its claim for the index
-    return L.build("readme", FIGS, TARGET, ids, {"f9_where": "Middle layers need the bridge's mention; deeper layers, "
+    return L.build(GROUP, FIGS, TARGET, ids, {"f9_where": "Middle layers need the bridge's mention; deeper layers, "
                                                               "the question"})  # fmt: skip
 
 

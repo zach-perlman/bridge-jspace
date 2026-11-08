@@ -1,7 +1,9 @@
 """Real examples as images (README brief, 7 Nov, §2): one card per test, each an item picked by a stated rule (never by
 its outcome), with the prompt's real text, the bridge word in bold and each reader's answer before and under each
 operation, read from the per-item run files. The rule and the item id are printed on the card; the README gives each
-card's population rate beside it (by key, in figures/examples/_meta/captions.toml).
+card's population rate beside it (by key, in the caption stores figures/{depth,breadth}/examples/_meta/captions.toml).
+The cards go by track (figkit/layout.py): E1, E4 to figures/depth/examples/, E2, E3 to figures/breadth/examples/;
+figures/common/examples/ (cards that span both tracks) is empty and gets its index only.
 
   E1 depth   the main test (two people swap picks), Qwen 27B: results/x0_necessity/x0_necessity_27b_chat/
   E2 breadth a fact passage with the final fact stated (lookup) and without it (recall), Qwen 27B, jsuite v2 test; the
@@ -33,7 +35,7 @@ sys.path.insert(0, str(REPO / "src"))
 from bridge_jspace.figkit import layout as L  # noqa: E402
 from bridge_jspace.figkit.writeup_sp_base import vocab  # noqa: E402
 
-GROUP, TARGET = "examples", "readme"
+GROUPS, TARGET = ("depth/examples", "breadth/examples", "common/examples"), "readme"
 DEPTH = REPO / "results/x0_necessity/x0_necessity_27b_chat"
 ROUTES = REPO / "results/x6_routes/qwen35_9b_x6_routes"
 ITEMS = REPO / "data/tasks_v2/jsuite_v2_test_chat/items.jsonl"
@@ -308,5 +310,5 @@ FIGS = {"e1_locker_scene": e1_locker_scene, "e2_fact_passage": e2_fact_passage, 
 
 
 if __name__ == "__main__":
-    failed = L.build(GROUP, FIGS, TARGET, ids=sys.argv[1:] or None)
+    failed = [f for g in GROUPS for f in L.build(g, FIGS, TARGET, ids=sys.argv[1:] or None)]
     sys.exit(1 if failed else 0)

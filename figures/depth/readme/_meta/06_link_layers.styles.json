@@ -1,0 +1,219 @@
+{
+ "styles_plot": "0.2.2",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "dfb8ad8ca5b78ad381cb3058de9bcbc1dd1cb2d03118402574c6db31063cc443",
+  "hash": "meaning"
+ },
+ "registry": {
+  "path": "data/figures/status.csv",
+  "sha256": "b50c31676735b81f8e968bb90792a75984f83c5540fe87769e7aa9bbae69dd59"
+ },
+ "figure": "fig03c_link_layers",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "text_only": false,
+ "png": {
+  "pixels_sha256": "d4b33ceb1af629db35c7b6188ff894286576f6c63f46842e2249acc7863b91f0",
+  "dpi": 160
+ },
+ "roles": [
+  "lookup"
+ ],
+ "controls": [],
+ "cells": {
+  "arm.a.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "arm.a.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "arm.a.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "arm.c.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "arm.c.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "arm.c.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "arm.d.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "arm.d.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "arm.d.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "sweep.bridge.mu": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "sweep.bridge.q27": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "sweep.bridge.q9": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "sweep.copy.mu": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "sweep.copy.q27": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "sweep.copy.q9": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "line",
+   "role": "lookup",
+   "cell": "sweep.bridge.q9",
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "lookup",
+   "cell": "sweep.copy.q9",
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "arm.a.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "arm.c.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "arm.d.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "line",
+   "role": "lookup",
+   "cell": "sweep.bridge.q27",
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "lookup",
+   "cell": "sweep.copy.q27",
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "arm.a.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "arm.c.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "arm.d.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "line",
+   "role": "lookup",
+   "cell": "sweep.bridge.mu",
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "lookup",
+   "cell": "sweep.copy.mu",
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "arm.a.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "arm.c.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "arm.d.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "shading: 95% interval",
+  "whiskers: 95% interval"
+ ],
+ "numbers": {
+  "f15.a.q9": "0.17",
+  "f15.c.q9": "0.70",
+  "f15.d.q9": "0.07",
+  "f15.a.q27": "0.01",
+  "f15.c.q27": "0.74",
+  "f15.d.q27": "0.05",
+  "f15.a.mu": "0.01",
+  "f15.c.mu": "0.76",
+  "f15.d.mu": "0.47"
+ },
+ "problems": []
+}

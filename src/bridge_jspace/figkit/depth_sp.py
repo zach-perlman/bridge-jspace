@@ -1,5 +1,5 @@
-"""The depth README's dot-table figures (figures/depth/) on styles-plot, for the readme target. Their numbers are the
-rows scripts/readme_story_figures.py and the story_b* builders recorded in data/figures/depth/data.csv (read by
+"""The depth track's figures (figures/depth/readme/ and figures/depth/ledger/) on styles-plot, for the readme target.
+Their numbers are the rows scripts/readme_story_figures.py and the story_b* builders recorded in data/figures/depth/data.csv (read by
 figure id and quantity, never the newest verdict file); three are write-up figures under the depth README's file
 name (ALIAS). Verdict texts ("the rule's reading", clauses) are not drawn (Dan, 7 Nov): they stay in the README.
 
@@ -20,9 +20,9 @@ from bridge_jspace.figkit import depth_sp_e as DE
 from bridge_jspace.figkit import depth_sp_f as DF
 from bridge_jspace.figkit import layout as L
 from bridge_jspace.figkit import readme_sp as RS
-from bridge_jspace.figkit.writeup_sp_base import REPO, ZK, est, need, vocab
+from bridge_jspace.figkit.writeup_sp_base import ZK, est, need, vocab
 
-OUT = REPO / "figures" / "depth"
+OUT = L.folder("depth/readme")
 DAN = [m for m, _ in D.DAN]
 
 # depth id -> the write-up figure it draws (registry rows copied, as readme_sp.ALIAS)
@@ -384,10 +384,10 @@ FIGS = {**{fid: _alias(fid) for fid in ALIAS}, "fig01b_settings": fig01b_setting
 
 
 def build(ids=None) -> list[str]:
-    """Save the depth set strict into figures/depth/ (numbered files, figkit/layout.py), with the two figures
-    readme_sp declares for it. Returns the failures."""
+    """Save the depth sets strict (numbered files, figkit/layout.py): the README's into figures/depth/readme/, with
+    the two figures readme_sp declares for it, and the ledger cards' into figures/depth/ledger/. Returns the failures."""
     figs = {**FIGS, "r1_dan_split": RS.FIGS["r1_dan_split"], "t12_two_by_two": RS.FIGS["t12_two_by_two"]}
-    return L.build("depth", figs, RS.TARGET, ids)
+    return [*L.build("depth/readme", figs, RS.TARGET, ids), *L.build("depth/ledger", figs, RS.TARGET, ids)]
 
 
 if __name__ == "__main__":

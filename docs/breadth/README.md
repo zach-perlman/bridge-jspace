@@ -4,7 +4,7 @@
 *When a model answers a two-step question about an entity, does it need the directions the J++ lens reads at that
 entity? Does that depend on whether the final fact is recalled or stated, and in which models?*
 
-**Status.** Every number is sourced from the run files, and tests check it. A 46-item hand-check changed no headline claim ([findings](../review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->. Human recomputation (VERIFIED.md) is not yet done. Built at 0e473de5 from the run files.
+**Status.** Every number is sourced from the run files, and tests check it. A 46-item hand-check changed no headline claim ([findings](../review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->. Human recomputation (VERIFIED.md) is not yet done. Built at b58da137 from the run files.
 
 ## In one minute
 
@@ -12,7 +12,7 @@ entity? Does that depend on whether the final fact is recalled or stated, and in
 - **What recall needs is its answer's own directions**. Keeping only them undoes nearly all of the damage, and removals orthogonal to the answer cost nothing (post hoc) → [7](#7-what-recall-needs-the-answers-own-directions), [8](#8-removals-orthogonal-to-the-answer).
 - **At the mention, the lens part carries which entity it is, not its fact**. Across nine models, how much recall needs the lens part is graded → [4](#4-what-the-lens-part-carries-at-the-mention-which-entity-it-is), [10](#10-every-model-every-test).
 
-[Root README](../../README.md) · [Depth report](../depth/README.md) · [Hypotheses](../plans/hypotheses.md) · [Pre-registration](prereg_replication_1022.md) · [Every number](data.csv) · [Examples](../../figures/examples/README.md) · [MIT licence](../../LICENSE)
+[Root README](../../README.md) · [Depth report](../depth/README.md) · [Hypotheses](../plans/hypotheses.md) · [Pre-registration](prereg_replication_1022.md) · [Every number](data.csv) · [Examples](../../figures/breadth/examples/README.md) · [MIT licence](../../LICENSE)
 
 <details><summary>The claims in more detail: models, longer chains, monitoring</summary>
 
@@ -64,7 +64,7 @@ Every hypothesis this track tested is in the [hypotheses ledger](../plans/hypoth
   drop minus the lookup's, in points.
 One real fact passage, as the model reads it:
 
-![One real fact passage, Qwen 27B: without the lens part the recalled answer turns wrong and the looked-up one holds](../../figures/examples/02_fact_passage.png)
+![One real fact passage, Qwen 27B: without the lens part the recalled answer turns wrong and the looked-up one holds](../../figures/breadth/examples/01_fact_passage.png)
 
 *Without the lens part the recall turns wrong and the lookup holds; a rotated part turns neither. One pair of fact passages, Qwen 27B (the bridge in bold): the lookup's passage gives the fact, the recall's does not. This flip shows on 164<!-- src: data/figures/examples/data.csv | e2.pairs_flip --> of the 338<!-- src: data/figures/examples/data.csv | e2.pairs_both_right --> pairs answered right before the removal.*
 
@@ -77,7 +77,7 @@ Every removal is compared with removals of the same size: random, the logit lens
 
 One entity's three-hop chains (each hop P read or M recalled):
 
-![One real entity, Qwen 27B: only the chain that ends in two recalls turns wrong, and only without the lens part](../../figures/examples/04_chains.png)
+![One real entity, Qwen 27B: only the chain that ends in two recalls turns wrong, and only without the lens part](../../figures/breadth/examples/02_chains.png)
 
 *On this entity only the chain ending in two recalls turns wrong, and only without the lens part. Three three-hop chains, Qwen 27B: each hop is read in the passage (P) or recalled (M). Answers before the removal, with the lens part removed, and with a rotated part removed.*
 
@@ -137,7 +137,7 @@ The test split and, per model, the items it answers right unedited (the items ev
 
 ## 1. Recall needs the lens part; reading the stated fact does not
 
-![Removing the lens part (its 10 directions) breaks recalled facts, not looked-up ones, in three models from two families, far beyond the largest same-size control](../../figures/breadth/01_needed.png)
+![Removing the lens part (its 10 directions) breaks recalled facts, not looked-up ones, in three models from two families, far beyond the largest same-size control](../../figures/breadth/readme/01_needed.png)
 
 *Removing the lens part breaks recalled facts, not looked-up ones, far beyond the largest same-size control. Top: per model, the recall − lookup gap in points when its directions are removed at every token over the band (slate); grey tick: the largest control. Bottom, three models: answers turned wrong by where the answer is (lookup violet, recall black). Hollow ○: post hoc.*
 
@@ -185,7 +185,7 @@ more than any removal of the same size.
 
 ## 2. It is not one dataset, relation, rendering or checkout
 
-![The Qwens' split on every dataset we built, with the logit lens near zero](../../figures/breadth/02_datasets.png)
+![The Qwens' split on every dataset we built, with the logit lens near zero](../../figures/breadth/readme/02_datasets.png)
 
 *The Qwens' split on every dataset we built, with the logit lens near zero. One row per dataset or variant: the recall − lookup gap in points under the lens part's removal (slate); grey: the logit lens's own directions, where run; dashed: the bar fixed in advance. The plain J-lens row is on the 27B only.*
 
@@ -223,7 +223,7 @@ clean checkout reproduces it.
 
 The other models on the datasets they ran:
 
-![The other models on the datasets they ran: Muse and the 122B above the bar on the later sets, the Olmos and Qwen3-32B below it](../../figures/breadth/02b_datasets.png)
+![The other models on the datasets they ran: Muse and the 122B above the bar on the later sets, the Olmos and Qwen3-32B below it](../../figures/breadth/readme/02b_datasets.png)
 
 *The other models: Muse and the 122B above the bar on the later sets, the Olmos and Qwen3-32B below it. One row per model, one column per dataset: the recall − lookup gap in points; dashed: the bar fixed in advance; "no run" where a model did not run a set. Hollow ○: post hoc.*
 
@@ -231,7 +231,7 @@ The other models on the datasets they ran:
   - On the 27B, the gap runs from 36.0 (languages) to 72.0 (dishes).
   - Animals is the weakest everywhere (6 answers): 9B 14.3 [0, 36], Lightning 18.3 [9, 29].
 
-![The split holds on every relation, far above the rotated control](../../figures/breadth/03a_robust.png)
+![The split holds on every relation, far above the rotated control](../../figures/breadth/readme/03a_robust.png)
 
 *The split holds on every relation, far above the rotated control. Every relation of jsuite v2, one row each, one panel per model: the recall − lookup gap in points under the lens part's removal (slate); grey: the same removal rotated to random directions.*
 
@@ -240,7 +240,7 @@ The other models on the datasets they ran:
     48.9 and 50.3.
   - A rendering redraws passages, distractors and wording over the same facts.
 
-![The split holds on every start, both test halves, three renderings and by probability; a bridge never named adds to the recall's drop](../../figures/breadth/03b_robust.png)
+![The split holds on every start, both test halves, three renderings and by probability; a bridge never named adds to the recall's drop](../../figures/breadth/readme/03b_robust.png)
 
 *The split holds on every start, both test halves, three renderings and by probability; a bridge never named adds to the recall's drop. Top: the recall − lookup gap in points by start of the chain (P read, T tracked, M recalled) and by run. Bottom: the extra recall drop when the bridge's one passing mention is deleted.*
 
@@ -281,7 +281,7 @@ The other models on the datasets they ran:
 
 ## 3. Where: at the bridge's mention at mid depth, in the question late
 
-![Depth and position: the mention at mid depth in the Qwens, mention and question in Lightning, the question late](../../figures/breadth/04_where.png)
+![Depth and position: the mention at mid depth in the Qwens, mention and question in Lightning, the question late](../../figures/breadth/readme/04_where.png)
 
 *Depth and position: the mention at mid depth in the Qwens, mention and question in Lightning, the question late. Top: the recall − lookup gap in points when the lens part is removed over a sliding window of layers (slate; grey: rotated). Bottom, three models: the gap when the removal acts at every token, the mention, the passage or the question.*
 
@@ -327,7 +327,7 @@ bands in amendment 57.*
 
 ## 4. What the lens part carries at the mention: which entity it is
 
-![A swapped lens part moves the answer to the other entity; it is not the answer token](../../figures/breadth/05_carries.png)
+![A swapped lens part moves the answer to the other entity; it is not the answer token](../../figures/breadth/readme/05_carries.png)
 
 *A swapped lens part moves the answer to the other entity; it is not the answer token. Top: answers moved to the other entity's fact, for the lens part (teal) and same-kind swaps (grey: whole state, the rest, rotated, logit lens). Bottom (Qwen 27B, Qwen 9B): the whole lens part, without the answer's direction, that direction alone, and rotated.*
 
@@ -364,7 +364,7 @@ from one neutral sentence about it alike; a probe's subspace that reads the fact
   the probe's subspace moves 8.3 / 5.5 / 2.2, against the lens
   part's 74.8 / 79.5 / 62.4.
 
-![A lens part from one neutral sentence carries as much as one from the passage; a probe's subspace carries almost nothing](../../figures/readme/04_pointer.png)
+![A lens part from one neutral sentence carries as much as one from the passage; a probe's subspace carries almost nothing](../../figures/common/readme/04_pointer.png)
 
 *Another entity's lens part moves the recall to that entity's fact, even from one neutral sentence; a probe's subspace that reads the fact barely does. Rows: the source of the part swapped in at the bridge. Dots: answers moved, in points.*
 
@@ -374,7 +374,7 @@ from one neutral sentence about it alike; a probe's subspace that reads the fact
   - layer 32 on Lightning (L33).
   For a swapped entity it reads the other entity's fact at the same layers.
 
-![The fact appears at the answer position only after the band, for a swapped entity as for the original](../../figures/breadth/07_lookup.png)
+![The fact appears at the answer position only after the band, for a swapped entity as for the original](../../figures/breadth/readme/07_lookup.png)
 
 *The fact appears at the answer position only after the band, for a swapped entity as for the original. Per model, by layer: the share of items whose lens top pick there is the fact of the entity in play, unedited (grey) and with another entity's lens part swapped in from its own passage or one neutral sentence (teal).*
 
@@ -383,7 +383,7 @@ from one neutral sentence about it alike; a probe's subspace that reads the fact
   - Ministral's lens reads the fact at mid depth, but its lens part carries only 2.6, and
     4.9 with 100 directions.
 
-![The lens reads the fact at the mention in every model; readable is not the same as needed](../../figures/breadth/08_readable.png)
+![The lens reads the fact at the mention in every model; readable is not the same as needed](../../figures/breadth/readme/08_readable.png)
 
 *The lens reads the fact at the mention in every model; readable is not the same as needed. Per model: the share of items whose true attribute is ranked first when the lens part at the bridge's mention is read (teal) or the logit lens (grey), against the share of the depth.*
 
@@ -391,7 +391,7 @@ from one neutral sentence about it alike; a probe's subspace that reads the fact
 
 ## 5. How much J-space
 
-![The lens-specific part sits in the first 1-30 directions; in Bolt and DeepSeek a same-size removal costs about as much](../../figures/breadth/09_dose.png)
+![The lens-specific part sits in the first 1-30 directions; in Bolt and DeepSeek a same-size removal costs about as much](../../figures/breadth/readme/09_dose.png)
 
 *The lens-specific part sits in the first lens directions; in Bolt and DeepSeek a same-size removal costs about as much. One column per number of lens directions removed, one row per model: the recall − lookup gap in points (slate); grey: the same number of directions rotated. Hollow ○: post hoc (Muse 30B).*
 
@@ -466,7 +466,7 @@ In the 9B, Lightning and Ministral most of the lens-specific part sits in the fi
 
 ## 6. Beyond two hops: longer chains, and numbers computed from the passage
 
-![Chains whose last hop recalls: the removal turns more answers wrong than in the all-passage chain, beyond its largest same-size control, on every chain but the 27B's P → P → M](../../figures/breadth/10a1_beyond.png)
+![Chains whose last hop recalls: the removal turns more answers wrong than in the all-passage chain, beyond its largest same-size control, on every chain but the 27B's P → P → M](../../figures/breadth/readme/10a1_beyond.png)
 
 *Chains whose last hop recalls: the removal turns more answers wrong than in the all-passage chain (P → P → P), beyond the largest same-size control (grey tick), on every chain but the 27B's P → P → M. Rows: jsuite v2, a second data seed, the natural three-hop set. Hollow ○: post hoc (Lightning's natural set).*
 
@@ -520,7 +520,7 @@ proposal's own question (H0: J-space carries recalled words, not computed variab
 
 Chains whose last hop reads the passage, the same way:
 
-![Chains whose last hop reads the passage: no extra cost beyond the controls on Lightning; on the 27B only when the first two hops recall](../../figures/breadth/10a2_beyond.png)
+![Chains whose last hop reads the passage: no extra cost beyond the controls on Lightning; on the 27B only when the first two hops recall](../../figures/breadth/readme/10a2_beyond.png)
 
 *Chains whose last hop reads the passage: no extra cost beyond the controls on Lightning; on the 27B only when the first two hops recall. Drawn as the chains whose last hop recalls: extra answers turned wrong beyond P → P → P, in points; grey tick: the largest same-size control. Hollow ○: post hoc (Lightning's natural set).*
 
@@ -569,7 +569,7 @@ Chains whose last hop reads the passage, the same way:
 
 Numbers counted, computed or recalled from the passage, then reported or used to recall:
 
-![A number made from the passage and then used: the extra cost under the removal, per model](../../figures/breadth/10b_beyond.png)
+![A number made from the passage and then used: the extra cost under the removal, per model](../../figures/breadth/readme/10b_beyond.png)
 
 *A number made from the passage and then used: the extra cost under the removal, per model. Numbers counted, computed or recalled, then reported or used to recall: answers turned wrong beyond a number read from the passage, in points, under the lens part's removal (slate) and the rotated and logit-lens controls (grey).*
 
@@ -583,7 +583,7 @@ Numbers counted, computed or recalled from the passage, then reported or used to
 
 What the model says instead under the removal, in five classes of reply:
 
-![Generated replies under the removal, sorted into five classes, per model](../../figures/breadth/10c_beyond.png)
+![Generated replies under the removal, sorted into five classes, per model](../../figures/breadth/readme/10c_beyond.png)
 
 *Generated replies under the removal, sorted into five classes: per model and chain (P → M, M → M) on natplus, the share still right, a lure in the passage, another valid answer, something else, or the bridge's name; right: the replies classified. Cells tagged descriptive are descriptive in the registry.*
 
@@ -591,7 +591,7 @@ What the model says instead under the removal, in five classes of reply:
 
 ## 7. What recall needs: the answer's own directions
 
-![Keeping only the answer span's directions undoes nearly all of the recall's damage; removing only them does all of it](../../figures/writeup/10_answer_span.png)
+![Keeping only the answer span's directions undoes nearly all of the recall's damage; removing only them does all of it](../../figures/common/writeup/10_answer_span.png)
 
 *What the knock-out removes from the recall is its answer's own directions. Left: the share of the damage undone when the answer span is kept (brick), against an energy-matched random keep (grey); descriptive. Middle: the damage when only the answer span is removed, as a multiple of the full knock-out's. Right: the same on the codename set.*
 
@@ -622,7 +622,7 @@ and removing only them does all of it.
 
 ## 8. Removals orthogonal to the answer
 
-![Removing the city's directions made orthogonal to the answers costs nothing, even for a one-hop question about the city](../../figures/writeup/11_orthogonal.png)
+![Removing the city's directions made orthogonal to the answers costs nothing, even for a one-hop question about the city](../../figures/common/writeup/11_orthogonal.png)
 
 *Removals made orthogonal to the answers cost little. Left: a subspace for the subject built from the data (slate), beyond random, against the bar fixed in advance (dashed). Right, a one-hop question about the subject: removing its lens directions (teal), the answer span (brick), or its directions made orthogonal to the answers (slate, post hoc).*
 
@@ -652,7 +652,7 @@ own directions costs more, and removing its directions made orthogonal to the an
 
 ## 9. Agents: picking and verifying cost far less than producing
 
-![Agents: removing the lens part costs producing an answer far more than picking or verifying one](../../figures/writeup/a01_agents.png)
+![Agents: removing the lens part costs producing an answer far more than picking or verifying one](../../figures/common/writeup/a01_agents.png)
 
 *Agents: removing the lens part costs producing an answer far more than picking or verifying one. Inside agent transcripts, one relation: the recall's answers turned wrong by the knock-out minus a control's, in points, per step (copy, pick, verify, produce). Grey tags: cells read without a rule fixed in advance (descriptive). No transcript is quoted.*
 
@@ -804,6 +804,6 @@ Every number on this page comes from [docs/breadth/data.csv](data.csv), each row
 answer-span, orthogonal and agents numbers (Sections 7-9), which come from data/figures/writeup/data.csv with a source
 comment each; scripts/report_breadth.py builds it and this page (`--render` from the data files alone). The figures
 ([figures/breadth/](../../figures/breadth/)) are drawn from the same data by src/bridge_jspace/figkit/breadth_sp.py on
-styles-plot; their captions are in figures/breadth/_meta/captions.toml.
+styles-plot; their captions are in figures/breadth/readme/_meta/captions.toml.
 
 </details>

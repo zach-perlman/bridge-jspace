@@ -1,0 +1,303 @@
+{
+ "styles_plot": "0.2.2",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "dfb8ad8ca5b78ad381cb3058de9bcbc1dd1cb2d03118402574c6db31063cc443",
+  "hash": "meaning"
+ },
+ "registry": {
+  "path": "data/figures/status.csv",
+  "sha256": "b50c31676735b81f8e968bb90792a75984f83c5540fe87769e7aa9bbae69dd59"
+ },
+ "figure": "breadth_fig01_needed",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "text_only": false,
+ "png": {
+  "pixels_sha256": "fbeecc1f87c7758204185e6a7e3ff998cd7b7e9fa827a8c90a8e7a1b1a36c024",
+  "dpi": 160
+ },
+ "roles": [
+  "lookup",
+  "neutral",
+  "recall"
+ ],
+ "controls": [],
+ "cells": {
+  "lost.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "lost.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "lost.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "mk.ds": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "mk.mi": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "mk.mu": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "mk.nb": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "mk.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "mk.ol": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "mk.q122": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "mk.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "mk.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "mk.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "mk.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "mk.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "mk.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "mk.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "mk.ds",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "mk.mi",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "mk.nb",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "mk.ol",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "lost.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "lost.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "lost.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "lost.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "lost.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "lost.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "lost.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "lost.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "lost.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "lost.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "lost.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "lost.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "lost.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "lost.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "lost.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "grey tick: the largest same-size control",
+  "whiskers: 95% interval",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "ko.q9.mk": "42.6",
+  "ko.q27.mk": "50.9",
+  "ko.mu.mk": "59.9",
+  "ko.nl.mk": "53.1",
+  "ko.q122.mk": "48.5",
+  "ko.ds.mk": "17.9",
+  "ko.mi.mk": "23.3",
+  "ko.nb.mk": "6.0",
+  "ko.ol.mk": "5.4",
+  "ko.q9.lostK": "5.0",
+  "ko.q9.lostP": "14.6",
+  "ko.q9.lostA": "30.5",
+  "ko.q9.lostN": "41.5",
+  "ko.q9.lostM": "47.6",
+  "ko.q27.lostK": "2.6",
+  "ko.q27.lostP": "9.1",
+  "ko.q27.lostA": "30.2",
+  "ko.q27.lostN": "45.4",
+  "ko.q27.lostM": "53.5",
+  "ko.nl.lostK": "3.7",
+  "ko.nl.lostP": "4.6",
+  "ko.nl.lostA": "41.9",
+  "ko.nl.lostN": "53.5",
+  "ko.nl.lostM": "56.8"
+ },
+ "problems": []
+}

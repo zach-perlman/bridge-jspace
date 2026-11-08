@@ -1,8 +1,8 @@
-"""The breadth README's figures (figures/breadth/, Zach's set) on styles-plot, for the readme target. Every number is a
+"""The breadth README's figures (figures/breadth/readme/, Zach's set) on styles-plot, for the readme target. Every number is a
 row of docs/breadth/data.csv (scripts/report_breadth.py, readers in scripts/breadth_data.py), read by key; the old
 builder (scripts/fig_neel.py) drew them on the pod. Models are rows in the vocabulary's order (the old figures sorted
 them by strength and coloured them by model: here a colour is a role), conditions are columns or lanes, verdict texts
-stay in the README (Dan, 7 Nov). Fig. 6 is the root README's r4_pointer (figures/readme/04_pointer.png: the same
+stay in the README (Dan, 7 Nov). Fig. 6 is the root README's r4_pointer (figures/common/readme/04_pointer.png: the same
 pointer runs and the probe's subspace; one figure, linked from both READMEs); fig11_scorecard becomes a markdown table and is not drawn.
 
 uv run python -m bridge_jspace.figkit.breadth_sp [ids...]
@@ -531,8 +531,8 @@ FIGS = {"fig01_needed": fig01_needed, "fig03a_robust": fig03a_robust, "fig03b_ro
 
 
 def build(ids_=None) -> list[str]:
-    """Save the breadth set strict into figures/breadth/ (numbered files, figkit/layout.py). Returns the failures."""
-    return L.build("breadth", FIGS, RS.TARGET, ids_)
+    """Save the breadth set strict into figures/breadth/readme/ (numbered files, figkit/layout.py). Returns the failures."""
+    return L.build("breadth/readme", FIGS, RS.TARGET, ids_)
 
 
 if __name__ == "__main__":

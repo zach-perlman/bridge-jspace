@@ -469,7 +469,7 @@ def main(argv: list[str] | None = None) -> int:
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(readme)
     print(f"{out.relative_to(REPO)}: {len(readme.splitlines())} lines from {grid.relative_to(REPO)}")
-    # the contact sheets (figures/depth/_sheets/) come from `styles-plot sheet` (make readme)
+    # the contact sheets (figures/depth/readme/_sheets/) come from `styles-plot sheet` (make readme)
     if a.runs:
         (REPO / "docs" / "archive" / "RUNS.md").write_text(RT.build(grid))  # links resolve from the repo root
         print("docs/archive/RUNS.md written")

@@ -1,5 +1,5 @@
-"""docs/review/writeup_contact_sheet.png: every write-up figure in the post's order (figures/writeup/_meta/order.txt) at
-the 720 px reading width, with its caption from the caption store (figures/writeup/_meta/captions.toml, src comments
+"""docs/review/writeup_contact_sheet.png: every write-up figure in the post's order (figures/common/writeup/_meta/order.txt) at
+the 720 px reading width, with its caption from the caption store (figures/common/writeup/_meta/captions.toml, src comments
 dropped), for checking each caption against its figure by eye before the Google Doc swap (docs/writeup/figure_map.md).
 
 uv run python scripts/writeup_contact_sheet.py
@@ -27,13 +27,13 @@ def main() -> None:
         font = ImageFont.truetype("DejaVuSans.ttf", 12)
     except OSError:
         font = ImageFont.load_default()
-    store = captions.load("writeup")
+    store = captions.load("common/writeup")
     tiles = []
-    for stem in layout.names("writeup").values():
-        im = Image.open(layout.folder("writeup") / f"{stem}.png").convert("RGB")
+    for stem in layout.names("common/writeup").values():
+        im = Image.open(layout.folder("common/writeup") / f"{stem}.png").convert("RGB")
         im = im.resize((WIDTH, round(im.height * WIDTH / im.width)), Image.LANCZOS)
         cap = re.sub(r"<!--.*?-->", "", store.get(stem, "")).strip()
-        tiles.append((im, [f"figures/writeup/{stem}.png", *textwrap.wrap(cap or "(no caption)", 110)]))
+        tiles.append((im, [f"figures/common/writeup/{stem}.png", *textwrap.wrap(cap or "(no caption)", 110)]))
     height = sum(im.height + LINE * len(t) + 3 * PAD for im, t in tiles)
     sheet = Image.new("RGB", (WIDTH, height), "white")
     draw = ImageDraw.Draw(sheet)

@@ -1,0 +1,196 @@
+{
+ "styles_plot": "0.2.2",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "dfb8ad8ca5b78ad381cb3058de9bcbc1dd1cb2d03118402574c6db31063cc443",
+  "hash": "meaning"
+ },
+ "registry": {
+  "path": "data/figures/status.csv",
+  "sha256": "b50c31676735b81f8e968bb90792a75984f83c5540fe87769e7aa9bbae69dd59"
+ },
+ "figure": "f12_order",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "text_only": false,
+ "png": {
+  "pixels_sha256": "6b4a864e31880eb3b35d2d28a81870ab7231e10de814654614983e89e3ff3559",
+  "dpi": 160
+ },
+ "roles": [
+  "lookup",
+  "recall"
+ ],
+ "controls": [],
+ "cells": {
+  "after.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "after.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "after.q122": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "after.q27": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "after.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "before.q122": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "before.q27": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "after.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "after.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "after.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "after.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "before.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "before.q27",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "after.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "after.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "after.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "after.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "after.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "after.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "before.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "before.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "grey band: within 0.10 of a random part",
+  "whiskers: 95% interval",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "f12.diff.q27": "+0.11",
+  "f12.diff.q27.interval": "[0.01, 0.22]",
+  "f12.diff.q122": "−0.05",
+  "f12.diff.q122.interval": "[−0.17, 0.05]",
+  "f12.recall.after.q9": "0.50",
+  "f12.lookup.after.q9": "−0.05",
+  "f12.recall.after.q27": "0.74",
+  "f12.lookup.after.q27": "0.14",
+  "f12.recall.before.q27": "0.56",
+  "f12.lookup.before.q27": "0.22",
+  "f12.recall.after.mu": "0.76",
+  "f12.lookup.after.mu": "−0.10",
+  "f12.recall.after.nl": "0.34",
+  "f12.lookup.after.nl": "0.02",
+  "f12.recall.after.q122": "0.27",
+  "f12.lookup.after.q122": "0.01",
+  "f12.recall.before.q122": "0.31",
+  "f12.lookup.before.q122": "−0.03"
+ },
+ "problems": []
+}

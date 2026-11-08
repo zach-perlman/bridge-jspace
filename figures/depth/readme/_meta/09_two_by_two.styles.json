@@ -1,0 +1,418 @@
+{
+ "styles_plot": "0.2.2",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "dfb8ad8ca5b78ad381cb3058de9bcbc1dd1cb2d03118402574c6db31063cc443",
+  "hash": "meaning"
+ },
+ "registry": {
+  "path": "data/figures/status.csv",
+  "sha256": "b50c31676735b81f8e968bb90792a75984f83c5540fe87769e7aa9bbae69dd59"
+ },
+ "figure": "t12_two_by_two",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "text_only": false,
+ "png": {
+  "pixels_sha256": "9bf7cd517b8c5d759c36bf25a5d386688b24c520e48981935a7682f7e1db4587",
+  "dpi": 160
+ },
+ "roles": [
+  "neutral"
+ ],
+ "controls": [
+  "a random part",
+  "rotated"
+ ],
+ "cells": {
+  "t12.0.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "t12.0.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "t12.0.q122": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "t12.0.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "t12.0.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "t12.1.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "t12.1.q122": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "t12.1.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "t12.1.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "t12.2.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "t12.2.q122": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "t12.2.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "t12.2.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "t12.3.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "t12.3.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "t12.3.q122": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "t12.3.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "t12.3.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "t12.0.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "t12.0.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "t12.0.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "t12.0.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "t12.0.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "t12.0.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "t12.0.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "t12.0.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "t12.0.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "t12.0.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "t12.1.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "t12.1.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "t12.1.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "t12.1.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "t12.1.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "t12.1.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "t12.1.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "t12.1.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "t12.2.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "t12.2.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "t12.2.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "t12.2.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "t12.2.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "t12.2.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "t12.2.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "t12.2.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "t12.3.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "t12.3.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "t12.3.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "t12.3.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "t12.3.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "t12.3.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "t12.3.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "t12.3.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "t12.3.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "t12.3.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "grey: a random part · rotated",
+  "whiskers: 95% interval",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "t12.0.q9": "0.53",
+  "t12.0.q27": "0.60",
+  "t12.0.mu": "0.85",
+  "t12.0.nl": "0.31",
+  "t12.0.q122": "0.32",
+  "t12.1.q9": "0.37",
+  "t12.1.q27": "0.30",
+  "t12.1.nl": "0.32",
+  "t12.1.q122": "0.29",
+  "t12.2.q9": "0.32",
+  "t12.2.q27": "0.45",
+  "t12.2.mu": "0.09",
+  "t12.2.q122": "0.06",
+  "t12.3.q9": "0.48",
+  "t12.3.q27": "0.46",
+  "t12.3.mu": "0.57",
+  "t12.3.nl": "0.66",
+  "t12.3.q122": "0.50"
+ },
+ "problems": []
+}

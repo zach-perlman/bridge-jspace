@@ -1,5 +1,6 @@
-"""The figure sets' layout (Dan, 7 Nov; figkit/layout.py): every figures/<set>/ is flat and numbered, holds only its
-figures, README.md, _meta/ and _sheets/; every figure has its sidecar under _meta/ and is in its set's order; every
+"""The figure sets' layout (Dan, 7 Nov; by track, 8 Nov; figkit/layout.py): figures/ holds only the track folders
+breadth/, depth/ and common/, each only its sets; every set is flat and numbered, holds only its figures, README.md,
+_meta/ and _sheets/ (an empty set, common/examples, has no sheets); every figure has its sidecar under _meta/ and is in its set's order; every
 figure outside the write-up is embedded by a doc (the write-up's are embedded by the post, outside the repo); every
 figure link in the repo's docs resolves."""
 
@@ -32,6 +33,16 @@ def links(md: str) -> list[str]:
     return [os.path.normpath(base / t) for t in LINK.findall((REPO / md).read_text(errors="ignore")) if "://" not in t]
 
 
+def test_figures_holds_the_tracks_and_their_sets_only():
+    tracks = {p.name: {q.name for q in p.iterdir()} for p in (REPO / "figures").iterdir()}
+    assert tracks == {
+        "breadth": {"readme", "examples"},
+        "depth": {"readme", "ledger", "examples"},
+        "common": {"readme", "writeup", "examples"},
+    }, tracks
+    assert set(L.ORDER) == {f"{t}/{s}" for t, sets in tracks.items() for s in sets}
+
+
 @pytest.mark.parametrize("group", list(L.ORDER))
 def test_a_set_holds_only_its_figures_its_index_meta_and_sheets(group):
     folder = REPO / "figures" / group
@@ -42,6 +53,9 @@ def test_a_set_holds_only_its_figures_its_index_meta_and_sheets(group):
     assert pngs == {f"{stem}.png" for stem in L.names(group).values()}
     meta = {p.name for p in (folder / "_meta").iterdir()}
     # problems.json: each figure's last problems per target, written by styles-plot's save (0.2, C5)
+    if not L.names(group):  # an empty set (common/examples): its index, order and caption store only
+        assert entries == {"README.md", "_meta"} and meta == {"order.txt", "captions.toml"}, (entries, meta)
+        return
     assert meta - {"captions.toml", "captions_short.toml"} == ({f"{stem}.styles.json" for stem in L.names(group).values()}
                                         | {"order.txt", "problems.json"})  # fmt: skip
     assert (folder / "_meta" / "order.txt").read_text().split() == [f"{s}.png" for s in L.names(group).values()]
@@ -82,7 +96,7 @@ def test_the_index_lists_every_figure_in_order(group):
 def test_every_figure_outside_the_write_up_is_embedded_by_a_doc():
     used = {p for md in docs() if not md.startswith("figures/") for p in links(md)}
     for group in L.ORDER:
-        if group == "writeup":  # embedded by the post (outside the repo) and by its index
+        if group == "common/writeup":  # embedded by the post (outside the repo) and by its index
             continue
         for stem in L.names(group).values():
             assert f"figures/{group}/{stem}.png" in used, f"{group}/{stem}.png is embedded by no doc"
@@ -94,8 +108,11 @@ def test_every_figure_link_resolves():
 
 
 def test_names_follow_the_document():
-    assert L.names("writeup")["fig05a_controls_band"] == "05a_controls_band"
-    assert L.names("writeup")["key"] == "00_key"
-    assert L.names("writeup")["figA1_agents"] == "a01_agents"
-    assert L.names("depth")["s01_split_all_scene_sets"] == "s01_split_all_scene_sets"
-    assert L.names("readme")["p0b_tools"] == "01_tools"
+    assert L.names("common/writeup")["fig05a_controls_band"] == "05a_controls_band"
+    assert L.names("common/writeup")["key"] == "00_key"
+    assert L.names("common/writeup")["figA1_agents"] == "a01_agents"
+    assert L.names("depth/readme")["s01_split_all_scene_sets"] == "s01_split_all_scene_sets"
+    assert L.names("depth/ledger")["fig40_item_not_answer"] == "01_item_not_answer"
+    assert L.names("common/readme")["p0b_tools"] == "01_tools"
+    assert L.names("breadth/examples")["e3_chains"] == "02_chains"
+    assert L.names("common/examples") == {}

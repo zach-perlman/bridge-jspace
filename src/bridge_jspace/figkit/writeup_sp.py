@@ -20,9 +20,10 @@ from bridge_jspace import figdata as TM
 from bridge_jspace import figdata as W
 from bridge_jspace.figkit import layout as L
 from bridge_jspace.figkit import writeup_sp_b, writeup_sp_c
-from bridge_jspace.figkit.writeup_sp_base import MODEL, REPO, ZK, est, need, vocab
+from bridge_jspace.figkit.writeup_sp_base import MODEL, ZK, est, need, vocab
 
-OUT = REPO / "figures" / "writeup"
+GROUP = "common/writeup"
+OUT = L.folder(GROUP)
 TARGET = "post"
 BAND, LAYER = "Band of layers · fact passages", "One layer · locker scenes"
 GAP = "gap: recall − lookup"
@@ -302,13 +303,13 @@ TAKEAWAY = {
 
 def shows() -> dict[str, str]:
     """Each figure's line in the index: its takeaway in bold, then its caption from the caption store
-    (figures/writeup/_meta/captions.toml); a figure without a caption falls back to its builder's first sentence."""
+    (figures/common/writeup/_meta/captions.toml); a figure without a caption falls back to its builder's first sentence."""
     from bridge_jspace.figkit import captions
 
-    names = L.names("writeup")
+    names = L.names(GROUP)
     out = {}
     for fid, f in FIGS.items():
-        stored = captions.load("writeup").get(names.get(fid, ""), "")
+        stored = captions.load(GROUP).get(names.get(fid, ""), "")
         first = " ".join((f.__doc__ or "").split()).split(". ")[0].rstrip(".")
         lead = f"**{TAKEAWAY[fid]}.** " if fid in TAKEAWAY else ""
         out[fid] = lead + (stored or first)
@@ -316,9 +317,9 @@ def shows() -> dict[str, str]:
 
 
 def build(ids=None) -> list[str]:
-    """Save each figure strict for the post into figures/writeup/ (numbered files, figkit/layout.py); returns the
+    """Save each figure strict for the post into figures/common/writeup/ (numbered files, figkit/layout.py); returns the
     failures (a failed figure writes nothing)."""
-    return L.build("writeup", FIGS, TARGET, ids, shows())
+    return L.build(GROUP, FIGS, TARGET, ids, shows())
 
 
 if __name__ == "__main__":

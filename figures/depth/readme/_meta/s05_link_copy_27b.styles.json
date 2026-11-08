@@ -1,0 +1,90 @@
+{
+ "styles_plot": "0.2.2",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "dfb8ad8ca5b78ad381cb3058de9bcbc1dd1cb2d03118402574c6db31063cc443",
+  "hash": "meaning"
+ },
+ "registry": {
+  "path": "data/figures/status.csv",
+  "sha256": "b50c31676735b81f8e968bb90792a75984f83c5540fe87769e7aa9bbae69dd59"
+ },
+ "figure": "s03f_link_copy_27b",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "text_only": false,
+ "png": {
+  "pixels_sha256": "64b72f68d46ad019537a6f83e146e3678da3d55da332e48673ea9af5dc9bb243",
+  "dpi": 160
+ },
+ "roles": [
+  "lookup"
+ ],
+ "controls": [],
+ "cells": {
+  "sweep.every.q27": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "sweep.item.q27": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "sweep.number.q27": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "sweep.period.q27": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "sweep.rest.q27": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "line",
+   "role": "lookup",
+   "cell": "sweep.every.q27",
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "lookup",
+   "cell": "sweep.item.q27",
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "lookup",
+   "cell": "sweep.rest.q27",
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "lookup",
+   "cell": "sweep.number.q27",
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "lookup",
+   "cell": "sweep.period.q27",
+   "timing": "post_hoc",
+   "claim": "claimed"
+  }
+ ],
+ "key": [
+  "all estimates post hoc",
+  "shading: 95% interval"
+ ],
+ "numbers": {},
+ "problems": []
+}

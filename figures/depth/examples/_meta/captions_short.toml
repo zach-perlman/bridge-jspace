@@ -1,0 +1,5 @@
+# Short captions for the README pages (at most 60 words, takeaway first; src/bridge_jspace/figkit/captions.py).
+# The full caption of each figure is in captions.toml.
+
+01_locker_scene = "Without the lens part the lookup still switches and the recall does not. One locker scene, Qwen 27B (the bridge word in bold). Of the main test's {{x|n_27b}} scenes, the whole change switches the recall in {{x|rc_whole_27b}}, and without the lens part in only {{x|rc_noj_27b}}; the lookup still switches in {{x|lk_noj_27b}}."
+02_routes = "The three routes predict three different lockers, and here the lookup takes the identity route's. One scene, Qwen 9B, in which another item moved. Over such scenes the whole change sends the lookup to the identity route's locker in {{s|qwen3.5-9b|another item moved, whole: identity share}} of them."

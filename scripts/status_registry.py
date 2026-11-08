@@ -4,9 +4,9 @@ reason), the reason and the source of that status. Built as (status, tag) rows a
 
 The statuses are read from the rules the figures already followed, each cited in `source`:
 - figkit/data.hollow: Lightning post hoc everywhere, the 122B post hoc where its gate was lowered;
-- the band test's post hoc models, Muse 30B and Qwen 122B (figures/writeup/README.md, Fig. 1 and 5), and the two whose
+- the band test's post hoc models, Muse 30B and Qwen 122B (figures/common/writeup/README.md, Fig. 1 and 5), and the two whose
   split the post does not claim (writeup_figs.NOT_CLAIMED);
-- figures/writeup/README.md's "fixed in advance / post hoc" column for the rest.
+- figures/common/writeup/README.md's "fixed in advance / post hoc" column for the rest.
 Where two sources disagree, both rows are kept in DISAGREEMENTS (printed and written to the report), not resolved.
 
 uv run python scripts/status_registry.py
@@ -26,7 +26,7 @@ from bridge_jspace import figdata as WF  # noqa: E402
 from bridge_jspace.palette import MODELS  # noqa: E402
 
 OUT = REPO / "data" / "figures" / "status.csv"
-README = "figures/writeup/README.md"
+README = "figures/common/writeup/README.md"
 SHORT = {"qwen3.5-9b": "q9", "qwen3.6-27b": "q27", "muse-glimmer-30b": "mu", "nemotron-3.5-lightning": "nl",
          "qwen3.5-122b-a10b": "q122"}  # fmt: skip
 TWIN = ("qwen3.5-9b", "qwen3.6-27b", "nemotron-3.5-lightning")
@@ -555,7 +555,7 @@ def breadth_set(readme: list[dict]) -> list[dict]:
     """The breadth README's figures (figkit/breadth_sp.py): a cell is fixed in advance where Zach's preregistration
     registered that model's tests before its data (BREADTH_CITE; Lightning by lightning(), Amendment 45 note 2; Muse
     30B and Qwen 122B per cell, MU_Q122). Which cells each amendment covers is per model, not checked cell by cell
-    (listed). The breadth README shows the root README's r4_pointer (figures/readme/04_pointer.png), not a copy."""
+    (listed). The breadth README shows the root README's r4_pointer (figures/common/readme/04_pointer.png), not a copy."""
     ids = [*SHORT.values(), "ds", "mi", "nb", "ol"]  # the breadth-only models' ids (plotstyle.toml)
     out: list[dict] = []
     for fig, cids in BREADTH_FIGS.items():

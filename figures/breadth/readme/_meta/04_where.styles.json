@@ -1,0 +1,249 @@
+{
+ "styles_plot": "0.2.2",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "dfb8ad8ca5b78ad381cb3058de9bcbc1dd1cb2d03118402574c6db31063cc443",
+  "hash": "meaning"
+ },
+ "registry": {
+  "path": "data/figures/status.csv",
+  "sha256": "b50c31676735b81f8e968bb90792a75984f83c5540fe87769e7aa9bbae69dd59"
+ },
+ "figure": "breadth_fig04_where",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "text_only": false,
+ "png": {
+  "pixels_sha256": "931dd64d1736b79149130854d022b4ec89fd6c3482488f53085516a062963657",
+  "dpi": 160
+ },
+ "roles": [
+  "neutral"
+ ],
+ "controls": [
+  "rotated"
+ ],
+ "cells": {
+  "pos.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "pos.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "pos.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "prof.mi": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "prof.nb": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "prof.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "prof.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "prof.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "line",
+   "role": "neutral",
+   "cell": "prof.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "control",
+   "cell": "prof.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "neutral",
+   "cell": "prof.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "control",
+   "cell": "prof.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "neutral",
+   "cell": "prof.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "control",
+   "cell": "prof.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "neutral",
+   "cell": "prof.mi",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "control",
+   "cell": "prof.mi",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "neutral",
+   "cell": "prof.nb",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "line",
+   "role": "control",
+   "cell": "prof.nb",
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "pos.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "grey: rotated",
+  "shading: 95% interval",
+  "whiskers: 95% interval"
+ ],
+ "numbers": {
+  "pos.q9.all.all": "42.6",
+  "pos.q27.all.all": "50.9",
+  "pos.nl.all.all": "53.1",
+  "pos.q9.all.bridge": "33.6",
+  "pos.q27.all.bridge": "29.7",
+  "pos.nl.all.bridge": "19.9",
+  "pos.q9.all.context": "31.1",
+  "pos.q27.all.context": "26.3",
+  "pos.nl.all.context": "17.8",
+  "pos.q9.all.question": "6.2",
+  "pos.q27.all.question": "10.7",
+  "pos.nl.all.question": "22.7"
+ },
+ "problems": []
+}

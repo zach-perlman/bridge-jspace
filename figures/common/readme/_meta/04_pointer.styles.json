@@ -1,0 +1,234 @@
+{
+ "styles_plot": "0.2.2",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "dfb8ad8ca5b78ad381cb3058de9bcbc1dd1cb2d03118402574c6db31063cc443",
+  "hash": "meaning"
+ },
+ "registry": {
+  "path": "data/figures/status.csv",
+  "sha256": "b50c31676735b81f8e968bb90792a75984f83c5540fe87769e7aa9bbae69dd59"
+ },
+ "figure": "r4_pointer",
+ "target": "readme",
+ "mode": "strict",
+ "publishable": true,
+ "text_only": false,
+ "png": {
+  "pixels_sha256": "bfe7cfccc5ba652627315affba8cc78246da2c812799866b0853b9689c78c66f",
+  "dpi": 160
+ },
+ "roles": [
+  "lens",
+  "neutral"
+ ],
+ "controls": [
+  "rotated"
+ ],
+ "cells": {
+  "neutral.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "neutral.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "neutral.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "noown.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "noown.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "noown.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "probe.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "probe.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "probe.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "rot.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "rot.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "rot.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "swap.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "swap.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "swap.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "swap.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "neutral.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "noown.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "probe.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "rot.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "swap.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "neutral.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "noown.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "probe.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "rot.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "swap.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "neutral.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "noown.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "probe.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "rot.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [
+  "grey: rotated",
+  "whiskers: 95% interval"
+ ],
+ "numbers": {
+  "ptr.q9.swap": "63.5",
+  "ptr.q9.neutral_pts": "69.8",
+  "ptr.q9.noown_pts": "52.5",
+  "probe.q9.probe_pts": "5.5",
+  "ptr.q9.rot_pts": "0.7",
+  "ptr.q27.swap": "64.0",
+  "ptr.q27.neutral_pts": "70.0",
+  "ptr.q27.noown_pts": "53.9",
+  "probe.q27.probe_pts": "8.3",
+  "ptr.q27.rot_pts": "−0.8",
+  "ptr.nl.swap": "45.8",
+  "ptr.nl.neutral_pts": "46.1",
+  "ptr.nl.noown_pts": "28.5",
+  "probe.nl.probe_pts": "2.2",
+  "ptr.nl.rot_pts": "−0.5"
+ },
+ "problems": []
+}

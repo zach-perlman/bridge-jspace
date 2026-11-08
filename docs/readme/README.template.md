@@ -6,7 +6,7 @@
 
 **Status.** Every number carries its source in the run files, checked by tests. A 46-item hand-check changed no headline claim ([findings](docs/review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->. [VERIFIED.md](VERIFIED.md) holds only checks from before the sprint (16 Oct); no human has yet recomputed the sprint's headline numbers.
 
-[Depth report](docs/depth/README.md) · [Breadth report](docs/breadth/README.md) · [Hypotheses ledger](docs/plans/hypotheses.md) · [Examples](figures/examples/README.md) · [Slides](docs/slides/) · MIT licence ([LICENSE](LICENSE))
+[Depth report](docs/depth/README.md) · [Breadth report](docs/breadth/README.md) · [Hypotheses ledger](docs/plans/hypotheses.md) · [Examples](figures/common/examples/README.md) · [Slides](docs/slides/) · MIT licence ([LICENSE](LICENSE))
 <!-- POST LINK: Dan adds at publication -->
 
 ## TL;DR
@@ -20,7 +20,7 @@ Gurnee et al. (2026) argue that the J++ lens reads a "workspace" holding the mid
 
 {{fig|r1_c1_split}}
 
-{{caption_short|readme/02_main_split}}
+{{caption_short|common/readme/02_main_split}}
 
 ## Setup
 
@@ -28,15 +28,15 @@ Take one scene: "The locker of carbon is 3. The locker of helium is 5. … Eric 
 
 Real items, each picked by a fixed rule (rules and item ids in `data/figures/examples/data.csv`). The fact passage is chosen to show the typical flip, and its caption says how often that flip occurs.
 
-![One real locker scene, Qwen 27B: the whole change switches both readers; without the lens part the lookup still switches and the recall does not](figures/examples/01_locker_scene.png)
+![One real locker scene, Qwen 27B: the whole change switches both readers; without the lens part the lookup still switches and the recall does not](figures/depth/examples/01_locker_scene.png)
 
-{{caption_short|examples/01_locker_scene}}
+{{caption_short|depth/examples/01_locker_scene}}
 
 <details><summary>A fact passage</summary>
 
-![One real fact passage, Qwen 27B: without the lens part the recalled answer turns wrong and the looked-up one holds](figures/examples/02_fact_passage.png)
+![One real fact passage, Qwen 27B: without the lens part the recalled answer turns wrong and the looked-up one holds](figures/breadth/examples/01_fact_passage.png)
 
-{{caption_short|examples/02_fact_passage}}
+{{caption_short|breadth/examples/01_fact_passage}}
 
 </details>
 
@@ -53,7 +53,7 @@ Real items, each picked by a fixed rule (rules and item ids in `data/figures/exa
 
 {{fig|p0b_tools}}
 
-{{caption_short|readme/01_tools}}
+{{caption_short|common/readme/01_tools}}
 
 ### Reading the figures
 
@@ -61,7 +61,7 @@ Each colour is a role. Recall is black, lookup violet, the lens part teal, the a
 
 <details><summary>The key, one row read aloud</summary>
 
-![The figures' grammar: each colour's role, the marks, the controls' grey, and one row of the main split read aloud](figures/writeup/00_key.png)
+![The figures' grammar: each colour's role, the marks, the controls' grey, and one row of the main split read aloud](figures/common/writeup/00_key.png)
 
 </details>
 
@@ -73,7 +73,7 @@ The knock-out breaks recalled answers and leaves looked-up ones nearly intact. O
 
 {{fig|f2_controls}}
 
-{{caption_short|readme/03_controls}}
+{{caption_short|common/readme/03_controls}}
 
 <details><summary>Test, results, controls and limits</summary>
 
@@ -93,17 +93,17 @@ The knock-out breaks recalled answers and leaves looked-up ones nearly intact. O
 | one layer: lookup's switches blocked beyond random | {{x|lk_excess_9b}} | {{x|lk_excess_27b}} | {{x|lk_excess_muse}} | {{s|nemotron-3.5-lightning|conflict: lookup, switches lost beyond a random part}} ○ | {{x|lk_excess_122b}} |
 | one layer: lens part minus principal directions, paired | 0.24<!-- src: docs/breadth/data.csv \| f2.layer.q9.pca --> | 0.45<!-- src: docs/breadth/data.csv \| f2.layer.q27.pca --> | 0.48<!-- src: docs/breadth/data.csv \| f2.layer.mu.pca --> | no per-item contrast saved | 0.05, interval includes zero<!-- src: docs/breadth/data.csv \| f2.layer.q122.pca --> |
 
-- **Scope.** Every passage set we built shows it on the two Qwens: 22.8 to 52.1 points on toy puzzles, natural fact chains and natural text<!-- src: docs/breadth/data.csv | toy.q27.s1; toy.q27.s2; toy.q27.s3; toy.q9.s1; toy.q9.s2; toy.q9.s3; nat.q27.s1; nat.q27.s2; nat.q27.s3; nat.q9.s1; nat.q9.s2; nat.q9.s3; natplus.q27; natplus.q9 -->. It holds on every relation, from 36.0 (languages) to 72.0 (dishes) on the 27B<!-- src: docs/breadth/data.csv | ko.q27.rel.languages; ko.q27.rel.dishes -->, and for rare and popular bridges alike<!-- src: docs/breadth/data.csv | natplus.q27.rare; natplus.q27.pop; natplus.nl.rare; natplus.nl.pop -->. On the twin set, which describes people instead of naming them, it survives dropping every item a shortcut could answer (post hoc) and asking the question first. The need is spread over the bridge's words; removing the lens part at the final token alone costs almost nothing ([where the need sits](figures/readme/17_where.png)). The one-layer controls are [in this figure](figures/readme/03b_controls_layer.png).
+- **Scope.** Every passage set we built shows it on the two Qwens: 22.8 to 52.1 points on toy puzzles, natural fact chains and natural text<!-- src: docs/breadth/data.csv | toy.q27.s1; toy.q27.s2; toy.q27.s3; toy.q9.s1; toy.q9.s2; toy.q9.s3; nat.q27.s1; nat.q27.s2; nat.q27.s3; nat.q9.s1; nat.q9.s2; nat.q9.s3; natplus.q27; natplus.q9 -->. It holds on every relation, from 36.0 (languages) to 72.0 (dishes) on the 27B<!-- src: docs/breadth/data.csv | ko.q27.rel.languages; ko.q27.rel.dishes -->, and for rare and popular bridges alike<!-- src: docs/breadth/data.csv | natplus.q27.rare; natplus.q27.pop; natplus.nl.rare; natplus.nl.pop -->. On the twin set, which describes people instead of naming them, it survives dropping every item a shortcut could answer (post hoc) and asking the question first. The need is spread over the bridge's words; removing the lens part at the final token alone costs almost nothing ([where the need sits](figures/common/readme/17_where.png)). The one-layer controls are [in this figure](figures/common/readme/03b_controls_layer.png).
 - **Confidence.** Credence {{cred|main_split}} for the split as stated, {{cred|broadly}} that it holds beyond the models and settings tested. The 27B's lookup is also partly blocked ([Where it does not hold](#where-it-does-not-hold)).
 - **Limits.** "Lookup needs far less" holds at middle layers; in the deep layers the 9B's and Lightning's lookups need the lens part too (twin set). At one layer the recall follows the lens part but does not need it, because other layers carry copies: zeroing it leaves 0.94 to 0.97 of recalled answers unchanged<!-- src: data/figures/depth/data.csv | 47.5: recall's answers kept at L, the J++ part's 25 directions taken out -->. The knock-out costs plain text +0.30 nats (27B) to +1.67 nats (Lightning)<!-- src: docs/breadth/README.md | +0.30 nats (27B) to +1.67 nats (Lightning) -->. English templated prompts, one-token answers, greedy decoding with thinking off.
 
-![The gap is far above the largest same-size control on every model in the band test, and above zero on every model at one layer](figures/readme/02b_main_split_gaps.png)
+![The gap is far above the largest same-size control on every model in the band test, and above zero on every model at one layer](figures/common/readme/02b_main_split_gaps.png)
 
-{{caption_short|readme/02b_main_split_gaps}}
+{{caption_short|common/readme/02b_main_split_gaps}}
 
-![On Muse and the 122B the band-test gap is large, but shared with the logit lens on Muse and gone by probability on the 122B (post hoc)](figures/readme/03c_controls_more.png)
+![On Muse and the 122B the band-test gap is large, but shared with the logit lens on Muse and gone by probability on the 122B (post hoc)](figures/common/readme/03c_controls_more.png)
 
-{{caption_short|readme/03c_controls_more}}
+{{caption_short|common/readme/03c_controls_more}}
 
 </details>
 
@@ -111,13 +111,13 @@ The knock-out breaks recalled answers and leaves looked-up ones nearly intact. O
 
 When another item moves, the lookup follows either the item's own locker (its identity) or the position its locker sat in (the address). It never follows the new number. A probe at the bridge word reads the address at 0.85 to 0.99<!-- src: data/figures/depth/data.csv | the locker probe at the bridge word, locker-first scenes -->. Removing the address from the patch stops lookups by position; swapping in another locker's address redirects the lookup. The lens directions rebuild almost none of that swap, so a lens monitor misses both codes.
 
-![One real routes scene, Qwen 9B: the three routes predict three lockers; the lookup takes the identity route's](figures/examples/03_routes.png)
+![One real routes scene, Qwen 9B: the three routes predict three lockers; the lookup takes the identity route's](figures/depth/examples/02_routes.png)
 
-{{caption_short|examples/03_routes}}
+{{caption_short|depth/examples/02_routes}}
 
 {{fig|f6b_address_swap_lens}}
 
-{{caption_short|readme/07_address_swap_lens}}
+{{caption_short|common/readme/07_address_swap_lens}}
 
 <details><summary>Test, results, controls and limits</summary>
 
@@ -140,15 +140,15 @@ When another item moves, the lookup follows either the item's own locker (its id
   - on the fact passages the lookup rarely takes the position route the address serves (almost never on the 27B), and the natural passages were not tested;
   - in Python code and tool output (exploratory, the 9B and the 27B) it is readable and needed, added alone it brings few position answers back, and the swap was not run there.
 - **Confidence.** Credence {{cred|address}}. The swap's dose was chosen after its rule, fixed in advance, was read at the wrong dose and said no on every model<!-- src: docs/depth/README.md | read at s = 1 and said no on every model -->.
-- **Limits.** The 27B's address is weak, and adding it alone does not bring position answers back. The probe is refit for each format. Which code each lookup gives up, scene by scene, is post hoc ([figure](figures/readme/10_two_codes.png)). The address points to the item's mention, not to a number; on the 9B and Lightning its swap also changes some recalls ([depth report](docs/depth/README.md#part-iii-the-address-where-the-items-locker-sits)).
+- **Limits.** The 27B's address is weak, and adding it alone does not bring position answers back. The probe is refit for each format. Which code each lookup gives up, scene by scene, is post hoc ([figure](figures/common/readme/10_two_codes.png)). The address points to the item's mention, not to a number; on the 9B and Lightning its swap also changes some recalls ([depth report](docs/depth/README.md#part-iii-the-address-where-the-items-locker-sits)).
 
 {{fig|f6a_address_read_remove}}
 
-{{caption_short|readme/06_address_read_remove}}
+{{caption_short|common/readme/06_address_read_remove}}
 
 {{fig|r5_routes}}
 
-{{caption_short|readme/08_routes}}
+{{caption_short|common/readme/08_routes}}
 
 </details>
 
@@ -158,9 +158,9 @@ When another item moves, the lookup follows either the item's own locker (its id
 
 The knock-out's damage to recall is the answer's own directions. Removing only the answer span does all of it, in a test fixed in advance on three models. Keeping the answer span undoes {{w|fig10.keep_span.nl}} to {{w|fig10.keep_span.q27}} of it. So the knock-out shows that recall needs the directions of its remembered word, not that the bridge is used. The claims about the bridge rest on the one-layer test (Finding 1) and the swap (below).
 
-![Keeping only the answer span's directions undoes nearly all of the recall's damage; removing only them does all of it](figures/writeup/10_answer_span.png)
+![Keeping only the answer span's directions undoes nearly all of the recall's damage; removing only them does all of it](figures/common/writeup/10_answer_span.png)
 
-{{caption_short|writeup/10_answer_span}}
+{{caption_short|common/writeup/10_answer_span}}
 
 <details><summary>Removing: test, results and limits</summary>
 
@@ -182,9 +182,9 @@ The knock-out's damage to recall is the answer's own directions. Removing only t
 - **Confidence.** Credence {{cred|answer_directions}} that the damage is the answer's own directions, {{cred|beyond_countries}} that this holds beyond the countries relation, {{cred|orthogonal}} that answer-orthogonal removals cannot see the subject.
 - **Limits.** On Lightning the random part reached its target energy on only {{w|fig10.span_only_matched.v4.nl}} of the twin items and {{w|fig10.span_only_matched.codename.nl}} of the codename items. The one-hop question covers one relation. Items of these sets are not posted; the numbers are.
 
-![Removing the city's directions made orthogonal to the answers costs nothing, even for a one-hop question about the city](figures/writeup/11_orthogonal.png)
+![Removing the city's directions made orthogonal to the answers costs nothing, even for a one-hop question about the city](figures/common/writeup/11_orthogonal.png)
 
-{{caption_short|writeup/11_orthogonal}}
+{{caption_short|common/writeup/11_orthogonal}}
 
 </details>
 
@@ -212,18 +212,18 @@ At the bridge the lens part works as a reference to the entity: what its words e
 | recalls switched by swapping the lens part | {{s|qwen3.5-9b|51.10: recall, last token, read peak: the lens swap's switches}} | {{s|qwen3.6-27b|51.10: recall, last token, read peak: the lens swap's switches}} | {{s|muse-glimmer-30b|51.10: recall, last token, read peak: the lens swap's switches}} | {{s|nemotron-3.5-lightning|51.10: recall, last token, read peak: the lens swap's switches}} ○ | {{s|qwen3.5-122b-a10b|51.10: recall, last token, read peak: the lens swap's switches}} |
 | … by patching the whole state | {{s|qwen3.5-9b|51.10: recall, last token, read peak: the whole-state patch's switches}} | {{s|qwen3.6-27b|51.10: recall, last token, read peak: the whole-state patch's switches}} | {{s|muse-glimmer-30b|51.10: recall, last token, read peak: the whole-state patch's switches}} | {{s|nemotron-3.5-lightning|51.10: recall, last token, read peak: the whole-state patch's switches}} ○ | {{s|qwen3.5-122b-a10b|51.10: recall, last token, read peak: the whole-state patch's switches}} |
 
-- **More.** In the locker scenes the lens part is the old and the new bridge words, almost never the answer word. Across nine models the entity is readable everywhere and needed only in some: OLMo 32B carries it (swap 41.4) without needing it (knock-out 5.4)<!-- src: docs/breadth/data.csv | swap.ol.swap; ko.ol.mk --> ([nine models](figures/readme/13_nine_models.png)). In a conflict between memory and the passage (twin set), the bridge shows the remembered attribute about as strongly whichever source wins.
+- **More.** In the locker scenes the lens part is the old and the new bridge words, almost never the answer word. Across nine models the entity is readable everywhere and needed only in some: OLMo 32B carries it (swap 41.4) without needing it (knock-out 5.4)<!-- src: docs/breadth/data.csv | swap.ol.swap; ko.ol.mk --> ([nine models](figures/common/readme/13_nine_models.png)). In a conflict between memory and the passage (twin set), the bridge shows the remembered attribute about as strongly whichever source wins.
 - **Scope.** The neutral-sentence reference holds on 8 of 8 relations on the 27B<!-- src: docs/breadth/README.md | It holds on 8 of 8 relations on the 27B -->. It needs words that name the entity: a codename defined in the passage shows almost nothing of the person.
 - **Confidence.** Credence {{cred|associations}} that the bridge shows what its words evoke, {{cred|swap_through_answer}} that the swap runs through the answer on our items, {{cred|readable_not_used}} that readable is not always used.
 - **Limits.** "Not used" means not used at that token and layer, at a real change's size; at twice that size the lens part moves part of Muse's and Lightning's recalls. At described bridges the swap's effect runs through the answer's directions.
 
 {{fig|r4_pointer}}
 
-{{caption_short|readme/04_pointer}}
+{{caption_short|common/readme/04_pointer}}
 
 {{fig|r3_last_token}}
 
-{{caption_short|readme/12_last_token}}
+{{caption_short|common/readme/12_last_token}}
 
 </details>
 
@@ -254,17 +254,17 @@ Our committed guesses and their verdicts; the sources are in the [hypotheses led
 
 <details><summary>Chains, order and model by model</summary>
 
-- **Chains.** Each hop is read in the passage (P) or recalled (M); the rule says a chain needs the lens part when its last hop is recalled. On the 27B, P → P → M costs {{bci|mod.q27.threehop.paper10.PPM-PPP}} points beyond the all-passage chain, on the second seed {{bci|mod2.q27.threehop.paper10.PPM-PPP}}. M → M → P costs {{bci|mod.q27.threehop.paper10.MMP-PPP}}, which was not predicted. The 9B's chains cannot be read: its all-passage chain alone drops {{b|mod.q9.threehop.paper10.loss.PPP}} points ([chain figures](figures/breadth/10a1_beyond.png)).
+- **Chains.** Each hop is read in the passage (P) or recalled (M); the rule says a chain needs the lens part when its last hop is recalled. On the 27B, P → P → M costs {{bci|mod.q27.threehop.paper10.PPM-PPP}} points beyond the all-passage chain, on the second seed {{bci|mod2.q27.threehop.paper10.PPM-PPP}}. M → M → P costs {{bci|mod.q27.threehop.paper10.MMP-PPP}}, which was not predicted. The 9B's chains cannot be read: its all-passage chain alone drops {{b|mod.q9.threehop.paper10.loss.PPP}} points ([chain figures](figures/breadth/readme/10a1_beyond.png)).
 
-  ![One real entity, Qwen 27B: only the chain that ends in two recalls turns wrong, and only without the lens part](figures/examples/04_chains.png)
+  ![One real entity, Qwen 27B: only the chain that ends in two recalls turns wrong, and only without the lens part](figures/breadth/examples/02_chains.png)
 
-  {{caption_short|examples/04_chains}}
+  {{caption_short|breadth/examples/02_chains}}
 
-- **The 27B's lookup** at 25 directions: {{x|lk_excess_27b}} beyond random; the 122B's at 100 directions: {{x|lk_excess_k100_122b}} ([figure](figures/readme/14_directions.png)).
+- **The 27B's lookup** at 25 directions: {{x|lk_excess_27b}} beyond random; the 122B's at 100 directions: {{x|lk_excess_k100_122b}} ([figure](figures/common/readme/14_directions.png)).
 - **Question order** has no general effect. With the question before the scene, the 27B's lookup has {{s|qwen3.6-27b|the lookup, question before minus after (paired)}} more of its switches blocked (interval from {{s|qwen3.6-27b|53.1: the lookup, question before minus after (paired): the interval's lower bound}}); the 122B's {{s|qwen3.5-122b-a10b|the lookup, question before minus after (paired)}}. On the twin set the 27B's lookup leans less on it, and the 9B's and Lightning's do not move.
 - **Known facts.** With made-up facts the split returns on the 9B and the 122B.
 - **Model by model.** Weak: Ministral 23.3 and DeepSeek 17.9 points<!-- src: docs/breadth/data.csv | ko.mi.mk; ko.ds.mk -->. Not specific on Bolt and DeepSeek: at 100 directions a same-size principal-direction removal costs 24.0 against 31.3, and 25.9 against 28.7<!-- src: docs/breadth/data.csv | dose.nb.k100.pc; dose.nb.k100; dose.ds.k100.pc; dose.ds.k100 -->. Shared with the logit lens: Muse, 34.6 of its 59.9<!-- src: docs/breadth/data.csv | ko.mu.u; ko.mu.mk -->. Gone by probability: the 122B's 48.5 drops to 1.7<!-- src: docs/breadth/data.csv | ko.q122.mk; ko.q122.soft -->. Untestable: the knock-out breaks plain text on Gemma 4 31B-it, gpt-oss-20b and Kolibri-1 (9.3, 4.7 and 6.4 nats added)<!-- src: docs/breadth/data.csv | text.gemma; text.gptoss; text.kol -->.
-- **Agents.** On one relation posed as agent tasks, the knock-out costs producing the answer {{w|figA1.produce.q9}} / {{w|figA1.produce.q27}} / {{w|figA1.produce.nl}} points beyond a rotated part, picking the true one of two {{w|figA1.pick.q9}} / {{w|figA1.pick.q27}} / {{w|figA1.pick.nl}}, and verifying a claim {{w|figA1.verify.q9}} / {{w|figA1.verify.q27}} / {{w|figA1.verify.nl}} (9B / 27B / Lightning; several cells descriptive; [figure](figures/writeup/a01_agents.png)). Credence {{cred|agents}}.
+- **Agents.** On one relation posed as agent tasks, the knock-out costs producing the answer {{w|figA1.produce.q9}} / {{w|figA1.produce.q27}} / {{w|figA1.produce.nl}} points beyond a rotated part, picking the true one of two {{w|figA1.pick.q9}} / {{w|figA1.pick.q27}} / {{w|figA1.pick.nl}}, and verifying a claim {{w|figA1.verify.q9}} / {{w|figA1.verify.q27}} / {{w|figA1.verify.nl}} (9B / 27B / Lightning; several cells descriptive; [figure](figures/common/writeup/a01_agents.png)). Credence {{cred|agents}}.
 - **Pretraining.** The 9B base model's split is {{b|v1.q9base.qa}}, its instruct model's {{b|v1.q9inst.qa}}.
 
 </details>

@@ -1,5 +1,6 @@
 """One caption per figure (docs pass, 7 Nov): every figure set keeps its captions in figures/<set>/_meta/captions.toml,
-keyed by the figure's file stem. A document template writes `{{caption|<set>/<stem>}}` under the image; the README
+keyed by the figure's file stem (a set is its folder under figures/, e.g. depth/ledger). A document template writes
+`{{caption|<set>/<stem>}}` under the image (`{{caption|depth/ledger/01_item_not_answer}}`); the README
 builders (scripts/readme_root.py, scripts/readme_build.py) expand it before their own placeholders, so the same PNG
 has the same caption on every page. A caption may hold the builders' own placeholders and src comments.
 
@@ -16,7 +17,8 @@ from functools import cache
 
 from bridge_jspace.figkit.layout import FIGURES, META
 
-PH = re.compile(r"\{\{caption(_short)?\|([\w-]+)/([\w-]+)\}\}")
+# the set may hold slashes (depth/ledger): the greedy group gives the stem the last path part
+PH = re.compile(r"\{\{caption(_short)?\|([\w/-]+)/([\w-]+)\}\}")
 SHORT = "captions_short.toml"
 
 

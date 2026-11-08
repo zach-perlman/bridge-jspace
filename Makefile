@@ -121,12 +121,12 @@ examples-render:    ## examples/<exp>/ from the latest examples runs; SEED=29 ad
 examples-serve:     ## render, then serve examples/ on http://localhost:$(PORT) and open it (PORT=8000)
 	uv run python -m bridge_jspace.examples serve $(or $(PORT),8000)
 
-figures-writeup:    ## the LessWrong post's figures (figures/writeup/, styles-plot, post target) with their index, sheets and checks
+figures-writeup:    ## the LessWrong post's figures (figures/common/writeup/, styles-plot, post target) with their index, sheets and checks
 	uv run python scripts/writeup_data.py
 	uv run python scripts/status_registry.py
 	uv run python -m bridge_jspace.figkit.writeup_sp
-	uv run styles-plot check figures/writeup --vocab plotstyle.toml
-	uv run styles-plot sheet figures/writeup -o figures/writeup/_sheets --order figures/writeup/_meta/order.txt
+	uv run styles-plot check figures/common/writeup --vocab plotstyle.toml
+	uv run styles-plot sheet figures/common/writeup -o figures/common/writeup/_sheets --order figures/common/writeup/_meta/order.txt
 	uv run python scripts/writeup_figure_map.py
 	uv run python scripts/writeup_contact_sheet.py
 	uv run pytest -q tests/test_writeup_sp.py tests/test_figure_layout.py
@@ -148,7 +148,7 @@ readme:             ## the three READMEs from their templates (root, docs/depth,
 	uv run python -m bridge_jspace.figkit.depth_sp
 	uv run python -m bridge_jspace.figkit.breadth_sp
 	uv run python scripts/examples.py
-	for s in readme depth breadth examples; do \
+	for s in common/readme depth/readme depth/ledger breadth/readme depth/examples breadth/examples; do \
 		uv run styles-plot check figures/$$s --vocab plotstyle.toml || exit 1; \
 		uv run styles-plot sheet figures/$$s -o figures/$$s/_sheets --order figures/$$s/_meta/order.txt || exit 1; \
 	done

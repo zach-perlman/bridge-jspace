@@ -190,7 +190,7 @@ def test_breadth_figures_take_their_captions_from_the_store():
     """Every figure on the breadth page is followed by its {{caption|set/stem}} or {{caption_short|set/stem}} in the
     template (no bare "Fig. N.")."""
     tpl = (REPO / "docs" / "breadth" / "README.template.md").read_text(encoding="utf-8")
-    figs = re.findall(r"!\[[^\]]*\]\(\.\./\.\./figures/([\w-]+)/([\w-]+)\.png\)\n\n\{\{caption(?:_short)?\|([\w-]+)/([\w-]+)\}\}",
+    figs = re.findall(r"!\[[^\]]*\]\(\.\./\.\./figures/([\w/-]+)/([\w-]+)\.png\)\n\n\{\{caption(?:_short)?\|([\w/-]+)/([\w-]+)\}\}",
                       tpl)
     assert len(figs) == len(re.findall(r"!\[[^\]]*\]\(\.\./\.\./figures/", tpl))
     assert all(a == c and b == d for a, b, c, d in figs)
@@ -212,9 +212,9 @@ def test_every_figure_takes_its_caption_from_the_store():
     bad = []
     for i, ln in enumerate(lines):
         m = re.fullmatch(r"\{\{fig\|([\w-]+)\}\}", ln.strip())
-        img = re.match(r"!\[[^\]]*\]\(figures/([\w-]+)/([\w-]+)\.png\)", ln.strip())
+        img = re.match(r"!\[[^\]]*\]\(figures/([\w/-]+)/([\w-]+)\.png\)", ln.strip())
         if m:
-            want = f"readme/{L.path('readme', m.group(1)).stem}"
+            want = f"common/readme/{L.path('common/readme', m.group(1)).stem}"
         elif img and img.group(2) != "00_key":
             want = f"{img.group(1)}/{img.group(2)}"
         else:
