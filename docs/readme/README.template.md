@@ -4,7 +4,7 @@
 
 **Zach Perlman and Danyil Orel** · MATS 12.0 sprint, Neel Nanda's stream · 19–30 Oct 2026<!-- src: docs/plans/hypotheses.md | The proposal (19 Oct) --><!-- src: docs/depth/README.md | 29 Oct 2026 -->
 
-**Status.** A two-week sprint by two people, checked to [verification level](docs/STANDARD.md#8-shared-vocabulary) 4 of 5 (tested numbers, a 46-item [hand-check](docs/review/handcheck_findings.md)<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->, agent-written recounts), with no human recount yet ([VERIFIED.md](VERIFIED.md)). The headline models are the three of nine that pass the bar registered before the main runs ([amendment 33](docs/breadth/prereg_replication_1022.md#amendment-33-zach-2026-10-24-1723-utc-commit-4464369-the-combined-suite-v2-one-dataset-jsuite_v2), 24 Oct; recall − lookup ≥ 30, rotated and logit-lens controls < 10<!-- src: docs/breadth/prereg_replication_1022.md | M - K >= 30 with the logit-lens and rotated controls < 10 -->. Main caveat: the knock-out mostly removes the answer's own directions, so the claims about the bridge rest on the one-layer test and the swap.
+**Status.** A two-week sprint by two people, checked to [verification level](docs/STANDARD.md#8-shared-vocabulary) 4 of 5 (tested numbers, a 46-item [hand-check](docs/review/handcheck_findings.md)<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->, agent-written recounts), with no human recount yet ([VERIFIED.md](VERIFIED.md)). The headline models are the three of nine that pass the bar fixed in advance of the main runs ([amendment 33](docs/breadth/prereg_replication_1022.md#amendment-33-zach-2026-10-24-1723-utc-commit-4464369-the-combined-suite-v2-one-dataset-jsuite_v2), 24 Oct; recall − lookup ≥ 30, rotated and logit-lens controls < 10<!-- src: docs/breadth/prereg_replication_1022.md | M - K >= 30 with the logit-lens and rotated controls < 10 -->. Main caveat: the knock-out mostly removes the answer's own directions, so the claims about the bridge rest on the one-layer test and the swap.
 
 <!-- POST LINK: Dan adds "[Write-up](…) · " at the start of the next line at publication -->
 [Depth report](docs/depth/README.md) · [Breadth report](docs/breadth/README.md) · [Hypotheses](docs/plans/hypotheses.md) · [Examples](docs/writeup/examples.md) · [Figures](figures/) · [Data](data/README.md) · [Reproduce](#reproduce) · [Slides](docs/slides/) · Code: [MIT](LICENSE) · [Data licences](data/SOURCES.md)
@@ -13,7 +13,7 @@
 
 Gurnee et al. (2026) argue that the J++ lens reads a "workspace" holding the middle step of a model's reasoning. We tested this on two-step questions that pass through a middle entity, the *bridge*. Their second step is *recalled* from memory or *looked up* in the prompt. A *knock-out* removes the *lens part*, the few directions the lens reads most at the bridge, over a band of middle layers.
 
-- **Recall needs the lens directions at the bridge; lookup needs far less.** The knock-out costs recalled answers {{b|ko.q9.mk}} to {{b|ko.nl.mk}} points more than looked-up ones on Qwen 9B, Qwen 27B and Lightning. They are the three of nine that pass the bar registered before the main runs ([amendment 33](docs/breadth/prereg_replication_1022.md#amendment-33-zach-2026-10-24-1723-utc-commit-4464369-the-combined-suite-v2-one-dataset-jsuite_v2), 24 Oct; recall − lookup ≥ 30, rotated and logit-lens controls < 10<!-- src: docs/breadth/prereg_replication_1022.md | M - K >= 30 with the logit-lens and rotated controls < 10 -->.
+- **Recall needs the lens directions at the bridge; lookup needs far less.** The knock-out costs recalled answers {{b|ko.q9.mk}} to {{b|ko.nl.mk}} points more than looked-up ones on Qwen 9B, Qwen 27B and Lightning. They are the three of nine that pass the bar fixed in advance of the main runs ([amendment 33](docs/breadth/prereg_replication_1022.md#amendment-33-zach-2026-10-24-1723-utc-commit-4464369-the-combined-suite-v2-one-dataset-jsuite_v2), 24 Oct; recall − lookup ≥ 30, rotated and logit-lens controls < 10<!-- src: docs/breadth/prereg_replication_1022.md | M - K >= 30 with the logit-lens and rotated controls < 10 -->.
 - **The lookup goes around the lens.** It finds the item by its identity or by an address, a code for where the item sits in the prompt. A probe reads the address at 0.85 to 0.99<!-- src: data/figures/depth/data.csv | the locker probe at the bridge word, locker-first scenes -->, and swapping it in redirects the lookup; the lens directions do not capture it.
 - **A lens reading shows what an entity brings to mind, not what the model uses.** At the answer position a probe on the lens part reads the entity. Yet swapping that part moves at most 0.14 ○ of answers<!-- src: data/figures/depth/data.csv | 51.10: recall, last token, read peak: the lens swap's switches -->.
 - **For anyone monitoring with a lens.** At an entity, a lens readout shows which entity is in play and what it brings to mind. It does not show whether the model answers from memory or from the text.
@@ -94,7 +94,7 @@ Each colour is a role. Recall is black, lookup violet, the lens part teal, the a
 
 ### Finding 1. Recall needs the lens part; lookup needs far less
 
-Qwen 9B, Qwen 27B and Lightning are the three of nine that pass the bar registered before the main runs ([amendment 33](docs/breadth/prereg_replication_1022.md#amendment-33-zach-2026-10-24-1723-utc-commit-4464369-the-combined-suite-v2-one-dataset-jsuite_v2), 24 Oct; recall − lookup ≥ 30, rotated and logit-lens controls < 10<!-- src: docs/breadth/prereg_replication_1022.md | M - K >= 30 with the logit-lens and rotated controls < 10 -->. On them the knock-out costs recall {{b|ko.q9.mk}} to {{b|ko.nl.mk}} points more than lookup; same-size controls cost far less. At one layer the recall follows the lens part when the patch's parts disagree, and the lookup does not.
+Qwen 9B, Qwen 27B and Lightning are the three of nine that pass the bar fixed in advance of the main runs ([amendment 33](docs/breadth/prereg_replication_1022.md#amendment-33-zach-2026-10-24-1723-utc-commit-4464369-the-combined-suite-v2-one-dataset-jsuite_v2), 24 Oct; recall − lookup ≥ 30, rotated and logit-lens controls < 10<!-- src: docs/breadth/prereg_replication_1022.md | M - K >= 30 with the logit-lens and rotated controls < 10 -->. On them the knock-out costs recall {{b|ko.q9.mk}} to {{b|ko.nl.mk}} points more than lookup; same-size controls cost far less. At one layer the recall follows the lens part when the patch's parts disagree, and the lookup does not.
 
 The paper's Figure 24 already shows removal hurting free recall (TriviaQA) and sparing extraction (SQuAD)<!-- src: docs/shared/references.md | Figure 24 -->; new here are matched items where only the answer's source changes. Two mundane readings remain.
 
@@ -109,7 +109,7 @@ Second, general damage: on these three models it costs plain text {{b|text.q27}}
 <details><summary>Test, results, controls and limits</summary>
 
 - **Test.** The knock-out over a band of middle layers (fact passages). Removal from the patch at one layer (locker scenes).
-- **Result and controls.** Muse and the 122B are not claimed (post hoc in the band test). Against the registered bar, Muse and the 122B fail on the logit-lens control ({{b|ko.mu.u}}, {{b|ko.q122.u}}), and Ministral, DeepSeek, Bolt and OLMo 32B on the gap ({{b|ko.mi.mk}}, {{b|ko.ds.mk}}, {{b|ko.nb.mk}}, {{b|ko.ol.mk}}). The rotated part, the logit lens's directions and the principal directions match the lens part's norm; the one-layer random part matches its energy (the same share of the change).
+- **Result and controls.** Muse and the 122B are not claimed (post hoc in the band test). Against that bar, Muse and the 122B fail on the logit-lens control ({{b|ko.mu.u}}, {{b|ko.q122.u}}), and Ministral, DeepSeek, Bolt and OLMo 32B on the gap ({{b|ko.mi.mk}}, {{b|ko.ds.mk}}, {{b|ko.nb.mk}}, {{b|ko.ol.mk}}). The rotated part, the logit lens's directions and the principal directions match the lens part's norm; the one-layer random part matches its energy (the same share of the change).
 
 | | 9B | 27B | Muse | Lightning | 122B |
 |---|---|---|---|---|---|
@@ -350,7 +350,7 @@ Our committed guesses; each verdict links to its row in the [hypotheses ledger](
 To read the docs and figures only: `git clone --filter=blob:none --sparse https://github.com/zach-perlman/bridge-jspace` then `git sparse-checkout set docs figures data/figures`.
 
 - **Tier one, the figures and READMEs from tracked numbers (CPU).** `uv sync && make readme`.
-- **Tier two, numbers from the run files (CPU).** `uv run python scripts/verify_headlines.py`. It fails today (some run files are in no commit) and checks older sprint headlines.
+- **Tier two, this page's numbers against the run files (CPU).** `make check-numbers`: every number on the three READMEs traces to tracked files.
 - **Tier three, the runs (GPU).** `make run CONFIG=…` ([DEVELOPER.md](DEVELOPER.md#reproduce)). Not re-run for this page.
 
 <details><summary>Measured in fresh clones</summary>
@@ -361,7 +361,7 @@ On an {{r|repro.hw.cpu}} laptop ({{r|repro.hw.cores}} cores, {{r|repro.hw.ram_gb
 |---|---|---|---|
 | read only | {{r|repro.read.time_s}} s | {{r|repro.read.files_mb}} MB of files, {{r|repro.read.git_mb}} MB of history | docs, figures, data/figures |
 | one | {{r|repro.t1.readme_s}} s for `make readme`, {{r|repro.t1.sync_s}} s for `uv sync` | {{r|repro.t1.files_mb}} MB of files, {{r|repro.t1.git_mb}} MB of history | {{r|repro.t1.results_folders}} run folders, {{r|repro.t1.results_mb}} MB |
-| two | {{r|repro.t2.verify_s}} s, exit code {{r|repro.t2.exit}} | {{r|repro.t2.files_mb}} MB of files | {{r|repro.t2.results_folders}} run folders; {{r|repro.t2.ok}} of {{r|repro.t2.checks}} checks match |
+| two | {{r|repro.t2.test_s}} s, {{r|repro.t2.passed}} tests passed | {{r|repro.t2.files_mb}} MB of files, {{r|repro.t2.git_mb}} MB of history | {{r|repro.t2.run_folders}} run folders, {{r|repro.t2.run_mb}} MB |
 | three | not re-run | a GPU of {{r|repro.t3.gpu_gb_27b}} GB for the 27B | the pinned models |
 
 </details>
