@@ -137,7 +137,7 @@ def test_checks_catch_failures():
 
 # ---- the page's shape (README brief, 7 Nov: esk-audit's outline) ---------------------------------------------------------
 TEMPLATE = REPO / "docs" / "readme" / "README.template.md"
-WORD_BUDGET = 4000  # visible words outside <details>, comments, code blocks and image links
+WORD_BUDGET = 2000  # visible words outside <details>, comments, code blocks and image links (readability brief, 8 Nov)
 
 
 def visible_words(text: str) -> int:
@@ -149,6 +149,19 @@ def visible_words(text: str) -> int:
 
 def test_visible_text_within_the_word_budget():
     assert visible_words(README.read_text(encoding="utf-8")) <= WORD_BUDGET
+
+
+def test_readme_meets_every_readability_target():
+    """scripts/readme_lint.py's measures of README.md (readability brief, 8 Nov): words, slash lists, long sentences,
+    colons, captions and ledger labels, each within its target."""
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("readme_lint", REPO / "scripts" / "readme_lint.py")
+    lint = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(lint)
+    m = lint.measure(README)
+    assert not (over := {k: (m[k], t) for k, t in lint.TARGETS.items() if m[k] > t}), over
+    assert m["caption_max"] <= 60, "a README caption is over 60 words"
 
 
 BREADTH = REPO / "docs" / "breadth" / "README.md"
