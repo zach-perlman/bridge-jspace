@@ -14,8 +14,6 @@ import json
 import re
 from pathlib import Path
 
-import pytest
-
 REPO = Path(__file__).resolve().parents[1]
 README = REPO / "README.md"
 CSV_SOURCES = {"data/figures/depth/data.csv", "docs/breadth/data.csv", "docs/shared/grid.csv", "data/figures/writeup/data.csv"}
@@ -164,16 +162,13 @@ def test_breadth_visible_text_within_its_budget():
 DEPTH = REPO / "docs" / "depth" / "README.md"
 DEPTH_BUDGET = 6000  # finishing-pass brief D1: In one minute, How to read, each claim's sentence + figure + takeaway
 LEDGER = REPO / "docs" / "depth" / "EXPERIMENTS.md"
-LEDGER_BUDGET = 15000  # finishing-pass brief D2
+LEDGER_BUDGET = 18000  # Dan, 8 Nov (was 15,000, finishing-pass brief D2): the cards' Result tables cannot fit 15,000
 
 
 def test_depth_visible_text_within_its_budget():
     assert visible_words(DEPTH.read_text(encoding="utf-8")) <= DEPTH_BUDGET
 
 
-@pytest.mark.xfail(strict=True, reason="8 Nov: every card shows only its question, tag and metadata lines, its Result "
-                   "table and one Read bullet, and still 17,953 words stay visible (Result tables 8,286, metadata 2,171, "
-                   "In one minute's overview tables 1,596): the brief's visible list does not fit 15,000; for Dan")
 def test_ledger_visible_text_within_its_budget():
     assert visible_words(LEDGER.read_text(encoding="utf-8")) <= LEDGER_BUDGET
 
