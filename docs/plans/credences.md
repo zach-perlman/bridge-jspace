@@ -1,15 +1,16 @@
 # Credences
 
-**Placeholders until the write-up's Appendix C is pasted** (Dan, 8 Nov). Each is the authors' credence that the claim holds as stated, not a statistic. The root README's Confidence lines quote them from this file through `{{cred|key}}` (scripts/readme_root.py); edit a value here, then rebuild.
+The write-up's Appendix C (Dan, 8 Nov). Each is the authors' credence that the claim holds as stated, not a statistic; the note says why it is not higher. The root README's Confidence lines quote the credence from this file through `{{cred|key}}` (scripts/readme_root.py); edit a value here, then rebuild. Every number in a note carries its source.
 
-| key | claim | credence | note |
+| key | claim | credence | why not higher |
 |---|---|---|---|
-| main_split | the main split: removing the lens part breaks recalled answers and leaves looked-up ones | ~90% |  |
-| broadly | the split holds broadly, beyond the models and settings tested | ~40% |  |
-| address | the lookup runs on an address outside the lens | ~80% |  |
-| answer_directions | what recall needs is its answer's own directions | ~85% |  |
-| beyond_countries | the answer-direction result holds beyond the countries relation | ~55% |  |
-| orthogonal | answer-orthogonal removals cannot see the subject | ~65% | was ~75%; lowered after Q2b found the orthogonal arm post hoc on all three models |
-| associations | a lens reading at an entity reports associations, not use | ~70% |  |
-| readable_not_used | readable is not the same as used | ~80% |  |
-| agents | picking and verifying cost far less than producing | ~55% |  |
+| main_split | Recall needs these directions far more than lookup (middle bands; 9B, 27B, Lightning) | ~90% | The 27B's confidence-matched gap is 36.5 (post hoc) — **flag: no source found for 36.5**; the sourced values are 36.6 on the toy suite, fresh seed<!-- src: results/ablate_v2/c1_v2/fresh3_ko_v1.json \| margin_matched.paper10.matched_gap = 0.3664 --> and 51.5 [47.5, 55.1] on jsuite v2<!-- src: results/endgame_1027/rescore.md \| C. Confidence-matched gap, Qwen 27B paper10 -->. Its size-matched codename cost 46 of 71<!-- src: EXPERIMENTS.md, 2026-10-29 note 31 (jsuite_v5al) \| 27B gap 71.2 [66.6, 76.0], size-matched 46.0 -->. |
+| broadly | …broadly across open models | ~40% | Clean on 3 of 9<!-- src: README.md, Finding 1 grading ("the three clearest of nine") -->; the 122B and Muse disagree across tools. |
+| agents | In agents, picking and verifying cost far less than producing | ~55% | One relation, one seed; copying (all models) and the 27B's picking and producing were descriptive<!-- src: data/figures/status.csv \| figA1_agents copy.*, pick.q27, produce.q27: descriptive -->. |
+| answer_directions | What recall loses is the answer's own directions (country answers) | ~85% | Energy-matched on two independent fact samples on the 9B and 27B<!-- src: data/figures/writeup/data.csv \| fig10.span_only_matched.{v4,codename}.{q9,q27} = 1.0 -->; Lightning's random part was under-matched (29% and 2% of items reached the target energy)<!-- src: data/figures/writeup/data.csv \| fig10.span_only_matched.v4.nl = 0.288; fig10.span_only_matched.codename.nl = 0.017 -->; the keep is partly generic. |
+| beyond_countries | …beyond country answers | ~55% | Keep 0.62 to 0.83, "partly" on all three<!-- src: EXPERIMENTS.md, 2026-10-30 notes 63 (9B, 27B, Lightning) \| non-country pool keepA rescue 0.615 / 0.827 / 0.638; verdict "partly" on each -->; 25 to 48 items per relation<!-- src: EXPERIMENTS.md, notes 63 \| gated MM per relation: 9B 25 / 48 / 36, 27B 27 / 38 / 37, Lightning 32 / 43 / 36 -->. |
+| orthogonal | Answer-orthogonal removals cannot see the subject | ~65% | Was ~75%; lowered 8 Nov: the one-hop orthogonal arm is post hoc on all three models with no stored interval<!-- src: data/figures/status.csv \| fig11 onehop city_perp cells: post_hoc -->; the registered subspace test is under 15 only at the point estimate on the 27B and Lightning<!-- src: data/figures/writeup/data.csv \| fig11.clean_subspace.q27, fig11.clean_subspace.nl -->. |
+| address | Position lookups use an address the lens does not show | ~80% | The swap dose was chosen post hoc; the 27B's address is weak. |
+| associations | The bridge shows what its words evoke, not a fact retrieved | ~70% | Readouts partly post hoc; one run per model. |
+| swap_through_answer | …the swap runs through the answer (our items) | ~50% | Rank-matched only; failed energy matching on the paper's prompts. |
+| readable_not_used | Readable is not always used | ~80% | Each case rests on one setup. |
