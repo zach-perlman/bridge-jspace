@@ -31,7 +31,7 @@ Real items, each picked by a fixed rule (rules and item ids in `data/figures/exa
 
 ![One real locker scene, Qwen 27B: the whole change switches both readers; without the lens part the lookup still switches and the recall does not](figures/examples/01_locker_scene.png)
 
-*Without the lens part the lookup still switches and the recall does not. One locker scene, Qwen 27B (the bridge word in bold): each reader's answer before the change and under each operation at layer 32<!-- src: docs/depth/x0_numbers.json | layer_27b -->. Over the main test's 200<!-- src: docs/depth/x0_numbers.json | n_27b --> scenes, the recall switches without the lens part in only 35<!-- src: docs/depth/x0_numbers.json | rc_noj_27b -->.*
+*Without the lens part the lookup still switches and the recall does not. One locker scene, Qwen 27B (the bridge word in bold). Of the main test's 200<!-- src: docs/depth/x0_numbers.json | n_27b --> scenes, the whole change switches the recall in 150<!-- src: docs/depth/x0_numbers.json | rc_whole_27b -->, and without the lens part in only 35<!-- src: docs/depth/x0_numbers.json | rc_noj_27b -->; the lookup still switches in 71<!-- src: docs/depth/x0_numbers.json | lk_noj_27b -->.*
 
 <details><summary>A fact passage</summary>
 
@@ -79,7 +79,7 @@ The knock-out breaks recalled answers and leaves looked-up ones nearly intact. O
 <details><summary>Test, results, controls and limits</summary>
 
 - **Test.** The knock-out over a band of middle layers (fact passages). Removal from the patch at one layer (locker scenes).
-- **Result and controls.** Muse and the 122B are not claimed (post hoc in the band test); "—" means no run.
+- **Result and controls.** Muse and the 122B are not claimed (post hoc in the band test).
 
 | | 9B | 27B | Muse | Lightning | 122B |
 |---|---|---|---|---|---|
@@ -88,11 +88,11 @@ The knock-out breaks recalled answers and leaves looked-up ones nearly intact. O
 | looked-up answers' own drop, points | 5.0<!-- src: docs/breadth/data.csv \| ko.q9.klost --> | 2.6<!-- src: docs/breadth/data.csv \| ko.q27.klost --> | 1.8<!-- src: docs/breadth/data.csv \| ko.mu.klost --> ○ | 3.7<!-- src: docs/breadth/data.csv \| ko.nl.klost --> | 0.8<!-- src: docs/breadth/data.csv \| ko.q122.klost --> ○ |
 | control: a rotated part | 1.8<!-- src: docs/breadth/data.csv \| ko.q9.rot --> | 2.7<!-- src: docs/breadth/data.csv \| ko.q27.rot --> | 2.6<!-- src: docs/breadth/data.csv \| ko.mu.rot --> ○ | 3.6<!-- src: docs/breadth/data.csv \| ko.nl.rot --> | 2.1<!-- src: docs/breadth/data.csv \| ko.q122.rot --> ○ |
 | control: the logit lens's directions | 1.4<!-- src: docs/breadth/data.csv \| ko.q9.u --> | 1.9<!-- src: docs/breadth/data.csv \| ko.q27.u --> | 34.6<!-- src: docs/breadth/data.csv \| ko.mu.u --> ○ | 8.7<!-- src: docs/breadth/data.csv \| ko.nl.u --> | 11.8<!-- src: docs/breadth/data.csv \| ko.q122.u --> ○ |
-| control: top principal directions, same norm | 7.3<!-- src: docs/breadth/data.csv \| ko.q9.pc --> | 12.4<!-- src: docs/breadth/data.csv \| ko.q27.pc --> | — | 8.2<!-- src: docs/breadth/data.csv \| ko.nl.pc --> | — |
-| lens part minus its largest control, paired | 35.4<!-- src: docs/breadth/data.csv \| f2.band.q9.pc --> | 38.5<!-- src: docs/breadth/data.csv \| f2.band.q27.pc --> | — | 44.4<!-- src: docs/breadth/data.csv \| f2.band.nl.u --> | — |
+| control: top principal directions, same norm | 7.3<!-- src: docs/breadth/data.csv \| ko.q9.pc --> | 12.4<!-- src: docs/breadth/data.csv \| ko.q27.pc --> | 5.3<!-- src: docs/breadth/data.csv \| dose.mu.k10.pc --> ○ (dose run) | 8.2<!-- src: docs/breadth/data.csv \| ko.nl.pc --> | not run |
+| lens part minus its largest control, paired | 35.4<!-- src: docs/breadth/data.csv \| f2.band.q9.pc --> | 38.5<!-- src: docs/breadth/data.csv \| f2.band.q27.pc --> | 25.3<!-- src: docs/breadth/data.csv \| f2.band.mu.u --> ○ | 44.4<!-- src: docs/breadth/data.csv \| f2.band.nl.u --> | 36.6<!-- src: docs/breadth/data.csv \| f2.band.q122.u --> ○ |
 | one layer: recall's switches blocked beyond random | 0.50<!-- src: docs/depth/x0_numbers.json \| rc_excess_9b --> | 0.74<!-- src: docs/depth/x0_numbers.json \| rc_excess_27b --> | 0.75<!-- src: docs/depth/x0_numbers.json \| rc_excess_muse --> | 0.34<!-- src: data/figures/depth/data.csv \| conflict: recall, switches lost beyond a random part --> ○ | 0.32<!-- src: docs/depth/x0_numbers.json \| rc_excess_122b --> |
 | one layer: lookup's switches blocked beyond random | −0.03<!-- src: docs/depth/x0_numbers.json \| lk_excess_9b --> | 0.14<!-- src: docs/depth/x0_numbers.json \| lk_excess_27b --> | −0.10<!-- src: docs/depth/x0_numbers.json \| lk_excess_muse --> | 0.03<!-- src: data/figures/depth/data.csv \| conflict: lookup, switches lost beyond a random part --> ○ | 0.00<!-- src: docs/depth/x0_numbers.json \| lk_excess_122b --> |
-| one layer: lens part minus principal directions, paired | 0.24<!-- src: docs/breadth/data.csv \| f2.layer.q9.pca --> | 0.45<!-- src: docs/breadth/data.csv \| f2.layer.q27.pca --> | 0.48<!-- src: docs/breadth/data.csv \| f2.layer.mu.pca --> | — | 0.05, interval includes zero<!-- src: docs/breadth/data.csv \| f2.layer.q122.pca --> |
+| one layer: lens part minus principal directions, paired | 0.24<!-- src: docs/breadth/data.csv \| f2.layer.q9.pca --> | 0.45<!-- src: docs/breadth/data.csv \| f2.layer.q27.pca --> | 0.48<!-- src: docs/breadth/data.csv \| f2.layer.mu.pca --> | no per-item contrast saved | 0.05, interval includes zero<!-- src: docs/breadth/data.csv \| f2.layer.q122.pca --> |
 
 - **Scope.** Every passage set we built shows it on the two Qwens: 22.8 to 52.1 points on toy puzzles, natural fact chains and natural text<!-- src: docs/breadth/data.csv | toy.q27.s1; toy.q27.s2; toy.q27.s3; toy.q9.s1; toy.q9.s2; toy.q9.s3; nat.q27.s1; nat.q27.s2; nat.q27.s3; nat.q9.s1; nat.q9.s2; nat.q9.s3; natplus.q27; natplus.q9 -->. It holds on every relation, from 36.0 (languages) to 72.0 (dishes) on the 27B<!-- src: docs/breadth/data.csv | ko.q27.rel.languages; ko.q27.rel.dishes -->, and for rare and popular bridges alike<!-- src: docs/breadth/data.csv | natplus.q27.rare; natplus.q27.pop; natplus.nl.rare; natplus.nl.pop -->. On the twin set, which describes people instead of naming them, it survives dropping every item a shortcut could answer (post hoc) and asking the question first. The need is spread over the bridge's words; removing the lens part at the final token alone costs almost nothing ([where the need sits](figures/readme/17_where.png)). The one-layer controls are [in this figure](figures/readme/03b_controls_layer.png).
 - **Confidence.** Credence [~90%](docs/plans/credences.md)<!-- src: docs/plans/credences.md | main_split --> for the split as stated, [~40%](docs/plans/credences.md)<!-- src: docs/plans/credences.md | broadly --> that it holds beyond the models and settings tested. The 27B's lookup is also partly blocked ([Where it does not hold](#where-it-does-not-hold)).
@@ -171,7 +171,7 @@ The knock-out's damage to recall is the answer's own directions. Removing only t
 | | 9B | 27B | Lightning |
 |---|---|---|---|
 | keeping the answer span: share of damage undone | 0.93 [0.86, 1.01]<!-- src: data/figures/writeup/data.csv \| fig10.keep_span.q9 --> | 0.95 [0.90, 1.00]<!-- src: data/figures/writeup/data.csv \| fig10.keep_span.q27 --> | 0.91 [0.83, 0.98]<!-- src: data/figures/writeup/data.csv \| fig10.keep_span.nl --> |
-| control: a random keep of the same energy | −0.11 [−0.25, 0.00]<!-- src: data/figures/writeup/data.csv \| fig10.keep_ctrl.q9 --> | 0.02 [−0.06, 0.10]<!-- src: data/figures/writeup/data.csv \| fig10.keep_ctrl.q27 --> | — |
+| control: a random keep of the same energy | −0.11 [−0.25, 0.00]<!-- src: data/figures/writeup/data.csv \| fig10.keep_ctrl.q9 --> | 0.02 [−0.06, 0.10]<!-- src: data/figures/writeup/data.csv \| fig10.keep_ctrl.q27 --> | no energy-matched control |
 | answer span alone: multiple of the full damage | 1.04 [0.88, 1.22]<!-- src: data/figures/writeup/data.csv \| fig10.span_only.v4.q9 --> | 1.02 [0.93, 1.12]<!-- src: data/figures/writeup/data.csv \| fig10.span_only.v4.q27 --> | 0.98 [0.82, 1.14]<!-- src: data/figures/writeup/data.csv \| fig10.span_only.v4.nl --> |
 | the same, codename set | 1.32 [1.15, 1.54]<!-- src: data/figures/writeup/data.csv \| fig10.span_only.codename.q9 --> | 1.18 [1.06, 1.32]<!-- src: data/figures/writeup/data.csv \| fig10.span_only.codename.q27 --> | 1.05 [0.96, 1.14]<!-- src: data/figures/writeup/data.csv \| fig10.span_only.codename.nl --> |
 | one hop: the city's lens directions, points | 41.5 [35.3, 47.3]<!-- src: data/figures/writeup/data.csv \| fig11.onehop.city.q9 --> | 29.2 [24.3, 34.5]<!-- src: data/figures/writeup/data.csv \| fig11.onehop.city.q27 --> | 25.2 [21.3, 29.4]<!-- src: data/figures/writeup/data.csv \| fig11.onehop.city.nl --> |
@@ -247,7 +247,7 @@ Our committed guesses and their verdicts; the sources are in the [hypotheses led
 
 ## Where it does not hold
 
-- **Longer chains.** On three-hop chains the cost does not simply follow the recalled hop. Lightning fits that rule; the 27B breaks it twice, once dropping only 8.2<!-- src: docs/breadth/data.csv | mod.q27.threehop.paper10.PPM-PPP --> points.
+- **Longer chains.** On three-hop chains the cost does not simply follow the recalled hop. Lightning fits that rule; the 27B breaks it twice, once dropping only 8.2<!-- src: docs/breadth/data.csv | mod.q27.threehop.paper10.PPM-PPP --> points where the rule predicts a large drop.
 - **The 27B's lookup** leans on the lens part partly: 0.60<!-- src: docs/depth/x0_numbers.json | lk_excess_k100_27b --> of its switches are blocked beyond random at 100 directions.
 - **Known facts.** When the passage gives a fact the model knows, the 9B's and 27B's lookups follow the lens part (0.26 to 0.28 beyond random)<!-- src: data/figures/depth/data.csv | Z1: lookup, switches lost beyond a random part -->.
 - **Across models the split is graded.** It is strong and specific on three of nine. On the rest it is weaker, not specific, shared with the logit lens, or gone when scored by probability.
@@ -274,7 +274,7 @@ Our committed guesses and their verdicts; the sources are in the [hypotheses led
 
 - **Rules fixed in advance.** Breadth runs follow a [pre-registration](docs/breadth/prereg_replication_1022.md) with amendments committed before each run. Depth [predictions](predictions/README.md) were committed before results were opened, then scored; they did worse than always guessing even odds (mean Brier 0.32)<!-- src: docs/depth/README.md | mean Brier 0.32 over 121 answers -->.
 - **Reruns.** From a clean checkout the breadth headline runs match row for row: 0 of 22325 rows differ on the 27B<!-- src: docs/breadth/README.md | 0 of 22325 -->.
-- **Independent recounts.** Code written from scratch recounts the depth headline numbers and matches 63 of 63<!-- src: docs/depth/README.md | matches 63 of 63 -->.
+- **Independent recounts.** Code written from scratch matches 63 of 63 depth headline numbers<!-- src: docs/depth/README.md | matches 63 of 63 -->.
 - **What we dropped**, with the test that dropped it: [depth](docs/depth/README.md#tested-and-dropped), [breadth](docs/breadth/README.md#8-what-did-not-hold).
 
 <details><summary>Run provenance and red-teaming</summary>
@@ -308,6 +308,6 @@ Our committed guesses and their verdicts; the sources are in the [hypotheses led
 
 ## Repository guide
 
-- **Reports.** The [depth report](docs/depth/README.md) (locker scenes, five models) with its [experiment ledger](docs/depth/EXPERIMENTS.md); the [breadth report](docs/breadth/README.md) (fact passages, nine models); the [hypotheses ledger](docs/plans/hypotheses.md); a [map of the documents](docs/README.md).
+- **Reports.** The [depth report](docs/depth/README.md) (locker scenes) with its [experiment ledger](docs/depth/EXPERIMENTS.md); the [breadth report](docs/breadth/README.md) (fact passages); the [hypotheses ledger](docs/plans/hypotheses.md); a [map of the documents](docs/README.md).
 - **Figures and code.** [figures/](figures/) by set; numbers in `data/figures/` and `docs/breadth/data.csv`; code in `scripts/` and `src/`; runs in `results/`.
 - **This page** is built from `docs/readme/README.template.md` by `scripts/readme_root.py` ([DEVELOPER.md](DEVELOPER.md)).

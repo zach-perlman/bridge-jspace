@@ -78,7 +78,7 @@ The knock-out breaks recalled answers and leaves looked-up ones nearly intact. O
 <details><summary>Test, results, controls and limits</summary>
 
 - **Test.** The knock-out over a band of middle layers (fact passages). Removal from the patch at one layer (locker scenes).
-- **Result and controls.** Muse and the 122B are not claimed (post hoc in the band test); "—" means no run.
+- **Result and controls.** Muse and the 122B are not claimed (post hoc in the band test).
 
 | | 9B | 27B | Muse | Lightning | 122B |
 |---|---|---|---|---|---|
@@ -87,11 +87,11 @@ The knock-out breaks recalled answers and leaves looked-up ones nearly intact. O
 | looked-up answers' own drop, points | {{b|ko.q9.klost}} | {{b|ko.q27.klost}} | {{b|ko.mu.klost}} ○ | {{b|ko.nl.klost}} | {{b|ko.q122.klost}} ○ |
 | control: a rotated part | {{b|ko.q9.rot}} | {{b|ko.q27.rot}} | {{b|ko.mu.rot}} ○ | {{b|ko.nl.rot}} | {{b|ko.q122.rot}} ○ |
 | control: the logit lens's directions | {{b|ko.q9.u}} | {{b|ko.q27.u}} | {{b|ko.mu.u}} ○ | {{b|ko.nl.u}} | {{b|ko.q122.u}} ○ |
-| control: top principal directions, same norm | {{b|ko.q9.pc}} | {{b|ko.q27.pc}} | — | {{b|ko.nl.pc}} | — |
-| lens part minus its largest control, paired | {{b|f2.band.q9.pc}} | {{b|f2.band.q27.pc}} | — | {{b|f2.band.nl.u}} | — |
+| control: top principal directions, same norm | {{b|ko.q9.pc}} | {{b|ko.q27.pc}} | {{b|dose.mu.k10.pc}} ○ (dose run) | {{b|ko.nl.pc}} | not run |
+| lens part minus its largest control, paired | {{b|f2.band.q9.pc}} | {{b|f2.band.q27.pc}} | {{b|f2.band.mu.u}} ○ | {{b|f2.band.nl.u}} | {{b|f2.band.q122.u}} ○ |
 | one layer: recall's switches blocked beyond random | {{x|rc_excess_9b}} | {{x|rc_excess_27b}} | {{x|rc_excess_muse}} | {{s|nemotron-3.5-lightning|conflict: recall, switches lost beyond a random part}} ○ | {{x|rc_excess_122b}} |
 | one layer: lookup's switches blocked beyond random | {{x|lk_excess_9b}} | {{x|lk_excess_27b}} | {{x|lk_excess_muse}} | {{s|nemotron-3.5-lightning|conflict: lookup, switches lost beyond a random part}} ○ | {{x|lk_excess_122b}} |
-| one layer: lens part minus principal directions, paired | 0.24<!-- src: docs/breadth/data.csv \| f2.layer.q9.pca --> | 0.45<!-- src: docs/breadth/data.csv \| f2.layer.q27.pca --> | 0.48<!-- src: docs/breadth/data.csv \| f2.layer.mu.pca --> | — | 0.05, interval includes zero<!-- src: docs/breadth/data.csv \| f2.layer.q122.pca --> |
+| one layer: lens part minus principal directions, paired | 0.24<!-- src: docs/breadth/data.csv \| f2.layer.q9.pca --> | 0.45<!-- src: docs/breadth/data.csv \| f2.layer.q27.pca --> | 0.48<!-- src: docs/breadth/data.csv \| f2.layer.mu.pca --> | no per-item contrast saved | 0.05, interval includes zero<!-- src: docs/breadth/data.csv \| f2.layer.q122.pca --> |
 
 - **Scope.** Every passage set we built shows it on the two Qwens: 22.8 to 52.1 points on toy puzzles, natural fact chains and natural text<!-- src: docs/breadth/data.csv | toy.q27.s1; toy.q27.s2; toy.q27.s3; toy.q9.s1; toy.q9.s2; toy.q9.s3; nat.q27.s1; nat.q27.s2; nat.q27.s3; nat.q9.s1; nat.q9.s2; nat.q9.s3; natplus.q27; natplus.q9 -->. It holds on every relation, from 36.0 (languages) to 72.0 (dishes) on the 27B<!-- src: docs/breadth/data.csv | ko.q27.rel.languages; ko.q27.rel.dishes -->, and for rare and popular bridges alike<!-- src: docs/breadth/data.csv | natplus.q27.rare; natplus.q27.pop; natplus.nl.rare; natplus.nl.pop -->. On the twin set, which describes people instead of naming them, it survives dropping every item a shortcut could answer (post hoc) and asking the question first. The need is spread over the bridge's words; removing the lens part at the final token alone costs almost nothing ([where the need sits](figures/readme/17_where.png)). The one-layer controls are [in this figure](figures/readme/03b_controls_layer.png).
 - **Confidence.** Credence {{cred|main_split}} for the split as stated, {{cred|broadly}} that it holds beyond the models and settings tested. The 27B's lookup is also partly blocked ([Where it does not hold](#where-it-does-not-hold)).
@@ -170,7 +170,7 @@ The knock-out's damage to recall is the answer's own directions. Removing only t
 | | 9B | 27B | Lightning |
 |---|---|---|---|
 | keeping the answer span: share of damage undone | {{wci|fig10.keep_span.q9}} | {{wci|fig10.keep_span.q27}} | {{wci|fig10.keep_span.nl}} |
-| control: a random keep of the same energy | {{wci|fig10.keep_ctrl.q9}} | {{wci|fig10.keep_ctrl.q27}} | — |
+| control: a random keep of the same energy | {{wci|fig10.keep_ctrl.q9}} | {{wci|fig10.keep_ctrl.q27}} | no energy-matched control |
 | answer span alone: multiple of the full damage | {{wci|fig10.span_only.v4.q9}} | {{wci|fig10.span_only.v4.q27}} | {{wci|fig10.span_only.v4.nl}} |
 | the same, codename set | {{wci|fig10.span_only.codename.q9}} | {{wci|fig10.span_only.codename.q27}} | {{wci|fig10.span_only.codename.nl}} |
 | one hop: the city's lens directions, points | {{wci|fig11.onehop.city.q9}} | {{wci|fig11.onehop.city.q27}} | {{wci|fig11.onehop.city.nl}} |
@@ -246,7 +246,7 @@ Our committed guesses and their verdicts; the sources are in the [hypotheses led
 
 ## Where it does not hold
 
-- **Longer chains.** On three-hop chains the cost does not simply follow the recalled hop. Lightning fits that rule; the 27B breaks it twice, once dropping only {{b|mod.q27.threehop.paper10.PPM-PPP}} points.
+- **Longer chains.** On three-hop chains the cost does not simply follow the recalled hop. Lightning fits that rule; the 27B breaks it twice, once dropping only {{b|mod.q27.threehop.paper10.PPM-PPP}} points where the rule predicts a large drop.
 - **The 27B's lookup** leans on the lens part partly: {{x|lk_excess_k100_27b}} of its switches are blocked beyond random at 100 directions.
 - **Known facts.** When the passage gives a fact the model knows, the 9B's and 27B's lookups follow the lens part (0.26 to 0.28 beyond random)<!-- src: data/figures/depth/data.csv | Z1: lookup, switches lost beyond a random part -->.
 - **Across models the split is graded.** It is strong and specific on three of nine. On the rest it is weaker, not specific, shared with the logit lens, or gone when scored by probability.
@@ -273,7 +273,7 @@ Our committed guesses and their verdicts; the sources are in the [hypotheses led
 
 - **Rules fixed in advance.** Breadth runs follow a [pre-registration](docs/breadth/prereg_replication_1022.md) with amendments committed before each run. Depth [predictions](predictions/README.md) were committed before results were opened, then scored; they did worse than always guessing even odds (mean Brier 0.32)<!-- src: docs/depth/README.md | mean Brier 0.32 over 121 answers -->.
 - **Reruns.** From a clean checkout the breadth headline runs match row for row: 0 of 22325 rows differ on the 27B<!-- src: docs/breadth/README.md | 0 of 22325 -->.
-- **Independent recounts.** Code written from scratch recounts the depth headline numbers and matches 63 of 63<!-- src: docs/depth/README.md | matches 63 of 63 -->.
+- **Independent recounts.** Code written from scratch matches 63 of 63 depth headline numbers<!-- src: docs/depth/README.md | matches 63 of 63 -->.
 - **What we dropped**, with the test that dropped it: [depth](docs/depth/README.md#tested-and-dropped), [breadth](docs/breadth/README.md#8-what-did-not-hold).
 
 <details><summary>Run provenance and red-teaming</summary>
@@ -307,6 +307,6 @@ Our committed guesses and their verdicts; the sources are in the [hypotheses led
 
 ## Repository guide
 
-- **Reports.** The [depth report](docs/depth/README.md) (locker scenes, five models) with its [experiment ledger](docs/depth/EXPERIMENTS.md); the [breadth report](docs/breadth/README.md) (fact passages, nine models); the [hypotheses ledger](docs/plans/hypotheses.md); a [map of the documents](docs/README.md).
+- **Reports.** The [depth report](docs/depth/README.md) (locker scenes) with its [experiment ledger](docs/depth/EXPERIMENTS.md); the [breadth report](docs/breadth/README.md) (fact passages); the [hypotheses ledger](docs/plans/hypotheses.md); a [map of the documents](docs/README.md).
 - **Figures and code.** [figures/](figures/) by set; numbers in `data/figures/` and `docs/breadth/data.csv`; code in `scripts/` and `src/`; runs in `results/`.
 - **This page** is built from `docs/readme/README.template.md` by `scripts/readme_root.py` ([DEVELOPER.md](DEVELOPER.md)).
