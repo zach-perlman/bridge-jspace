@@ -1,4 +1,6 @@
-# Changelog
+# Changelog of the sprint (22-24 Oct 2026)
+
+Moved here from the repo root on 8 Nov 2026; the current changelog is [CHANGELOG.md](../../CHANGELOG.md).
 
 Newest first. What changed in the claims, the runs and the rules; the README shows only the current state.
 
@@ -52,7 +54,7 @@ Newest first. What changed in the claims, the runs and the rules; the README sho
 
 ## What changed on the night of 22-23 Oct
 
-182 jobs started from 22 Oct 19:30 UTC: 148 on the 4x A100, 34 on a rented 2x H200 (deleted after a verified pull); 67.2 GPU-hours ([runs](#runs)).
+182 jobs started from 22 Oct 19:30 UTC: 148 on the 4x A100, 34 on a rented 2x H200 (deleted after a verified pull); 67.2 GPU-hours ([runs](RUNS.md)).
 
 - **Qwen3.5-122B-A10B, every experiment (34 jobs):** findings 3, 4 (two draws, tables, JSON, long context), 5 and 6 hold; the lens push holds (lookups 0%, recall 89%); the stated-bridge test fails (lens part 29% of lookups; tables 49%, JSON 34%) and so does the lens write at that cell (29%).
 - **Lens gate v2 fails on all seven lensed models** (3-13%; v1 72-100%): the lens names the bridge at its word only.
