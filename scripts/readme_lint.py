@@ -24,7 +24,8 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 TARGETS = {"words_outside": 2000, "words_total": 5000, "slash_outside": 0, "long30": 5, "long40": 0,
            "colons_outside": 25, "caption_mean": 50, "caption_max": 80, "labels": 0}  # fmt: skip
-ROLE_TARGETS = {"root": TARGETS, "track": {**TARGETS, "words_outside": 2500}}
+# A track report has no total budget (docs/STANDARD.md §3 sets one only for the root README): its folds hold the detail.
+ROLE_TARGETS = {"root": TARGETS, "track": {**{k: v for k, v in TARGETS.items() if k != "words_total"}, "words_outside": 2500}}
 NUM = r"[−-]?\d+(?:\.\d+)?%?"
 SLASH = re.compile(rf"{NUM}(?:\s*\[[^\]]*\])?(?:\s*○)?(?:\s*/\s*{NUM}(?:\s*\[[^\]]*\])?(?:\s*○)?){{1,}}")
 LABEL = re.compile(r"(?<![\w-])(?:H[0-3]|C[1-3]′?|E[1-4]|[bt]\d{2}-\w+|claim \d+|claims \d+(?:, \d+)*)(?![\w-])")

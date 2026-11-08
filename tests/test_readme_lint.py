@@ -40,6 +40,15 @@ def test_a_track_report_gets_the_larger_word_budget(tmp_path):
     assert R.main(["--role", "root", rel]) == 1
 
 
+def test_a_track_report_has_no_total_budget(tmp_path):
+    p = tmp_path / "README.md"
+    folded = "One two three four five six seven eight nine ten. " * 600  # 6,000 words, all in a fold
+    p.write_text(f"Short visible text.\n\n<details><summary>More</summary>\n\n{folded}\n\n</details>\n", encoding="utf-8")
+    assert "words_total" not in R.ROLE_TARGETS["track"]
+    assert R.main([str(p)]) == 0
+    assert R.main(["--role", "root", str(p)]) == 1  # the root keeps its 5,000-word total
+
+
 def test_a_per_model_slash_list_is_counted(tmp_path):
     assert measure(tmp_path, "Recall drops 0.50 / 0.74 / 0.75 ○ beyond random.\n")["slash_outside"] == 1
     assert measure(tmp_path, "Recall and lookup answer from memory / from the prompt.\n")["slash_outside"] == 0
