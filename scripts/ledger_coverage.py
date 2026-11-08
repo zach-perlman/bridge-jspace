@@ -294,16 +294,18 @@ VERDICT_WORD = {"H": "holds", "B": "in part", "F": "fails", "D": "descriptive"}
 
 
 def verdict_tables() -> str:
-    """The coverage map as markdown (morning brief 30 Oct, #1: no image): one table per Part, a row per heatmap row, a
-    column per model (9B, 27B, Muse, Lightning ○, 122B); a cell is the verdict and its words, "–" where nothing was
-    tested (not run, not designed, below its gate: the coverage table says which); "fails" in bold."""
+    """The ledger's index (docs/STANDARD.md §5; the coverage map as markdown, morning brief 30 Oct, #1: no image): one
+    table, a row per heatmap row under its Part; columns: the test, its data (the prompt sets its card's Data names), one
+    per model (9B, 27B, Muse, Lightning ○, 122B), rule fixed in advance?, hand-checked?, and where the README uses it
+    (the links of the card's "Used in", or "ledger only"). A model's cell is the verdict and its words, "–" where
+    nothing was tested (not run, not designed, below its gate: the coverage table says which); "fails" in bold."""
     order = ("9B", "27B", "Muse", "Lightning", "122B")
     meta = card_status()
-    out = []
+    data, readme = card_data(), card_readme()
+    out = ["| test | data | " + " | ".join(o + (" ○" if o == "Lightning" else "") for o in order)
+           + " | rule fixed in advance? | hand-checked? | README |", "|---|---|" + "---|" * (len(order) + 3)]  # fmt: skip
     for part in ("I", "II", "III", "IV", "V", "VI"):
-        out += ["", f"**{PART_TITLE[part]}**", "", "| test | " + " | ".join(o + (" ○" if o == "Lightning" else "")
-                                                                          for o in order)
-                + " | rule fixed in advance? | hand-checked? |", "|---|" + "---|" * (len(order) + 2)]  # fmt: skip
+        out.append(f"| **{PART_TITLE[part]}** |" + " |" * (len(order) + 4))
         for p_, anchor, label, cells in heatmap_cells():
             if p_ != part:
                 continue
@@ -320,22 +322,70 @@ def verdict_tables() -> str:
                 cell = (v + words[len(bare):]) if bare in (v, "confirmed", "holds") else f"{v}: {words}"
                 row.append(f"**{cell}**" if code == "F" else cell)
             rule, checked = meta.get(anchor, ("not stated", "not stated"))
-            out.append(f"| [{display(label)}](#{anchor}) | " + " | ".join(row) + f" | {rule} | {checked} |")
-    return "\n".join(out[1:])
+            # a row that names its own prompt set (a card read on several sets) shows that set, else the card's
+            sets = data_sets(display(label)) or data.get(anchor, "not stated")
+            out.append(f"| [{display(label)}](#{anchor}) | {sets} | " + " | ".join(row)
+                       + f" | {rule} | {checked} | {readme.get(anchor, 'not stated')} |")  # fmt: skip
+    return "\n".join(out)
+
+
+def _cards(path: Path | None) -> list[tuple[str, str]]:
+    """(anchor, body up to the next heading) per ledger card."""
+    text = (path or REPO / "docs" / "depth" / "EXPERIMENTS.md").read_text()
+    return re.findall(r'^### [^\n]*<a id="([a-z0-9-]+)"></a>\n(.*?)(?=^##+ |\Z)', text, re.M | re.S)
 
 
 def card_status(path: Path | None = None) -> dict[str, tuple[str, str]]:
-    """Per card anchor, (rule fixed in advance?, hand-checked?) from the metadata line under its status tag (docs pass
-    P3-2, 7 Nov: "Test … · status: … · hand-check: … · …"), so the index tables and the cards say the same."""
-    text = (path or REPO / "docs" / "depth" / "EXPERIMENTS.md").read_text()
+    """Per card anchor, (rule fixed in advance?, hand-checked?) from the status line under its tag (docs/STANDARD.md §5:
+    "Status: … · hand-checked: … · files: … · recompute: …"), so the index and the cards say the same."""
     rule = {"rule fixed in advance": "yes", "rule fixed in advance (part descriptive)": "yes (part descriptive)",
             "descriptive": "descriptive", "post hoc (descriptive)": "post hoc", "post hoc": "post hoc"}  # fmt: skip
     out = {}
-    for m in re.finditer(r'^### .*<a id="([a-z0-9-]+)"></a>\n(?:.*\n){0,3}?^Test .*· status: ([^·]+)· hand-check: '
-                         r"([^·]+)·", text, re.M):  # fmt: skip
-        status, check = m.group(2).strip(), m.group(3).strip()
-        view = re.search(r"view (\w)", check)
-        out[m.group(1)] = (rule.get(status, status), f"yes (view {view.group(1)})" if view else "no")
+    for anchor, body in _cards(path):
+        m = re.search(r"^Status: ([^·]+)· hand-checked: ([^·]+)·", body, re.M)
+        if m:
+            status, check = m.group(1).strip(), m.group(2).strip()
+            view = re.search(r"view (\w)", check)
+            out[anchor] = (rule.get(status, status), f"yes (view {view.group(1)})" if view else "no")
+    return out
+
+
+# the prompt sets a card's Data field names (the depth README's "Data: the prompt sets", and the few sets only a card
+# uses), in the order the field first names them
+DATA_SETS = (("main test", r"[Mm]ain[- ]test|\bmain, "), ("clean one-pick", r"[Cc]lean (?:one-pick|and routes)"),
+             ("routes", r"[Rr]outes\b"), ("six-locker", r"[Ss]ix-locker"),
+             ("varied", r"[Vv]aried scenes|JSON scenes"), ("natural passages", r"[Nn]atural passages"),
+             ("fact passages", r"fact passages|[Hh]is (?:passages|level-0|described)|Z1's passages"),
+             ("hall", r"[Hh]all scenes"), ("topic", r"topic scenes"), ("report prompt", r"report prompt's scenes"),
+             ("code, tool output", r"Python"))  # fmt: skip
+
+
+def data_sets(text: str) -> str:
+    """The prompt sets a text names (DATA_SETS), in the order it names them, comma-joined ("" if none)."""
+    hits = sorted((h.start(), name) for name, pat in DATA_SETS if (h := re.search(pat, text)))
+    return ", ".join(name for _, name in hits)
+
+
+def card_data(path: Path | None = None) -> dict[str, str]:
+    """Per card anchor, the prompt sets its Data field names."""
+    out = {}
+    for anchor, body in _cards(path):
+        m = re.search(r"^- \*\*Data\.\*\* (.*)$", body, re.M)
+        if m:
+            out[anchor] = data_sets(re.sub(r"<!--.*?-->", "", m.group(1))) or "not stated"
+    return out
+
+
+def card_readme(path: Path | None = None) -> dict[str, str]:
+    """Per card anchor, where the README uses it: the links in its tag line's "Used in", or "ledger only"."""
+    out = {}
+    for anchor, body in _cards(path):
+        tag = next((line for line in body.splitlines() if line.strip()), "")
+        if tag.startswith("`ledger only`"):
+            out[anchor] = "ledger only"
+            continue
+        links = re.findall(r"\[[^\]]+\]\(README\.md#[a-z0-9-]+\)", tag)
+        out[anchor] = ", ".join(dict.fromkeys(links)) or "not stated"
     return out
 
 

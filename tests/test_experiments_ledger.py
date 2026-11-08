@@ -14,7 +14,8 @@ REQUIRED = ("t49-2", "t49-5", "t51-1", "t51-2", "t51-3", "t51-4", "t51-5", "t51-
             "t45p", "x5", "t47-3", "t47-10", "t48-5")  # fmt: skip
 CARD = """### A test (1.1, opened x) <a id="a"></a>
 
-`in README` `below gate: Lightning` *Used in: README Part I card.*
+`in README` `below gate: Lightning` · *Used in: README Part I card.*
+Status: rule fixed in advance · hand-checked: no · files: `docs/depth/notes/handcheck_clean49.md` · recompute: not stated
 
 - **Question.** q?
 - **Why we asked.** w.
@@ -98,21 +99,26 @@ def test_the_overview_heatmap_follows_the_cards():
 
 
 def test_the_ledger_follows_the_readme_order():
-    """Dan's restructure brief (29 Oct 08:55): In one minute, How to read, the README's Parts I-VI (and How we checked),
-    Withdrawn, Run on one model only, the pointer to the operations log (7 Nov), then the coverage table."""
+    """docs/STANDARD.md §5 (8 Nov; was Dan's restructure brief, 29 Oct 08:55): In one minute, How to read, the README's
+    Parts I-VI, the one-line lists, Withdrawn (the README's "Tested and dropped"), How we checked, Scoped, not run, and
+    Notes (the pointer to the operations log and the coverage table, their old anchors kept)."""
     heads = [h for h in L.LEDGER.read_text().splitlines() if h.startswith("## ")]
     assert heads == ["## In one minute", "## How to read",
                      "## Part I. The two readers: lookup and recall",
                      "## Part II. Identity: which item the lookup reads",
                      "## Part III. The address: where the item's locker sits",
                      "## Part IV. Where and when the link is made", "## Part V. Other datasets and operations",
-                     "## Part VI. What did not hold", "## Also failed (one line each) <a id=\"also-failed\"></a>", "## How we checked",
+                     "## Part VI. What did not hold", "## Also failed (one line each) <a id=\"also-failed\"></a>",
                      "## Run on one model only (one line each)",
                      "## Withdrawn",
+                     "## How we checked",
                      # the sprint's operations (the 122B night, runs not completed, Appendices A, B and D) moved to
-                     # docs/review/ledger_ops_2026-10.md on 7 Nov (docs pass P3-1); one pointer section stays
-                     '## Operations during the sprint <a id="operations"></a>',
-                     '## Appendix C. Coverage table <a id="coverage"></a>']  # fmt: skip
+                     # docs/review/ledger_ops_2026-10.md on 7 Nov (docs pass P3-1); its pointer and the coverage table
+                     # (old Appendix C) sit under Notes since 8 Nov
+                     "## Scoped, not run", "## Notes"]  # fmt: skip
+    text = L.LEDGER.read_text()
+    for old in ("operations", "operations-during-the-sprint", "coverage", "appendix-c-coverage-table"):
+        assert f'<a id="{old}"></a>' in text, old
 
 
 def test_the_checker_catches_failures():
@@ -126,6 +132,8 @@ def test_the_checker_catches_failures():
     assert L.problems(CARD.replace(":: 0.53 -->", ":: 0.99 -->"))  # the source's number is not in the file
     assert L.problems(CARD.replace("`in README` ", ""))  # no status tag
     assert L.problems(CARD.replace("`in README`", "`in the README`"))  # not one of the tags
+    assert not L.problems(CARD.replace(" · *Used in", " *Used in"))  # the older tag line, no separator
+    assert L.problems(CARD.replace("Status: ", "Test x · status: "))  # no status line (docs/STANDARD.md §5)
     assert not L.problems(CARD + "See [the flags](#flagged).\n## Flags <a id=\"flagged\"></a>\n")  # a section anchor
 
 

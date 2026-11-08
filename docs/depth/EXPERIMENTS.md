@@ -11,109 +11,89 @@
 - **Open questions:** near the output the last-token test is uninformative ([53.3](#b53-3), [53.3b](#b53-3b)); the pre-specified identity code says no on the 9B and the 27B and in between on Muse ([53.8](#b53-8)); two attention blocks carry part of Lightning's lookup, in between ([53.4](#b53-4)).
 - **Withdrawn and rechecked:** The fact passages' described bridge is withdrawn ([Z2](#z2)); the named fact passages with made-up facts split on the 9B, also without the 60 passages that state the bridge's true value ([Z1](#z1)).
 
-**Which test ran on which model, and what its rule said.** One table per Part, a row per test card, in the README's order; "in part" covers in between or in part; "–": not tested on that model (not run, not designed, or below its gate: the coverage table below says which). Lightning ○: its gate chosen after the 60-scene pre-check; ○ in a cell: post hoc (the 122B's gate lowered to 0.75, or its lookup-only gate). The 122B's cells from its coverage runs (FP8; MoE, ~10B active; L33), the agent's reading †.
+**Which test ran on which model, and what its rule said.** One table, a row per test card under its Part, in the README's order; "in part" covers in between or in part; "–": not tested on that model (not run, not designed, or below its gate: the coverage table below says which). Lightning ○: its gate chosen after the 60-scene pre-check; ○ in a cell: post hoc (the 122B's gate lowered to 0.75, or its lookup-only gate). The 122B's cells from its coverage runs (FP8; MoE, ~10B active; L33), the agent's reading †.
 
 <!-- verdicts:start (scripts/ledger_coverage.py verdicts; do not edit by hand) -->
-**Part I. The two readers**
-
-| test | 9B | 27B | Muse | Lightning ○ | 122B | rule fixed in advance? | hand-checked? |
-|---|---|---|---|---|---|---|---|
-| [Conflict test, main test](#lightning-conflict) | holds | in part: not confirmed | holds | holds | holds | yes | yes (view a) |
-| [Item or answer, main test](#t51-12) | holds: the entity | holds: the entity | holds: answer not read | holds: answer not read | holds: answer not read | yes | yes (view b) |
-| [Item or answer, the fact passages' true facts](#t51-12) | in part: mixed | in part: mixed | – | in part: mixed | – | yes | yes (view b) |
-| [Item or answer, the fact passages' made-up facts](#t51-12) | in part: mixed | in part: mixed | – | – | – | yes | yes (view b) |
-| [Split in prose, JSON, tables](#x0b) | holds | holds | holds | holds | in part: mixed | yes | no |
-| [Split in natural passages](#x5) | holds ○ | in part: mixed | holds | – | holds | yes | no |
-| [Each part added by itself](#t51-1) | holds: (i), (ii) yes | in part: (i) no | holds: (i), (ii) yes | in part: (ii) no | holds: (i), (ii) yes | yes | no |
-| [Zeroing at one layer](#t47-5) | holds: not needed | holds: not needed | holds: not needed | holds: not needed | holds: not needed | yes | no |
-| [The lens part removed step by step (more layers, the earlier mention)](#t49-2) | in part: (b) no | in part: (a), (b) no | in part: (a), (b) no | – | in part: (a), (b) no | yes | no |
-| [The item's earlier mention](#t45p) | holds: yes | holds: yes | holds: yes | – | **fails: no** | yes | no |
-| [Lens identity vs address](#b53-6) | in part: both | in part: both | in part: both | in part: both | – | yes | no |
-| [Question order, number answer](#b53-1) | – | **fails: order matters** | – | – | holds: order-free | yes | no |
-| [Gain map: weight or route](#t49-1) | **fails: neither** | **fails: neither** | **fails: neither** | **fails: neither** | **fails: neither** | yes | no |
-| [Two learned subspaces](#t48-1) | **fails: no** | **fails: no** | **fails: no** | – | – | yes | no |
-| [Inside the lens part](#b52-a) | descriptive: bridge words | descriptive: bridge words | descriptive: bridge words | descriptive: bridge words | descriptive: bridge words | descriptive | no |
-| [Answer readable, usable](#b52-b) | descriptive | descriptive | descriptive | descriptive: ours only | descriptive | yes | no |
-
-**Part II. Identity**
-
-| test | 9B | 27B | Muse | Lightning ○ | 122B | rule fixed in advance? | hand-checked? |
-|---|---|---|---|---|---|---|---|
-| [Identity route outside the lens](#t47-1) | holds: outside | holds: outside | holds: outside | holds: outside | – | yes | no |
-| [Routes test and the address](#routes) | holds: both routes | in part: adding: no | holds: both routes | holds: both routes | – | yes | yes (view c) |
-| [Never the value, by format](#t47-7c) | in part: incomplete | in part: incomplete | in part: incomplete | in part: incomplete | – | yes | no |
-| [Learned subspaces at scale](#t51-3) | in part: (iii) no | in part: (iii) no | in part: (iii) no | – | – | yes (part descriptive) | no |
-| [Shared identity code](#b53-8) | **fails: no** | **fails: no** | in part: in between | – | – | yes | no |
-
-**Part III. The address**
-
-| test | 9B | 27B | Muse | Lightning ○ | 122B | rule fixed in advance? | hand-checked? |
-|---|---|---|---|---|---|---|---|
-| [Address probe](#probe) | descriptive: readable | descriptive: readable | descriptive: readable | descriptive: readable | descriptive: readable | post hoc | no |
-| [Address swap, rule at dose 1](#swap) | **fails: no** | **fails: no** | **fails: no** | **fails: no** | – | yes | yes (view d) |
-| [Swap after neutral sentences](#t47-16) | holds: robust | holds: robust | holds: robust | holds: robust | **fails: none of three ○** | yes | no |
-| [Six lockers, own code each](#six) | holds: own code | **fails: none of three** | holds: own code | holds: own code | holds: own code | yes | no |
-| [What the address is](#t51-11) | in part: in between | in part: part 2 only | in part: mixed | – | – | yes | no |
-| [Address, 27B position scenes](#b53-5) | holds: pattern holds | **fails: differs** | – | – | – | yes | no |
-| [Lens readout of the swap](#t47-0) | holds: lens blind | holds: lens blind | holds: lens blind | holds: lens blind | holds: lens blind ○ | descriptive | no |
-| [Probes on the lens subspace](#b53-2) | holds: lens blind | in part: in between | holds: lens blind | in part: in between | holds: lens blind | yes | no |
-| [Report prompt](#t47-10) | – | **fails: neither** | – | – | – | yes | no |
-| [Report of slot 1, reworded](#t49-6) | **fails: recovers** | **fails: recovers** | – | **fails: recovers** | – | yes | no |
-| [A few heads take the swap](#t51-2) | **fails: distributed** | **fails: distributed** | **fails: distributed** | **fails: distributed** | – | yes | no |
-| [Attention follows the swap](#t49-7) | **fails: neither** | **fails: neither** | **fails: neither** | **fails: neither** | – | yes | no |
-| [Chained addresses](#t47-14) | **fails: no** | **fails: no** | **fails: no** | – | **fails: no** | yes | no |
-| [Address refit per format](#x45d) | holds: refit works | in part: neither | holds: refit works | holds: refit works | – | yes | no |
-| [Address in code, tool output](#b53-7) | in part | in part | – | – | descriptive: readable ○ | yes (part descriptive) | no |
-
-**Part IV. Where and when**
-
-| test | 9B | 27B | Muse | Lightning ○ | 122B | rule fixed in advance? | hand-checked? |
-|---|---|---|---|---|---|---|---|
-| [Split by sentence order](#order) | descriptive: by order | descriptive: by order | descriptive: by order | descriptive: by order | descriptive: by order | post hoc | yes (view g) |
-| [Copy test, locker after](#t45q) | holds: yes | holds: yes | holds: yes | – | – | yes | no |
-| [Token-by-layer map](#d1) | **fails: (a)-(c) no** | **fails: (a)-(c) no** | **fails: (a)-(c) no** | **fails: (a)-(c) no** | – | yes | no |
-| [Lookups read before L](#t47-4) | descriptive: before L | descriptive: before L | descriptive: before L | descriptive: before L | descriptive: before L | descriptive | no |
-| [Anatomy by depth, handoff](#t47-8) | holds: (a) yes | **fails: (a) no** | holds: (a) yes | holds: (a) yes | holds: (a) yes ○ | yes | no |
-| [Address at the last token](#t51-4) | **fails: not there** | **fails: not there** | holds: travels | in part: in between | – | yes | no |
-| [Entity at the last token](#t51-10) | in part: read, not used | in part: read, not used | in part: read, not used | in part: read, not used | in part: read, not used | yes | yes (view f) |
-| [Last token: the lookup's read](#b53-3) | descriptive: in between | descriptive: in between | descriptive: outside | descriptive: outside | descriptive: in between | yes | no |
-| [Last token, word answers](#b53-3b) | in part: in between | in part: in between | – | – | – | yes | no |
-| [Lightning's attention blocks](#b53-4) | – | – | – | in part: in between | – | yes | no |
-
-**Part V. Other datasets**
-
-| test | 9B | 27B | Muse | Lightning ○ | 122B | rule fixed in advance? | hand-checked? |
-|---|---|---|---|---|---|---|---|
-| [The fact passages, true facts](#z1) | **fails: lookup follows** | **fails: lookup follows** | **fails: follows, few** | in part: in between | in part: in between | yes | yes (view e) |
-| [The fact passages, made-up facts](#z1) | holds | in part: in between | – | – | holds | yes | yes (view e) |
-| [Named vs described bridge](#b53-1b) | – | descriptive: mixed / answer | – | – | – | yes | no |
-| [Full carrier up to L](#t51-7) | in part: in between | in part: in between | – | in part: in between | – | yes | no |
-| [Position route, the fact passages](#z3) | in part: in between | **fails: no position** | in part: in between | in part: in between | **fails: no position** | yes | no |
-| [Read window, the fact passages](#t51-5) | holds: same window | **fails: not the same** | – | holds: same window | – | yes | no |
-
-**Part VI. What did not hold**
-
-| test | 9B | 27B | Muse | Lightning ○ | 122B | rule fixed in advance? | hand-checked? |
-|---|---|---|---|---|---|---|---|
-| [Described bridge](#t47-3) | holds | **fails: through lens** | holds | – | – | yes | no |
-| [One question, two instructions](#t47-15) | – | **fails: neither** | – | – | – | yes | no |
-| [Errors are address errors](#t47-13) | **fails: no** | – | **fails: no** | **fails: no** | – | yes | no |
-| [Lens part keys the attribute](#t48-2) | **fails: no** | **fails: no** | **fails: no** | **fails: no** | – | yes | no |
-| [Person mark at the locker](#t48-3) | **fails: no** | **fails: no** | **fails: no** | – | – | yes | no |
-| [Pooled person probe](#t49-3) | **fails: neither** | in part: in between | **fails: neither** | – | – | yes | no |
-| [Copying heads pass the rest](#t48-4) | **fails: no** | **fails: no** | **fails: no** | **fails: no** | – | yes | no |
-| [Address as the recall's route](#t48-5) | **fails: no** | **fails: no** | **fails: no** | – | – | yes | no |
-| [Blocking the pick sentence](#t47-6) | **fails: no** | **fails: no** | **fails: no** | – | – | yes | no |
-| [Same address, any item](#t47-11) | **fails: no** | **fails: no** | **fails: no** | **fails: no** | – | yes | no |
+| test | data | 9B | 27B | Muse | Lightning ○ | 122B | rule fixed in advance? | hand-checked? | README |
+|---|---|---|---|---|---|---|---|---|---|
+| **Part I. The two readers** | | | | | | | | | |
+| [Conflict test, main test](#lightning-conflict) | main test | holds | in part: not confirmed | holds | holds | holds | yes | yes (view a) | [Part I](README.md#part-i-the-two-readers-lookup-and-recall) |
+| [Item or answer, main test](#t51-12) | main test | holds: the entity | holds: the entity | holds: answer not read | holds: answer not read | holds: answer not read | yes | yes (view b) | [Part I](README.md#part-i-the-two-readers-lookup-and-recall), [Tested and dropped](README.md#tested-and-dropped) |
+| [Item or answer, the fact passages' true facts](#t51-12) | fact passages | in part: mixed | in part: mixed | – | in part: mixed | – | yes | yes (view b) | [Part I](README.md#part-i-the-two-readers-lookup-and-recall), [Tested and dropped](README.md#tested-and-dropped) |
+| [Item or answer, the fact passages' made-up facts](#t51-12) | fact passages | in part: mixed | in part: mixed | – | – | – | yes | yes (view b) | [Part I](README.md#part-i-the-two-readers-lookup-and-recall), [Tested and dropped](README.md#tested-and-dropped) |
+| [Split in prose, JSON, tables](#x0b) | varied | holds | holds | holds | holds | in part: mixed | yes | no | [Part I](README.md#part-i-the-two-readers-lookup-and-recall) |
+| [Split in natural passages](#x5) | natural passages | holds ○ | in part: mixed | holds | – | holds | yes | no | [Setup](README.md#data-the-prompt-sets) |
+| [Each part added by itself](#t51-1) | main test | holds: (i), (ii) yes | in part: (i) no | holds: (i), (ii) yes | in part: (ii) no | holds: (i), (ii) yes | yes | no | [Part I](README.md#part-i-the-two-readers-lookup-and-recall) |
+| [Zeroing at one layer](#t47-5) | main test | holds: not needed | holds: not needed | holds: not needed | holds: not needed | holds: not needed | yes | no | [Part I](README.md#part-i-the-two-readers-lookup-and-recall) |
+| [The lens part removed step by step (more layers, the earlier mention)](#t49-2) | clean one-pick | in part: (b) no | in part: (a), (b) no | in part: (a), (b) no | – | in part: (a), (b) no | yes | no | [Setup](README.md#data-the-prompt-sets), [How we checked](README.md#how-we-checked) |
+| [The item's earlier mention](#t45p) | clean one-pick | holds: yes | holds: yes | holds: yes | – | **fails: no** | yes | no | [Part I](README.md#part-i-the-two-readers-lookup-and-recall) |
+| [Lens identity vs address](#b53-6) | routes | in part: both | in part: both | in part: both | in part: both | – | yes | no | [Part I](README.md#part-i-the-two-readers-lookup-and-recall) |
+| [Question order, number answer](#b53-1) | main test | – | **fails: order matters** | – | – | holds: order-free | yes | no | [Part I](README.md#part-i-the-two-readers-lookup-and-recall), [Tested and dropped](README.md#tested-and-dropped) |
+| [Gain map: weight or route](#t49-1) | main test | **fails: neither** | **fails: neither** | **fails: neither** | **fails: neither** | **fails: neither** | yes | no | ledger only |
+| [Two learned subspaces](#t48-1) | main test | **fails: no** | **fails: no** | **fails: no** | – | – | yes | no | ledger only |
+| [Inside the lens part](#b52-a) | main test, fact passages | descriptive: bridge words | descriptive: bridge words | descriptive: bridge words | descriptive: bridge words | descriptive: bridge words | descriptive | no | [Part I](README.md#part-i-the-two-readers-lookup-and-recall) |
+| [Answer readable, usable](#b52-b) | main test, fact passages | descriptive | descriptive | descriptive | descriptive: ours only | descriptive | yes | no | ledger only |
+| **Part II. Identity** | | | | | | | | | |
+| [Identity route outside the lens](#t47-1) | routes, main test | holds: outside | holds: outside | holds: outside | holds: outside | – | yes | no | [Part II](README.md#part-ii-identity-which-item-the-lookup-reads) |
+| [Routes test and the address](#routes) | routes | holds: both routes | in part: adding: no | holds: both routes | holds: both routes | – | yes | yes (view c) | [Part II](README.md#part-ii-identity-which-item-the-lookup-reads), [Part III](README.md#part-iii-the-address-where-the-items-locker-sits) |
+| [Never the value, by format](#t47-7c) | varied | in part: incomplete | in part: incomplete | in part: incomplete | in part: incomplete | – | yes | no | ledger only |
+| [Learned subspaces at scale](#t51-3) | main test, clean one-pick, routes | in part: (iii) no | in part: (iii) no | in part: (iii) no | – | – | yes (part descriptive) | no | ledger only |
+| [Shared identity code](#b53-8) | routes | **fails: no** | **fails: no** | in part: in between | – | – | yes | no | ledger only |
+| **Part III. The address** | | | | | | | | | |
+| [Address probe](#probe) | topic | descriptive: readable | descriptive: readable | descriptive: readable | descriptive: readable | descriptive: readable | post hoc | no | [Part III](README.md#part-iii-the-address-where-the-items-locker-sits) |
+| [Address swap, rule at dose 1](#swap) | routes | **fails: no** | **fails: no** | **fails: no** | **fails: no** | – | yes | yes (view d) | [Part III](README.md#part-iii-the-address-where-the-items-locker-sits) |
+| [Swap after neutral sentences](#t47-16) | routes | holds: robust | holds: robust | holds: robust | holds: robust | **fails: none of three ○** | yes | no | [Part III](README.md#part-iii-the-address-where-the-items-locker-sits) |
+| [Six lockers, own code each](#six) | six-locker | holds: own code | **fails: none of three** | holds: own code | holds: own code | holds: own code | yes | no | [Part III](README.md#part-iii-the-address-where-the-items-locker-sits) |
+| [What the address is](#t51-11) | routes | in part: in between | in part: part 2 only | in part: mixed | – | – | yes | no | [Tested and dropped](README.md#tested-and-dropped) |
+| [Address, 27B position scenes](#b53-5) | routes | holds: pattern holds | **fails: differs** | – | – | – | yes | no | ledger only |
+| [Lens readout of the swap](#t47-0) | routes | holds: lens blind | holds: lens blind | holds: lens blind | holds: lens blind | holds: lens blind ○ | descriptive | no | [Part III](README.md#part-iii-the-address-where-the-items-locker-sits) |
+| [Probes on the lens subspace](#b53-2) | main test, varied | holds: lens blind | in part: in between | holds: lens blind | in part: in between | holds: lens blind | yes | no | [Part III](README.md#part-iii-the-address-where-the-items-locker-sits) |
+| [Report prompt](#t47-10) | routes | – | **fails: neither** | – | – | – | yes | no | [Part III](README.md#part-iii-the-address-where-the-items-locker-sits) |
+| [Report of slot 1, reworded](#t49-6) | report prompt | **fails: recovers** | **fails: recovers** | – | **fails: recovers** | – | yes | no | ledger only |
+| [A few heads take the swap](#t51-2) | routes | **fails: distributed** | **fails: distributed** | **fails: distributed** | **fails: distributed** | – | yes | no | ledger only |
+| [Attention follows the swap](#t49-7) | routes | **fails: neither** | **fails: neither** | **fails: neither** | **fails: neither** | – | yes | no | ledger only |
+| [Chained addresses](#t47-14) | hall | **fails: no** | **fails: no** | **fails: no** | – | **fails: no** | yes | no | [Where it does not hold](README.md#where-it-does-not-hold) |
+| [Address refit per format](#x45d) | varied | holds: refit works | in part: neither | holds: refit works | holds: refit works | – | yes | no | [Part III](README.md#part-iii-the-address-where-the-items-locker-sits), [TL;DR](README.md#tldr) |
+| [Address in code, tool output](#b53-7) | code, tool output, routes | in part | in part | – | – | descriptive: readable ○ | yes (part descriptive) | no | [Part III](README.md#part-iii-the-address-where-the-items-locker-sits), [TL;DR](README.md#tldr) |
+| **Part IV. Where and when** | | | | | | | | | |
+| [Split by sentence order](#order) | main test | descriptive: by order | descriptive: by order | descriptive: by order | descriptive: by order | descriptive: by order | post hoc | yes (view g) | [Part IV](README.md#part-iv-where-and-when-the-link-is-made) |
+| [Copy test, locker after](#t45q) | clean one-pick | holds: yes | holds: yes | holds: yes | – | – | yes | no | [Part IV](README.md#part-iv-where-and-when-the-link-is-made) |
+| [Token-by-layer map](#d1) | clean one-pick, main test | **fails: (a)-(c) no** | **fails: (a)-(c) no** | **fails: (a)-(c) no** | **fails: (a)-(c) no** | – | yes | no | [Part IV](README.md#part-iv-where-and-when-the-link-is-made) |
+| [Lookups read before L](#t47-4) | main test, clean one-pick | descriptive: before L | descriptive: before L | descriptive: before L | descriptive: before L | descriptive: before L | descriptive | no | [Part IV](README.md#part-iv-where-and-when-the-link-is-made) |
+| [Anatomy by depth, handoff](#t47-8) | routes | holds: (a) yes | **fails: (a) no** | holds: (a) yes | holds: (a) yes | holds: (a) yes ○ | yes | no | [Part IV](README.md#part-iv-where-and-when-the-link-is-made) |
+| [Address at the last token](#t51-4) | routes | **fails: not there** | **fails: not there** | holds: travels | in part: in between | – | yes | no | [TL;DR, claims table, claim 12](README.md#tldr) |
+| [Entity at the last token](#t51-10) | main test | in part: read, not used | in part: read, not used | in part: read, not used | in part: read, not used | in part: read, not used | yes | yes (view f) | [Part IV](README.md#part-iv-where-and-when-the-link-is-made) |
+| [Last token: the lookup's read](#b53-3) | main test | descriptive: in between | descriptive: in between | descriptive: outside | descriptive: outside | descriptive: in between | yes | no | [Tested and dropped](README.md#tested-and-dropped) |
+| [Last token, word answers](#b53-3b) | fact passages | in part: in between | in part: in between | – | – | – | yes | no | [Tested and dropped](README.md#tested-and-dropped) |
+| [Lightning's attention blocks](#b53-4) | main test | – | – | – | in part: in between | – | yes | no | [Part IV](README.md#part-iv-where-and-when-the-link-is-made) |
+| **Part V. Other datasets** | | | | | | | | | |
+| [The fact passages, true facts](#z1) | fact passages | **fails: lookup follows** | **fails: lookup follows** | **fails: follows, few** | in part: in between | in part: in between | yes | yes (view e) | [Part V](README.md#part-v-other-datasets-and-operations), [Tested and dropped](README.md#tested-and-dropped) |
+| [The fact passages, made-up facts](#z1) | fact passages | holds | in part: in between | – | – | holds | yes | yes (view e) | [Part V](README.md#part-v-other-datasets-and-operations), [Tested and dropped](README.md#tested-and-dropped) |
+| [Named vs described bridge](#b53-1b) | fact passages | – | descriptive: mixed / answer | – | – | – | yes | no | ledger only |
+| [Full carrier up to L](#t51-7) | fact passages | in part: in between | in part: in between | – | in part: in between | – | yes | no | [Part V](README.md#part-v-other-datasets-and-operations) |
+| [Position route, the fact passages](#z3) | fact passages | in part: in between | **fails: no position** | in part: in between | in part: in between | **fails: no position** | yes | no | [Part V](README.md#part-v-other-datasets-and-operations), [TL;DR](README.md#tldr) |
+| [Read window, the fact passages](#t51-5) | fact passages | holds: same window | **fails: not the same** | – | holds: same window | – | yes | no | ledger only |
+| **Part VI. What did not hold** | | | | | | | | | |
+| [Described bridge](#t47-3) | routes | holds | **fails: through lens** | holds | – | – | yes | no | [Where it does not hold](README.md#where-it-does-not-hold) |
+| [One question, two instructions](#t47-15) | routes | – | **fails: neither** | – | – | – | yes | no | [Where it does not hold](README.md#where-it-does-not-hold) |
+| [Errors are address errors](#t47-13) | varied | **fails: no** | – | **fails: no** | **fails: no** | – | yes | no | [Where it does not hold](README.md#where-it-does-not-hold) |
+| [Lens part keys the attribute](#t48-2) | main test | **fails: no** | **fails: no** | **fails: no** | **fails: no** | – | yes | no | [Tested and dropped](README.md#tested-and-dropped) |
+| [Person mark at the locker](#t48-3) | main test | **fails: no** | **fails: no** | **fails: no** | – | – | yes | no | [Tested and dropped](README.md#tested-and-dropped) |
+| [Pooled person probe](#t49-3) | clean one-pick | **fails: neither** | in part: in between | **fails: neither** | – | – | yes | no | ledger only |
+| [Copying heads pass the rest](#t48-4) | main test | **fails: no** | **fails: no** | **fails: no** | **fails: no** | – | yes | no | [Tested and dropped](README.md#tested-and-dropped) |
+| [Address as the recall's route](#t48-5) | clean one-pick | **fails: no** | **fails: no** | **fails: no** | – | – | yes | no | [Tested and dropped](README.md#tested-and-dropped) |
+| [Blocking the pick sentence](#t47-6) | routes | **fails: no** | **fails: no** | **fails: no** | – | – | yes | no | [Where it does not hold](README.md#where-it-does-not-hold) |
+| [Same address, any item](#t47-11) | routes | **fails: no** | **fails: no** | **fails: no** | **fails: no** | – | yes | no | [Where it does not hold](README.md#where-it-does-not-hold) |
 <!-- verdicts:end -->
 
 ## How to read
 
-The README's [methods, measures and figure marks](README.md#how-to-read-this-page) hold here unchanged: the change, the lens part, a random part, switches blocked beyond a random part, L, the identity and position routes, the address, whiskers 95%, hollow = after the data. Each card follows the README's card template (Question, Why we asked, Data, Method, the figure, Rule fixed in advance quoted, Result with one column per model, Read, Caveats), with no interpretation beyond the verdict. Internal test ids appear in the card headings only. Opened times are the opening commit's time (Paris, 28 Oct unless stated); box times are UTC.
+The README's [methods, measures and figure marks](README.md#how-to-read-this-page) hold here unchanged: the change, the lens part, a random part, switches blocked beyond a random part, L, the identity and position routes, the address, whiskers 95%, hollow = after the data. Each card follows the README's card template (Question, Why we asked, Data, Method, the figure, Rule fixed in advance quoted, Result with one column per model, Read, Caveats), with no interpretation beyond the verdict. Internal test ids appear only in each card's status line, as a link to the card. Opened times are the opening commit's time (Paris, 28 Oct unless stated); box times are UTC.
 
 New in this ledger:
 
-- **Tags** on the line under each heading (the sprint's `changes README` tag is retired: its README changes were applied or are listed in [the operations log](../review/ledger_ops_2026-10.md#readme-changes)): `in README` (a README card or claim uses it as is), `ledger only` (not in the README), `below gate: <model>` (that model's readers missed the test's gate, so its column is not tested, or later an exploratory run shown hollow).
+- **Tags** on the line under each heading (the sprint's `changes README` tag is retired: its README changes were applied or are listed in [the operations log](../review/ledger_ops_2026-10.md#readme-changes)): `in README` (the README links to it or uses its result; *Used in* names the section), `ledger only` (not in the README), `below gate: <model>` (that model's readers missed the test's gate, so its column is not tested, or later an exploratory run shown hollow).
+- **Status line** under the tag: the rule's status, the hand-check and its view, the files, the recompute command, the test's id and the day it opened.
 - **†**: not in the hand-checked sample (the README's mark). VERIFIED.md (human recomputation) is not filled for any card.
 - **Terms**: the **ladder** (49.2) takes the lens part out step by step (more layers, the earlier mention, the question, every token), each step (rung) against a random part; the **full carrier** (51.7) changes the bridge token at every layer up to L on the fact passages. In verbatim rules and their verdict words, each "J-space" or "pointer" carries a bracketed gloss: [the lens's directions] or [pointer: the address].
 - **Below gate**: a test runs on a model only if both readers answer the original prompts right often enough (usually 0.80); a failed gate is not lowered after the data (the spec's rule). Lightning's below-gate runs are exploratory (decided during the run): hollow marks, never in claims or grades.
@@ -128,9 +108,9 @@ New in this ledger:
 
 ### Does the conflict test hold on Lightning? <a id="lightning-conflict"></a>
 
-`in README` *Used in: README Part I card "In a conflict, which part of the bridge word does each reader follow?" (Lightning's and the 122B's columns).*
+`in README` · *Used in: README [Part I](README.md#part-i-the-two-readers-lookup-and-recall), card "In a conflict, which part of the bridge word does each reader follow?" (Lightning's and the 122B's columns).*
 
-Test Lightning conflict test · opened 29 Oct · status: rule fixed in advance · hand-check: in sample (view a) · files: `results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.md` · recompute: `scripts/x0_necessity.py` (the command in its docstring) · also: UTC
+Status: rule fixed in advance · hand-checked: yes (view a) · files: `results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.md` · recompute: `scripts/x0_necessity.py` (the command in its docstring) · test [Lightning conflict test](#lightning-conflict), opened 29 Oct · also: UTC
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -182,9 +162,9 @@ More from the reading:
 
 ### Is it the bridge item or its answer that moves through the lens? <a id="t51-12"></a>
 
-`in README` *Used in: README Part I card "In a conflict, which part of the bridge word does each reader follow?" (the specificity rows); README "Tested and dropped" ("The described bridge on the fact passages").*
+`in README` · *Used in: README [Part I](README.md#part-i-the-two-readers-lookup-and-recall), card "In a conflict, which part of the bridge word does each reader follow?" (the specificity rows); [Tested and dropped](README.md#tested-and-dropped) ("The described bridge on the fact passages").*
 
-Test 51.12 · opened 28 Oct · status: rule fixed in advance · hand-check: in sample (view b) · files: `results/x51_answer/x52_answer-20261029T082417Z/verdict.md` · recompute: `scripts/x51_answer.py` (the command in its docstring)
+Status: rule fixed in advance · hand-checked: yes (view b) · files: `results/x51_answer/x52_answer-20261029T082417Z/verdict.md` · recompute: `scripts/x51_answer.py` (the command in its docstring) · test [51.12](#t51-12), opened 28 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -193,13 +173,13 @@ Test 51.12 · opened 28 Oct · status: rule fixed in advance · hand-check: in s
 - **Data.** Main test, 200 per model (Lightning at L14: a coverage run, no prediction; the 122B (FP8; MoE, ~10B active) at L33: a coverage run on the same rule, decided during the run, no prediction).
 - **Method.** At the bridge word at L: (1) without the lens part; (2) without the lens part but keeping its directions for both readers' answer words (number words); (3) without those answer directions only; each against a random part of its share; the lens's rank of the answer word at the bridge word first.
 
-- **Rule, fixed in advance.** (Amended before opening.) "The lens effect is the entity: arm 2 keeps >= 0.7 of arm 1's extra drop and arm 3 costs <= 0.10 beyond random. The lens effect is the answer: arm 2 falls to <= 0.3 of arm 1 and arm 3 alone costs >= 0.5 of arm 1. Else: mixed." First: "the answer word is not read at the bridge word (lens rank > 50 on >= 90 % of items)".
-
 The three arms side by side, per model:
 
 ![The recall's drop without the lens part is the item, not its answer](../../figures/depth/ledger/01_item_not_answer.png)
 
 *The answer control, main test: the recall's switches blocked beyond a random part of the same size without the lens part, with the lens part removed but the answer word's directions kept, and with only the answer word's directions removed, one lane each per model. Whiskers 95% intervals; Lightning and the 122B hollow ○ (after the data).*
+
+- **Rule, fixed in advance.** (Amended before opening.) "The lens effect is the entity: arm 2 keeps >= 0.7 of arm 1's extra drop and arm 3 costs <= 0.10 beyond random. The lens effect is the answer: arm 2 falls to <= 0.3 of arm 1 and arm 3 alone costs >= 0.5 of arm 1. Else: mixed." First: "the answer word is not read at the bridge word (lens rank > 50 on >= 90 % of items)".
 
 </details>
 
@@ -233,9 +213,9 @@ More from the reading:
 
 ### At which layer does Lightning get the conflict test? <a id="lightning-layer"></a>
 
-`in README` *Used in: README "The question and the setup" (Lightning's layer).*
+`in README` · *Used in: README [Setup](README.md#the-question-and-the-setup), "The question and the setup" (Lightning's layer).*
 
-Test Lightning's layer · opened 29 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x51_lightning/nem35l_x52_layer_r2/prereq.md` · recompute: `scripts/x51_lightning.py` (the command in its docstring)
+Status: rule fixed in advance · hand-checked: no · files: `results/x51_lightning/nem35l_x52_layer_r2/prereq.md` · recompute: `scripts/x51_lightning.py` (the command in its docstring) · test [Lightning's layer](#lightning-layer), opened 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -244,13 +224,13 @@ Test Lightning's layer · opened 29 Oct · status: rule fixed in advance · hand
 - **Data.** 60 dev scenes of the main test (excluded from the conflict test).
 - **Method.** The whole change at the bridge word at every 4th layer (L2 to L50); each reader's switch rate; the bridge word's lens readability recorded as the tie-break.
 
-- **Rule, fixed in advance.** Batch 52 amendment 1 (before the sweep): "earliest layer passing the gate at relative depth ≥ 0.25; tie-break = highest lens readability of the bridge word." Passing = both readers switch on at least 0.3 (the published rule). ○ Gate chosen after the 60-scene pre-check was seen.
-
 The sweep that picked the layer:
 
 ![Lightning's layer sweep and the conflict test by layer](../../figures/depth/ledger/02_lightning_layers.png)
 
 *Lightning's layer sweep on the pre-check scenes: the share of each reader's answers switched by the whole change at the bridge word, lookup (violet) and recall (black), at every swept layer; dashed: the bar both readers must reach. All estimates post hoc (the gate was chosen after the pre-check).*
+
+- **Rule, fixed in advance.** Batch 52 amendment 1 (before the sweep): "earliest layer passing the gate at relative depth ≥ 0.25; tie-break = highest lens readability of the bridge word." Passing = both readers switch on at least 0.3 (the published rule). ○ Gate chosen after the 60-scene pre-check was seen.
 
 </details>
 
@@ -275,9 +255,9 @@ The sweep that picked the layer:
 
 ### Does the split hold in prose, JSON and tables? <a id="x0b"></a>
 
-`in README` *Used in: README Part I card "Does the split hold in other texts?" (the varied scenes).*
+`in README` · *Used in: README [Part I](README.md#part-i-the-two-readers-lookup-and-recall), "More in the ledger" (the varied scenes).*
 
-Test x0b · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.md` · recompute: `scripts/x0b_generalize.py` (the command in its docstring) · also: varied scenes; Lightning's coverage run 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.md` · recompute: `scripts/x0b_generalize.py` (the command in its docstring) · test [x0b](#x0b) · also: varied scenes; Lightning's coverage run 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -320,9 +300,9 @@ More from the reading:
 
 ### Does the split hold in natural passages? <a id="x5"></a>
 
-`in README` `below gate: Lightning` *Used in: README Part I card "Does the split hold in other texts?" (the natural passages).*
+`in README` `below gate: Lightning` · *Used in: README [Setup](README.md#data-the-prompt-sets), "Data: the prompt sets" (the natural passages).*
 
-Test x5 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x5_natural/qwen35_9b_x5_natural_g75/verdict-20261025T135050Z/verdict.md` · recompute: `scripts/x5_natural.py` (the command in its docstring) · also: natural passages, opened 25-26 Oct; Lightning's gate 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x5_natural/qwen35_9b_x5_natural_g75/verdict-20261025T135050Z/verdict.md` · recompute: `scripts/x5_natural.py` (the command in its docstring) · test [x5](#x5) · also: natural passages, opened 25-26 Oct; Lightning's gate 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -366,9 +346,9 @@ More from the reading:
 
 ### Does each part, added by itself, move its reader? <a id="t51-1"></a>
 
-`ledger only` *Used in: README Part I, a one-line link to this card (the dose curves).*
+`in README` · *Used in: README [Part I](README.md#part-i-the-two-readers-lookup-and-recall), a one-line link to this card (the dose curves).*
 
-Test 51.1 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x51_dose/x52_dose-20261029T011635Z/verdict.md` · recompute: `scripts/x51_dose.py` (the command in its docstring) · also: Lightning's coverage run 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x51_dose/x52_dose-20261029T011635Z/verdict.md` · recompute: `scripts/x51_dose.py` (the command in its docstring) · test [51.1](#t51-1), opened 28 Oct · also: Lightning's coverage run 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -411,9 +391,9 @@ More from the reading:
 
 ### Does the recall need the lens part, or only follow it? <a id="t47-5"></a>
 
-`in README` *Used in: README Part I card "Does the recall need the lens part, or only follow it?" (zeroing).*
+`in README` · *Used in: README [Part I](README.md#part-i-the-two-readers-lookup-and-recall), "More in the ledger" (zeroing).*
 
-Test 47.5 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_zero/x47_5-20261028T113106Z/x47_5.md` · recompute: `scripts/x47_zero.py` (the command in its docstring) · also: zeroing at one layer; Lightning's coverage run 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x47_zero/x47_5-20261028T113106Z/x47_5.md` · recompute: `scripts/x47_zero.py` (the command in its docstring) · test [47.5](#t47-5) · also: zeroing at one layer; Lightning's coverage run 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -451,9 +431,9 @@ Test 47.5 · opened not stated · status: rule fixed in advance · hand-check: n
 
 ### Does the recall need the lens part once its other copies are gone? <a id="t49-2"></a>
 
-`in README` `below gate: Lightning` *Used in: README Part I card "Does the recall need the lens part, or only follow it?" (the ladder).*
+`in README` `below gate: Lightning` · *Used in: README [Setup](README.md#data-the-prompt-sets), "Data: the prompt sets" (the ladder); [How we checked](README.md#how-we-checked) ("Ladder reruns").*
 
-Test 49.2 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x49_ladder/x49_2-20261028T161612Z/x49_2.md` · recompute: `scripts/x49_ladder.py` (the command in its docstring)
+Status: rule fixed in advance · hand-checked: no · files: `results/x49_ladder/x49_2-20261028T161612Z/x49_2.md` · recompute: `scripts/x49_ladder.py` (the command in its docstring) · test [49.2](#t49-2), opened 28 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -462,13 +442,13 @@ Test 49.2 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 - **Data.** Clean one-pick scenes: 417 / 574 / 409. The 27B: its full ladder (x52_ladder_27b_a; the first run had steps 1-2 only); Muse: the first run (step 6 at L23-29) and a rerun with step 6 inside the breadth track's band (L36-42).
 - **Method.** In the changed prompt's own run, the lens part's 25 directions taken out at each step's tokens and layers, against a random subspace of the same share of the state; step 6 is the breadth track's definition (each token's own top-10 lens directions over his band).
 
-- **Rule, fixed in advance.** "second_copy: rung (3) costs the recall >= 0.3 more than rung (2) in locker-first scenes (paired CI excluding 0) and rung (2) already costs >= 0.3 in locker-after scenes; only_everything: rungs (1)-(4) each <= 0.2 and rung (5) or (6) >= 0.5; lookup: <= 0.1 beyond random at every rung." The 27B's full ladder and Muse's rerun: coverage runs on this rule, no prediction.
-
 The two rungs the rule compares, per reader and scene order:
 
 ![The recall needs the lens part once its other copies go; the lookup never](../../figures/depth/ledger/03_ladder.png)
 
 *The ladder at the two rungs its rule compares: the answers turned wrong beyond a random part of the same share when the lens part is taken out step by step, the recall in locker-first and in locker-after scenes and the lookup over every scene. Whiskers 95% intervals; Lightning and the 122B hollow ○.*
+
+- **Rule, fixed in advance.** "second_copy: rung (3) costs the recall >= 0.3 more than rung (2) in locker-first scenes (paired CI excluding 0) and rung (2) already costs >= 0.3 in locker-after scenes; only_everything: rungs (1)-(4) each <= 0.2 and rung (5) or (6) >= 0.5; lookup: <= 0.1 beyond random at every rung." The 27B's full ladder and Muse's rerun: coverage runs on this rule, no prediction.
 
 </details>
 
@@ -500,9 +480,9 @@ More from the reading:
 
 ### Does the recall also read the item's earlier mention? <a id="t45p"></a>
 
-`in README` `below gate: Lightning` *Used in: README Part I card "Does the recall also read the item's earlier mention?".*
+`in README` `below gate: Lightning` · *Used in: README [Part I](README.md#part-i-the-two-readers-lookup-and-recall), "More in the ledger".*
 
-Test 45p · opened 27 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x45p/x45p-20261027T012017Z/x45p.md` · recompute: `scripts/x45p.py` (the command in its docstring) · also: the earlier mention, opened 27 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x45p/x45p-20261027T012017Z/x45p.md` · recompute: `scripts/x45p.py` (the command in its docstring) · test [45p](#t45p), opened 27 Oct · also: the earlier mention, opened 27 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -542,9 +522,9 @@ Test 45p · opened 27 Oct · status: rule fixed in advance · hand-check: not in
 
 ### When the lens part points the recall to one item and the address to another, which does it follow? <a id="b53-6"></a>
 
-`in README` *Used in: README Part I card "When the lens part points the recall to one item and the address to another, which does it follow?".*
+`in README` · *Used in: README [Part I](README.md#part-i-the-two-readers-lookup-and-recall), "More in the ledger".*
 
-Test 53.6 · opened 29 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x53_identity_address/x53_identity_address-20261029T105132Z` · recompute: `scripts/x53_identity_address.py` (the command in its docstring) · also: joint four-model verdict
+Status: rule fixed in advance · hand-checked: no · files: `results/x53_identity_address/x53_identity_address-20261029T105132Z` · recompute: `scripts/x53_identity_address.py` (the command in its docstring) · test [53.6](#b53-6), opened 29 Oct · also: joint four-model verdict
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -553,13 +533,13 @@ Test 53.6 · opened 29 Oct · status: rule fixed in advance · hand-check: not i
 - **Data.** Routes scenes of the condition without a move whose three items have distinct leg counts: 300 per model (9B at L12, the 27B at L32, Muse at L26, Lightning at L14); all four pass the gate.
 - **Method.** At the bridge word: the lens part of the change toward item B plus the address swap toward item C's slot (dose 2); read the recall's answer: B's, C's or the original; each part alone beside, and the lens part with a random direction of the address's norm.
 
-- **Rule, fixed in advance.** "Rule: "the recall follows the lens identity" if B's share >= 2x C's; "follows the address" if C's >= 2x B's; else both." (jobs/c3/batch53.yaml; no prediction) Across models: "the recall's pointer [pointer: the address] use tracks the swap's collateral" if the models whose recall the address swap moved (9B, Lightning) give "both" and the others give "follows the lens identity". (jobs/c3/batch53.yaml, critic_1125, decided during the run; no prediction)
-
 Which item the recall follows when the lens part and the address disagree:
 
 ![Every recall follows both; on the 27B and Muse it mostly stays put](../../figures/depth/ledger/04_follows_both.png)
 
 *The lens part from one scene (item B) and the address from another (item C) swapped in together (left) or alone (right): the share of the recall's answers that are B's (the lens part's item, teal) and C's (the address's item, orange), per model. Whiskers 95% intervals; Lightning hollow ○.*
+
+- **Rule, fixed in advance.** "Rule: "the recall follows the lens identity" if B's share >= 2x C's; "follows the address" if C's >= 2x B's; else both." (jobs/c3/batch53.yaml; no prediction) Across models: "the recall's pointer [pointer: the address] use tracks the swap's collateral" if the models whose recall the address swap moved (9B, Lightning) give "both" and the others give "follows the lens identity". (jobs/c3/batch53.yaml, critic_1125, decided during the run; no prediction)
 
 </details>
 
@@ -592,9 +572,9 @@ More from the reading:
 
 ### Does the lens effect follow the question's position or the answer's type? <a id="b53-1"></a>
 
-`in README` *Used in: README Part I card "Does asking the question before the scene change how the lookup uses the lens part?"; README "Tested and dropped" ("The question's position decides item or answer").*
+`in README` · *Used in: README [Part I](README.md#part-i-the-two-readers-lookup-and-recall), card "Does asking the question before the scene change how the lookup uses the lens part?"; [Tested and dropped](README.md#tested-and-dropped) ("The question's position decides item or answer").*
 
-Test 53.1 · opened 29 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x53_2x2/qwen35_122b_x53_2x2/qa_num/agreement.json` · recompute: `scripts/x53_2x2.py` (the command in its docstring) · also: five models, combined verdict 29 Oct; the word cells not tested
+Status: rule fixed in advance · hand-checked: no · files: `results/x53_2x2/qwen35_122b_x53_2x2/qa_num/agreement.json` · recompute: `scripts/x53_2x2.py` (the command in its docstring) · test [53.1](#b53-1), opened 29 Oct · also: five models, combined verdict 29 Oct; the word cells not tested
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -607,14 +587,14 @@ Test 53.1 · opened 29 Oct · status: rule fixed in advance · hand-check: not i
 
 - **Method.** Per cell: the main gate; the conflict test at L; 51.12's arms with the readout check first (without the lens part; without it but keeping the answer's directions; without the answer directions only, each beyond random); the inventory of the lens part's directions on 50 items.
 
-- **Rule, fixed in advance.** "Rule per cell: 51.12's labels (entity / answer / mixed / answer word not read). Rule across cells: "position": (Q-before, number) is answer or mixed and (Q-after, word) is entity; "readability": (Q-after, word) is answer or mixed and (Q-before, number) is entity; "both": each single change gives mixed and (Q-before, word) gives answer; "neither": all four entity. Cross-check, decisive for the story: the conflict test's lookup has <= 0.10 blocked beyond random in all four cells ("the pointer [pointer: the address] does not depend on the question"); report per cell." Models: 9B, then 27B, then Lightning if its gate passes. Decided during the run, across the number cells: "the pointer [pointer: the address] does not depend on the question's position" if the lookup has <= 0.10 blocked in both cells on a model. Also decided during the run: the paired difference (Q-before minus Q-after) with its cluster-bootstrap CI; "order dependence" only if that CI excludes 0. (jobs/c3/batch53.yaml, next_1110 and critic_1125; no prediction)
-
 
 Both readers with a number answer, the question after and before the scene:
 
 ![With a number answer the recall follows the entity](../../figures/depth/ledger/05_number_answer.png)
 
 *A number as the answer: the switches blocked without the lens part beyond a random part, the recall (left) and the lookup (right), with the question after the scene and, on the 27B and the 122B, before it. Whiskers 95% intervals; Lightning and the 122B hollow ○.*
+
+- **Rule, fixed in advance.** "Rule per cell: 51.12's labels (entity / answer / mixed / answer word not read). Rule across cells: "position": (Q-before, number) is answer or mixed and (Q-after, word) is entity; "readability": (Q-after, word) is answer or mixed and (Q-before, number) is entity; "both": each single change gives mixed and (Q-before, word) gives answer; "neither": all four entity. Cross-check, decisive for the story: the conflict test's lookup has <= 0.10 blocked beyond random in all four cells ("the pointer [pointer: the address] does not depend on the question"); report per cell." Models: 9B, then 27B, then Lightning if its gate passes. Decided during the run, across the number cells: "the pointer [pointer: the address] does not depend on the question's position" if the lookup has <= 0.10 blocked in both cells on a model. Also decided during the run: the paired difference (Q-before minus Q-after) with its cluster-bootstrap CI; "order dependence" only if that CI excludes 0. (jobs/c3/batch53.yaml, next_1110 and critic_1125; no prediction)
 
 </details>
 
@@ -663,9 +643,9 @@ More from the reading:
 
 ### Does each reader follow the lens part by weight, or by route? <a id="t49-1"></a>
 
-`ledger only` *Used in: not in the README (its rebuild).*
+`ledger only`
 
-Test 49.1 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x49_gain/x49_1-20261028T154510Z/x49_1.md` · recompute: `scripts/x49_gain.py` (the command in its docstring) · also: gain map; Lightning's coverage run 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x49_gain/x49_1-20261028T154510Z/x49_1.md` · recompute: `scripts/x49_gain.py` (the command in its docstring) · test [49.1](#t49-1) · also: gain map; Lightning's coverage run 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -705,9 +685,9 @@ Test 49.1 · opened not stated · status: rule fixed in advance · hand-check: n
 
 ### Do the two readers read two separate learned subspaces? <a id="t48-1"></a>
 
-`ledger only` *Used in: README Appendix A, a figure link ("Muse's learned subspaces", figures/depth/readme/s14_das_muse.png).*
+`ledger only` · *Used in: README [Appendix A](README.md#appendix-a-links), a figure link ("Muse's learned subspaces", figures/depth/readme/s14_das_muse.png).*
 
-Test 48.1 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x48_das/x52_das-20261029T040955Z/verdict.md` · recompute: `scripts/x48_das.py` (the command in its docstring) · also: DAS at the bridge word; the 27B's coverage run 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x48_das/x52_das-20261029T040955Z/verdict.md` · recompute: `scripts/x48_das.py` (the command in its docstring) · test [48.1](#t48-1) · also: DAS at the bridge word; the 27B's coverage run 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -745,9 +725,9 @@ Test 48.1 · opened not stated · status: rule fixed in advance · hand-check: n
 
 ### What is inside the lens part's 25 directions? <a id="b52-a"></a>
 
-`in README` *Used in: README Part I card "What do the lens part's 25 directions stand for?".*
+`in README` · *Used in: README [Part I](README.md#part-i-the-two-readers-lookup-and-recall), card "What do the lens part's 25 directions stand for?".*
 
-Test batch 52 A · opened 29 Oct · status: descriptive · hand-check: not in sample · files: `results/x52_atoms/report-20261029T000125Z/verdict.md` · recompute: `scripts/x52_atoms.py` (the command in its docstring) · also: Lightning's
+Status: descriptive · hand-checked: no · files: `results/x52_atoms/report-20261029T000125Z/verdict.md` · recompute: `scripts/x52_atoms.py` (the command in its docstring) · test [batch 52 A](#b52-a), opened 29 Oct · also: Lightning's
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -786,9 +766,9 @@ Test batch 52 A · opened 29 Oct · status: descriptive · hand-check: not in sa
 
 ### Where is the answer readable through the lens, and can it be written there? <a id="b52-b"></a>
 
-`ledger only` *Used in: not in the README (its rebuild).*
+`ledger only`
 
-Test batch 52 B · opened 29 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md` · recompute: `scripts/x52_answer_map.py` (the command in its docstring) · also: Lightning's main set 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md` · recompute: `scripts/x52_answer_map.py` (the command in its docstring) · test [batch 52 B](#b52-b), opened 29 Oct · also: Lightning's main set 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -797,13 +777,13 @@ Test batch 52 B · opened 29 Oct · status: rule fixed in advance · hand-check:
 - **Data.** Our main test, 200 per model (Lightning at L14, a coverage run, no prediction); the fact passages, 158 / 166 / 157 (Lightning's read pending).
 - **Method.** Read: the answer word's rank in the lens readout at the bridge word, its earlier mention, the question and the last token, every second layer before the answer layer. Write: at the most readable cell, the answer word's lens directions at one and two times a real change's size, against a random part and a frequency-matched part of the same size; the whole change at that cell as the reference.
 
-- **Rule, fixed in advance.** "“Readable”: the answer word in the lens top-5 on ≥ 0.5 of items at some layer before the answer layer. “Usable”: writing its directions changes the answer on ≥ 0.3 of items with the random control ≤ 0.10. Report the four combinations per reader, per dataset." No prediction.
-
 Readable and usable, per reader and data set:
 
 ![On the fact passages the answer is readable and usable; on ours rarely](../../figures/depth/ledger/06_answer_map.png)
 
 *Where the answer word is readable through the lens (left: the share of items with it in the lens top 5 at the best layer before the answer; one value, no interval) and whether adding its lens directions there changes the answer (right; at the size the run chose), lookup (violet) and recall (black), on our scenes and on the fact passages. Whiskers 95% intervals; Lightning and the 122B hollow ○ (coverage runs).*
+
+- **Rule, fixed in advance.** "“Readable”: the answer word in the lens top-5 on ≥ 0.5 of items at some layer before the answer layer. “Usable”: writing its directions changes the answer on ≥ 0.3 of items with the random control ≤ 0.10. Report the four combinations per reader, per dataset." No prediction.
 
 </details>
 
@@ -840,9 +820,9 @@ More from the reading:
 
 ### Does the lookup's identity route run outside the lens, or in lens directions beyond the recall's 25? <a id="t47-1"></a>
 
-`in README` *Used in: README Part II card "Does the lookup's identity route run outside the lens?".*
+`in README` · *Used in: README [Part II](README.md#part-ii-identity-which-item-the-lookup-reads), "More in the ledger".*
 
-Test 47.1 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_atoms/x47_1-20261028T113101Z/x47_1.md` · recompute: `scripts/x47_atoms.py` (the command in its docstring) · also: identity route outside the lens; Lightning's coverage run 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x47_atoms/x47_1-20261028T113101Z/x47_1.md` · recompute: `scripts/x47_atoms.py` (the command in its docstring) · test [47.1](#t47-1) · also: identity route outside the lens; Lightning's coverage run 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -887,9 +867,9 @@ More from the reading:
 
 ### Which route does the lookup take, and does the address carry the position route? <a id="routes"></a>
 
-`in README` `below gate: 122B` *Used in: README Part II card "Which route does the lookup take: the item's identity, its locker's position, or the number?"; README Part III card "Can the address be read, removed, added and swapped?" (removing and adding the address).*
+`in README` `below gate: 122B` · *Used in: README [Part II](README.md#part-ii-identity-which-item-the-lookup-reads), card "Which route does the lookup take: the item's identity, its locker's position, or the number?"; [Part III](README.md#part-iii-the-address-where-the-items-locker-sits), card "Can the address be read, removed, added and swapped?" (removing and adding the address).*
 
-Test routes test · opened 29 Oct · status: rule fixed in advance · hand-check: in sample (view c) · files: `results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.md` · recompute: `scripts/x6_routes.py` (the command in its docstring) · also: Lightning's coverage run
+Status: rule fixed in advance · hand-checked: yes (view c) · files: `results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.md` · recompute: `scripts/x6_routes.py` (the command in its docstring) · test [routes test](#routes), opened 29 Oct · also: Lightning's coverage run
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -934,9 +914,9 @@ The result in full:
 
 ### Does the lookup never take the value, in prose, JSON and tables too? <a id="t47-7c"></a>
 
-`ledger only` `below gate: 9B, Muse, Lightning` *Used in: not in the README (its rebuild).*
+`ledger only` `below gate: 9B, Muse, Lightning`
 
-Test 47.7 (c) · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_value/x47_7c-20261028T123632Z/x47_7c.md` · recompute: `scripts/x47_value.py` (the command in its docstring) · also: never the value by format; Lightning's coverage run 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x47_value/x47_7c-20261028T123632Z/x47_7c.md` · recompute: `scripts/x47_value.py` (the command in its docstring) · test [47.7 (c)](#t47-7c) · also: never the value by format; Lightning's coverage run 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -945,13 +925,13 @@ Test 47.7 (c) · opened not stated · status: rule fixed in advance · hand-chec
 - **Data.** Varied scenes, locker first, question last, per format that passes the gate (the recall right on at least 0.80 of the original prompts); n per cell in the verdicts.
 - **Method.** The routes test's whole change at the bridge word at L, per format; the lookup's answer sorted into identity, position, value and original; the per-format refit address taken out against a random part (9B, Muse, Lightning).
 
-- **Rule, fixed in advance.** "never the value generalizes if value <= 0.05 in every format on every model; a position route in JSON / table if the position share >= 0.2 and the refit pointer's [pointer: the address] removal cuts it >= 0.3 beyond random." Lightning: a coverage run on this rule, no prediction.
-
 The position and value routes per format:
 
 ![In prose, JSON and tables the lookup never takes the value](../../figures/depth/ledger/07_value_formats.png)
 
 *The routes test in prose, JSON and a table: the share of the lookup's answers that follow the moved item's position (orange) and its new value (slate), per model and format run. Whiskers 95% intervals; Lightning hollow ○.*
+
+- **Rule, fixed in advance.** "never the value generalizes if value <= 0.05 in every format on every model; a position route in JSON / table if the position share >= 0.2 and the refit pointer's [pointer: the address] removal cuts it >= 0.3 beyond random." Lightning: a coverage run on this rule, no prediction.
 
 </details>
 
@@ -978,9 +958,9 @@ The position and value routes per format:
 
 ### Does a learned subspace carry the readers' codes, and is the learned address ours? <a id="t51-3"></a>
 
-`ledger only` *Used in: README Appendix A, a figure link ("learned subspaces", figures/depth/readme/33_learned.png).*
+`ledger only` · *Used in: README [Appendix A](README.md#appendix-a-links), a figure link ("learned subspaces", figures/depth/readme/33_learned.png).*
 
-Test 51.3 · opened 28 Oct · status: rule fixed in advance (part descriptive) · hand-check: not in sample · files: `results/x51_das/verdict-20261028T194630Z/verdict.md` · recompute: `scripts/x51_das.py` (the command in its docstring)
+Status: rule fixed in advance (part descriptive) · hand-checked: no · files: `results/x51_das/verdict-20261028T194630Z/verdict.md` · recompute: `scripts/x51_das.py` (the command in its docstring) · test [51.3](#t51-3), opened 28 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -1019,9 +999,9 @@ Test 51.3 · opened 28 Oct · status: rule fixed in advance (part descriptive) �
 
 ### Is the item's identity at its locker sentence the code the lookup reads at the bridge word? <a id="b53-8"></a>
 
-`ledger only` *Used in: not in the README (its rebuild).*
+`ledger only`
 
-Test 53.8 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x53_bindid/x53_bindid-20261029T122650Z/verdict.md` · recompute: `scripts/x53_bindid.py` (the command in its docstring) · also: a binding-ID test; the 9B, the 27B and Muse, 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x53_bindid/x53_bindid-20261029T122650Z/verdict.md` · recompute: `scripts/x53_bindid.py` (the command in its docstring) · test [53.8](#b53-8) · also: a binding-ID test; the 9B, the 27B and Muse, 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -1034,14 +1014,14 @@ Test 53.8 · opened not stated · status: rule fixed in advance · hand-check: n
 
 - **Method.** At L, the state at item X's mention in its locker sentence minus X's token embedding (mean over the held-out scenes, X fixed by slot), added at the bridge word at 1x and 2x the size of a real identity change; controls: a random vector of the same norm, and Y's version (another item's mention). Read: lookups sent to X's locker. Beside (added before any run): a centered arm, each slot's vector minus the mean over slots, same doses and controls; and (CPU, decided during the run) how much of each centered slot vector lies in the address U.
 
-- **Rule, fixed in advance.** "Rule: "a shared identity code" if X's share minus random >= 0.25 at 2x and minus Y's version >= 0.15; "no" if <= 0.05; else in between." (jobs/c3/batch53.yaml, critic_1125 item 6; no prediction) The centered arm (decisions_1210b item 1, before any run): "the same rule thresholds reported for it beside"; the headline stays the uncentered arm's (decided during the run).
-
 
 The identity code against another item's version and a random vector:
 
 ![Centered, the code moves lookups beyond random; raw, little or none](../../figures/depth/ledger/08_identity_code.png)
 
 *The item's identity code from its locker sentence added at the bridge word: the share of lookups moved by the item's own code (blue), by another item's version of it (slate) and by a random vector (grey), with the code as fit in advance and centered. Whiskers 95% intervals.*
+
+- **Rule, fixed in advance.** "Rule: "a shared identity code" if X's share minus random >= 0.25 at 2x and minus Y's version >= 0.15; "no" if <= 0.05; else in between." (jobs/c3/batch53.yaml, critic_1125 item 6; no prediction) The centered arm (decisions_1210b item 1, before any run): "the same rule thresholds reported for it beside"; the headline stays the uncentered arm's (decided during the run).
 
 </details>
 
@@ -1084,9 +1064,9 @@ More from the reading:
 
 ### Is the address readable at the bridge word? <a id="probe"></a>
 
-`in README` *Used in: README Part III card "Can the address be read, removed, added and swapped?" (the probe).*
+`in README` · *Used in: README [Part III](README.md#part-iii-the-address-where-the-items-locker-sits), card "Can the address be read, removed, added and swapped?" (the probe).*
 
-Test x0_probe v4 · opened not stated · status: post hoc (descriptive) · hand-check: not in sample · files: `results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.md` · recompute: `scripts/x0_probe.py` (the command in its docstring) · also: the address probe; Lightning's coverage run 29 Oct
+Status: post hoc (descriptive) · hand-checked: no · files: `results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.md` · recompute: `scripts/x0_probe.py` (the command in its docstring) · test [x0_probe v4](#probe) · also: the address probe; Lightning's coverage run 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -1135,9 +1115,9 @@ More from the reading:
 
 ### Does swapping the address send the lookup to the swapped-in locker? <a id="swap"></a>
 
-`in README` `below gate: 122B` *Used in: README Part III card "Can the address be read, removed, added and swapped?" (the swap).*
+`in README` `below gate: 122B` · *Used in: README [Part III](README.md#part-iii-the-address-where-the-items-locker-sits), card "Can the address be read, removed, added and swapped?" (the swap).*
 
-Test address swap by dose · opened 29 Oct · status: rule fixed in advance · hand-check: in sample (view d) · files: `results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.md` · recompute: `scripts/x8_write.py` (the command in its docstring) · also: Lightning's coverage run
+Status: rule fixed in advance · hand-checked: yes (view d) · files: `results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.md` · recompute: `scripts/x8_write.py` (the command in its docstring) · test [address swap by dose](#swap), opened 29 Oct · also: Lightning's coverage run
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -1192,9 +1172,9 @@ More from the reading:
 
 ### Does the address survive neutral sentences between the lockers and the picks? <a id="t47-16"></a>
 
-`in README` *Used in: README Part III card "Can the address be read, removed, added and swapped?" (the swap with no / 50 neutral sentences: the 9B, 27B, Muse (its rerun r2) and Lightning).*
+`in README` · *Used in: README [Part III](README.md#part-iii-the-address-where-the-items-locker-sits), card "Can the address be read, removed, added and swapped?" (the swap with no / 50 neutral sentences: the 9B, 27B, Muse (its rerun r2) and Lightning).*
 
-Test 47.16 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_distance/x47_16-20261028T131501Z/x47_16.md` · recompute: `scripts/x47_distance.py` (the command in its docstring) · also: the swap after neutral sentences; the 27B's and Lightning's coverage runs 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x47_distance/x47_16-20261028T131501Z/x47_16.md` · recompute: `scripts/x47_distance.py` (the command in its docstring) · test [47.16](#t47-16) · also: the swap after neutral sentences; the 27B's and Lightning's coverage runs 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -1233,9 +1213,9 @@ Test 47.16 · opened not stated · status: rule fixed in advance · hand-check: 
 
 ### With six lockers, does each locker have its own code? <a id="six"></a>
 
-`in README` *Used in: README Part III card "With six lockers, does each locker have its own code?".*
+`in README` · *Used in: README [Part III](README.md#part-iii-the-address-where-the-items-locker-sits), "More in the ledger".*
 
-Test six lockers · opened 29 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_six/x47_2-20261028T113102Z/x47_2.md` · recompute: `scripts/x47_six.py` (the command in its docstring) · also: the 27B's coverage run , Lightning's 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x47_six/x47_2-20261028T113102Z/x47_2.md` · recompute: `scripts/x47_six.py` (the command in its docstring) · test [six lockers](#six), opened 29 Oct · also: the 27B's coverage run , Lightning's 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -1272,9 +1252,9 @@ Test six lockers · opened 29 Oct · status: rule fixed in advance · hand-check
 
 ### What is the address, independent of how we built it? <a id="t51-11"></a>
 
-`in README` *Used in: README Part III card "With six lockers, does each locker have its own code?" (the held-out code); README "Tested and dropped" ("One code per locker").*
+`in README` · *Used in: README [Tested and dropped](README.md#tested-and-dropped) ("One code per locker").*
 
-Test 51.11 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x51_addr/verdict-20261028T215138Z/verdict.md` · recompute: `scripts/x51_addr.py` (the command in its docstring)
+Status: rule fixed in advance · hand-checked: no · files: `results/x51_addr/verdict-20261028T215138Z/verdict.md` · recompute: `scripts/x51_addr.py` (the command in its docstring) · test [51.11](#t51-11), opened 28 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -1311,9 +1291,9 @@ Test 51.11 · opened 28 Oct · status: rule fixed in advance · hand-check: not 
 
 ### On the scenes where the 27B's lookup goes by position, does the address work as on the 9B? <a id="b53-5"></a>
 
-`ledger only` *Used in: not in the README (its rebuild).*
+`ledger only`
 
-Test 53.5 · opened 29 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x53_subset27b/x53_subset27b-20261029T085435Z/verdict.md` · recompute: `scripts/x53_subset27b.py` (the command in its docstring) · also: CPU, existing outcomes
+Status: rule fixed in advance · hand-checked: no · files: `results/x53_subset27b/x53_subset27b-20261029T085435Z/verdict.md` · recompute: `scripts/x53_subset27b.py` (the command in its docstring) · test [53.5](#b53-5), opened 29 Oct · also: CPU, existing outcomes
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -1322,13 +1302,13 @@ Test 53.5 · opened 29 Oct · status: rule fixed in advance · hand-check: not i
 - **Data.** Routes scenes of the two conditions that have a position answer, selected where the lookup answers by position under the whole change: 232 on the 27B (31 bridge items), 340 on the 9B beside; the swap on those scenes of the second condition (101 / 153).
 - **Method.** On existing outcomes (CPU): position answers without the address against without a random part of its share; the address alone against a random part alone; the address swap at dose 2.
 
-- **Rule, fixed in advance.** "Rule: "same mechanism, used less" if the address alone brings >= 0.25 of position answers back and its removal leaves <= 0.10 (the 9B's pattern); "the 27B differs" otherwise. Same subset on the 9B beside." (jobs/c3/batch53.yaml; no prediction)
-
 The address removed and added alone on the 27B's position scenes, beside the 9B:
 
 ![On its position scenes the 27B's address brings fewer answers back](../../figures/depth/ledger/09_subset27b.png)
 
 *The 27B's scenes where its lookup goes by position, beside the 9B: the position answers left without the address and without a random part (grey), and brought back by the address alone and by a random part alone (grey). Whiskers 95% intervals.*
+
+- **Rule, fixed in advance.** "Rule: "same mechanism, used less" if the address alone brings >= 0.25 of position answers back and its removal leaves <= 0.10 (the 9B's pattern); "the 27B differs" otherwise. Same subset on the 9B beside." (jobs/c3/batch53.yaml; no prediction)
 
 </details>
 
@@ -1357,9 +1337,9 @@ The address removed and added alone on the 27B's position scenes, beside the 9B:
 
 ### Can the lens read the address? <a id="t47-0"></a>
 
-`in README` *Used in: README Part III card "Can the lens read the address?" (the lens readout of the swap).*
+`in README` · *Used in: README [Part III](README.md#part-iii-the-address-where-the-items-locker-sits), card "Can the lens read the address?" (the lens readout of the swap).*
 
-Test 47.0 · opened not stated · status: descriptive · hand-check: not in sample · files: `results/x47_verbal/summary-20261028T033646Z/verbal.md` · recompute: `scripts/x47_verbal.py` (the command in its docstring) · also: lens readout of an address swap; Lightning's coverage run 29 Oct
+Status: descriptive · hand-checked: no · files: `results/x47_verbal/summary-20261028T033646Z/verbal.md` · recompute: `scripts/x47_verbal.py` (the command in its docstring) · test [47.0](#t47-0) · also: lens readout of an address swap; Lightning's coverage run 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -1410,9 +1390,9 @@ More from the reading:
 
 ### What can a probe on the lens subspace decode, against the full state? <a id="b53-2"></a>
 
-`in README` *Used in: README Part III card "Can a monitor on the lens part read the address where the lookup uses it?".*
+`in README` · *Used in: README [Part III](README.md#part-iii-the-address-where-the-items-locker-sits), card "Can a monitor on the lens part read the address where the lookup uses it?".*
 
-Test 53.2 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x53_monitor/x53_monitor_122b-20261029T175223Z/verdict.md` · recompute: `scripts/x53_monitor.py` (the command in its docstring) · also: the monitor test; four models, 29 Oct; the 122B's coverage run 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x53_monitor/x53_monitor_122b-20261029T175223Z/verdict.md` · recompute: `scripts/x53_monitor.py` (the command in its docstring) · test [53.2](#b53-2) · also: the monitor test; four models, 29 Oct; the 122B's coverage run 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -1470,9 +1450,9 @@ More from the reading:
 
 ### Asked for the position, does the address surface in the lens? <a id="t47-10"></a>
 
-`in README` `below gate: 9B, Muse, Lightning` *Used in: README Part III card "Can the lens read the address?" (the report prompt).*
+`in README` `below gate: 9B, Muse, Lightning` · *Used in: README [Part III](README.md#part-iii-the-address-where-the-items-locker-sits), card "Can the lens read the address?" (the report prompt).*
 
-Test 47.10 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_report/x47_10-20261028T113109Z/x47_10.md` · recompute: `scripts/x47_report.py` (the command in its docstring) · also: the report prompt, opened 28 Oct; Lightning's gate 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x47_report/x47_10-20261028T113109Z/x47_10.md` · recompute: `scripts/x47_report.py` (the command in its docstring) · test [47.10](#t47-10), opened 28 Oct · also: the report prompt, opened 28 Oct; Lightning's gate 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -1509,9 +1489,9 @@ Test 47.10 · opened 28 Oct · status: rule fixed in advance · hand-check: not 
 
 ### Reworded, does the report read slot 1? <a id="t49-6"></a>
 
-`ledger only` *Used in: not in the README (its rebuild).*
+`ledger only`
 
-Test 49.6 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x49_report/x49_6-20261028T154511Z/x49_6.md` · recompute: `scripts/x49_report.py` (the command in its docstring) · also: the report of slot 1 reworded, opened 28 Oct; Lightning's coverage run 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x49_report/x49_6-20261028T154511Z/x49_6.md` · recompute: `scripts/x49_report.py` (the command in its docstring) · test [49.6](#t49-6), opened 28 Oct · also: the report of slot 1 reworded, opened 28 Oct; Lightning's coverage run 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -1520,13 +1500,13 @@ Test 49.6 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 - **Data.** The report prompt's scenes without a move, the original prompt only, question last: 500 scenes, 147 with the asked item in slot 1 on the 9B and the 27B, 168 on Lightning.
 - **Method.** Two new wordings of the report question: position (a digit: "Was the locker of <p>'s pick listed in position 1, 2 or 3 of the list?") and sentence (a word: "Which of the three locker sentences - the first, the second or the third - gives the locker of <p>'s pick?"); the share of scenes whose asked item sits in slot 1 that the report reads right, with the earlier report wording beside.
 
-- **Rule, fixed in advance.** "if slot 1 stays <= 0.2 on the 9B under both wordings, keep as an appendix curiosity; if it recovers, drop." (results/x49_report/x49_6-20261028T154511Z/x49_6.md; Q49.6, Dan: 60%; Lightning a coverage run, no prediction)
-
 The report under each wording:
 
 ![Reworded, the report reads slot 1 on every model tested](../../figures/depth/ledger/10_report_first_position.png)
 
 *The model's report of where the item sits, reworded: the share of reports naming the first position under the earlier wording, when a digit is asked for and when a word is asked for, per model. Whiskers 95% intervals; Lightning hollow ○.*
+
+- **Rule, fixed in advance.** "if slot 1 stays <= 0.2 on the 9B under both wordings, keep as an appendix curiosity; if it recovers, drop." (results/x49_report/x49_6-20261028T154511Z/x49_6.md; Q49.6, Dan: 60%; Lightning a coverage run, no prediction)
 
 </details>
 
@@ -1553,9 +1533,9 @@ The report under each wording:
 
 ### Do a few heads read the swapped address? <a id="t51-2"></a>
 
-`ledger only` *Used in: not in the README (its rebuild).*
+`ledger only`
 
-Test 51.2 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x51_heads/x52_heads-20261029T015136Z/verdict.md` · recompute: `scripts/x51_heads.py` (the command in its docstring) · also: Lightning's coverage run 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x51_heads/x52_heads-20261029T015136Z/verdict.md` · recompute: `scripts/x51_heads.py` (the command in its docstring) · test [51.2](#t51-2), opened 28 Oct · also: Lightning's coverage run 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -1593,9 +1573,9 @@ Test 51.2 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 
 ### Do attention heads follow the swapped address to its locker? <a id="t49-7"></a>
 
-`ledger only` *Used in: not in the README (its rebuild).*
+`ledger only`
 
-Test 49.7 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x49_attn/x49_7-20261028T154511Z/verdict.md` · recompute: `scripts/x49_attn.py` (the command in its docstring) · also: attention under the swap; Lightning's coverage run 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x49_attn/x49_7-20261028T154511Z/verdict.md` · recompute: `scripts/x49_attn.py` (the command in its docstring) · test [49.7](#t49-7) · also: attention under the swap; Lightning's coverage run 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -1636,9 +1616,9 @@ Test 49.7 · opened not stated · status: rule fixed in advance · hand-check: n
 
 ### Does the second hop, hall to locker, run through an address too? <a id="t47-14"></a>
 
-`in README` `below gate: Lightning` *Used in: README Part VI, one line with a link ("the second hop's key token").*
+`in README` `below gate: Lightning` · *Used in: README [Where it does not hold](README.md#where-it-does-not-hold), one line with a link ("the second hop's key token").*
 
-Test 47.14 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_chain/x47_14-20261028T115841Z/x47_14.md` · recompute: `scripts/x47_chain.py` (the command in its docstring) · also: chained addresses; the 27B's coverage run 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x47_chain/x47_14-20261028T115841Z/x47_14.md` · recompute: `scripts/x47_chain.py` (the command in its docstring) · test [47.14](#t47-14) · also: chained addresses; the 27B's coverage run 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -1677,9 +1657,9 @@ Test 47.14 · opened not stated · status: rule fixed in advance · hand-check: 
 
 ### Must the address be refit for each text format? <a id="x45d"></a>
 
-`in README` *Used in: README Part III card "Must the address be refit for each text format?".*
+`in README` · *Used in: README [Part III](README.md#part-iii-the-address-where-the-items-locker-sits), "More in the ledger"; [TL;DR](README.md#tldr).*
 
-Test x45d · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x0b_generalize/nem35l_x52_x45d/x45d-20261029T035250Z/verdict.md` · recompute: `scripts/x0b_generalize.py` (the command in its docstring) · also: address refit per format; Lightning's coverage run 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x0b_generalize/nem35l_x52_x45d/x45d-20261029T035250Z/verdict.md` · recompute: `scripts/x0b_generalize.py` (the command in its docstring) · test [x45d](#x45d) · also: address refit per format; Lightning's coverage run 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -1688,13 +1668,13 @@ Test x45d · opened not stated · status: rule fixed in advance · hand-check: n
 - **Data.** The held-out half of the varied scenes per format, the bridge items not used for the fit; Lightning prose / JSON / table: 191<!-- src: results/x0b_generalize/nem35l_x52_x45d/x45d-20261029T035250Z/verdict.md \| prose :: the refit basis (rank 4, the other half) :: lookup :: 191 --> / 40<!-- src: results/x0b_generalize/nem35l_x52_x45d/x45d-20261029T035250Z/verdict.md \| json :: the refit basis (rank 4, the other half) :: lookup :: 40 --> / 187<!-- src: results/x0b_generalize/nem35l_x52_x45d/x45d-20261029T035250Z/verdict.md \| table :: the refit basis (rank 4, the other half) :: lookup :: 187 --> (the other models' n in the verdicts).
 - **Method.** The address refit per format on one half (rank 4) and taken out of the change at the bridge word at L on the other half, against a random part of its share; the address fit on simple scenes beside.
 
-- **Rule, fixed in advance.** ""Pointer elsewhere" [pointer: the address] if the refit basis gives a lookup extra drop of at least 0.2, with lower CI above 0.1, in 2 of 3 formats; "No linear pointer found" [pointer: the address] if all three formats are below 0.1 (point estimate); otherwise neither." Added after the first results: a format whose lookup has fewer than 30 switches under the whole change does not count. Lightning: a coverage run, no prediction.
-
 The fitted address against one refit per format:
 
 ![The address must be refit for each text format](../../figures/depth/readme/34_transfer.png)
 
 *Top, after the data: the switches blocked beyond a random part without the lens part (teal) and without the address fit on simple scenes (orange), per model and setting, all hollow ○. Bottom, rule 45d: per format, without the address fit on simple scenes (left) and refit on that format (right); a cell under its switch bar says so. Whiskers 95% intervals.*
+
+- **Rule, fixed in advance.** ""Pointer elsewhere" [pointer: the address] if the refit basis gives a lookup extra drop of at least 0.2, with lower CI above 0.1, in 2 of 3 formats; "No linear pointer found" [pointer: the address] if all three formats are below 0.1 (point estimate); otherwise neither." Added after the first results: a format whose lookup has fewer than 30 switches under the whole change does not count. Lightning: a coverage run, no prediction.
 
 </details>
 
@@ -1720,9 +1700,9 @@ The fitted address against one refit per format:
 
 ### Does the address carry over to code and tool output? <a id="b53-7"></a>
 
-`in README` *Used in: README Part III card "Is the address readable, and used, in Python code and tool output?"; adapted design: lookup-only gate, the recall is not part of this test.*
+`in README` · *Used in: README [Part III](README.md#part-iii-the-address-where-the-items-locker-sits), "More in the ledger"; [TL;DR](README.md#tldr); adapted design: lookup-only gate, the recall is not part of this test.*
 
-Test 53.7 · opened not stated · status: rule fixed in advance (part descriptive) · hand-check: not in sample · files: `results/x0_probe/x53_7_probe-20261029T130251Z/verdict.md` · recompute: `scripts/x0_probe.py` (the command in its docstring) · also: adapted design; the 9B and the 27B, code and tool output, 29 Oct
+Status: rule fixed in advance (part descriptive) · hand-checked: no · files: `results/x0_probe/x53_7_probe-20261029T130251Z/verdict.md` · recompute: `scripts/x0_probe.py` (the command in its docstring) · test [53.7](#b53-7) · also: adapted design; the 9B and the 27B, code and tool output, 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -1785,9 +1765,9 @@ More from the reading:
 
 ### Does the bridge word redirect most lookups when its locker sentence came first, and few when after? <a id="order"></a>
 
-`in README` *Used in: README Part IV card "Does the bridge word redirect most lookups when its locker sentence came first, and few when after?" (the split).*
+`in README` · *Used in: README [Part IV](README.md#part-iv-where-and-when-the-link-is-made), card "Does the bridge word redirect most lookups when its locker sentence came first, and few when after?" (the split).*
 
-Test the split by sentence order · opened 29 Oct · status: post hoc (descriptive) · hand-check: in sample (view g) · files: `results/x0_composition/split-by-order-20261026T173323Z/split.md` · recompute: `scripts/x0_composition.py` (the command in its docstring) · also: Lightning's
+Status: post hoc (descriptive) · hand-checked: yes (view g) · files: `results/x0_composition/split-by-order-20261026T173323Z/split.md` · recompute: `scripts/x0_composition.py` (the command in its docstring) · test [the split by sentence order](#order), opened 29 Oct · also: Lightning's
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -1845,9 +1825,9 @@ More from the reading:
 
 ### When the locker comes after the pick, is the link made in the locker sentences? <a id="t45q"></a>
 
-`in README` `below gate: Lightning` *Used in: README Part IV card "Does the bridge word redirect most lookups when its locker sentence came first, and few when after?" (the copy).*
+`in README` `below gate: Lightning` · *Used in: README [Part IV](README.md#part-iv-where-and-when-the-link-is-made), card "Does the bridge word redirect most lookups when its locker sentence came first, and few when after?" (the copy).*
 
-Test 45q · opened 27 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x45b_binding/x45q-20261027T005345Z/x45q.md` · recompute: `scripts/x45b_binding.py` (the command in its docstring) · also: the copy test, opened 27 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x45b_binding/x45q-20261027T005345Z/x45q.md` · recompute: `scripts/x45b_binding.py` (the command in its docstring) · test [45q](#t45q), opened 27 Oct · also: the copy test, opened 27 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -1887,9 +1867,9 @@ Test 45q · opened 27 Oct · status: rule fixed in advance · hand-check: not in
 
 ### Which token and layer carry each reader's switch, and when does the bridge word stop being read? <a id="d1"></a>
 
-`in README` `below gate: Lightning` *Used in: README Part IV card "Which token and layer carry the lookup when the locker sentence comes after the pick?".*
+`in README` `below gate: Lightning` · *Used in: README [Part IV](README.md#part-iv-where-and-when-the-link-is-made), "More in the ledger".*
 
-Test D1 / D2 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_depthmap/x52_depthmap-20261029T011452Z/depth.md` · recompute: `scripts/x47_depthmap.py` (the command in its docstring) · also: token-by-layer map and window patching; the 27B's and Lightning's coverage runs 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x47_depthmap/x52_depthmap-20261029T011452Z/depth.md` · recompute: `scripts/x47_depthmap.py` (the command in its docstring) · test [D1 / D2](#d1) · also: token-by-layer map and window patching; the 27B's and Lightning's coverage runs 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -1933,9 +1913,9 @@ More from the reading:
 
 ### When the change at L misses a lookup, where is the rest read? <a id="t47-4"></a>
 
-`in README` `below gate: Lightning` *Used in: README Part IV card "Which token and layer carry the lookup when the locker sentence comes after the pick?" (the cumulative patches).*
+`in README` `below gate: Lightning` · *Used in: README [Part IV](README.md#part-iv-where-and-when-the-link-is-made), card "Does the bridge word redirect most lookups when its locker sentence came first, and few when after?".*
 
-Test 47.4 · opened not stated · status: descriptive · hand-check: not in sample · files: `results/x47_cumulative/x52_cumulative-20261029T044453Z/x47_4.md` · recompute: `scripts/x47_cumulative.py` (the command in its docstring) · also: cumulative patches; the 27B's and Lightning's coverage runs 29 Oct
+Status: descriptive · hand-checked: no · files: `results/x47_cumulative/x52_cumulative-20261029T044453Z/x47_4.md` · recompute: `scripts/x47_cumulative.py` (the command in its docstring) · test [47.4](#t47-4) · also: cumulative patches; the 27B's and Lightning's coverage runs 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -1978,9 +1958,9 @@ The result in full:
 
 ### Does the lookup drop the lens part before it takes up the address? <a id="t47-8"></a>
 
-`in README` *Used in: README Part IV card "Does the lookup drop the lens part before it takes up the address?".*
+`in README` · *Used in: README [Part IV](README.md#part-iv-where-and-when-the-link-is-made), "More in the ledger".*
 
-Test 47.8 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_anatomy/x47_8-20261028T154518Z/x47_8.md` · recompute: `scripts/x47_anatomy.py` (the command in its docstring) · also: anatomy by layer; Lightning's coverage run and the 27B's full grid 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x47_anatomy/x47_8-20261028T154518Z/x47_8.md` · recompute: `scripts/x47_anatomy.py` (the command in its docstring) · test [47.8](#t47-8) · also: anatomy by layer; Lightning's coverage run and the 27B's full grid 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -2037,9 +2017,9 @@ More from the reading:
 
 ### Does the address travel to the last token? <a id="t51-4"></a>
 
-`in README` *Used in: README claims table, claim 12 (whether the address travels to the last token).*
+`in README` · *Used in: README [TL;DR, claims table, claim 12](README.md#tldr) (whether the address travels to the last token).*
 
-Test 51.4 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x51_travel/x52_travel-20261029T012517Z/verdict.md` · recompute: `scripts/x51_travel.py` (the command in its docstring) · also: Lightning's coverage run 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x51_travel/x52_travel-20261029T012517Z/verdict.md` · recompute: `scripts/x51_travel.py` (the command in its docstring) · test [51.4](#t51-4), opened 28 Oct · also: Lightning's coverage run 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -2048,13 +2028,13 @@ Test 51.4 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 - **Data.** Routes scenes without a move, 300 per model (read half 145 / 150 / 144 / 132<!-- src: results/x51_travel/x52_travel-20261029T012517Z/verdict.md \| nem35l_x52_travel :: 300 (132) :: 132 -->; Lightning at L14 and L18).
 - **Method.** The address swap added at the last token at L and L+4, at doses 1 and 2, with the bridge word's means and with last-token means; each against a random vector of its norm; a slot probe at the last token beside.
 
-- **Rule, fixed in advance.** "The code travels: the bridge-fit swap sends >= 0.3 of lookups to slot k (random <= 0.05). Re-encoded on copy: bridge-fit <= 0.10 while last-token-fit >= 0.3. Not at the last token: both <= 0.10 while the probe reads the slot there >= 0.8. Otherwise in between." Lightning: a coverage run on this rule, no prediction.
-
 The swap at the last token, per model:
 
 ![The bridge word's code works at the last token only on Muse](../../figures/depth/ledger/11_last_token_swap.png)
 
 *The address fit at the bridge word swapped in at the last token, a few layers after L at twice a real change's size: the share of lookups sent to the target item, per model. Whiskers 95% intervals; Lightning hollow ○ (a coverage run).*
+
+- **Rule, fixed in advance.** "The code travels: the bridge-fit swap sends >= 0.3 of lookups to slot k (random <= 0.05). Re-encoded on copy: bridge-fit <= 0.10 while last-token-fit >= 0.3. Not at the last token: both <= 0.10 while the probe reads the slot there >= 0.8. Otherwise in between." Lightning: a coverage run on this rule, no prediction.
 
 </details>
 
@@ -2083,9 +2063,9 @@ More from the reading:
 
 ### Is the recall's bridge entity read through the lens at the last token? <a id="t51-10"></a>
 
-`in README` *Used in: README Part IV card "At the last token, is the bridge entity in the lens part of the state, and does the model use it there?".*
+`in README` · *Used in: README [Part IV](README.md#part-iv-where-and-when-the-link-is-made), card "At the last token, is the bridge entity in the lens part of the state, and does the model use it there?".*
 
-Test 51.10 · opened 28 Oct · status: rule fixed in advance · hand-check: in sample (view f) · files: `results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md` · recompute: `scripts/x51_jread.py` (the command in its docstring) · also: Lightning's coverage run 29 Oct
+Status: rule fixed in advance · hand-checked: yes (view f) · files: `results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md` · recompute: `scripts/x51_jread.py` (the command in its docstring) · test [51.10](#t51-10), opened 28 Oct · also: Lightning's coverage run 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -2128,9 +2108,9 @@ The result in full:
 
 ### At the last token, does each reader compute its answer through the lens part or outside it? <a id="b53-3"></a>
 
-`in README` *Used in: README "Tested and dropped" ("The copy bypasses the lens"), the reading dropped (its link goes to 53.3b).*
+`in README` · *Used in: README [Tested and dropped](README.md#tested-and-dropped) ("The copy bypasses the lens"), the reading dropped (its link goes to 53.3b).*
 
-Test 53.3 · opened 29 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.md` · recompute: `scripts/x53_lastconflict.py` (the command in its docstring) · also: four models
+Status: rule fixed in advance · hand-checked: no · files: `results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.md` · recompute: `scripts/x53_lastconflict.py` (the command in its docstring) · test [53.3](#b53-3), opened 29 Oct · also: four models
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -2143,14 +2123,14 @@ Test 53.3 · opened 29 Oct · status: rule fixed in advance · hand-check: not i
 
 - **Method.** The change at the last token (the changed prompt's last-token state minus the original's) at 51.10's read-peak layer and two layers before the answer layer, per reader; the lens part = its 25 J++ directions; arms: the whole change, without the lens part, without a random part of the same share, the lens part alone, the rest alone.
 
-- **Rule, fixed in advance.** "Rule per reader: "computes outside the lens at the last token" if the effect without the lens part is <= 0.10 beyond random and the rest alone switches >= 0.7 of the whole; "through the lens" if the effect is >= 0.30 beyond random; else in between." (jobs/c3/batch53.yaml; no prediction)
-
 
 Both readers at the last token:
 
 ![At the read peak no lookup goes through the lens part](../../figures/depth/ledger/12_last_conflict.png)
 
 *The conflict test at the last token: the switches blocked without the lens part beyond a random part, lookup (left) and recall (right), at the two layers tested for each reader (its own layers, earlier first; the 122B at one). Whiskers 95% intervals; Lightning and the 122B hollow ○.*
+
+- **Rule, fixed in advance.** "Rule per reader: "computes outside the lens at the last token" if the effect without the lens part is <= 0.10 beyond random and the rest alone switches >= 0.7 of the whole; "through the lens" if the effect is >= 0.30 beyond random; else in between." (jobs/c3/batch53.yaml; no prediction)
 
 </details>
 
@@ -2183,9 +2163,9 @@ More from the reading:
 
 ### Does the last-token conflict test change when the answers are words? <a id="b53-3b"></a>
 
-`in README` `below gate: Muse, Lightning` *Used in: README "Tested and dropped" ("The copy bypasses the lens").*
+`in README` `below gate: Muse, Lightning` · *Used in: README [Tested and dropped](README.md#tested-and-dropped) ("The copy bypasses the lens").*
 
-Test 53.3b · opened 29 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x53_lastconflict/x53_lastconflict_words-20261029T100850Z/verdict.md` · recompute: `scripts/x53_lastconflict.py` (the command in its docstring) · also: four models, joint verdict 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x53_lastconflict/x53_lastconflict_words-20261029T100850Z/verdict.md` · recompute: `scripts/x53_lastconflict.py` (the command in its docstring) · test [53.3b](#b53-3b), opened 29 Oct · also: four models, joint verdict 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -2198,14 +2178,14 @@ Test 53.3b · opened 29 Oct · status: rule fixed in advance · hand-check: not 
 
 - **Method.** 53.3's conflict test at the last token, per reader at its own answer layer minus 1, 2 and 3 and at 51.10's read peak: the whole change, without the lens part, without a random part of the same share, the lens part alone; and 53.3's lookup again on our locker scenes at its answer layer minus 1 and 3. A cell under 53.3's validity bar (whole change >= 0.30, >= 30 switches) is invalid and counts for neither clause.
 
-- **Rule, fixed in advance.** "Rule per reader and layer: 53.3's labels. Across readers: "copy bypasses the lens" if at answer - 1 and - 2 the recall is "through the lens" and the lookup "outside" on >= 3 of 4 models; "digits only" if on words the lookup goes through the lens like the recall; else in between." (jobs/c3/batch53.yaml, test_53_3b; no prediction)
-
 
 Both readers at the last token, with words as answers:
 
 ![Near the output the test is uninformative; read peaks differ](../../figures/depth/ledger/13_last_conflict_words.png)
 
 *As the figure above with words as the answers: per model, three, two and one layers before the answer and at the read peak (the rule counts the two layers nearest the answer as uninformative). Whiskers 95% intervals; Lightning hollow ○.*
+
+- **Rule, fixed in advance.** "Rule per reader and layer: 53.3's labels. Across readers: "copy bypasses the lens" if at answer - 1 and - 2 the recall is "through the lens" and the lookup "outside" on >= 3 of 4 models; "digits only" if on words the lookup goes through the lens like the recall; else in between." (jobs/c3/batch53.yaml, test_53_3b; no prediction)
 
 </details>
 
@@ -2246,9 +2226,9 @@ More from the reading:
 
 ### On Lightning, does the lookup read the bridge word through attention blocks 19 and 26? <a id="b53-4"></a>
 
-`in README` *Used in: README Part IV card "On Lightning, does the lookup read the bridge word through its attention blocks?".*
+`in README` · *Used in: README [Part IV](README.md#part-iv-where-and-when-the-link-is-made), "More in the ledger".*
 
-Test 53.4 · opened 29 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x53_attnblock/x53_attnspan-20261029T102727Z` · recompute: `scripts/x53_attnblock.py` (the command in its docstring) · also: a follow-up with a later control
+Status: rule fixed in advance · hand-checked: no · files: `results/x53_attnblock/x53_attnspan-20261029T102727Z` · recompute: `scripts/x53_attnblock.py` (the command in its docstring) · test [53.4](#b53-4), opened 29 Oct · also: a follow-up with a later control
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -2261,14 +2241,14 @@ Test 53.4 · opened 29 Oct · status: rule fixed in advance · hand-check: not i
 
 - **Method.** The whole change at the bridge word at L14, with attention from every later position to the bridge word's position blocked in (i) block 19, (ii) block 26, (iii) both, (iv) every attention block after L14 (19, 26, 33, 42), and (v) the control: both blocks, attention to a random other token of the same sentence; the share of the whole change's lookup switches cut; the recall beside. The follow-up: in blocks 19 and 26 every position after the scene's last token cannot attend to the span from the bridge word to the scene's end (median 9 tokens on the rule's scenes); the control: a span of the same length ending at the last token before the bridge's sentence, one placement: a later control.
 
-- **Rule, fixed in advance.** "Rule: "read through two blocks" if (iii) cuts the lookup's switches by >= 0.6 of the whole change's and (v) by <= 0.15; "one block" if (i) or (ii) alone cuts >= 0.6; "not through attention at the bridge" if (iv) cuts < 0.3 (the Mamba state carries it); else in between." (jobs/c3/batch52.yaml, lightning_attn_block; no prediction) Follow-up (span): "the pointer [pointer: the address] is read by attention after the Mamba state spreads it" if the span cuts the lookup's switches by >= 0.6 and the control by <= 0.15; else as 53.4. (jobs/c3/batch53.yaml, next_1110, decided during the run; no prediction)
-
 
 Each block or span cut on Lightning:
 
 ![Two attention blocks carry a third of Lightning's lookup switch](../../figures/depth/ledger/14_attention_blocks.png)
 
 *Lightning: the switches blocked when attention blocks are cut, lookup (left) and recall (right), per block or span cut (rows), with a control block and a control span. Whiskers 95% intervals; all estimates post hoc.*
+
+- **Rule, fixed in advance.** "Rule: "read through two blocks" if (iii) cuts the lookup's switches by >= 0.6 of the whole change's and (v) by <= 0.15; "one block" if (i) or (ii) alone cuts >= 0.6; "not through attention at the bridge" if (iv) cuts < 0.3 (the Mamba state carries it); else in between." (jobs/c3/batch52.yaml, lightning_attn_block; no prediction) Follow-up (span): "the pointer [pointer: the address] is read by attention after the Mamba state spreads it" if the span cuts the lookup's switches by >= 0.6 and the control by <= 0.15; else as 53.4. (jobs/c3/batch53.yaml, next_1110, decided during the run; no prediction)
 
 </details>
 
@@ -2312,9 +2292,9 @@ More from the reading:
 
 ### Does the split hold on the fact passages with a named bridge? <a id="z1"></a>
 
-`in README` *Used in: README Part V card "Does the split hold on the fact passages, and do the two operations agree?" (the named fact passages and the recheck); README "Tested and dropped" ("The lookup follows the lens part on the fact passages").*
+`in README` · *Used in: README [Part V](README.md#part-v-other-datasets-and-operations), card "Does the split hold on the fact passages, and do the breadth track's operation and the depth track's agree?" (the named fact passages and the recheck); [Tested and dropped](README.md#tested-and-dropped) ("The lookup follows the lens part on the fact passages").*
 
-Test Z1 · opened 28 Oct · status: rule fixed in advance · hand-check: in sample (view e) · files: `results/x50_zach/z1-20261028T161649Z/z1.md` · recompute: `scripts/x50_zach.py` (the command in its docstring) · also: Lightning's coverage run 29 Oct
+Status: rule fixed in advance · hand-checked: yes (view e) · files: `results/x50_zach/z1-20261028T161649Z/z1.md` · recompute: `scripts/x50_zach.py` (the command in its docstring) · test [Z1](#z1), opened 28 Oct · also: Lightning's coverage run 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -2373,9 +2353,9 @@ More from the reading:
 
 ### On the fact passages, does the answer control read the same with the bridge named and described? <a id="b53-1b"></a>
 
-`ledger only` *Used in: not in the README (its rebuild).*
+`ledger only`
 
-Test 53.1b · opened 29 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x51_answer/x53_jsuite-20261029T095443Z/verdict.md` · recompute: `scripts/x51_answer.py` (the command in its docstring) · also: the 9B and the 27B
+Status: rule fixed in advance · hand-checked: no · files: `results/x51_answer/x53_jsuite-20261029T095443Z/verdict.md` · recompute: `scripts/x51_answer.py` (the command in its docstring) · test [53.1b](#b53-1b), opened 29 Oct · also: the 9B and the 27B
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -2384,13 +2364,13 @@ Test 53.1b · opened 29 Oct · status: rule fixed in advance · hand-check: not 
 - **Data.** the fact passages with made-up facts: the named bridge (Z1-P's items) and the described bridge (Z2's design, the change at the description's last token); 200 per cell where tested; the 9B at L12, the 27B at L32.
 - **Method.** 51.12's arms per cell: the readout check first (is the answer word in the lens's top 50 at the bridge word?), then the change without the lens part, without the lens part but keeping the answer's directions, and without the answer directions only, each beyond a random part.
 
-- **Rule, fixed in advance.** 51.12's rule per cell: "the lens effect is the entity": arm 2 keeps >= 0.7 of arm 1's extra drop and arm 3 costs <= 0.10 beyond random; "the lens effect is the answer": arm 2 falls to <= 0.3 of arm 1 and arm 3 alone costs >= 0.5 of arm 1; else mixed; the readout check first ("the answer word is not read at the bridge word" if its lens rank is above 50 on >= 90% of items). (results/x51_answer/x53_jsuite-20261029T095443Z/verdict.md; no prediction)
-
 The answer control per chain:
 
 ![Named: both recalls mixed; described: the 27B's reads as the answer](../../figures/depth/ledger/15_fact_answer_control.png)
 
 *The answer control on the fact passages with the bridge named, per chain (P: read in the passage, M: recalled; the last letter is the hop the reader answers): the switches blocked without the lens part and with only the answer word's directions removed, lookup (violet) and recall (black). Whiskers 95% intervals.*
+
+- **Rule, fixed in advance.** 51.12's rule per cell: "the lens effect is the entity": arm 2 keeps >= 0.7 of arm 1's extra drop and arm 3 costs <= 0.10 beyond random; "the lens effect is the answer": arm 2 falls to <= 0.3 of arm 1 and arm 3 alone costs >= 0.5 of arm 1; else mixed; the readout check first ("the answer word is not read at the bridge word" if its lens rank is above 50 on >= 90% of items). (results/x51_answer/x53_jsuite-20261029T095443Z/verdict.md; no prediction)
 
 </details>
 
@@ -2425,9 +2405,9 @@ More from the reading:
 
 ### Does the split survive when the bridge is changed at every layer up to L? <a id="t51-7"></a>
 
-`in README` *Used in: README Part V card "Does the split hold on the fact passages, and do the two operations agree?" (the full carrier).*
+`in README` · *Used in: README [Part V](README.md#part-v-other-datasets-and-operations), card "Does the split hold on the fact passages, and do the breadth track's operation and the depth track's agree?" (the full carrier).*
 
-Test 51.7 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x51_carrier/x52_carrier-20261029T014338Z/verdict.md` · recompute: `scripts/x51_carrier.py` (the command in its docstring) · also: Lightning's coverage run 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x51_carrier/x52_carrier-20261029T014338Z/verdict.md` · recompute: `scripts/x51_carrier.py` (the command in its docstring) · test [51.7](#t51-7), opened 28 Oct · also: Lightning's coverage run 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -2436,13 +2416,13 @@ Test 51.7 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 - **Data.** Z1's passages: 200 per model (9B: 100 fact-first, 100 fact-after; 27B: 97 / 103; Lightning, at L14: 103<!-- src: results/x51_carrier/x52_carrier-20261029T014338Z/verdict.md \| fact-first :: 103 (87) :: 103 --> / 97<!-- src: results/x51_carrier/x52_carrier-20261029T014338Z/verdict.md \| fact-after :: 97 (80) :: 97 -->); 9B, 27B and Lightning.
 - **Method.** The change at the bridge name's last token at every block output up to L; the conflict test on it: without the lens part, against without a random part of the same share; the one-layer change beside.
 
-- **Rule, fixed in advance.** "(i) "The slice explanation": the whole before-L raises the lookup's switch on fact-after items by >= 0.3 over the one-layer whole, and on fact-first brings the lookup within 0.10 of the recall. (ii) On the full carrier, per model and reported per stratum with fact-first decisive: recall extra drop - lookup extra drop >= 0.3 and lookup <= 0.10 -> "the split holds on the full carrier"; lookup >= 0.20 -> "the lookup follows the lens on the full carrier"; else in between." (verdict.md) Lightning: a coverage run on this rule, no prediction.
-
 One layer against every layer up to L:
 
 ![Over every layer up to L, fact-after lookups follow the lens part](../../figures/depth/ledger/16_every_layer.png)
 
 *The change at the bridge word at one layer (left) and at every layer up to L (right): the switches blocked without the lens part beyond a random part, lookup (violet) and recall (black), with the fact sentence before the pick and after it. Whiskers 95% intervals; Lightning hollow ○.*
+
+- **Rule, fixed in advance.** "(i) "The slice explanation": the whole before-L raises the lookup's switch on fact-after items by >= 0.3 over the one-layer whole, and on fact-first brings the lookup within 0.10 of the recall. (ii) On the full carrier, per model and reported per stratum with fact-first decisive: recall extra drop - lookup extra drop >= 0.3 and lookup <= 0.10 -> "the split holds on the full carrier"; lookup >= 0.20 -> "the lookup follows the lens on the full carrier"; else in between." (verdict.md) Lightning: a coverage run on this rule, no prediction.
 
 </details>
 
@@ -2473,9 +2453,9 @@ More from the reading:
 
 ### Does the lookup take a position route on the fact passages? <a id="z3"></a>
 
-`in README` *Used in: README Part V card "Does the split hold on the fact passages, and do the two operations agree?" (the routes test on the fact passages).*
+`in README` · *Used in: README [Part V](README.md#part-v-other-datasets-and-operations), card "Does the split hold on the fact passages, and do the breadth track's operation and the depth track's agree?" (the routes test on the fact passages); [TL;DR](README.md#tldr).*
 
-Test Z3 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x50_zach/x52_z3-20261029T024151Z/z3.md` · recompute: `scripts/x50_zach.py` (the command in its docstring) · also: the 27B's and Lightning's coverage runs 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x50_zach/x52_z3-20261029T024151Z/z3.md` · recompute: `scripts/x50_zach.py` (the command in its docstring) · test [Z3](#z3), opened 28 Oct · also: the 27B's and Lightning's coverage runs 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -2484,13 +2464,13 @@ Test Z3 · opened 28 Oct · status: rule fixed in advance · hand-check: not in 
 - **Data.** His level-0 passages with all three facts before the sentence that names the bridge: 60 (9B), 81<!-- src: results/x50_zach/x52_z3-20261029T024151Z/z3.md \| x50_z3_27b :: 81 (72) :: 81 --> (27B, at L32: X0's layer and the start of the breadth track's band), 48 (Muse), 52<!-- src: results/x50_zach/x52_z3-20261029T013329Z/z3.md \| nem35l_x52_z3 :: 52 (47) :: 52 --> (Lightning, at L14 and L27).
 - **Method.** The routes test: the change comes from a passage where another item's fact sentence moved and took a new value; the lookup's answer is sorted into identity, position, value or original.
 
-- **Rule, fixed in advance.** "Value <= 0.05; if position >= 0.2: the address exists in scattered-fact passages; if position <= 0.05: no position route in his layout." The 27B and Lightning: coverage runs on this rule, no prediction.
-
 The three routes on the fact passages:
 
 ![On the fact passages the lookup rarely takes the position route](../../figures/depth/ledger/17_fact_routes.png)
 
 *The routes test on the fact passages: the share of the lookup's answers by identity (blue), by position (orange) and by value (slate), at each model's layer tested and, where run, a later one. Whiskers 95% intervals; the 27B, Lightning and the 122B hollow ○ (coverage runs, or after the data).*
+
+- **Rule, fixed in advance.** "Value <= 0.05; if position >= 0.2: the address exists in scattered-fact passages; if position <= 0.05: no position route in his layout." The 27B and Lightning: coverage runs on this rule, no prediction.
 
 </details>
 
@@ -2516,9 +2496,9 @@ The three routes on the fact passages:
 
 ### Does the breadth track's read window match ours? <a id="t51-5"></a>
 
-`ledger only` *Used in: not in the README (its rebuild).*
+`ledger only`
 
-Test 51.5 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x51_depth/x51_5-20261028T181100Z/verdict.md` · recompute: `scripts/x51_depth.py` (the command in its docstring)
+Status: rule fixed in advance · hand-checked: no · files: `results/x51_depth/x51_5-20261028T181100Z/verdict.md` · recompute: `scripts/x51_depth.py` (the command in its docstring) · test [51.5](#t51-5), opened 28 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -2527,13 +2507,13 @@ Test 51.5 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 - **Data.** Z1's passages, 200 per model (9B, 27B; Lightning: a coverage run with the design taken from the 9B / 27B spec, adapted to its layers, no prediction).
 - **Method.** The whole change at the bridge name's last token, one layer at a time; the window's end is the last layer where a reader switches on at least 0.3.
 
-- **Rule, fixed in advance.** "The same read window as ours if the last layer where each reader's switch >= 0.3 lies within 4 layers of ours."
-
 Each reader's switches by layer on the fact passages:
 
 ![On the 9B the fact passages are read over our layers; on the 27B not](../../figures/depth/ledger/18_read_window.png)
 
 *The fact passages' read window: the share of each reader's answers switched by the whole change at the bridge name, one layer at a time, lookup (violet) and recall (black); dashed: the bar fixed in advance. Lightning post hoc (a coverage run).*
+
+- **Rule, fixed in advance.** "The same read window as ours if the last layer where each reader's switch >= 0.3 lies within 4 layers of ours."
 
 </details>
 
@@ -2561,9 +2541,9 @@ Each reader's switches by layer on the fact passages:
 
 ### Does the split hold for a described bridge? <a id="t47-3"></a>
 
-`in README` `below gate: Lightning` *Used in: README Part VI, one line with a link ("A described bridge in our scenes").*
+`in README` `below gate: Lightning` · *Used in: README [Where it does not hold](README.md#where-it-does-not-hold), one line with a link ("A described bridge in our scenes").*
 
-Test 47.3 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_cue/x47_3-20261028T113104Z/x47_3.md` · recompute: `scripts/x47_cue.py` (the command in its docstring) · also: described bridge, opened 28 Oct; Lightning's gate 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x47_cue/x47_3-20261028T113104Z/x47_3.md` · recompute: `scripts/x47_cue.py` (the command in its docstring) · test [47.3](#t47-3), opened 28 Oct · also: described bridge, opened 28 Oct; Lightning's gate 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -2613,9 +2593,9 @@ More from the reading:
 
 ### Under one question with two instructions, does the lens part follow the source or the question? <a id="t47-15"></a>
 
-`in README` `below gate: 9B, Muse, Lightning` *Used in: README Part VI, one line with a link ("One question under two instructions").*
+`in README` `below gate: 9B, Muse, Lightning` · *Used in: README [Where it does not hold](README.md#where-it-does-not-hold), one line with a link ("One question under two instructions").*
 
-Test 47.15 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_source/x47_15-20261028T142722Z/x47_15.md` · recompute: `scripts/x47_source.py` (the command in its docstring) · also: one question, two sources; the 27B
+Status: rule fixed in advance · hand-checked: no · files: `results/x47_source/x47_15-20261028T142722Z/x47_15.md` · recompute: `scripts/x47_source.py` (the command in its docstring) · test [47.15](#t47-15) · also: one question, two sources; the 27B
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -2651,9 +2631,9 @@ Test 47.15 · opened not stated · status: rule fixed in advance · hand-check: 
 
 ### Are the lookup's errors address errors? <a id="t47-13"></a>
 
-`in README` *Used in: README Part VI, one line with a link ("The lookup's errors are not address errors").*
+`in README` · *Used in: README [Where it does not hold](README.md#where-it-does-not-hold), one line with a link ("The lookup's errors are not address errors").*
 
-Test 47.13 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_errors/x47_13-20261028T113107Z/x47_errors.md` · recompute: `scripts/x47_errors.py` (the command in its docstring) · also: the address probe on the lookup's errors; Lightning's coverage run 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x47_errors/x47_13-20261028T113107Z/x47_errors.md` · recompute: `scripts/x47_errors.py` (the command in its docstring) · test [47.13](#t47-13) · also: the address probe on the lookup's errors; Lightning's coverage run 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -2690,9 +2670,9 @@ Test 47.13 · opened not stated · status: rule fixed in advance · hand-check: 
 
 ### Does the lens part key the item's attribute, and do late MLPs at the bridge word carry the recall? <a id="t48-2"></a>
 
-`in README` *Used in: README "Tested and dropped" ("Four mechanisms for the split").*
+`in README` · *Used in: README [Tested and dropped](README.md#tested-and-dropped) ("Four mechanisms for the split").*
 
-Test 48.2 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x48_enrich/x48_2-20261028T113111Z/x48_2.md` · recompute: `scripts/x48_enrich.py` (the command in its docstring) · also: enrichment; the 27B's and Lightning's coverage runs 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x48_enrich/x48_2-20261028T113111Z/x48_2.md` · recompute: `scripts/x48_enrich.py` (the command in its docstring) · test [48.2](#t48-2) · also: enrichment; the 27B's and Lightning's coverage runs 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -2729,9 +2709,9 @@ Test 48.2 · opened not stated · status: rule fixed in advance · hand-check: n
 
 ### Is the person who picked an item marked at its locker sentence? <a id="t48-3"></a>
 
-`in README` `below gate: Lightning` *Used in: README "Tested and dropped" ("Four mechanisms for the split").*
+`in README` `below gate: Lightning` · *Used in: README [Tested and dropped](README.md#tested-and-dropped) ("Four mechanisms for the split").*
 
-Test 48.3 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x48_bind/x48_bind-20261028T113120Z/x48_bind.md` · recompute: `scripts/x48_bind.py` (the command in its docstring) · also: person mark; the 27B's coverage run 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x48_bind/x48_bind-20261028T113120Z/x48_bind.md` · recompute: `scripts/x48_bind.py` (the command in its docstring) · test [48.3](#t48-3) · also: person mark; the 27B's coverage run 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -2768,9 +2748,9 @@ Test 48.3 · opened not stated · status: rule fixed in advance · hand-check: n
 
 ### Is the person mark spread over the locker sentence? <a id="t49-3"></a>
 
-`ledger only` `below gate: Lightning` *Used in: not in the README (its rebuild).*
+`ledger only` `below gate: Lightning`
 
-Test 49.3 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x49_probe/x49_3-20261028T154604Z/x49_3.md` · recompute: `scripts/x49_probe.py` (the command in its docstring) · also: pooled person probe; the 27B's coverage run 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x49_probe/x49_3-20261028T154604Z/x49_3.md` · recompute: `scripts/x49_probe.py` (the command in its docstring) · test [49.3](#t49-3) · also: pooled person probe; the 27B's coverage run 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -2779,13 +2759,13 @@ Test 49.3 · opened not stated · status: rule fixed in advance · hand-check: n
 - **Data.** Clean one-pick scenes, the lookup's original prompt; the rule reads locker-after scenes, locker-first ones are the control.
 - **Method.** Ridge probes (48.3's) on every token of each locker sentence and on the sentence mean, at L/2 and L: (i) which of the scene's three people picked the item; (ii) whether the asked person picked it.
 
-- **Rule, fixed in advance.** ""Distributed person mark": pooled (i) >= 0.85 with every per-token (i) <= 0.6. "A picked-flag, not a person": (ii) >= 0.85 pooled or at some token while (i) <= 0.5. "Neither at the sentence": both at chance; the link is made elsewhere." The 27B: a coverage run on this rule, no prediction.
-
 The pooled probe against the best single token:
 
 ![No probe reads who picked an item at its locker sentence](../../figures/depth/ledger/19_person_probe.png)
 
 *Who picked the item, read by a probe at its locker sentence: the accuracy pooled over the sentence (with its 95% interval) and at the best single token, at half the test layer and at it. The 27B and Lightning hollow ○ (a coverage run; below its gate).*
+
+- **Rule, fixed in advance.** ""Distributed person mark": pooled (i) >= 0.85 with every per-token (i) <= 0.6. "A picked-flag, not a person": (ii) >= 0.85 pooled or at some token while (i) <= 0.5. "Neither at the sentence": both at chance; the link is made elsewhere." The 27B: a coverage run on this rule, no prediction.
 
 </details>
 
@@ -2812,9 +2792,9 @@ The pooled probe against the best single token:
 
 ### Do the copying heads pass the rest of the change at twice the lens part? <a id="t48-4"></a>
 
-`in README` *Used in: README "Tested and dropped" ("Four mechanisms for the split").*
+`in README` · *Used in: README [Tested and dropped](README.md#tested-and-dropped) ("Four mechanisms for the split").*
 
-Test 48.4 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x48_heads/x48_heads-20261028T113126Z/x48_heads.md` · recompute: `scripts/x48_heads.py` (the command in its docstring) · also: copying heads; the 27B's and Lightning's coverage runs 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x48_heads/x48_heads-20261028T113126Z/x48_heads.md` · recompute: `scripts/x48_heads.py` (the command in its docstring) · test [48.4](#t48-4) · also: copying heads; the 27B's and Lightning's coverage runs 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -2850,9 +2830,9 @@ Test 48.4 · opened not stated · status: rule fixed in advance · hand-check: n
 
 ### Is the address the recall's second route? <a id="t48-5"></a>
 
-`in README` `below gate: Lightning` *Used in: README "Tested and dropped" ("Four mechanisms for the split").*
+`in README` `below gate: Lightning` · *Used in: README [Tested and dropped](README.md#tested-and-dropped) ("Four mechanisms for the split").*
 
-Test 48 route2 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x48_route2/x48_route2-20261028T113127Z/x48_route2.md` · recompute: `scripts/x48_route2.py` (the command in its docstring) · also: the address as the recall's second route, opened 28 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x48_route2/x48_route2-20261028T113127Z/x48_route2.md` · recompute: `scripts/x48_route2.py` (the command in its docstring) · test [48 route2](#t48-5), opened 28 Oct · also: the address as the recall's second route, opened 28 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -2889,9 +2869,9 @@ Test 48 route2 · opened 28 Oct · status: rule fixed in advance · hand-check: 
 
 ### Is the address formed by the pick sentence reading the lockers? <a id="t47-6"></a>
 
-`in README` *Used in: README Part VI, one line with a link ("Blocking the pick sentence from the lockers").*
+`in README` · *Used in: README [Where it does not hold](README.md#where-it-does-not-hold), one line with a link ("Blocking the pick sentence from the lockers").*
 
-Test 47.6 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_edges/x47_6-20261028T113107Z/verdict.md` · recompute: `scripts/x47_edges.py` (the command in its docstring) · also: blocking the pick sentence; the 27B's coverage run 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x47_edges/x47_6-20261028T113107Z/verdict.md` · recompute: `scripts/x47_edges.py` (the command in its docstring) · test [47.6](#t47-6) · also: blocking the pick sentence; the 27B's coverage run 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -2928,9 +2908,9 @@ Test 47.6 · opened not stated · status: rule fixed in advance · hand-check: n
 
 ### Is the address the same for any kind of item? <a id="t47-11"></a>
 
-`in README` *Used in: README Part VI, one line with a link ("the address for other kinds of item").*
+`in README` · *Used in: README [Where it does not hold](README.md#where-it-does-not-hold), one line with a link ("the address for other kinds of item").*
 
-Test 47.11 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md` · recompute: `scripts/x47_agnostic.py` (the command in its docstring) · also: other kinds of item; the 27B's and Lightning's coverage runs 29 Oct
+Status: rule fixed in advance · hand-checked: no · files: `results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md` · recompute: `scripts/x47_agnostic.py` (the command in its docstring) · test [47.11](#t47-11) · also: other kinds of item; the 27B's and Lightning's coverage runs 29 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -2939,13 +2919,13 @@ Test 47.11 · opened not stated · status: rule fixed in advance · hand-check: 
 - **Data.** Routes scenes (another item moved) with animals, fruits and names as the items, matched digits, people and slots: 300 per kind per model (9B / 27B / Muse / Lightning).
 - **Method.** At the bridge word at L: the address fit on animal scenes, not refit, taken out of the change against a random part of its share, and retained alone; where that fails, the address refit per kind on a fit half and read on the other half.
 
-- **Rule, fixed in advance.** ""An address, not an animal code" if without U cuts position answers >= 0.3 beyond random on both new item types (within 0.1 of the animal result), and only-U gives position >= 0.15. If it fails, refit U per item type and report both: the code is slot x type." The 27B and Lightning: coverage runs on this rule, no prediction.
-
 The address fit on animals against one refit on each kind:
 
 ![The animal-fit address does not carry over to other items as ruled](../../figures/depth/ledger/20_any_item.png)
 
 *The address on other kinds of item: the position answers cut beyond random without the address fit on animals (left) and refit on each kind (right), per model and kind. Whiskers 95% intervals; Lightning hollow ○.*
+
+- **Rule, fixed in advance.** ""An address, not an animal code" if without U cuts position answers >= 0.3 beyond random on both new item types (within 0.1 of the animal result), and only-U gives position >= 0.15. If it fails, refit U per item type and report both: the code is slot x type." The 27B and Lightning: coverage runs on this rule, no prediction.
 
 </details>
 
@@ -2979,13 +2959,62 @@ The README's Part VI "Also failed" line (its cards move here); each with its ver
 - **The 9B's replication.** The recall is blocked at 0.12 [0.06, 0.19]<!-- src: results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.md \| J++ (k = 25) :: recall :: 0.12 [0.06, 0.19] --> beyond a random part: mixed.
 - **The 27B's strict bar.** Its lookup is blocked at 0.14 [0.08, 0.20]<!-- src: docs/depth/x0_details.md \| 32 :: lookup :: 200 :: 0.14 [0.08, 0.20] --> beyond a random part at L32, over the rule's 0.10: not confirmed (the rule in docs/depth/x0_details.md).
 
+## Run on one model only (one line each)
+
+Rows of the coverage matrix whose result exists on one model only, by design or because the other models failed the gate; no card.
+
+- **DAS for the address (49.8, DAS by position), the 9B only by design.** A learned 4-direction position subspace carries 0.94<!-- src: results/x49_das_pos/verdict-20261028T154510Z/verdict.md \| k = 4: own-IIA 0.94 :: 0.94 --> of the position switches on held-out pairs, but holds only 0.247<!-- src: results/x49_das_pos/verdict-20261028T154510Z/verdict.md \| U's energy in R_pos 0.247 :: 0.247 --> of our address's energy and moves the recall too (cross-IIA 0.44<!-- src: results/x49_das_pos/verdict-20261028T154510Z/verdict.md \| the recall's cross-IIA 0.44 :: 0.44 -->): "(d) in between". Its figure: [the verdict folder](../../results/x49_das_pos/verdict-20261028T154510Z/qwen35_9b_x49_das_pos.png).
+
+## Withdrawn
+
+### Does the split hold when the fact passages' bridge is described? <a id="z2"></a>
+
+`in README` · *Used in: README [Tested and dropped](README.md#tested-and-dropped) ("The described bridge on the fact passages").*
+
+Status: rule fixed in advance · hand-checked: no · files: `results/x52_coverage/matrix-20261029T122040Z/matrix.json` · recompute: `scripts/x52_coverage.py` (the command in its docstring) · test [Z2](#z2), opened 28 Oct · also: withdrawn; Lightning's coverage run 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
+
+- **Question.** On the fact passages with a described (never named) bridge, does the lookup let go of the lens part?
+- **Why we asked.** A described bridge must be computed before it can be used; the computed item could travel through the lens.
+- **Data.** His described-bridge passages: 158 / 166 / 157 (below the 200 aimed for) / 200<!-- src: results/x50_zach/x52_z2-20261029T025625Z/z2.md \| nem35l_x52_z2 :: 200 (124) :: 200 --> (Lightning, at L14; L27 beside).
+- **Method.** The conflict test at the description's last token at L, each reader its own change, against a random part.
+
+Both operations' gaps on the described bridge:
+
+![The breadth track's removal everywhere hits the recall more; the depth track's gap is unclear](../../figures/depth/ledger/21_described_gap.png)
+
+*The fact passages with the bridge described: the gap, recall minus lookup, under the change at one layer (left, a share of switches) and under removal everywhere (right, a share of answers); the 122B not run at one layer. Whiskers 95% intervals; Lightning and the 122B hollow ○.*
+
+- **Rule, fixed in advance.** "Per model, the 47.3 rule: (a) the split holds: gap >= 0.3, lookup <= 0.10; (a') the computed bridge is handed through the lens: lookup >= 0.20; (d) in between." Withdrawn by the answer control's rule ([51.12](#t51-12)): the lens effect there is the answer or mixed in all four cells.
+
+</details>
+
+- **Result.**
+
+  | | 9B | 27B | Muse (L26) | Lightning (L14) | 122B |
+  |---|---|---|---|---|---|
+  | lookup: switches blocked beyond a random part | 0.54 [0.43, 0.66]<!-- src: results/x50_zach/z2-20261028T162710Z/z2.md \| qwen35_9b_x50_z2 :: 0.54 [0.43, 0.66] --> | 0.69 [0.52, 0.87]<!-- src: results/x50_zach/z2-20261028T162710Z/z2.md \| x50_z2_27b :: 0.69 [0.52, 0.87] --> | 0.67 [0.00, 1.00]<!-- src: results/x50_zach/z2-20261028T162710Z/z2.md \| muse30_x50_z2 :: 0.67 [0.00, 1.00] --> | 0.51 [0.38, 0.63]<!-- src: results/x50_zach/x52_z2-20261029T025625Z/z2.md \| nem35l_x52_z2 :: 0.51 [0.40, 0.62] :: 0.51 [0.38, 0.63] --> | 0.48 [0.36, 0.60]<!-- src: results/x50_zach/x52_z2-20261030T045145Z/z2.md \| qwen35_122b_z2 :: 192 (121) :: 0.48 [0.36, 0.60] --> (L33) |
+  | the rule (before withdrawal) | (a') through the lens | (a') through the lens | (a') through the lens | (a') through the lens (no prediction) | (a') through the lens (no prediction; L39: can't tell) |
+
+- **Read.**
+  - Withdrawn: at the description's last token the lens part moves the answer, so removing it is not a test of the bridge.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+- **Caveats.**
+  - Muse's lookup switches under the whole change on 0.02 of passages; Lightning's L27 cell rests on 15<!-- src: results/x50_zach/x52_z2-20261029T025625Z/z2.md \| L27: routes :: "original": 184, "switch": 15 :: 15 --> lookup switches (under 30) and is not valid.
+  - n below the 200 aimed for on the first three models. Lightning's run reads the design the README withdrew (Part VI) and stands under the same withdrawal; its own answer control (coverage run, no prediction) says mixed for both readers: without the answer directions only, the lookup is blocked at 0.29 [0.16, 0.44]<!-- src: results/x51_answer/x52_answer-20261029T080050Z/verdict.md | z2 :: nemotron-3.5-lightning :: lookup :: 0.29 [0.16, 0.44] --> and the recall 0.38 [0.26, 0.52]<!-- src: results/x51_answer/x52_answer-20261029T080050Z/verdict.md | z2 :: nemotron-3.5-lightning :: recall :: 0.38 [0.26, 0.52] --> beyond a random part.
+
+</details>
+
 ## How we checked
 
 ### Do the 9B's headline runs reproduce from a clean checkout? <a id="t49-5"></a>
 
-`in README` *Used in: README "How we checked" ("Clean-checkout reruns").*
+`in README` · *Used in: README [How we checked](README.md#how-we-checked) ("Clean-checkout reruns").*
 
-Test 49.5 · opened 28 Oct · status: descriptive · hand-check: not in sample · files: `results/checks/clean49_9b.json` · recompute: not stated
+Status: descriptive · hand-checked: no · files: `results/checks/clean49_9b.json` · recompute: not stated · test [49.5](#t49-5), opened 28 Oct
 
 <details><summary>Question, data, method, rule and figure</summary>
 
@@ -3019,60 +3048,17 @@ Test 49.5 · opened 28 Oct · status: descriptive · hand-check: not in sample �
 
 </details>
 
-## Run on one model only (one line each)
+## Scoped, not run
 
-Rows of the coverage matrix whose result exists on one model only, by design or because the other models failed the gate; no card.
+Tests scoped but not completed in the sprint are listed in [the operations log](../review/ledger_ops_2026-10.md#not-completed-in-the-sprint-or-sealed), with the rest of the coverage grid. The [coverage table](#coverage) marks each test not run on a model (–) or not designed for it (✗).
 
-- **DAS for the address (49.8, DAS by position), the 9B only by design.** A learned 4-direction position subspace carries 0.94<!-- src: results/x49_das_pos/verdict-20261028T154510Z/verdict.md \| k = 4: own-IIA 0.94 :: 0.94 --> of the position switches on held-out pairs, but holds only 0.247<!-- src: results/x49_das_pos/verdict-20261028T154510Z/verdict.md \| U's energy in R_pos 0.247 :: 0.247 --> of our address's energy and moves the recall too (cross-IIA 0.44<!-- src: results/x49_das_pos/verdict-20261028T154510Z/verdict.md \| the recall's cross-IIA 0.44 :: 0.44 -->): "(d) in between". Its figure: [the verdict folder](../../results/x49_das_pos/verdict-20261028T154510Z/qwen35_9b_x49_das_pos.png).
+## Notes
 
-## Withdrawn
+<a id="operations-during-the-sprint"></a><a id="operations"></a>
+**Operations during the sprint.** Moved to [docs/review/ledger_ops_2026-10.md](../review/ledger_ops_2026-10.md) on 7 Nov, verbatim: the 122B coverage runs of the night of 29-30 Oct; the runs not completed in the sprint (batch 52 C); the items flagged for a decision during the sprint (old Appendix A); the README changes proposed during the sprint (old Appendix B); the checks of the retired ledger figures (old Appendix D). On 8 Nov: the stamps on decisions ([table](../review/ledger_ops_2026-10.md#decision-stamps)).
 
-### Does the split hold when the fact passages' bridge is described? <a id="z2"></a>
-
-`in README` *Used in: README "Tested and dropped" ("The described bridge on the fact passages").*
-
-Test Z2 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x52_coverage/matrix-20261029T122040Z/matrix.json` · recompute: `scripts/x52_coverage.py` (the command in its docstring) · also: withdrawn; Lightning's coverage run 29 Oct
-
-<details><summary>Question, data, method, rule and figure</summary>
-
-- **Question.** On the fact passages with a described (never named) bridge, does the lookup let go of the lens part?
-- **Why we asked.** A described bridge must be computed before it can be used; the computed item could travel through the lens.
-- **Data.** His described-bridge passages: 158 / 166 / 157 (below the 200 aimed for) / 200<!-- src: results/x50_zach/x52_z2-20261029T025625Z/z2.md \| nem35l_x52_z2 :: 200 (124) :: 200 --> (Lightning, at L14; L27 beside).
-- **Method.** The conflict test at the description's last token at L, each reader its own change, against a random part.
-
-- **Rule, fixed in advance.** "Per model, the 47.3 rule: (a) the split holds: gap >= 0.3, lookup <= 0.10; (a') the computed bridge is handed through the lens: lookup >= 0.20; (d) in between." Withdrawn by the answer control's rule ([51.12](#t51-12)): the lens effect there is the answer or mixed in all four cells.
-
-Both operations' gaps on the described bridge:
-
-![The breadth track's removal everywhere hits the recall more; the depth track's gap is unclear](../../figures/depth/ledger/21_described_gap.png)
-
-*The fact passages with the bridge described: the gap, recall minus lookup, under the change at one layer (left, a share of switches) and under removal everywhere (right, a share of answers); the 122B not run at one layer. Whiskers 95% intervals; Lightning and the 122B hollow ○.*
-
-</details>
-
-- **Result.**
-
-  | | 9B | 27B | Muse (L26) | Lightning (L14) | 122B |
-  |---|---|---|---|---|---|
-  | lookup: switches blocked beyond a random part | 0.54 [0.43, 0.66]<!-- src: results/x50_zach/z2-20261028T162710Z/z2.md \| qwen35_9b_x50_z2 :: 0.54 [0.43, 0.66] --> | 0.69 [0.52, 0.87]<!-- src: results/x50_zach/z2-20261028T162710Z/z2.md \| x50_z2_27b :: 0.69 [0.52, 0.87] --> | 0.67 [0.00, 1.00]<!-- src: results/x50_zach/z2-20261028T162710Z/z2.md \| muse30_x50_z2 :: 0.67 [0.00, 1.00] --> | 0.51 [0.38, 0.63]<!-- src: results/x50_zach/x52_z2-20261029T025625Z/z2.md \| nem35l_x52_z2 :: 0.51 [0.40, 0.62] :: 0.51 [0.38, 0.63] --> | 0.48 [0.36, 0.60]<!-- src: results/x50_zach/x52_z2-20261030T045145Z/z2.md \| qwen35_122b_z2 :: 192 (121) :: 0.48 [0.36, 0.60] --> (L33) |
-  | the rule (before withdrawal) | (a') through the lens | (a') through the lens | (a') through the lens | (a') through the lens (no prediction) | (a') through the lens (no prediction; L39: can't tell) |
-
-- **Read.**
-  - Withdrawn: at the description's last token the lens part moves the answer, so removing it is not a test of the bridge.
-
-<details><summary>The result in full, more reading and caveats</summary>
-
-- **Caveats.**
-  - Muse's lookup switches under the whole change on 0.02 of passages; Lightning's L27 cell rests on 15<!-- src: results/x50_zach/x52_z2-20261029T025625Z/z2.md \| L27: routes :: "original": 184, "switch": 15 :: 15 --> lookup switches (under 30) and is not valid.
-  - n below the 200 aimed for on the first three models. Lightning's run reads the design the README withdrew (Part VI) and stands under the same withdrawal; its own answer control (coverage run, no prediction) says mixed for both readers: without the answer directions only, the lookup is blocked at 0.29 [0.16, 0.44]<!-- src: results/x51_answer/x52_answer-20261029T080050Z/verdict.md | z2 :: nemotron-3.5-lightning :: lookup :: 0.29 [0.16, 0.44] --> and the recall 0.38 [0.26, 0.52]<!-- src: results/x51_answer/x52_answer-20261029T080050Z/verdict.md | z2 :: nemotron-3.5-lightning :: recall :: 0.38 [0.26, 0.52] --> beyond a random part.
-
-</details>
-
-## Operations during the sprint <a id="operations"></a>
-
-Moved to [docs/review/ledger_ops_2026-10.md](../review/ledger_ops_2026-10.md) on 7 Nov, verbatim: the 122B coverage runs of the night of 29-30 Oct; the runs not completed in the sprint (batch 52 C); the items flagged for a decision during the sprint (old Appendix A); the README changes proposed during the sprint (old Appendix B); the checks of the retired ledger figures (old Appendix D). On 8 Nov: the stamps on decisions ([table](../review/ledger_ops_2026-10.md#decision-stamps)).
-
-## Appendix C. Coverage table <a id="coverage"></a>
+<a id="appendix-c-coverage-table"></a><a id="coverage"></a>
+**Coverage table** (old Appendix C).
 
 <details><summary>Coverage table</summary>
 

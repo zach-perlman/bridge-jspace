@@ -7,11 +7,12 @@ well formed:
   Result, Read, Caveats); an entry not completed in the sprint ('not completed in the sprint)' or 'running)' in its heading) is a stub: Question, Status, Where used
   (batch 53's stubs quote their rule between the question and the status);
 - every card's first line is its status tag (Dan's restructure brief, 29 Oct 08:55): `in README` or `ledger only`
-  (`changes README` retired 7 Nov with Appendix B), then optionally `below gate: <models>`, then optionally the italic "Used in" text;
+  (`changes README` retired 7 Nov with Appendix B), then optionally `below gate: <models>`, then optionally the italic "Used in" text
+  (after " · ", docs/STANDARD.md §5); its second line is the status line ("Status: … · hand-checked: … · files: …");
 - every number's source comment resolves: `<value><!-- src: <path> | <part> :: ... :: <value> -->` (in a table row
   the separator is written `\\|`): the path exists, all parts stand on one line of that file, and the last part is the
   text right before the comment, so a number cannot drift from the file it was copied from;
-- internal links resolve to any <a id> on the page (cards and the Appendix); the cards' figures are not checked here (the
+- internal links resolve to any <a id> on the page (cards and the Notes); the cards' figures are not checked here (the
   ledger figures were retired on 7 Nov; every doc's figure links are checked by tests/test_figure_layout.py);
 - the coverage table equals scripts/ledger_coverage.py's output (the committed matrix), and the verdict tables (the
   coverage map as markdown) its verdict_tables().
@@ -40,7 +41,9 @@ ANCHOR = re.compile(r'<a id="([a-z0-9-]+)"></a>\s*$')
 # the status tag line under a card's heading (Dan, 29 Oct 08:55)
 # `changes README` retired on 7 Nov (docs pass P3-1): Appendix B moved to docs/review/ledger_ops_2026-10.md
 TAGS = ("in README", "ledger only")
-TAG_LINE = re.compile(r"^`(" + "|".join(TAGS) + r")`(?: `below gate: [^`]+`)?(?: \*Used in: [^*]+\*)?$")
+TAG_LINE = re.compile(r"^`(" + "|".join(TAGS) + r")`(?: `below gate: [^`]+`)?(?: (?:· )?\*Used in: [^*]+\*)?$")
+# docs/STANDARD.md §5: the status line under the tag (scripts/ledger_coverage.py's index reads it)
+STATUS_LINE = re.compile(r"^Status: [^·]+ · hand-checked: [^·]+ · files: ")
 SRC = re.compile(r"<!-- src: ([^|\\]+?) \\?\| (.+?) -->")
 
 
@@ -93,9 +96,11 @@ def problems(text: str, repo: Path = REPO) -> list[str]:
         if found != list(want) and not (stub and found == list(STUB_RULE_FIELDS)):
             out.append(f"fields {found} in: {head}")
         if want is FIELDS:
-            first = next((line for line in body.splitlines() if line.strip()), "")
-            if not TAG_LINE.match(first):
+            lines = [line for line in body.splitlines() if line.strip()]
+            if not lines or not TAG_LINE.match(lines[0]):
                 out.append(f"no status tag line under the heading of: {head}")
+            if len(lines) < 2 or not STATUS_LINE.match(lines[1]):
+                out.append(f"no status line under the tag of: {head}")
     every =re.findall(r'<a id="([a-z0-9-]+)"></a>', text)
     out += [f"duplicate anchor: {a}" for a in sorted({a for a in every if every.count(a) > 1})]
     links = set(re.findall(r"\]\(#([a-z0-9-]+)\)", text))
