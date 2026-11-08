@@ -38,5 +38,8 @@ A map of the documents. The front door is the [root README](../README.md); this 
 - [shared/glossary_joint.md](shared/glossary_joint.md): the glossary for both tracks.
 - [shared/references.md](shared/references.md): the papers we cite.
 - [shared/figure_style.md](shared/figure_style.md): how the figures are drawn (a pointer to styles-plot).
+- [STANDARD.md](STANDARD.md): the docs standard shared by our research repos (sections, ledger cards, checks).
 - [slides/](slides/): the talk's outline and appendix.
 - [archive/](archive/): sprint-time plans, drafts and logs, kept as a record.
+- [../CHANGELOG.md](../CHANGELOG.md): one changelog with versions; the sprint is its pre-release 0.1.0.
+- [../CITATION.cff](../CITATION.cff): how to cite this repo (authors, title, licence, the paper it builds on).

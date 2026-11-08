@@ -1,10 +1,22 @@
-# Changelog of the sprint (22-24 Oct 2026)
+# Changelog
 
-Moved here from the repo root on 8 Nov 2026; the current changelog is [CHANGELOG.md](../../CHANGELOG.md).
+Newest first, in the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) form. The version is `pyproject.toml`'s; each release gets the tag `vX.Y.Z`, and `CITATION.cff` cites it. From the first release on, there is one entry per change to a claim, a number or a rule, each with its commit.
 
-Newest first. What changed in the claims, the runs and the rules; the README shows only the current state.
+## [Unreleased]
 
-## 24 Oct 2026, evening: README rebuilt around X0 (Dan, ~16:40)
+The November documentation passes, before the first release tag. Every claim sentence and number they changed is listed old → new, commit by commit, in [docs/review/docs_pass_2026-11-07.md](docs/review/docs_pass_2026-11-07.md) and [docs/review/docs_pass_2026-11-08.md](docs/review/docs_pass_2026-11-08.md).
+
+- **Licence.** MIT, copyright Zach Perlman and Danyil Orel (25d1b5f8, agreed by both on 8 Nov); the README's code and data licence line (ea55d2c3).
+- **Author order.** Zach Perlman, Danyil Orel: in the README's byline (d7ed15e2), the LICENSE and CITATION.cff.
+- **Readability pass (7-8 Nov).** The root README re-cut (63c2a786, d7ed15e2): a TL;DR, a Setup section, the findings in the write-up's order, short captions with the takeaway first. The depth and breadth reports in the same shape (99510da0, 038760c3). `scripts/readme_lint.py` measures a README's readability, and a test holds the root README to its targets (dcb41850, 847db83f).
+- **Archive move (8 Nov).** STATUS.md, EXPERIMENTS.md (the breadth run log), HISTORY.md and RUNS.md moved from the repo root to [docs/archive/](docs/archive/), their links rewritten (0e473de5).
+- **Docs-standard pass (8 Nov, in progress).** The repo is brought to the shared documentation standard: a Reproduce path in three tiers, measured in fresh clones (`scripts/measure_reproduce.py`, values in `data/figures/reproduce.csv`, detail in [DEVELOPER.md](DEVELOPER.md#reproduce)); the status line; one section vocabulary for the root README and the track reports (e9a5862b); `readme_lint` targets by document role (0ac9b041); CITATION.cff; CLAUDE.md, which points agents at AGENTS.md.
+
+## [0.1.0] - 2026-10-24 (the sprint, pre-release)
+
+The sprint's own entries, as written at the time (22-24 Oct 2026). The README shows only the current state.
+
+### 24 Oct 2026, evening: README rebuilt around X0 (Dan, ~16:40)
 
 - C1 (the late read) and C2 (order, then identity) were removed from the README at Dan's request. The page is now the first experiment of the direction, X0 (C3's pre-registered test), and the plan it led to (X2', X4, X1, X3 under graded rules). The last README with C1-C3 is at 135dc0e (`git show 135dc0e:README.md`). Their numbers, figures and verdicts are unchanged in `results/` and `figures/archive/cross_model/`.
 - C3's headline changed:
@@ -12,12 +24,12 @@ Newest first. What changed in the claims, the runs and the rules; the README sho
   - new: X0 at the bridge's word, pre-registered. 27B L32 is not confirmed (lookup excess 0.14, recall J-dependence 0.77); 9B L12 is confirmed (−0.03, 0.53). The graded contrast is 0.60 and 0.53. Figures are in `figures/archive/x0_necessity/`, copied from `results/x0_necessity/figures-20261024T145030Z`.
 - The "pre-registered tests" table now lists the X0 rows. The 23 Oct rows are in the README at 135dc0e.
 
-## 24 Oct 2026: the lens pin, the X0 hardware gate
+### 24 Oct 2026: the lens pin, the X0 hardware gate
 
 - Lens pin (Dan, 24 Oct): `pins.LENS_REVISION` and the Qwen3.5-0.8B, 2B, 4B and Qwen3.6-27B model configs moved from neuronpedia/jacobian-lens@9fa267f8 (no longer on the Hub: "Invalid rev id") to e166deb5. The 27B J++ file at e166deb5, downloaded into a clean directory, has sha256 bbef480b…f2b58f8f = `FROZEN_LENS_SHA256`: the frozen lens is byte-identical. Every file pinned at the old revision exists at e166deb5; the 27B J-lens's LFS oid (1718c8c5) equals the sha256 `scripts/lens_table.py` recorded at 9fa267f8. The pins are shared with Zach's branch.
 - Hardware gate for X0 (2x H100 80GB PCIe box, `jobs/c3/x0_hw_gate_27b.yaml`): one 23 Oct cell (d1_necessity_parts_27b_r2, bridge_word:16) rerun; read-role agreement 0.9898 over 2,744 rows without random draws (bar 0.97): PASS. Lowest arms: jspace_wo_own 0.972, jspace 0.978; the random-draw arms agree on ≥ 0.978 of rows.
 
-## 23 Oct 2026, night: README rebuilt around three claims (Dan's brief, 22:45)
+### 23 Oct 2026, night: README rebuilt around three claims (Dan's brief, 22:45)
 
 - Seven claims, the band section and the 122B section became C1 (late read; old 1-2), C2 (order, then identity; old 3 and the absent-entity donor) and C3 (lookups let go of the J-space form before recall does; old 5-7, post hoc split depth). 425 → 200 lines. Pinned to grid 20261023T210238Z (new keys lr2, relay, natural, absent, nec, rest_size, late_switch); the size and dose runs are quoted from their summaries.
 - Numbers changed, old → new: C1 holds on "8 of 8 (old rule), relay; v2 pending" → late-read v2 share on 8 of 8, relay by digit swap +20 [+16, +25] (Gemma) and +24 [+18, +29] (27B long text), SQuAD 4.7-7.6% (9B, 32B, OLMo-3) and 30% [26, 34] (27B). Old claim 6's "1% of lookups" headline → dropped (the rest at the lens part's size moves 1% (27B) and 3% (9B): a size result). The band's "lens push → lookups 0%" → C3's J-dependence: 27B 0.95 / 0.44 / 0.25 / 0.31 at layers 16-28, 0.03 at 32 (recalls 0.92 / 0.42 / 0.22 / 0.69, 0.65); 9B 0.87 → 0.09 over layers 6-14. The 122B "lens part moves 29% of lookups at layer 24" → J-dependence 0.62 / 0.84 / 0.46 at 24 / 27 / 30, 0.17 at 33; its late switch inconclusive (recalls 26%, 21%, 8% against 30%). Claim 5's "32B (still running)" → holds (word, layer 24: recalls 59%, lookups 5%); Gemma → no valid cell.
@@ -25,7 +37,7 @@ Newest first. What changed in the claims, the runs and the rules; the README sho
 - Not done in this rebuild: the late-read figure (every-later-token lines on the other panels, the SQuAD panel, the relay labels), the heatmap rebuilt on C1-C3, the layer-gap figure's dose arms, F2's absent-entity row in FULL; the size and dose runs as grid rows.
 - Choices moved out of the README (21-22 Oct): claim 3 split by the asked sentence (pooled test mixed; confirmed by a fixed rule on fresh sets); claim 3's layer 50 on the 27B (chosen after its first runs; repeated on two more sets); claim 5's second rule from about a third of the depth (the first picked an early layer; both reported); claim 1's first scene set judged by the rule fixed for the second (accepted by Dan); the lens gate after the word (v2; added before any v2 run).
 
-## 23 Oct 2026, evening: README fixes for the TA call (Dan's brief)
+### 23 Oct 2026, evening: README fixes for the TA call (Dan's brief)
 
 - Claim 1: a new rule, late-read v2, beside the old late-read rule: with the sentence hidden and no other route the null is near zero, not the guessing rate (20%). Gemma's and the 27B's long-text cells read "relay; v2 pending", not "fails", until v2 is in the grid; the relay evidence recomputed from raw rows: Gemma scene set 1 23% (last tokens), 15% (and the question), 2% (every token after the sentence), gemma4it_d2_v4_late_read_v3_r2; the 27B's long text 26%, then 11% with the question, DeltaNet layers blocked instead 100%, d2_late_read_long_27b_r3.
 - Claim 5: "never the lookup" became "from layer 20 on (27B), 6 (9B, OLMo-3), 33 (122B)": on the 122B two valid, selected cells move lookups (sentence, layer 27, 8x: 26%, recall 84%; layer 30, 8x: 18%, recall 83%; qwen35_122b_d4_where, decision.selected under rule v2, checked with early_push_where.cell_valid). A per-layer table of every sweep, valid cells only, added.
@@ -36,7 +48,7 @@ Newest first. What changed in the claims, the runs and the rules; the README sho
 - Claim 7: Zach's 9B, 32B and Muse numbers (and "lookups lose at most 13 points") marked "quoted, not reproducible from this repo until Zach pushes"; only the 27B's run is on origin/zach/v8-breadth-1021. STATUS.md lists it under "Waiting on Zach".
 - One prior-work line per claim, pointing to docs/archive/prior_art.md (ec2011a), and a Links entry.
 
-## 23 Oct 2026, day
+### 23 Oct 2026, day
 
 - README rewritten for newcomers (Dan's guide): six main claims, a summary figure, one section per claim, generated from `docs/depth/README.template.md` and the grid by `scripts/readme_build.py`. The run table moved to RUNS.md, the code mapping to docs/archive/mapping.md, the datasets to docs/archive/datasets.md, the night's notes here.
 - Pre-registered before running: the 122B late-binding test (d40f14f, Dan's amendment 98df575), the 27B dose control and layer-16 split (bedbb9a; the split's copy with a same-share random part, 14ef0df), predictions batches 16-17 (e2da840, c3eb3b2).
@@ -46,13 +58,13 @@ Newest first. What changed in the claims, the runs and the rules; the README sho
 - Finding 1 now cites Zach's C1 on four models (his Day 3 plan) next to our descriptive removal (b987cd8, 67bfaca).
 - `drafts/` taken out of the repo and ignored (2f7d9ea, 5bc2a0f).
 
-## 23 Oct 2026, morning
+### 23 Oct 2026, morning
 
 - Dan's predictions for batches 13-15 committed (a135a54); the night's results opened and scored (ab8f9f9: 8 right, 7 partly, 4 wrong, 1 not decidable of 20).
 - The cross-model grid (`scripts/cross_model_grid.py`), merged figures (`scripts/cross_model_figures.py`), the run table (`scripts/run_table.py`) and the lens quality table with our J++ fits.
 - The rented 2x H200 deleted at 08:12 UTC after a verified pull (a0cb92d).
 
-## What changed on the night of 22-23 Oct
+### What changed on the night of 22-23 Oct
 
 182 jobs started from 22 Oct 19:30 UTC: 148 on the 4x A100, 34 on a rented 2x H200 (deleted after a verified pull); 67.2 GPU-hours ([runs](RUNS.md)).
 
@@ -65,7 +77,7 @@ Newest first. What changed in the claims, the runs and the rules; the README sho
 - **The stated-bridge test in tables and JSON:** holds on 27B (2-3%) and 9B (0%), fails on 122B.
 - **The 27B layer-gap test:** the lens push stops moving lookups at layer 20, the full patch at 28 (pre-registered "gap"). The input-embedding push moves nothing, recall included, so it cannot say whether the layer-16 lookup movement is an input edit.
 
-## Choices made after seeing the data, full wording
+### Choices made after seeing the data, full wording
 
 
 Kept from the README of 22 Oct:
