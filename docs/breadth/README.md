@@ -5,7 +5,7 @@
 
 **Zach Perlman** · MATS 12.0 sprint, Neel Nanda's stream · 19–30 Oct 2026<!-- src: docs/plans/hypotheses.md | The proposal (19 Oct) --><!-- src: docs/depth/README.md | 29 Oct 2026 -->
 
-**Status.** The breadth track of a two-week, two-person sprint, at verification levels 1 to 3: computed from run files, checked by tests, and hand-checked on 46 items ([findings](../review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->. No human has recomputed the numbers (level 5 not reached; [VERIFIED.md](../../VERIFIED.md)). Main caveat: the gap measures how much recall needs its answer word's directions, not whether the bridge is used as a step ([Finding 7](#finding-7-what-recall-needs-is-the-answers-own-directions)).
+**Status.** The breadth track of a two-week, two-person sprint, at verification levels 1 to 3: computed from run files, checked by tests, and hand-checked on 46 items ([findings](../review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->, with no human recount yet (level 5; [VERIFIED.md](../../VERIFIED.md)). The headline models are the three of nine that pass the bar registered before the main runs ([amendment 33](prereg_replication_1022.md#amendment-33-zach-2026-10-24-1723-utc-commit-4464369-the-combined-suite-v2-one-dataset-jsuite_v2), 24 Oct; recall − lookup ≥ 30, rotated and logit-lens controls < 10)<!-- src: docs/breadth/prereg_replication_1022.md | M - K >= 30 with the logit-lens and rotated controls < 10 -->. Main caveat: the gap measures how much recall needs its answer word's directions, not whether the bridge is used as a step ([Finding 7](#finding-7-what-recall-needs-is-the-answers-own-directions)).
 
 [Root README](../../README.md) · [Depth report](../depth/README.md) · [Hypotheses](../plans/hypotheses.md) · [Pre-registration](prereg_replication_1022.md) · [Examples](../../figures/breadth/examples/README.md) · [Figures](../../figures/breadth/) · [Data](data.csv) · [Reproduce](#reproduce) · Code: [MIT](../../LICENSE) · [Data licences](../../data/SOURCES.md)
 
@@ -14,10 +14,10 @@
 
 Does a model answering a two-step question need the directions the J++ lens reads at the middle entity, the *bridge*? The final fact is *recalled* from memory or *looked up* in the passage. The *removal* projects out the *lens part*, the lens's top 10 directions, at every token over one mid-depth band. The *recall − lookup gap* is the recall's accuracy drop minus the lookup's.
 
-- **Recall needs a handful of lens-readable directions; reading the same fact does not**. Removing them drops recall 42.6 to 53.1 points more than lookup, on three models from two families → [Finding 1](#finding-1-recall-needs-the-lens-part-reading-the-stated-fact-does-not).
+- **Recall needs a handful of lens-readable directions; reading the same fact does not**. Removing them drops recall 42.6 to 53.1 points more than lookup on the 9B, the 27B and Lightning. These are the three of nine that pass the bar registered before the main runs ([amendment 33](prereg_replication_1022.md#amendment-33-zach-2026-10-24-1723-utc-commit-4464369-the-combined-suite-v2-one-dataset-jsuite_v2), 24 Oct; recall − lookup ≥ 30, rotated and logit-lens controls < 10)<!-- src: docs/breadth/prereg_replication_1022.md | M - K >= 30 with the logit-lens and rotated controls < 10 --> → [Finding 1](#finding-1-recall-needs-the-lens-part-reading-the-stated-fact-does-not).
 - **What recall needs is its answer's own directions**. Keeping only them undoes 0.91<!-- src: data/figures/writeup/data.csv | fig10.keep_span.nl --> to 0.95<!-- src: data/figures/writeup/data.csv | fig10.keep_span.q27 --> of the damage → [Finding 7](#finding-7-what-recall-needs-is-the-answers-own-directions). Removals orthogonal to the answer cost nothing (post hoc) → [Finding 8](#finding-8-removals-orthogonal-to-the-answer-cost-nothing-even-for-a-one-hop-question-about-the-subject).
 - **At the mention, the lens part carries which entity it is, not its fact**. Taken from one neutral sentence about another entity, it moves the answer as much as from that entity's own passage → [Finding 4](#finding-4-at-the-mention-the-lens-part-carries-which-entity-it-is-not-its-fact).
-- **Across models the need is graded**. Of nine models I could test, three show it strongly. The rest are weak, carry the entity without needing it, share it with the logit lens, or show no effect when scored by probability → [the grid](#10-every-model-every-test).
+- **Across models the need is graded**. The other six are weak, carry the entity without needing it, share it with the logit lens, or show no effect when scored by probability → [the grid](#10-every-model-every-test).
 - **For anyone monitoring with a lens**. At the entity's mention the lens shows which entity the model will recall from, in every model. Whether the model depends on those directions is a separate, model-specific question.
 
 ![Removing the lens part (its 10 directions) breaks recalled facts, not looked-up ones, in three models from two families, far beyond the largest same-size control](../../figures/breadth/readme/01_needed.png)
@@ -101,7 +101,7 @@ The test split and, per model, the items it answers right unedited (the items ev
 
 - **Bridge.** Read from the passage (**P**), tracked through it (**T**), or described, and so recalled (**M**). Each hop of a three-hop chain is P or M.
 - **Finals.** The fact left to **memory** (**M**, the recall) or **stated** (**K**, the lookup). Controls: a new made-up fact stated (**P**), the answer word once on another entity (**A**), nothing stated (**N**).
-- **Lens part.** At each layer, the 10 directions the J++ lens reads most there. The root README calls the removal the knock-out.
+- **Lens part.** At each layer, the 10 directions the J++ lens reads most there.
 - **Controls of the same size.** The removal rotated to random directions, the logit lens's own top directions, and the residual's top principal directions at the same norm.
 - **Swap and transfer.** The swap writes another entity's lens part into the bridge's last token. **Transfer** is the share answering the other entity's fact minus that answering a third's.
 - **Datasets.** jsuite v2 is the dataset of record. Earlier sets are toy puzzles, natural fact chains and natplus, less templated passages (generated, with Wikipedia filler), and jsuite v1. The twin set describes people instead of naming them.
@@ -120,11 +120,11 @@ Each colour is a role: recall black, lookup violet, the lens part teal, a gap sl
 <a id="1-recall-needs-the-lens-part-reading-the-stated-fact-does-not"></a>
 ### Finding 1. Recall needs the lens part; reading the stated fact does not
 
-Removing the lens part costs recalled answers 42.6 to 53.1 points more than looked-up ones on the 9B, the 27B and Lightning ([figure above](#tldr)). Same-size removals along other directions cost far less, and scoring by probability keeps the gap. The strongest mundane reading is that the removal takes the answer word's own directions; [Finding 7](#finding-7-what-recall-needs-is-the-answers-own-directions) shows it does. So recall needs these directions, and reading the same fact does not.
+Removing the lens part costs recalled answers 42.6 to 53.1 points more than looked-up ones on the 9B, the 27B and Lightning ([figure above](#tldr)). These are the three of nine that pass the bar registered before the main runs ([amendment 33](prereg_replication_1022.md#amendment-33-zach-2026-10-24-1723-utc-commit-4464369-the-combined-suite-v2-one-dataset-jsuite_v2), 24 Oct; recall − lookup ≥ 30, rotated and logit-lens controls < 10)<!-- src: docs/breadth/prereg_replication_1022.md | M - K >= 30 with the logit-lens and rotated controls < 10 -->. Same-size removals along other directions cost far less, and scoring by probability keeps the gap. The strongest mundane reading is that the removal takes the answer word's own directions; [Finding 7](#finding-7-what-recall-needs-is-the-answers-own-directions) shows it does. So recall needs these directions, and reading the same fact does not.
 
 <details><summary>Test, results, controls and limits</summary>
 
-- **Test.** The removal on jsuite v2's test split, at each model's band, on the items the model answers right unedited. Fixed in advance (amendments 33, 39, 42, 48).
+- **Test.** The removal on jsuite v2's test split, at each model's band, on the items the model answers right unedited. Fixed in advance (amendments 33, 39, 42, 48). Against the registered bar, Muse and the 122B fail on the logit-lens control (34.6, 11.8), and Ministral, DeepSeek, Bolt and OLMo 32B on the gap (23.3, 17.9, 6.0, 5.4).
 - **Result.** Points, except the principal directions' row (a share of the effect).
 
   | | 27B | 9B | Lightning |
@@ -539,11 +539,11 @@ On a one-hop question about a city, removing the city's lens directions costs th
 
 Posed as agent tasks on one relation, the removal costs producing the answer 35.7<!-- src: data/figures/writeup/data.csv | figA1.produce.q9 --> to 50.8<!-- src: data/figures/writeup/data.csv | figA1.produce.nl --> points beyond a rotated part. Picking or verifying costs far less; several cells are descriptive. The recall's need is a need to produce the remembered word; tasks that only check or choose among given words need it much less.
 
+<details><summary>Test, results, controls and limits</summary>
+
 ![Agents: removing the lens part costs producing an answer far more than picking or verifying one](../../figures/common/writeup/a01_agents.png)
 
 *In agent tasks, removing the lens part costs producing an answer far more than picking or verifying one. The recall's answers turned wrong by the knock-out minus a control's, in points, per step (copy, pick, verify, produce), on one relation. Grey tags, descriptive cells (no rule fixed in advance). No transcript is quoted.*
-
-<details><summary>Test, results, controls and limits</summary>
 
 - **Test.** The facts of one relation posed as agent tasks: produce the answer, pick the true one of two, verify a claim, or copy a given answer, each under the removal.
 - **Result.** Points beyond the control.
@@ -690,7 +690,7 @@ See the root README's [Reproduce](../../README.md#reproduce).
 ## Repository guide
 
 - **This report doubles as the breadth track's ledger.** Every number is in [data.csv](data.csv) with its source file; the run log is [docs/archive/EXPERIMENTS.md](../archive/EXPERIMENTS.md).
-- **Builders.** scripts/report_breadth.py builds data.csv and this page, last at 540fff37; src/bridge_jspace/figkit/breadth_sp.py draws [the figures](../../figures/breadth/).
+- **Builders.** scripts/report_breadth.py builds data.csv and this page, last at c65d2cf0; src/bridge_jspace/figkit/breadth_sp.py draws [the figures](../../figures/breadth/).
 - **Licences and citing.** Code is [MIT](../../LICENSE); each data file keeps its source's terms ([data/SOURCES.md](../../data/SOURCES.md)). Cite with [CITATION.cff](../../CITATION.cff).
 
 <details><summary>Sources, builders and figures</summary>

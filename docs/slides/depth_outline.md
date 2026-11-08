@@ -70,7 +70,7 @@ Model order everywhere: 9B / 27B / Muse / Lightning ○ / 122B. ○: Lightning's
 
 *[figure removed]*
 
-- Independent recount: 56 of 63 numbers match, from code written from scratch.
+- Independent recount: the 63 numbers of the one-layer and routes tests, recounted by agent-written code that does not import the analysis code (e549c348); all match.
 - Automatic checks on 45,942 items; 4 per-item failures, all from one check's limit on hyphenated names.
 - Rerun label agreement: 382-400 of 400 items per arm (9B, 27B, Muse, Lightning).
 - Predictions: mean Brier 0.32 over 121 answers, worse than always answering 50%.

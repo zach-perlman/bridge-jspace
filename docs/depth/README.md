@@ -948,7 +948,7 @@ Lightning ran on the rules already fixed for the other models, with no predictio
 ## How I checked
 
 - **Rules fixed in advance.** Each card quotes its rule as committed; rules or gates set after the data carry ○.
-- **Independent recount.** Agent-written code, written from scratch (`scripts/verify_independent.py`), recounts the conflict test at one layer and the routes shares from the per-item files. It matches 63 of 63<!-- src: data/figures/depth/data.csv | checks: the independent recount, rows matching --> against their sources.
+- **Independent recount.** The 63 numbers of the one-layer and routes tests, recounted by agent-written code that does not import the analysis code (e549c348) (`scripts/verify_independent.py`): 63 of 63<!-- src: data/figures/depth/data.csv | checks: the independent recount, rows matching --> match their sources.
 - **Hand-check.** Hand-checked on a sample: 46 items across views a-g (5-10 per view, fixed in advance), all consistent; none changes a headline claim.<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g --> VERIFIED.md (human recomputation) not yet filled.
 
 <details><summary>Predictions, the recount in detail, automatic checks, reruns and limits</summary>
@@ -996,7 +996,7 @@ See the [root README's Reproduce](../../README.md#reproduce).
 
 ## Repository guide
 
-Built at 540fff37 from the run files by `scripts/readme_build.py` from its template. Everything else is in the [root README's guide](../../README.md#repository-guide); this page's figures are in [Appendix A](#appendix-a-links).
+Built at c65d2cf0 from the run files by `scripts/readme_build.py` from its template. Everything else is in the [root README's guide](../../README.md#repository-guide); this page's figures are in [Appendix A](#appendix-a-links).
 
 ### Appendix A. Links
 
