@@ -2,11 +2,9 @@
 
 Instance/ops guide (Vast): /workspace/AGENTS.md; this file adds project rules on top.
 
-## STATE (human-maintained; update at every close)
-Question: on open models (Qwen3.6-27B first), does the bridge entity of a two-hop question act on the answer through
-the J-space, or through a part of its representation the J-lens cannot read?
-Established so far (exp ids): none verified.
-In flight: exp01_probes (bridge probes and their J-space decomposition), exp02_swaps (swap conditions).
+## STATE
+What the project claims and how strong it is: [README.md](README.md). Every hypothesis with its verdict and source:
+[docs/plans/hypotheses.md](docs/plans/hypotheses.md). What a human has recomputed: [VERIFIED.md](VERIFIED.md).
 
 ## Roles
 - Agent: implement, run, report in the format below.
