@@ -10,6 +10,7 @@ A map of the documents. The front door is the [root README](../README.md); this 
 - [depth/notes/](depth/notes/): design notes and the hand-check of the 49-item sample.
 - [breadth/README.md](breadth/README.md): the breadth report. Fact passages on nine models.
 - [breadth/data.csv](breadth/data.csv): every breadth number, with its source file.
+- [v3_sha256.txt](v3_sha256.txt), [v4_sha256.txt](v4_sha256.txt), [v5_sha256.txt](v5_sha256.txt): fingerprints (sha256, line count) of the data sets kept out of the public repo (jsuite v3 to v5): rebuild one with its script and seed, then compare. Run manifests cite these paths.
 - [breadth/prereg_replication_1022.md](breadth/prereg_replication_1022.md): the breadth track's registered predictions and amendments.
 
 ## What we predicted and how sure we are
