@@ -279,7 +279,7 @@ Following is not needing (claim 2): removed from the changed prompt's own state 
 The recall also reads the item's earlier mention (claim 3): taking the lens part out there too blocks more of its switches than a random part of the same share, and taking out another item's lens part blocks none.
 
 ![The recall also reads the lens part at the item's earlier mention](../../figures/depth/readme/36_earlier_mention.png)
-*The recall also reads the item's earlier mention. Recall switches blocked beyond the change at the bridge word alone, when the lens part is also taken out at the earlier mention (left) or at another item's tokens (right); grey dot, a random part of the same share. Clean one-pick scenes; Lightning and the 122B hollow ○.*
+*The recall also reads the item's earlier mention. Recall switches blocked beyond the change at the bridge word alone, when the lens part is also removed from the patch at the earlier mention (left) or at another item's tokens (right); grey dot, a random part of the same share. Clean one-pick scenes; Lightning and the 122B hollow ○.*
 
 </details>
 
@@ -996,7 +996,7 @@ See the [root README's Reproduce](../../README.md#reproduce).
 
 ## Repository guide
 
-Built at 98c147a7 from the run files by `scripts/readme_build.py` from its template. Everything else is in the [root README's guide](../../README.md#repository-guide); this page's figures are in [Appendix A](#appendix-a-links).
+Built at 540fff37 from the run files by `scripts/readme_build.py` from its template. Everything else is in the [root README's guide](../../README.md#repository-guide); this page's figures are in [Appendix A](#appendix-a-links).
 
 ### Appendix A. Links
 
