@@ -310,3 +310,12 @@ Our committed guesses and their verdicts; the sources are in the [hypotheses led
 - **Reports.** The [depth report](docs/depth/README.md) (locker scenes) with its [experiment ledger](docs/depth/EXPERIMENTS.md); the [breadth report](docs/breadth/README.md) (fact passages); the [hypotheses ledger](docs/plans/hypotheses.md); a [map of the documents](docs/README.md).
 - **Figures and code.** [figures/](figures/) by set; numbers in `data/figures/` and `docs/breadth/data.csv`; code in `scripts/` and `src/`; runs in `results/`.
 - **This page** is built from `docs/readme/README.template.md` by `scripts/readme_root.py` ([DEVELOPER.md](DEVELOPER.md)).
+
+<details><summary>Sprint logs, kept as records in docs/archive/</summary>
+
+- [The run log](docs/archive/EXPERIMENTS.md): one line per breadth-track run.
+- [The status notes](docs/archive/STATUS.md): the daily state, to 28 Oct.
+- [The history](docs/archive/HISTORY.md): the full write-up as of 21 Oct.
+- [The runs table](docs/archive/RUNS.md): the runs behind each grid cell.
+
+</details>

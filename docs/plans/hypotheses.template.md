@@ -2,7 +2,7 @@
 
 Every hypothesis and claim the project committed to in writing, with its source, what it predicted (verbatim), the test that decided it, the verdict and the numbers. Failed and withdrawn ones stay. Grouped by hypothesis, not by date.
 
-**Verdicts.** **held** · **held in part** · **failed** · **withdrawn** · **not tested in the final design** · **not separable** (every test in the final design predicts the same outcome under both hypotheses) · **favored, not proven** (where two hypotheses come apart, the data follow this one; no test was built to separate them). A verdict cites its source: a data-file key (each number carries its `<!-- src -->` comment), a pre-registration amendment ([breadth prereg](../breadth/prereg_replication_1022.md)), a predictions entry ([predictions/](../../predictions/README.md)), or the results ledger ([EXPERIMENTS.md](../../EXPERIMENTS.md)). Without one the status is "not tested in the final design". Brackets are 95% bootstrap intervals over bridges. Breadth numbers are points (M − K: recall accuracy drop minus stated-fact drop under the knock-out); depth numbers are shares.
+**Verdicts.** **held** · **held in part** · **failed** · **withdrawn** · **not tested in the final design** · **not separable** (every test in the final design predicts the same outcome under both hypotheses) · **favored, not proven** (where two hypotheses come apart, the data follow this one; no test was built to separate them). A verdict cites its source: a data-file key (each number carries its `<!-- src -->` comment), a pre-registration amendment ([breadth prereg](../breadth/prereg_replication_1022.md)), a predictions entry ([predictions/](../../predictions/README.md)), or the results ledger ([EXPERIMENTS.md](../archive/EXPERIMENTS.md)). Without one the status is "not tested in the final design". Brackets are 95% bootstrap intervals over bridges. Breadth numbers are points (M − K: recall accuracy drop minus stated-fact drop under the knock-out); depth numbers are shares.
 
 **Sources of the hypotheses.** Three plan documents, quoted here and not added to the repo: the proposal "Which intermediates live in the J-space?" (19 Oct 2026, with the 16 Oct one-pager), the sprint plan (20 Oct) and the progress report (22 Oct, Zach's half; 27 Oct, Dan's half).
 
@@ -69,20 +69,20 @@ Design: a 2 × 2 of use × answer source, each cell with the intermediate stated
 ### C2, reading ≠ using (the lens steers recall-used bridges, not lookup-used ones): **withdrawn** (24 Oct)
 
 - **Predicted (verbatim):** the lens reads a lookup-used bridge but can't steer it; it steers the same bridge when it is used for recall. Kill test: the lens flips ≥ 3× random for a lookup-used bridge, in transit layers, on a new model or setting.
-- **Decided by:** the 24 Oct re-score of every steering run with a breakage gate on every cell ([EXPERIMENTS.md, 2026-10-24 "CORRECTION … c2rescore"](../../EXPERIMENTS.md)): most cells broke more than 10% of answers, and the steering claims beyond the 9B and the 27B suite were withdrawn. The swap of the bridge mention's lens part replaced it as the sufficiency test ([prereg amendment 32](../breadth/prereg_replication_1022.md)).
+- **Decided by:** the 24 Oct re-score of every steering run with a breakage gate on every cell ([EXPERIMENTS.md, 2026-10-24 "CORRECTION … c2rescore"](../archive/EXPERIMENTS.md)): most cells broke more than 10% of answers, and the steering claims beyond the 9B and the 27B suite were withdrawn. The swap of the bridge mention's lens part replaced it as the sufficiency test ([prereg amendment 32](../breadth/prereg_replication_1022.md)).
 - **What survives.** "Read ≠ use" in another form: a swapped lens part carries the entity (27B transfer {{bci|swap.q27.swap}}; rotated {{b|swap.q27.swap_rot}}), and OLMo carries the entity (swap {{b|swap.ol.swap}}) without needing it (knock-out {{b|ko.ol.mk}}).
 - **Links:** [breadth README §4, §8](../breadth/README.md).
 
 ### C2′, a stated or computed bridge is written only when a recall uses it: **held in part**
 
 - **Predicted (verbatim, [prereg](../breadth/prereg_replication_1022.md), 22 Oct):** a bridge stated in the prompt (P) or computed in it (C) is written by its own lens direction only when the last step recalls from memory (X->M), not when it looks the answer up (X->P).
-- **Decided by:** scripts/c2_narrow.py on each model's steering run, then the 24 Oct re-score ([EXPERIMENTS.md](../../EXPERIMENTS.md)).
+- **Decided by:** scripts/c2_narrow.py on each model's steering run, then the 24 Oct re-score ([EXPERIMENTS.md](../archive/EXPERIMENTS.md)).
 - **Read.** Before the re-score: HOLDS on the 27B, the 9B and Qwen3-32B ([prereg amendments 3, 6](../breadth/prereg_replication_1022.md)), FAILS on Muse ([amendment 5](../breadth/prereg_replication_1022.md)). After the re-score's breakage gate: the 27B's and the 9B's HOLDS become PARTIAL, Qwen3-32B's does not survive. No data-file key holds these verdicts; the steering runs are not in the final design.
 
 ### C3, computed bridges sit in the J-space beyond their own word: **not tested in the final design**
 
 - **Predicted (verbatim):** computed bridges (typo, translation) that feed a recall sit in the J-space beyond their own word, so H0 is false.
-- **Status.** Tested only on the 20 Oct pilot set (suite_v1, 27B, [EXPERIMENTS.md 2026-10-20, computed and rwcomp rows](../../EXPERIMENTS.md)), before the dataset of record; not re-run on jsuite v2. The breadth README states it: "We have not tested, on v2, a bridge entity that the model computes rather than reads or recalls." Numbers computed from the passage are covered under H0.
+- **Status.** Tested only on the 20 Oct pilot set (suite_v1, 27B, [EXPERIMENTS.md 2026-10-20, computed and rwcomp rows](../archive/EXPERIMENTS.md)), before the dataset of record; not re-run on jsuite v2. The breadth README states it: "We have not tested, on v2, a bridge entity that the model computes rather than reads or recalls." Numbers computed from the passage are covered under H0.
 - Note: Dan's depth claims live in `jobs/c3/` (named after the depth question "C3: the split"); that is not this C3.
 
 ## Pre-registered tests
@@ -90,7 +90,7 @@ Design: a 2 × 2 of use × answer source, each cell with the intermediate stated
 ### Architecture (22 Oct): C1 holds on Olmo-Hybrid-7B and fails on Olmo-3-7B: **failed**
 
 - **Predicted (verbatim, [prereg amendment 6B](../breadth/prereg_replication_1022.md)):** C1-graded HOLDS on Olmo-Hybrid and FAILS on Olmo-3. Supported if both happen; refuted if Olmo-Hybrid FAILS or Olmo-3 HOLDS.
-- **Decided by:** the powered test of [amendment 7A](../breadth/prereg_replication_1022.md) (olmo_big_v8), [EXPERIMENTS.md 2026-10-23](../../EXPERIMENTS.md).
+- **Decided by:** the powered test of [amendment 7A](../breadth/prereg_replication_1022.md) (olmo_big_v8), [EXPERIMENTS.md 2026-10-23](../archive/EXPERIMENTS.md).
 - **Numbers (gap, points).** Olmo-Hybrid 7B {{b|old.oh7.olmoh7_big2_ko_v1}}, Olmo-3 7B {{b|old.o7.olmo3d7_big2_ko_v1}}: neither holds, so the hybrid-architecture prediction is refuted.
 - **Within Qwen (amendments 3, 4):** the hybrid Qwen3.5-9B holds C1 (above) and the dense Qwen3-32B stays below the bar ({{b|old.q32.qwen3_32b_full2_ko_v1}} and {{b|old.q32.qwen3_32b_fresh2_ko_v1}}): **held** within Qwen, not across families.
 

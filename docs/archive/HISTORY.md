@@ -2,7 +2,7 @@
 
 *This is the complete README as of 2026-10-21: every experiment's section (exp01-exp23, Phase 1-4, the depth track
 D1-D4 in full), pitfalls, decisions and the old next-steps lists. The current summary (main results and open
-questions) is [README.md](README.md). Links in this file still work: it sits at the repo root like the README.*
+questions) is [README.md](../../README.md). It moved to docs/archive/ on 8 Nov 2026; its links were rewritten for that folder.*
 
 **Latest status (20 Oct 2026):** [STATUS.md](STATUS.md) · plan: [Google Doc](https://docs.google.com/document/d/1bqqdXePTUXQGlowVjk73sPfJkbV_tsu0RNNX-BiTYUc/edit?usp=drivesdk) · run log: [EXPERIMENTS.md](EXPERIMENTS.md)
 · **new (21 Oct, unverified):** [depth track D1-D4](#depth-track-d1-d4-2026-10-21-what-is-the-around-route) ·
@@ -55,7 +55,7 @@ or tokenization artifact.
 | [Depth track (D1-D4, 2026-10-21)](#depth-track-d1-d4-2026-10-21-what-is-the-around-route) | What does a lookup in the prompt use instead of the lens-readable word, where and when? Names, results at a glance, methods and datasets compared, D1-D4 with figures, predictions vs results, what is not tested, next ideas |
 | [Decisions](#decisions), [open decisions](#open-decisions-humans) | What was decided, and what is still for the humans to decide |
 | [Next steps, part A](#next-steps-part-a), [part B](#next-steps-part-b) | What comes next |
-| [DEVELOPER.md](DEVELOPER.md) | How to run, re-analyse and publish: layout, commands, GPU box, figures, examples |
+| [DEVELOPER.md](../../DEVELOPER.md) | How to run, re-analyse and publish: layout, commands, GPU box, figures, examples |
 
 ## Setup (shared by all experiments)
 - **Model.** Qwen3.6-27B (pinned revision, bf16). Qwen3.5-4B only in exp10's check that the lenses work.
@@ -140,7 +140,7 @@ or tokenization artifact.
 
 ## Status
 Draft, UNVERIFIED: nothing is in `VERIFIED.md` yet. The STATE block in `AGENTS.md` tracks what is in flight.
-Final figures, numbers and examples per experiment: [results/README.md](results/README.md). Every part A number below
+Final figures, numbers and examples per experiment: [results/README.md](../../results/README.md). Every part A number below
 is recomputed from the raw run files by `uv run python scripts/verify_headlines.py`.
 
 **Where things stand (2026-10-15).** On Qwen3.6-27B, for bridges that are a single token, the J-lens and J++ do read
@@ -212,7 +212,7 @@ text, and no part B result has yet been run in the format the model takes as a q
 | exp10 `pass_at_10_by_bridge_kind.png` | pass@10 by kind of bridge (27B), best layer anywhere and within 32-48: the logit lens's numbers come from the last layers |
 | exp10 `27b_by_layer.png` | Why the J-lens looks no better than the logit lens on pass@10 |
 
-Worked examples with lens tables: `make examples-serve` opens [examples/index.html](examples/index.html) (exp10-12,
+Worked examples with lens tables: `make examples-serve` opens [examples/index.html](../../examples/index.html) (exp10-12,
 exp15, exp16); the exp12 page is also published at https://claude.ai/artifact/TXLZH6WxuxSQDhoK5YHTj9 (anyone with the
 link can open it). Each page groups sampled questions by what the readers do with them; exp10's also by what the bridge
 is: a number ('6', 'four'), a letter (a chemical symbol), or named in the prompt (`scripts/exp10_lens_sanity/examples.py`;
@@ -735,7 +735,7 @@ readings at -1 or the last word in layers 36-44), and 17 of those 23 are one tem
 currency / language of the country where X is"), with a country as the bridge. A fixed-seed sample of 30 lens-blind readings with their types is in
 `mention_sample.json` for a human to check; the rule has known misses ("Swan Lake" counted as the bird).
 
-Worked examples: [examples/exp15_oracle_lens/index.html](examples/exp15_oracle_lens/index.html): every question, with
+Worked examples: [examples/exp15_oracle_lens/index.html](../../examples/exp15_oracle_lens/index.html): every question, with
 the model's own answer before and after the swap, the lens ranks and the oracle's words in each row; filters by group
 (lenses miss · oracle sees, lenses miss · oracle misses, lenses always see, swap changes the answer) and by layer. The
 exp11 and exp12 pages show the same oracle words under each card ("Oracle lens (exp15)").
@@ -831,7 +831,7 @@ too. exp17 is what tells the two apart.
 where the J-lens or J++ ranks the bridge 1st; colour: where the verbalizer names it, on the same readings. In the
 title: the verbalizer's edge over the lenses, J-mediated minus neither, with its 95% CI.*
 
-Worked examples: [examples/exp16_nla/index.html](examples/exp16_nla/index.html) (every question, the NLA's
+Worked examples: [examples/exp16_nla/index.html](../../examples/exp16_nla/index.html) (every question, the NLA's
 explanations before and after the swap next to the lens ranks); the exp10-12 pages show them under each card ("NLA
 (exp16, layer 42)"), next to the oracle lens's.
 
@@ -2210,7 +2210,7 @@ Moved here from README.md on 2026-10-21 (evening) when the README was consolidat
 
 ### Detail: what is the "around" route? (Dan, 21 Oct; depth track D1-D4)
 One overnight queue, Qwen3.6-27B, pre-registered rules and controls; headline numbers recounted from the raw files.
-Predictions vs results: [predictions/2026-10-20_dan.md](predictions/2026-10-20_dan.md). Full write-up
+Predictions vs results: [predictions/2026-10-20_dan.md](../../predictions/2026-10-20_dan.md). Full write-up
 (methods and datasets compared, worked examples, every figure, numbers to recompute):
 [README_archive.md](README_archive.md#depth-track-d1-d4-2026-10-21-what-is-the-around-route).
 
@@ -2232,7 +2232,7 @@ goes through the J-space, not on the lookup.
 
 ### Detail: batch 2 (Dan, 21 Oct; new data and a learned pointer)
 Same rules (pre-registered, controls, headline numbers recounted from the raw files), 4×A100. Predictions vs results:
-[predictions/2026-10-21_dan.md](predictions/2026-10-21_dan.md). Still running: "statement order or token
+[predictions/2026-10-21_dan.md](../../predictions/2026-10-21_dan.md). Still running: "statement order or token
 position?" (pointer_v2).
 
 | | Question | Result |
@@ -2265,10 +2265,10 @@ position?" (pointer_v2).
 
 **Where things are:** this page = main results and open questions · full write-up of every experiment, and the
 per-batch tables of Dan's depth track: [README_archive.md](README_archive.md) · run log: [EXPERIMENTS.md](EXPERIMENTS.md)
-· human-checked results: [VERIFIED.md](VERIFIED.md) · status by Zach (20 Oct): [STATUS.md](STATUS.md) · plan:
+· human-checked results: [VERIFIED.md](../../VERIFIED.md) · status by Zach (20 Oct): [STATUS.md](STATUS.md) · plan:
 [Google Doc](https://docs.google.com/document/d/1bqqdXePTUXQGlowVjk73sPfJkbV_tsu0RNNX-BiTYUc/edit?usp=drivesdk) ·
-how to run, queue, figures: [DEVELOPER.md](DEVELOPER.md) · predictions vs results (Dan):
-[predictions/](predictions/)
+how to run, queue, figures: [DEVELOPER.md](../../DEVELOPER.md) · predictions vs results (Dan):
+[predictions/](../../predictions)
 
 ### The question
 In a two-hop question the model first finds a **bridge** and then uses it to find the answer: "the language spoken in
@@ -2299,7 +2299,7 @@ made of J-lens word directions; the rest is everything else. **Slot** = the posi
 
 ### Main results
 
-#### Verified by a human ([VERIFIED.md](VERIFIED.md), Qwen3.6-27B)
+#### Verified by a human ([VERIFIED.md](../../VERIFIED.md), Qwen3.6-27B)
 | | Result |
 |---|---|
 | Lenses see the bridge (A1-A3) | At the last word the lenses rank the bridge first far more often than a same-kind distractor (57% vs 5% of layers 32-48); most remaining misses are found at an earlier word (22/30). |
@@ -2323,7 +2323,7 @@ Recall from memory goes through the J-space; a lookup in the prompt goes around 
 
 #### Unverified: what is the "around" route? (Dan, 21 Oct; three batches on Qwen3.6-27B)
 Every run pre-registered (hypotheses, decision rule, controls) before it ran; Dan wrote predictions before each result
-was opened (scored: [2026-10-21](predictions/2026-10-20_dan.md), [2026-10-22](predictions/2026-10-21_dan.md));
+was opened (scored: [2026-10-21](../../predictions/2026-10-20_dan.md), [2026-10-22](../../predictions/2026-10-21_dan.md));
 headline numbers recounted from the raw rows. Intervals: 95%; "entity" = resampling the asked entities within each
 topic, the honest interval when items of one entity are correlated. The per-batch tables are archived
 ([README_archive.md](README_archive.md#depth-track-nights-1-3-21-oct-the-per-batch-tables-as-they-stood-in-the-readme)).
@@ -2586,7 +2586,7 @@ Status: **running** = on the 4×A100 box now, **next** = designed, not built, **
 
 ### Data used in the depth track
 All generated by us (templates + fixed seeds; the model must pass a competence gate on a cut before it is used).
-Catalog with sizes: [data/README.md](data/README.md#depth-track-scenes-dan-21-oct-generated-seeded-each-with-a-check-and-a-verify-stage).
+Catalog with sizes: [data/README.md](../../data/README.md#depth-track-scenes-dan-21-oct-generated-seeded-each-with-a-check-and-a-verify-stage).
 
 | Dataset | Example | What it separates | Used by |
 |---|---|---|---|

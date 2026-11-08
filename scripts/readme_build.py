@@ -1,4 +1,4 @@
-"""readme_build: docs/depth/README.md rendered from docs/depth/README.template.md and the cross-model grid, and RUNS.md from
+"""readme_build: docs/depth/README.md rendered from docs/depth/README.template.md and the cross-model grid, and docs/archive/RUNS.md from
 the runs. Since the merge into main (27 Oct) the root README.md is a hand-written index of docs/depth/ and docs/breadth/.
 
 The prose is hand-written in the template; every result number comes from grid.csv through a marker, so the README
@@ -28,7 +28,7 @@ Markers (f = finding key f1-f8 / gate; m = model key 27b, 9b, olmo_hybrid, 122b,
   {{grid}}                     the grid folder
   {{head}}                     the commit the README is built at
 
-uv run python scripts/readme_build.py [--grid DIR] [--runs]   # writes docs/depth/README.md (and RUNS.md with --runs)
+uv run python scripts/readme_build.py [--grid DIR] [--runs]   # writes docs/depth/README.md (and docs/archive/RUNS.md with --runs)
 uv run python scripts/readme_build.py --out OTHER.md   # the same page elsewhere, its links rewritten to resolve there
 """
 
@@ -458,7 +458,7 @@ def relink(text: str, out: Path) -> str:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--grid", default=None, help="override the grid pinned in the template")
-    ap.add_argument("--runs", action="store_true", help="also write RUNS.md (the runs behind every grid cell)")
+    ap.add_argument("--runs", action="store_true", help="also write docs/archive/RUNS.md (the runs behind every grid cell)")
     ap.add_argument("--out", default=str(PAGE.relative_to(REPO)), help="where to write the page, relative to the repo "
                     "root (default docs/depth/README.md); its relative links are rewritten to resolve from there")  # fmt: skip
     a = ap.parse_args(argv)
@@ -471,8 +471,8 @@ def main(argv: list[str] | None = None) -> int:
     print(f"{out.relative_to(REPO)}: {len(readme.splitlines())} lines from {grid.relative_to(REPO)}")
     # the contact sheets (figures/depth/_sheets/) come from `styles-plot sheet` (make readme)
     if a.runs:
-        (REPO / "RUNS.md").write_text(RT.build(grid))
-        print("RUNS.md written")
+        (REPO / "docs" / "archive" / "RUNS.md").write_text(RT.build(grid))  # links resolve from the repo root
+        print("docs/archive/RUNS.md written")
     if out == PAGE:  # no blank or placeholder cell in a table (Dan 30 Oct): the build fails on one
         from scripts import check_tables
 

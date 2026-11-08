@@ -1,4 +1,4 @@
-"""Every number README.md and STATUS.md's current block quote is in data/figures/depth/data.csv (Dan, 25 Oct: the address /
+"""Every number README.md and docs/archive/STATUS.md's current block quote is in data/figures/depth/data.csv (Dan, 25 Oct: the address /
 value mix-up; README v2 moved the data file from the frozen figures/archive/status_2026-10-25/). An interval 'v [lo, hi]' must
 match one row's value, lo and hi; a lone decimal or percentage must match some row's value. Rule bars (0.05, 0.10,
 0.15, 0.20, 0.30, 0.75, 0.80, 95%) and integers (counts) are skipped, as are source comments (<!-- src: ... -->, whose
@@ -75,6 +75,6 @@ def test_readme_numbers_are_in_data_csv():
 
 
 def test_status_current_block_numbers_are_in_data_csv():
-    text = (REPO / "STATUS.md").read_text()
+    text = (REPO / "docs" / "archive" / "STATUS.md").read_text()
     current = text.split("\n# ", 1)[0]  # the newest block, up to the next top-level heading
     assert not (bad := check(current)), bad

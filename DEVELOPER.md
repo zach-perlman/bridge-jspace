@@ -81,7 +81,7 @@ make examples-render                   # job pages: examples/job_<id>/ beside th
 The worker takes jobs first in, first out once their dependencies are done and the GPU has `mem_gb` free (it waits,
 never kills), runs each in a fresh checkout of its commit (earlier jobs' results copied in; `cache/` and `.env` shared
 with `~/bridge-jspace`), and appends to the ledger: queued/started/ended, setup/run/examples time, exit codes, peak GPU
-memory, new results dirs, W&B links. Each finished job gets a draft EXPERIMENTS.md row (`results/jobq/drafts/`) whose
+memory, new results dirs, W&B links. Each finished job gets a draft row for docs/archive/EXPERIMENTS.md (the run log) (`results/jobq/drafts/`) whose
 result and verdict a human writes. A script's `figures` stage writes PNGs into a new `analysis-*/` folder of the run
 (the job page shows the newest such folder's figures). A script's `examples` stage writes `examples.json` (schema in
 `src/bridge_jspace/job_pages.py`), which the job page shows with the pre-registered predictions.

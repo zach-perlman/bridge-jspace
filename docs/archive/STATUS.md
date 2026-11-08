@@ -419,7 +419,7 @@ Tonight's results stay closed until Dan's batch-31 commit (Dan ~00:20); their ce
 
 **Plan:** [Google Doc](https://docs.google.com/document/d/1bqqdXePTUXQGlowVjk73sPfJkbV_tsu0RNNX-BiTYUc/edit?usp=drivesdk) ·
 **Run log:** [EXPERIMENTS.md](EXPERIMENTS.md) (one line per run: question, n, seeds, result, W&B link, verdict) ·
-**Nothing below is in [VERIFIED.md](VERIFIED.md) yet:** every number is unverified until one of us checks it.
+**Nothing below is in [VERIFIED.md](../../VERIFIED.md) yet:** every number is unverified until one of us checks it.
 
 ## Waiting on Zach (23 Oct)
 - Claim 7's C1 runs on the 9B, 32B and Muse (gaps 38, 22 and 7 points; lookups lose at most 13): quoted in the README from his Day 3 plan, not on origin/zach/v8-breadth-1021 (only the 27B's `results/ablate_v2/c1_v2/` is); reproducible from this repo once he pushes them.
