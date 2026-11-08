@@ -82,7 +82,7 @@ def measure(path: Path) -> dict[str, float]:
     out_, in_ = split_folds(text)
     sl = sentences(out_)
     caps = captions(text)
-    link_free = re.sub(r"\[[^\]]*\]\([^)]*\)", " ", prose(out_))
+    link_free = prose(re.sub(r"\[[^\]]*\]\([^)]*\)", " ", out_))  # links first: prose() drops their targets
     return {
         "words_outside": words(out_), "words_total": words(out_) + words(in_),
         "slash_outside": len(SLASH.findall(prose(out_))), "slash_total": len(SLASH.findall(prose(text))),
