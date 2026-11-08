@@ -1,0 +1,40 @@
+key,value,unit,source
+repro.hw.cpu,Apple M5,text,scripts/measure_reproduce.py (2026-11-08): this machine
+repro.hw.ram_gb,24,GB,scripts/measure_reproduce.py (2026-11-08): this machine
+repro.hw.cores,10,count,scripts/measure_reproduce.py (2026-11-08): this machine
+repro.hw.os,macOS 26.5.1,text,scripts/measure_reproduce.py (2026-11-08): this machine
+repro.commit,42698e30,text,scripts/measure_reproduce.py (2026-11-08): the commit measured (main of https://github.com/zach-perlman/bridge-jspace.git)
+repro.read.time_s,5,s,scripts/measure_reproduce.py (2026-11-08): git clone --filter=blob:none --sparse + sparse-checkout set (read set)
+repro.read.files_mb,71,MB,"scripts/measure_reproduce.py (2026-11-08): du -sk of the read checkout's files (no .git, no .venv)"
+repro.read.git_mb,54,MB,scripts/measure_reproduce.py (2026-11-08): du -sk of the read checkout's .git (partial clone: the blobs fetched)
+repro.read.links,46,count,scripts/measure_reproduce.py (2026-11-08): README.md's local link targets
+repro.read.links_dead,1,count,"scripts/measure_reproduce.py (2026-11-08): of those, missing from the read checkout: predictions/README.md"
+repro.t1.clone_s,18,s,scripts/measure_reproduce.py (2026-11-08): git clone + sparse-checkout set (tier1 set)
+repro.t1.sync_s,5,s,"scripts/measure_reproduce.py (2026-11-08): uv sync, an empty uv package cache"
+repro.t1.readme_s,157,s,scripts/measure_reproduce.py (2026-11-08): make readme (exit 0)
+repro.t1.exit,0,count,scripts/measure_reproduce.py (2026-11-08): make readme's exit code
+repro.t1.changed,2,count,scripts/measure_reproduce.py (2026-11-08): tracked files differing from the commit after make readme: docs/breadth/README.md docs/depth/README.md
+repro.t1.changed_other,0,count,scripts/measure_reproduce.py (2026-11-08): changed words in them other than a commit hash (the build stamp)
+repro.t1.files_mb,460,MB,"scripts/measure_reproduce.py (2026-11-08): du -sk of the t1 checkout's files (no .git, no .venv)"
+repro.t1.git_mb,2315,MB,scripts/measure_reproduce.py (2026-11-08): du -sk of the t1 checkout's .git (partial clone: the blobs fetched)
+repro.t1.venv_mb,868,MB,scripts/measure_reproduce.py (2026-11-08): du -sk of the t1 checkout's uv env (.venv)
+repro.t1.results_folders,91,count,scripts/measure_reproduce.py (2026-11-08): results/ folders in the tier1 set (TIERS in scripts/measure_reproduce.py)
+repro.t1.results_mb,328,MB,scripts/measure_reproduce.py (2026-11-08): du -sk of results/ in the tier1 checkout
+repro.t2.clone_s,4,s,scripts/measure_reproduce.py (2026-11-08): git clone + sparse-checkout set (tier2 set)
+repro.t2.sync_s,1,s,"scripts/measure_reproduce.py (2026-11-08): uv sync, an empty uv package cache"
+repro.t2.verify_s,5.7,s,scripts/measure_reproduce.py (2026-11-08): uv run python scripts/verify_headlines.py
+repro.t2.exit,1,count,scripts/measure_reproduce.py (2026-11-08): verify_headlines.py's exit code; last stderr line: FileNotFoundError: [Errno 2] No such file or directory: 'results/exp02_swaps/main_v4b200_jpp_chat64/outcomes.jsonl'
+repro.t2.checks,311,count,scripts/measure_reproduce.py (2026-11-08): scripts/measure_reproduce.py each: verify_headlines.py's checks one by one (checks)
+repro.t2.ok,282,count,scripts/measure_reproduce.py (2026-11-08): scripts/measure_reproduce.py each: verify_headlines.py's checks one by one (ok)
+repro.t2.diff,1,count,scripts/measure_reproduce.py (2026-11-08): scripts/measure_reproduce.py each: verify_headlines.py's checks one by one (diff)
+repro.t2.missing,28,count,scripts/measure_reproduce.py (2026-11-08): scripts/measure_reproduce.py each: verify_headlines.py's checks one by one (missing)
+repro.t2.missing_files,13,count,scripts/measure_reproduce.py (2026-11-08): scripts/measure_reproduce.py each: verify_headlines.py's checks one by one (missing_files)
+repro.t2.files_mb,140,MB,"scripts/measure_reproduce.py (2026-11-08): du -sk of the t2 checkout's files (no .git, no .venv)"
+repro.t2.git_mb,30,MB,scripts/measure_reproduce.py (2026-11-08): du -sk of the t2 checkout's .git (partial clone: the blobs fetched)
+repro.t2.venv_mb,810,MB,scripts/measure_reproduce.py (2026-11-08): du -sk of the t2 checkout's uv env (.venv)
+repro.t2.results_folders,37,count,scripts/measure_reproduce.py (2026-11-08): results/ folders in the tier2 set (TIERS in scripts/measure_reproduce.py)
+repro.t2.results_mb,111,MB,scripts/measure_reproduce.py (2026-11-08): du -sk of results/ in the tier2 checkout
+repro.results_all_gb,14.9,GB,"scripts/measure_reproduce.py (2026-11-08): git ls-tree -r -l 42698e30 results: tracked bytes, uncompressed"
+repro.results_all_files,18841,count,scripts/measure_reproduce.py (2026-11-08): git ls-tree -r 42698e30 results: tracked files
+repro.t3.gpu_gb_27b,80,GB,"scripts/measure_reproduce.py (2026-11-08): DEVELOPER.md, GPU box: Qwen3.6-27B needs one 80 GB card; quoted, not re-run for this page"
+repro.t3.gpu_gb_4b,24,GB,"scripts/measure_reproduce.py (2026-11-08): DEVELOPER.md, GPU box: Qwen3.5-4B fits a 24 GB card; quoted, not re-run for this page"
