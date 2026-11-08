@@ -21,7 +21,7 @@ A map of the documents. The front door is the [root README](../README.md); this 
 
 - [writeup/examples.md](writeup/examples.md): real prompts and the model's answers, per test.
 - [writeup/figure_map.md](writeup/figure_map.md): each figure of the post, with its file and caption.
-- [../figures/](../figures/): every figure, by set; each set has its own index.
+- [../figures/](../figures/): every figure, by track: [breadth](../figures/breadth/) (readme, examples), [depth](../figures/depth/) (readme, ledger, examples) and [common](../figures/common/) (readme, writeup, examples); each set has its own index.
 
 ## Review and checks
 

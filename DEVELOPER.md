@@ -28,7 +28,8 @@ scripts/
 configs/models/           one YAML per model: HF revision + lens files (qwen3.5-0.8b / 2b / 4b, qwen3.6-27b)
 data/                     pinned inputs; catalogue in data/README.md, provenance in data/SOURCES.md
 results/<exp>/<stamp>/    raw run outputs (never edited); analysis-*/ = re-aggregations; map in results/README.md
-figures/<exp>/            the final figures the README shows (copies from analysis-*/)
+figures/<track>/<set>/    the published figures by track (breadth, depth, common), one numbered set per document
+                          (figkit/layout.py; `make readme`, `make figures-writeup`)
 examples/                 rendered worked-example pages (slices/ not committed)
 tests/                    unit tests (`make check`) and model tests on Qwen3.5-0.8B (`make test-model`)
 infra/setup_pod.sh        GPU box bootstrap
