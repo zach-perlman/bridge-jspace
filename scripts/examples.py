@@ -149,21 +149,29 @@ def e2_fact_passage() -> sp.Figure:
     stated = [s for s in lookup_s if s not in recall_s]
     filler = [s for s in recall_s if s not in lookup_s]
     repo = json.loads((KO.parent / "manifest.json").read_text())["model"]["repo"]
+    bridge = pm["bridge"]
+    # the chain the card spells out (Dan, 8 Nov: "how the lookup works" must be visible): hop 1 names the bridge in
+    # both passages; hop 2, the bridge's fact, is the stated sentence about the bridge, in the lookup's passage only
+    hop1 = next(s for s in lookup_s if bridge in s and s in recall_s)
+    hop2 = next(s for s in stated if bridge in s)
     passage: list[tuple] = []
-    bridge_done = False
     for s in lookup_s:
         text = s.removeprefix("- ")
-        if s in stated:
+        if s == hop2:
             passage.append((text + " ", "lookup"))
-        elif pm["bridge"] in text and not bridge_done:  # the bridge in bold where the passage first names it
-            passage += [*bold(text, pm["bridge"], text.index(pm["bridge"])), (" ", None)]
-            bridge_done = True
+        elif s == hop1:
+            passage += [*bold(text, bridge, text.index(bridge)), (" ", None)]
         else:
             passage.append((text + " ", None))
+    others = len(stated) - 1
     parts = [passage,
-             [("Recall:", "recall", True), (" the same passage with the sentences in the lookup's colour replaced by: ",
-                                             None), (" ".join(filler), "recall")],
-             [("Question (both):", None, True), (f" {pk['question']}", None)]]  # fmt: skip
+             [("Question (both):", None, True), (f" {pk['question']}", None)],
+             [("Lookup:", "lookup", True), (f" hop 1 in the passage (“{hop1.removeprefix('- ')}”), hop 2 too: "
+                                            f"it reads “{hop2.removeprefix('- ')}” (in the lookup's colour).",
+                                            None)],
+             [("Recall:", "recall", True), (f" the same passage, but that sentence and {others} like it "
+                                            f"{'is' if others == 0 else 'are'} replaced by others (", None),
+              (" ".join(filler), "recall"), ("), so hop 2 must come from memory.", None)]]  # fmt: skip
     answers: dict[str, dict[str, str]] = {"lookup": {}, "recall": {}}
     for r in rows:
         for item, reader in ((pk, "lookup"), (pm, "recall")):
