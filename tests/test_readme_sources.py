@@ -14,9 +14,11 @@ import json
 import re
 from pathlib import Path
 
+import pytest
+
 REPO = Path(__file__).resolve().parents[1]
 README = REPO / "README.md"
-CSV_SOURCES = {"data/figures/depth/data.csv", "docs/breadth/data.csv", "docs/shared/grid.csv", "data/figures/writeup/data.csv"}
+CSV_SOURCES = {"data/figures/depth/data.csv", "docs/breadth/data.csv", "docs/shared/grid.csv", "data/figures/writeup/data.csv", "data/figures/lenses.csv"}
 
 # In a table row the separator is written "\|" (a bare pipe would split the cell in GitHub's table syntax).
 SRC = re.compile(r"<!--\s*src:\s*([^|\\]*?)\s*\\?\|\s*(.*?)\s*-->", re.S)
@@ -165,7 +167,7 @@ def test_readme_meets_every_readability_target():
 
 
 BREADTH = REPO / "docs" / "breadth" / "README.md"
-BREADTH_BUDGET = 3000  # finishing-pass brief C4: the breadth page in the root README's shape
+BREADTH_BUDGET = 2500  # docs/STANDARD.md §3: a track report, at most 2,500 words outside folds
 
 
 def test_breadth_visible_text_within_its_budget():
@@ -173,7 +175,7 @@ def test_breadth_visible_text_within_its_budget():
 
 
 DEPTH = REPO / "docs" / "depth" / "README.md"
-DEPTH_BUDGET = 6000  # finishing-pass brief D1: In one minute, How to read, each claim's sentence + figure + takeaway
+DEPTH_BUDGET = 2500  # docs/STANDARD.md §3: a track report, at most 2,500 words outside folds
 LEDGER = REPO / "docs" / "depth" / "EXPERIMENTS.md"
 LEDGER_BUDGET = 18000  # Dan, 8 Nov (was 15,000, finishing-pass brief D2): the cards' Result tables cannot fit 15,000
 
@@ -223,3 +225,72 @@ def test_every_figure_takes_its_caption_from_the_store():
         if not nxt.startswith(("{{caption|" + want + "}}", "{{caption_short|" + want + "}}")):
             bad.append(want)
     assert not bad, bad
+
+
+# The root README and the two track reports share one skeleton (docs/STANDARD.md §3): the same `##` sections in the
+# same order. A track report may group its findings under `## Part …` headings instead of `## Findings`.
+SKELETON = ["TL;DR", "Setup", "Findings", "What we predicted, and what happened", "Where it does not hold",
+            "How we checked", "Related work and what is new", "Open questions", "Reproduce", "Repository guide"]  # fmt: skip
+SKELETON_PAGES = {"README.md": False, "docs/depth/README.md": True, "docs/breadth/README.md": True}
+
+
+def sections(text: str, track: bool) -> list[str]:
+    """The page's `##` headings outside code fences, a track's `## Part …` headings read as one "Findings"."""
+    text = re.sub(r"(?ms)^```.*?^```", "", text)
+    out = []
+    for h in re.findall(r"(?m)^## (.+?)\s*$", text):
+        h = "Findings" if track and h.startswith("Part ") else h
+        h = re.sub(r"^(What|How) I ", r"\1 we ", h) if track else h  # a single-author track report says I (§7.7)
+        if not out or out[-1] != h:
+            out.append(h)
+    return out
+
+
+@pytest.mark.parametrize("page", SKELETON_PAGES)
+def test_page_follows_the_shared_skeleton(page):
+    assert sections((REPO / page).read_text(encoding="utf-8"), SKELETON_PAGES[page]) == SKELETON
+
+
+def test_parts_count_as_one_findings_section():
+    text = "## TL;DR\n## Part I. A\n## Part II. B\n## Setup\n"
+    assert sections(text, track=True) == ["TL;DR", "Findings", "Setup"]
+    assert sections(text, track=False) == ["TL;DR", "Part I. A", "Part II. B", "Setup"]
+    assert sections("## How I checked\n## What I predicted, and what happened\n", track=True) == [
+        "How we checked", "What we predicted, and what happened"]
+
+
+# data/figures/lenses.csv (scripts/lens_csv.py): every row traces to a file that exists, and every pass@10 is the cell
+# its source names.
+LENSES_CSV = REPO / "data/figures/lenses.csv"
+
+
+def lens_rows() -> list[dict]:
+    with LENSES_CSV.open() as f:
+        return list(csv.DictReader(f))
+
+
+def test_lens_keys_unique_and_every_model_has_a_kind_and_a_quality():
+    rs = lens_rows()
+    keys = [r["key"] for r in rs]
+    assert len(keys) == len(set(keys))
+    for m in {r["model"] for r in rs}:
+        assert f"lens.{m}.kind" in keys and f"lens.{m}.passk" in keys, m
+
+
+@pytest.mark.parametrize("r", lens_rows(), ids=lambda r: r["key"])
+def test_lens_source_exists_or_not_measured(r):
+    if r["value"] == "not measured":
+        assert r["source"] == ""
+        return
+    path = r["source"].split(" | ")[0]
+    assert path and (REPO / path).exists(), r["source"]
+
+
+@pytest.mark.parametrize("r", [r for r in lens_rows() if r["unit"].startswith("pass@10") and r["value"] != "not measured"],
+                         ids=lambda r: r["key"])  # fmt: skip
+def test_lens_pass_at_10_is_the_named_cell(r):
+    path, field = r["source"].split(" | ")
+    want = dict(kv.split("=") for kv in field.split(", "))
+    with (REPO / path).open() as f:
+        cells = [d["pass_at_k"] for d in csv.DictReader(f) if all(d[k] == v for k, v in want.items())]
+    assert len(cells) == 1 and f"{float(cells[0]):.3f}" == r["value"]

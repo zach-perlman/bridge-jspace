@@ -30,7 +30,8 @@ def docs() -> list[str]:
 
 def links(md: str) -> list[str]:
     base = Path(".") if md in ROOT_RELATIVE else Path(md).parent
-    return [os.path.normpath(base / t) for t in LINK.findall((REPO / md).read_text(errors="ignore")) if "://" not in t]
+    text = re.sub(r"(?ms)^(`{3,}).*?^\1", "", (REPO / md).read_text(errors="ignore"))  # a link in a code block is an example
+    return [os.path.normpath(base / t) for t in LINK.findall(text) if "://" not in t]
 
 
 def test_figures_holds_the_tracks_and_their_sets_only():
