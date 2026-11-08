@@ -5,6 +5,7 @@ Works the root README and the two reports cite. Links were checked on 30 Oct 202
 ## The lens
 
 - Gurnee et al. 2026. *Verbalizable Representations Form a Global Workspace in Language Models.* Transformer Circuits Thread; arXiv 2607.15495. https://transformer-circuits.pub/2026/workspace/index.html. Code for the J-lens and J++: https://github.com/anthropics/jacobian-lens
+  - Their Figure 24: removing the workspace directions hurts free recall (TriviaQA) and spares extraction (SQuAD) and multiple choice, across benchmarks. Our matched recall and lookup items isolate the answer's source on the same entities.
 
 ## Recall, binding and lookup
 

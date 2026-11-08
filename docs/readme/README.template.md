@@ -4,10 +4,10 @@
 
 **Zach Perlman and Danyil Orel** · MATS 12.0 sprint, Neel Nanda's stream · 19–30 Oct 2026<!-- src: docs/plans/hypotheses.md | The proposal (19 Oct) --><!-- src: docs/depth/README.md | 29 Oct 2026 -->
 
-**Status.** Every number carries its source in the run files, checked by tests. A 46-item hand-check changed no headline claim ([findings](docs/review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->. [VERIFIED.md](VERIFIED.md) holds only checks from before the sprint (16 Oct); no human has yet recomputed the sprint's headline numbers.
+**Status.** A two-week sprint by two people; every number is computed from tracked run files and checked by tests, and a 46-item hand-check of raw items changed no headline claim (verification levels 1 to 3; [findings](docs/review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->. Agent-written code recounted the one-layer and routes numbers from the raw files (level 4); no human has recomputed them (level 5 not reached; [VERIFIED.md](VERIFIED.md)). Main caveat: the knock-out's damage is mostly the answer's own directions, so the claims about the bridge rest on the one-layer test and the swap.
 
-[Depth report](docs/depth/README.md) · [Breadth report](docs/breadth/README.md) · [Hypotheses ledger](docs/plans/hypotheses.md) · [Examples](docs/writeup/examples.md) · [Slides](docs/slides/) · Code: MIT ([LICENSE](LICENSE)) · Data: each file keeps its source's licence ([data/SOURCES.md](data/SOURCES.md))
-<!-- POST LINK: Dan adds at publication -->
+<!-- POST LINK: Dan adds "[Write-up](…) · " at the start of the next line at publication -->
+[Depth report](docs/depth/README.md) · [Breadth report](docs/breadth/README.md) · [Hypotheses](docs/plans/hypotheses.md) · [Examples](docs/writeup/examples.md) · [Figures](figures/) · [Data](data/README.md) · [Reproduce](#reproduce) · [Slides](docs/slides/) · Code: [MIT](LICENSE) · [Data licences](data/SOURCES.md)
 
 ## TL;DR
 
@@ -15,8 +15,8 @@ Gurnee et al. (2026) argue that the J++ lens reads a "workspace" holding the mid
 
 - **Recall needs the lens directions at the bridge; lookup needs far less.** The knock-out costs recalled answers {{b|ko.q9.mk}} to {{b|ko.nl.mk}} points more than looked-up ones on Qwen 9B, Qwen 27B and Lightning, the three clearest of nine models.
 - **The lookup goes around the lens.** It finds the item by its identity or by an address, a code for where the item sits in the prompt. A probe reads the address at 0.85 to 0.99<!-- src: data/figures/depth/data.csv | the locker probe at the bridge word, locker-first scenes -->, and swapping it in redirects the lookup; the lens directions do not capture it.
-- **Neither the knock-out nor the readout shows that a step is used.** The knock-out mostly removes the answer's own directions. At the answer position a probe on the lens part reads the entity at 0.91 to 0.98, yet swapping that part moves at most 0.14 ○ of answers<!-- src: data/figures/depth/data.csv | 51.10: recall, last token, read peak: the probe's accuracy on the lens part; 51.10: recall, last token, read peak: the lens swap's switches -->.
-- **For monitoring.** At an entity, a lens readout shows which entity is in play and what it brings to mind. It does not show whether the model answers from memory or from the text.
+- **Neither the knock-out nor the readout shows that a step is used.** The knock-out mostly removes the answer's own directions. At the answer position a probe on the lens part reads the entity, yet swapping that part moves at most 0.14 ○ of answers<!-- src: data/figures/depth/data.csv | 51.10: recall, last token, read peak: the lens swap's switches -->.
+- **For anyone monitoring with a lens.** At an entity, a lens readout shows which entity is in play and what it brings to mind. It does not show whether the model answers from memory or from the text.
 
 {{fig|r1_c1_split}}
 
@@ -26,7 +26,7 @@ Gurnee et al. (2026) argue that the J++ lens reads a "workspace" holding the mid
 
 An illustrative scene: "The locker of carbon is 3. The locker of helium is 5. … Eric picked **carbon**."<!-- src: docs/depth/README.md | The locker of carbon is 3. The locker of helium is 5. --> Asked which locker belongs to Eric's pick, the model looks up 3 in the text<!-- src: docs/depth/README.md | Which locker belongs to Eric's pick?" (3, found in the prompt) -->. Asked the atomic number of Eric's pick, it recalls 6 from memory<!-- src: docs/depth/README.md | What is the atomic number of Eric's pick?" (6, from memory) -->. Both questions pass through the bridge, *carbon*. The fact passages pose the same contrast with real facts, giving the bridge's fact or leaving it to memory. Five models are tested on locker scenes, nine on fact passages.
 
-Real test items, each picked by a fixed rule (rules and item ids in `data/figures/examples/data.csv`). The fact passage is chosen to show the typical flip; its caption says how often it occurs.
+Real test items, each picked by a fixed rule (`data/figures/examples/data.csv`); captions say how typical each is.
 
 ![One real locker scene, Qwen 27B: the whole change switches both readers; without the lens part the lookup still switches and the recall does not](figures/depth/examples/01_locker_scene.png)
 
@@ -51,15 +51,40 @@ Real test items, each picked by a fixed rule (rules and item ids in `data/figure
 - **Answer span.** The answers' own lens directions.
 - **Post hoc (○).** A gate or rule set after the data were seen. More in the [glossary](docs/shared/glossary_joint.md).
 
+<details><summary>Which lens each model uses</summary>
+
+Every lens is J++, published or our own fit. Quality: the share of held-out items whose middle entity ranks in the lens's top ten at some layer, beside the logit lens on the same items; compare within a row.
+
+| model | lens | J++ | logit lens |
+|---|---|---|---|
+| Qwen 9B | {{l|lens.q9.kind}} | {{l|lens.q9.passk}} | {{l|lens.q9.logit}} |
+| Qwen 27B | {{l|lens.q27.kind}} | {{l|lens.q27.passk}} | {{l|lens.q27.logit}} |
+| Muse | {{l|lens.mu.kind}} | {{l|lens.mu.passk}} | {{l|lens.mu.logit}} |
+| Lightning | {{l|lens.nl.kind}} | {{l|lens.nl.passk}} | {{l|lens.nl.logit}} |
+| Qwen 122B | {{l|lens.q122.kind}} | {{l|lens.q122.passk}} | not measured |
+| Bolt | {{l|lens.nb.kind}} | {{l|lens.nb.passk}} | {{l|lens.nb.logit}} |
+| Ministral | {{l|lens.mi.kind}} | {{l|lens.mi.passk}} | {{l|lens.mi.logit}} |
+| DeepSeek | {{l|lens.ds.kind}} | {{l|lens.ds.passk}} | not measured |
+| OLMo 32B | {{l|lens.ol.kind}} | {{l|lens.ol.passk}} | not measured |
+| Gemma 4 31B-it | {{l|lens.gemma.kind}} | {{l|lens.gemma.passk}} | {{l|lens.gemma.logit}} |
+| gpt-oss-20b | {{l|lens.gptoss.kind}} | {{l|lens.gptoss.passk}} | not measured |
+| Kolibri-1 | {{l|lens.kol.kind}} | {{l|lens.kol.passk}} | {{l|lens.kol.logit}} |
+
+</details>
+
+<details><summary>The three tools, drawn</summary>
+
 {{fig|p0b_tools}}
 
 {{caption_short|common/readme/01_tools}}
 
+</details>
+
 ### Reading the figures
 
-Each colour is a role. Recall is black, lookup violet, the lens part teal, the address amber, identity blue, a gap slate, and a control grey. Hollow marks (○) are post hoc; whiskers are 95% intervals over bridge items<!-- src: docs/breadth/README.md | Brackets: 95% bootstrap over bridges -->. Fact passages count in points, locker scenes in shares.
+<details><summary>Colours, marks and the key, one row read aloud</summary>
 
-<details><summary>The key, one row read aloud</summary>
+Each colour is a role. Recall is black, lookup violet, the lens part teal, the address amber, identity blue, a gap slate, and a control grey. Hollow marks (○) are post hoc; whiskers are 95% intervals over bridge items<!-- src: docs/breadth/README.md | Brackets: 95% bootstrap over bridges -->. Fact passages count in points, locker scenes in shares.
 
 ![The figures' grammar: each colour's role, the marks, the controls' grey, and one row of the main split read aloud](figures/common/writeup/00_key.png)
 
@@ -69,7 +94,9 @@ Each colour is a role. Recall is black, lookup violet, the lens part teal, the a
 
 ### Finding 1. Recall needs the lens part; lookup needs far less
 
-The knock-out breaks recalled answers and leaves looked-up ones nearly intact. On Qwen 9B, Qwen 27B and Lightning the recall drops {{b|ko.q9.mk}} to {{b|ko.nl.mk}} points more than the lookup. Same-size controls cost far less. At one layer the recall follows the lens part when the patch's parts disagree, and the lookup does not. On the other six models the split is weaker or not specific ([Where it does not hold](#where-it-does-not-hold)).
+On Qwen 9B, Qwen 27B and Lightning the knock-out costs recall {{b|ko.q9.mk}} to {{b|ko.nl.mk}} points more than lookup; same-size controls cost far less. At one layer the recall follows the lens part when the patch's parts disagree, and the lookup does not. On the other six models the split is weaker or not specific ([Where it does not hold](#where-it-does-not-hold)).
+
+The paper's Figure 24 already shows its removal hurting free recall (TriviaQA) and sparing extraction (SQuAD) and multiple choice<!-- src: docs/shared/references.md | Figure 24 -->; new here are matched items where only the answer's source changes. Two mundane readings remain. First, the knock-out mostly removes the answer's own directions ([Removing](#removing)). Second, general damage: on these three models it costs plain text {{b|text.q27}} to {{b|text.nl}}, against {{b|text.q9.rot}} to {{b|text.nl.rot}} for a rotated part. But general damage would also hurt the lookup, which drops only {{b|ko.q27.klost}} to {{b|ko.q9.klost}} points.
 
 {{fig|f2_controls}}
 
@@ -78,7 +105,7 @@ The knock-out breaks recalled answers and leaves looked-up ones nearly intact. O
 <details><summary>Test, results, controls and limits</summary>
 
 - **Test.** The knock-out over a band of middle layers (fact passages). Removal from the patch at one layer (locker scenes).
-- **Result and controls.** Muse and the 122B are not claimed (post hoc in the band test).
+- **Result and controls.** Muse and the 122B are not claimed (post hoc in the band test). The rotated part, the logit lens's directions and the principal directions match the lens part's norm; the one-layer random part matches its energy (the same share of the change).
 
 | | 9B | 27B | Muse | Lightning | 122B |
 |---|---|---|---|---|---|
@@ -93,9 +120,9 @@ The knock-out breaks recalled answers and leaves looked-up ones nearly intact. O
 | one layer: lookup's switches blocked beyond random | {{x|lk_excess_9b}} | {{x|lk_excess_27b}} | {{x|lk_excess_muse}} | {{s|nemotron-3.5-lightning|conflict: lookup, switches lost beyond a random part}} ○ | {{x|lk_excess_122b}} |
 | one layer: lens part minus principal directions, paired | 0.24<!-- src: docs/breadth/data.csv \| f2.layer.q9.pca --> | 0.45<!-- src: docs/breadth/data.csv \| f2.layer.q27.pca --> | 0.48<!-- src: docs/breadth/data.csv \| f2.layer.mu.pca --> | no per-item contrast saved | 0.05, interval includes zero<!-- src: docs/breadth/data.csv \| f2.layer.q122.pca --> |
 
-- **Scope.** Every passage set we built shows it on the two Qwens: 22.8 to 52.1 points on toy puzzles, natural fact chains and natural text<!-- src: docs/breadth/data.csv | toy.q27.s1; toy.q27.s2; toy.q27.s3; toy.q9.s1; toy.q9.s2; toy.q9.s3; nat.q27.s1; nat.q27.s2; nat.q27.s3; nat.q9.s1; nat.q9.s2; nat.q9.s3; natplus.q27; natplus.q9 -->. It holds on every relation, from 36.0 (languages) to 72.0 (dishes) on the 27B<!-- src: docs/breadth/data.csv | ko.q27.rel.languages; ko.q27.rel.dishes -->, and for rare and popular bridges alike<!-- src: docs/breadth/data.csv | natplus.q27.rare; natplus.q27.pop; natplus.nl.rare; natplus.nl.pop -->. On the twin set, which describes people instead of naming them, it survives dropping every item a shortcut could answer (post hoc) and asking the question first. The need is spread over the bridge's words; removing the lens part at the final token alone costs almost nothing ([where the need sits](figures/common/readme/17_where.png)). The one-layer controls are [in this figure](figures/common/readme/03b_controls_layer.png).
+- **Scope.** Every passage set we built shows it on the two Qwens: 22.8 to 52.1 points on toy puzzles and on less templated passages (generated, with Wikipedia filler)<!-- src: docs/breadth/data.csv | toy.q27.s1; toy.q27.s2; toy.q27.s3; toy.q9.s1; toy.q9.s2; toy.q9.s3; nat.q27.s1; nat.q27.s2; nat.q27.s3; nat.q9.s1; nat.q9.s2; nat.q9.s3; natplus.q27; natplus.q9 -->. It holds on every relation, from 36.0 (languages) to 72.0 (dishes) on the 27B<!-- src: docs/breadth/data.csv | ko.q27.rel.languages; ko.q27.rel.dishes -->, and for rare and popular bridges alike<!-- src: docs/breadth/data.csv | natplus.q27.rare; natplus.q27.pop; natplus.nl.rare; natplus.nl.pop -->. On the twin set, which describes people instead of naming them, it survives dropping every item a shortcut could answer (post hoc) and asking the question first. The need is spread over the bridge's words; removing the lens part at the final token alone costs almost nothing ([where the need sits](figures/common/readme/17_where.png)). The one-layer controls are [in this figure](figures/common/readme/03b_controls_layer.png).
 - **Confidence.** Credence {{cred|main_split}} for the split as stated, {{cred|broadly}} that it holds beyond the models and settings tested. The 27B's lookup is also partly blocked ([Where it does not hold](#where-it-does-not-hold)).
-- **Limits.** "Lookup needs far less" holds at middle layers; in the deep layers the 9B's and Lightning's lookups need the lens part too (twin set). At one layer the recall follows the lens part but does not need it, because other layers carry copies: zeroing it leaves 0.94 to 0.97 of recalled answers unchanged<!-- src: data/figures/depth/data.csv | 47.5: recall's answers kept at L, the J++ part's 25 directions taken out -->. The knock-out costs plain text +0.30 nats (27B) to +1.67 nats (Lightning)<!-- src: docs/breadth/README.md | +0.30 nats (27B) to +1.67 nats (Lightning) -->. English templated prompts, one-token answers, greedy decoding with thinking off.
+- **Limits.** "Lookup needs far less" holds at middle layers; in the deep layers the 9B's and Lightning's lookups need the lens part too (twin set). At one layer the recall follows the lens part but does not need it, because other layers carry copies: zeroing it leaves 0.94 to 0.97 of recalled answers unchanged<!-- src: data/figures/depth/data.csv | 47.5: recall's answers kept at L, the J++ part's 25 directions taken out -->. English templated prompts, one-token answers, greedy decoding with thinking off.
 
 ![The gap is far above the largest same-size control on every model in the band test, and above zero on every model at one layer](figures/common/readme/02b_main_split_gaps.png)
 
@@ -137,7 +164,7 @@ When another item moves, the lookup follows either the item's own locker (its id
 - **Scope.** The identity code lies outside the lens on the 9B, 27B, Muse and Lightning; the 122B was below its gate. The address was found in the locker scenes:
   - removing it cuts position answers beyond a random part on five models, and a swap moves lookups to the swapped-in locker, also across neutral sentences;
   - on the varied scenes (prose, JSON, tables) the address fit on simple scenes does little, but refit on each format it carries the lookup again on the 9B, Muse and Lightning, not the 27B;
-  - on the fact passages the lookup rarely takes the position route the address serves (almost never on the 27B), and the natural passages were not tested;
+  - on the fact passages the lookup rarely takes the position route the address serves (almost never on the 27B), and the less templated passages were not tested;
   - in Python code and tool output (exploratory, the 9B and the 27B) it is readable and needed, added alone it brings few position answers back, and the swap was not run there.
 - **Confidence.** Credence {{cred|address}}. The swap's dose was chosen after its rule, fixed in advance, was read at the wrong dose and said no on every model<!-- src: docs/depth/README.md | read at s = 1 and said no on every model -->.
 - **Limits.** The 27B's address is weak, and adding it alone does not bring position answers back. The probe is refit for each format. Which code each lookup gives up, scene by scene, is post hoc ([figure](figures/common/readme/10_two_codes.png)). The address points to the item's mention, not to a number; on the 9B and Lightning its swap also changes some recalls ([depth report](docs/depth/README.md#part-iii-the-address-where-the-items-locker-sits)).
@@ -156,7 +183,7 @@ When another item moves, the lookup follows either the item's own locker (its id
 
 #### Removing
 
-The knock-out's damage to recall is the answer's own directions. Removing only the answer span does all of it, in a test fixed in advance on three models. Keeping the answer span undoes {{w|fig10.keep_span.nl}} to {{w|fig10.keep_span.q27}} of it. So the knock-out shows that recall needs the directions of its remembered word, not that the bridge is used. The claims about the bridge rest on the one-layer test (Finding 1) and the swap (below).
+The knock-out's damage to recall is the answer's own directions. Removing only the answer span does all of it, in a test fixed in advance on three models. Keeping the answer span undoes {{w|fig10.keep_span.nl}} to {{w|fig10.keep_span.q27}} of it. So the knock-out shows that recall needs the directions of its remembered word, not that the bridge is used.
 
 ![Keeping only the answer span's directions undoes nearly all of the recall's damage; removing only them does all of it](figures/common/writeup/10_answer_span.png)
 
@@ -227,9 +254,16 @@ At the bridge the lens part works as a reference to the entity: what its words e
 
 </details>
 
+<details><summary>Other results (ledger only)</summary>
+
+- **Agents.** On one relation posed as agent tasks, the knock-out costs producing the answer {{w|figA1.produce.q9}} / {{w|figA1.produce.q27}} / {{w|figA1.produce.nl}} points beyond a rotated part, picking the true one of two {{w|figA1.pick.q9}} / {{w|figA1.pick.q27}} / {{w|figA1.pick.nl}}, and verifying a claim {{w|figA1.verify.q9}} / {{w|figA1.verify.q27}} / {{w|figA1.verify.nl}} (9B / 27B / Lightning; several cells descriptive; [figure](figures/common/writeup/a01_agents.png)). Credence {{cred|agents}}.
+- **Pretraining.** The 9B base model's split is {{b|v1.q9base.qa}}, its instruct model's {{b|v1.q9inst.qa}}.
+
+</details>
+
 ## What we predicted, and what happened
 
-Our committed guesses and their verdicts; the sources are in the [hypotheses ledger](docs/plans/hypotheses.md).
+Our committed guesses; each verdict links to its row in the [hypotheses ledger](docs/plans/hypotheses.md).
 
 - The bridge counts only through its own word → **[failed](docs/plans/hypotheses.md#h0-deflationary-failed-for-recalled-entities-held-in-part-for-computed-numbers)** for recalled entities, **held in part** for computed numbers.
 - A bridge used to recall is inside the lens part, one used to look up is outside the lens part → **[not separable](docs/plans/hypotheses.md#h1-use-not-separable-from-h2-on-the-main-tests-where-they-come-apart-the-data-follow-h2)** from the next guess.
@@ -250,9 +284,10 @@ Our committed guesses and their verdicts; the sources are in the [hypotheses led
 - **The 27B's lookup** leans on the lens part partly: {{x|lk_excess_k100_27b}} of its switches are blocked beyond random at 100 directions.
 - **Known facts.** When the passage gives a fact the model knows, the 9B's and 27B's lookups follow the lens part (0.26 to 0.28 beyond random)<!-- src: data/figures/depth/data.csv | Z1: lookup, switches lost beyond a random part -->.
 - **Across models the split is graded.** It is strong and specific on three of nine. On the rest it is weaker, not specific, shared with the logit lens, or gone when scored by probability.
-- **Two tests disagree on two models.** The 122B fails the band test by probability but passes the one-layer test. Muse shares much of its band effect with the logit lens, but not at one layer.
 
 <details><summary>Chains, order and model by model</summary>
+
+- **Two tests disagree on two models.** The 122B fails the band test by probability but passes the one-layer test. Muse shares much of its band effect with the logit lens, but not at one layer.
 
 - **Chains.** Each hop is read in the passage (P) or recalled (M); the rule says a chain needs the lens part when its last hop is recalled. On the 27B, P → P → M costs {{bci|mod.q27.threehop.paper10.PPM-PPP}} points beyond the all-passage chain, on the second seed {{bci|mod2.q27.threehop.paper10.PPM-PPP}}. M → M → P costs {{bci|mod.q27.threehop.paper10.MMP-PPP}}, which was not predicted. The 9B's chains cannot be read: its all-passage chain alone drops {{b|mod.q9.threehop.paper10.loss.PPP}} points ([chain figures](figures/breadth/readme/10a1_beyond.png)).
 
@@ -264,19 +299,18 @@ Our committed guesses and their verdicts; the sources are in the [hypotheses led
 - **Question order** has no general effect. With the question before the scene, the 27B's lookup has {{s|qwen3.6-27b|the lookup, question before minus after (paired)}} more of its switches blocked (interval from {{s|qwen3.6-27b|53.1: the lookup, question before minus after (paired): the interval's lower bound}}); the 122B's {{s|qwen3.5-122b-a10b|the lookup, question before minus after (paired)}}. On the twin set the 27B's lookup leans less on it, and the 9B's and Lightning's do not move.
 - **Known facts.** With made-up facts the split returns on the 9B and the 122B.
 - **Model by model.** Weak: Ministral 23.3 and DeepSeek 17.9 points<!-- src: docs/breadth/data.csv | ko.mi.mk; ko.ds.mk -->. Not specific on Bolt and DeepSeek: at 100 directions a same-size principal-direction removal costs 24.0 against 31.3, and 25.9 against 28.7<!-- src: docs/breadth/data.csv | dose.nb.k100.pc; dose.nb.k100; dose.ds.k100.pc; dose.ds.k100 -->. Shared with the logit lens: Muse, 34.6 of its 59.9<!-- src: docs/breadth/data.csv | ko.mu.u; ko.mu.mk -->. Gone by probability: the 122B's 48.5 drops to 1.7<!-- src: docs/breadth/data.csv | ko.q122.mk; ko.q122.soft -->. Untestable: the knock-out breaks plain text on Gemma 4 31B-it, gpt-oss-20b and Kolibri-1 (9.3, 4.7 and 6.4 nats added)<!-- src: docs/breadth/data.csv | text.gemma; text.gptoss; text.kol -->.
-- **Agents.** On one relation posed as agent tasks, the knock-out costs producing the answer {{w|figA1.produce.q9}} / {{w|figA1.produce.q27}} / {{w|figA1.produce.nl}} points beyond a rotated part, picking the true one of two {{w|figA1.pick.q9}} / {{w|figA1.pick.q27}} / {{w|figA1.pick.nl}}, and verifying a claim {{w|figA1.verify.q9}} / {{w|figA1.verify.q27}} / {{w|figA1.verify.nl}} (9B / 27B / Lightning; several cells descriptive; [figure](figures/common/writeup/a01_agents.png)). Credence {{cred|agents}}.
-- **Pretraining.** The 9B base model's split is {{b|v1.q9base.qa}}, its instruct model's {{b|v1.q9inst.qa}}.
 
 </details>
 
 ## How we checked
 
 - **Rules fixed in advance.** Breadth runs follow a [pre-registration](docs/breadth/prereg_replication_1022.md) with amendments committed before each run. Depth [predictions](predictions/README.md) were committed before results were opened, then scored; they did worse than always guessing even odds (mean Brier 0.32)<!-- src: docs/depth/README.md | mean Brier 0.32 over 121 answers -->.
-- **Reruns.** From a clean checkout the breadth headline runs match row for row: 0 of 22325 rows differ on the 27B<!-- src: docs/breadth/README.md | 0 of 22325 -->.
-- **Independent recounts.** Code written from scratch matches 63 of 63 depth headline numbers<!-- src: docs/depth/README.md | matches 63 of 63 -->.
 - **What we dropped**, with the test that dropped it: [depth](docs/depth/README.md#tested-and-dropped), [breadth](docs/breadth/README.md#8-what-did-not-hold).
 
-<details><summary>Run provenance and red-teaming</summary>
+<details><summary>Reruns, recounts, run provenance and red-teaming</summary>
+
+- **Reruns.** From a clean checkout the breadth headline runs match row for row: 0 of 22325 rows differ on the 27B<!-- src: docs/breadth/README.md | 0 of 22325 -->.
+- **Independent recounts.** Code written from scratch matches 63 of 63 depth headline numbers<!-- src: docs/depth/README.md | matches 63 of 63 -->.
 
 - **The runs behind this page.** Its numbers trace to {{p|prov.runs}} run folders: {{p|prov.no_commit}} of their manifests record no git commit, and {{p|prov.no_lens_sha}} no lens sha256 (where a commit is recorded, the lens follows from the model's pin at that commit, `configs/models/*.yaml`); {{p|prov.untraced}} cited files are CPU read-outs or verdicts with no manifest of their own. Counted by `scripts/provenance_counts.py`.
 - **Environment switches.** The {{p|g1.writers_unrecorded}} late-sprint run scripts did not record their environment switches; {{p|g1.writers_switches}} of them now do, and the other {{p|g1.writers_left_out}} load no model. For the runs already on disk the `BJ_` variables (device map, batch size) were not recorded.
@@ -287,13 +321,18 @@ Our committed guesses and their verdicts; the sources are in the [hypotheses led
 
 ## Related work and what is new
 
-- **Not new.** Removing the top lens directions hurts free-form recall and multi-step reasoning (Gurnee et al. 2026<!-- src: docs/shared/references.md | Gurnee et al. 2026 -->). Subjects are enriched with their attributes (Geva et al. 2023<!-- src: docs/shared/references.md | Geva, Bastings, Filippova and Globerson 2023 -->). Entities are bound in context (Feng & Steinhardt 2023) and found through "lookback pointers", our addresses (Prakash et al. 2025)<!-- src: docs/depth/README.md | (Feng & Steinhardt 2023); "lookback pointers" [addresses] (Prakash et al. 2025) -->. Memory and context are arbitrated outside the verbal workspace (Kawada & Kellis 2026<!-- src: docs/shared/references.md | Kawada and Kellis 2026 -->).
+- **Not new.** Removing the top lens directions hurts free-form recall and multi-step reasoning, and spares extraction and multiple choice (Gurnee et al. 2026, Figure 24<!-- src: docs/shared/references.md | Gurnee et al. 2026; Figure 24 -->). Subjects are enriched with their attributes (Geva et al. 2023<!-- src: docs/shared/references.md | Geva, Bastings, Filippova and Globerson 2023 -->). Entities are bound in context (Feng & Steinhardt 2023) and found through "lookback pointers", our addresses (Prakash et al. 2025)<!-- src: docs/depth/README.md | (Feng & Steinhardt 2023); "lookback pointers" [addresses] (Prakash et al. 2025) -->. Memory and context are arbitrated outside the verbal workspace (Kawada & Kellis 2026<!-- src: docs/shared/references.md | Kawada and Kellis 2026 -->).
 - **New here.** Matched recall and lookup twins across nine models with three kinds of control. The address as the part the lens misses (where it holds: [Finding 2](#finding-2-the-lookup-goes-around-the-lens-through-an-identity-or-an-address), Scope). False positives and negatives of lens readouts at entities.
-- **Methods we build on.** Gur-Arieh et al. (2025) for the routes, mass-mean directions (Marks & Tegmark 2023) for the address, Makelov et al. (2023) for random parts<!-- src: docs/depth/README.md | Gur-Arieh et al. (2025); (Marks & Tegmark 2023); Makelov et al. (2023) -->. All [references](docs/shared/references.md).
+
+<details><summary>Methods we build on</summary>
+
+- Gur-Arieh et al. (2025) for the routes, mass-mean directions (Marks & Tegmark 2023) for the address, Makelov et al. (2023) for random parts<!-- src: docs/depth/README.md | Gur-Arieh et al. (2025); (Marks & Tegmark 2023); Makelov et al. (2023) -->. All [references](docs/shared/references.md).
+
+</details>
 
 ## Open questions
 
-<details><summary>Seven open questions, each with what we would run next</summary>
+<details><summary>The open questions, each with what we would run next</summary>
 
 - **Why does the 27B behave differently?** Next, the same twin items through both lookup measures.
 - **Why does the recall follow the lens part without needing it at one layer?** Removing it over four layers costs the 9B's recall about a quarter<!-- src: docs/depth/README.md | Removing it over four layers costs the 9B's recall about a quarter. -->. Next, map where the other copies sit.
@@ -301,7 +340,31 @@ Our committed guesses and their verdicts; the sources are in the [hypotheses led
 - **Can a monitor tell recall from lookup?** Next, a lens readout plus an address probe, scored on which source the model uses.
 - **Does a computed bridge go through the workspace?** Computed numbers do not; a computed entity is untested.
 - **What makes models differ?** Next, OLMo through the dose grid, and base and instruct pairs of one family.
+- **Is the split general damage?** Next, a control matched on its cost to plain text instead of norm or energy.
 - **Beyond our setting.** Next, multi-token answers and reasoning traces.
+
+</details>
+
+## Reproduce
+
+To read the docs and figures only: `git clone --filter=blob:none --sparse https://github.com/zach-perlman/bridge-jspace` then `git sparse-checkout set docs figures data/figures`.
+
+- **Tier one, the figures and READMEs from tracked numbers (CPU).** `uv sync && make readme`.
+- **Tier two, numbers from the run files (CPU).** `uv run python scripts/verify_headlines.py`. It fails today (some run files are in no commit) and checks older sprint headlines.
+- **Tier three, the runs (GPU).** `make run CONFIG=…` ([DEVELOPER.md](DEVELOPER.md#reproduce)). Not re-run for this page.
+
+<details><summary>Measured in fresh clones</summary>
+
+On an {{r|repro.hw.cpu}} laptop ({{r|repro.hw.cores}} cores, {{r|repro.hw.ram_gb}} GB RAM), at commit {{r|repro.commit}}, by `scripts/measure_reproduce.py`.
+
+| tier | time | disk | reads |
+|---|---|---|---|
+| read only | {{r|repro.read.time_s}} s | {{r|repro.read.files_mb}} MB of files, {{r|repro.read.git_mb}} MB of history | docs, figures, data/figures |
+| one | {{r|repro.t1.readme_s}} s for `make readme`, {{r|repro.t1.sync_s}} s for `uv sync` | {{r|repro.t1.files_mb}} MB of files, {{r|repro.t1.git_mb}} MB of history (pulled by `scripts/provenance_counts.py`), {{r|repro.t1.venv_mb}} MB environment | {{r|repro.t1.results_folders}} run folders, {{r|repro.t1.results_mb}} MB |
+| two | {{r|repro.t2.verify_s}} s, exit code {{r|repro.t2.exit}} | {{r|repro.t2.files_mb}} MB of files, {{r|repro.t2.venv_mb}} MB environment | {{r|repro.t2.results_folders}} run folders, {{r|repro.t2.results_mb}} MB; {{r|repro.t2.ok}} of {{r|repro.t2.checks}} checks match, {{r|repro.t2.diff}} differs, {{r|repro.t2.missing}} need {{r|repro.t2.missing_files}} run files that are in no commit |
+| three | not re-run | a GPU of {{r|repro.t3.gpu_gb_27b}} GB for the 27B | the pinned models |
+
+All of `results/` is {{r|repro.results_all_gb}} GB; no tier needs all of it.
 
 </details>
 
@@ -310,6 +373,7 @@ Our committed guesses and their verdicts; the sources are in the [hypotheses led
 - **Reports.** The [depth report](docs/depth/README.md) (locker scenes) with its [experiment ledger](docs/depth/EXPERIMENTS.md); the [breadth report](docs/breadth/README.md) (fact passages); the [hypotheses ledger](docs/plans/hypotheses.md); a [map of the documents](docs/README.md).
 - **Figures and code.** [figures/](figures/) by set; numbers in `data/figures/` and `docs/breadth/data.csv`; code in `scripts/` and `src/`; runs in `results/`.
 - **This page** is built from `docs/readme/README.template.md` by `scripts/readme_root.py` ([DEVELOPER.md](DEVELOPER.md)).
+- **Licences and citing.** Code is [MIT](LICENSE); each data file keeps its source's terms ([data/SOURCES.md](data/SOURCES.md)), and data derived from model weights keeps the model's licence. Cite with [CITATION.cff](CITATION.cff).
 
 <details><summary>Sprint logs, kept as records in docs/archive/</summary>
 
