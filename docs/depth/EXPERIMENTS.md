@@ -132,6 +132,8 @@ New in this ledger:
 
 Test Lightning conflict test · opened 29 Oct · status: rule fixed in advance · hand-check: in sample (view a) · files: `results/x0_necessity/nem35l_x52_conflict/verdict-20261029T001612Z/verdict.md` · recompute: `scripts/x0_necessity.py` (the command in its docstring) · also: UTC
 
+<details><summary>Question, data, method, rule and figure</summary>
+
 - **Question.** On Nemotron 3.5 Lightning, at its committed layer L14, does the recall follow the lens part while the lookup goes around it?
 - **Why we asked.** A fourth model, of another family, under the main test's rule unchanged. The 122B (FP8; MoE, ~10B active) beside: the largest model, its conflict test from its r2 run (24 Oct; Dan 11:30, the 122B as a fifth model).
 - **Data.** Main test, 200 scenes (the 60 scenes used to pick the layer excluded); ○ gate chosen after the 60-scene pre-check was seen: the main test's gate on all 516 scenes passed (lookup 0.957, recall 0.816). The 122B: the main test at L33, 200 scenes, its gate passed.
@@ -142,6 +144,8 @@ Test Lightning conflict test · opened 29 Oct · status: rule fixed in advance �
 *Switches blocked without the lens part beyond a random part, lookup and recall per model, main test at L (the 122B's L33: the 27B's relative depth carried over); right: the gap, recall minus lookup, with its 95% interval; grey band: within 0.10 of random (the lookup's bar).*
 
 - **Rule, fixed in advance.** The main test's: "confirmed if the lookup has at most 0.10 blocked beyond random and the recall has at least 0.30 blocked of its switches without the lens part; killed if the lookup has at least 0.20 blocked or the recall under 0.20." Coverage run on an already-scored rule: no prediction.
+
+</details>
 
 - **Result.** (L14)
 
@@ -154,23 +158,35 @@ Test Lightning conflict test · opened 29 Oct · status: rule fixed in advance �
   | the rule | | | | **confirmed** (lookup around, recall through) | **CONFIRMED at layer 33<!-- src: results/x0_necessity/qwen35_122b_x0_necessity_r2/verdict-20261024T171509Z/verdict.md \| chat :: CONFIRMED at layer 33 -->** (lookup around, recall through) |
   | lookup with the lens part at k = 25 / 50 / 100 directions (descriptive) | | | | | 0.00 [-0.06, 0.06]<!-- src: results/x0_necessity/qwen35_122b_x0_necessity_r2/verdict-20261024T171509Z/verdict.md \| jpp :: signed :: PP :: 0.00 [-0.06, 0.06] --> / -0.02 [-0.09, 0.05]<!-- src: results/x0_necessity/qwen35_122b_x0_necessity_r2/verdict-20261024T171509Z/verdict.md \| jpp :: signed :: PP :: -0.02 [-0.09, 0.05] --> / -0.12 [-0.22, -0.04]<!-- src: results/x0_necessity/qwen35_122b_x0_necessity_r2/verdict-20261024T171509Z/verdict.md \| jpp :: signed :: PP :: -0.12 [-0.22, -0.04] --> |
 
-  On the clean one-pick scenes Lightning misses the gate (recall 0.751<!-- src: results/x0_necessity/nem35l_x52_fresh/coverage.txt | (recall 0.751 :: 0.751 --> < 0.80), so it is not tested there; the below-gate run on the eligible scenes (295 at L14; the source of Lightning's below-gate runs) is descriptive only, hollow ○: recall ○ 0.39 [0.33, 0.45]<!-- src: results/x0_necessity/nem35l_x52_fresh/verdict-20261029T083122Z/verdict.md | PM | 295 :: 0.39 [0.33, 0.45] -->, lookup ○ 0.03 [-0.02, 0.08]<!-- src: results/x0_necessity/nem35l_x52_fresh/verdict-20261029T083122Z/verdict.md | PP | 295 :: 0.03 [-0.02, 0.08] --> blocked beyond a random part, the pattern the rule calls confirmed.
-
 - **Read.**
   - The rank check (range per model; every item of the conflict test and the routes test, docs/review/verify_pack_jspace.md; no flag): what the lens can read about the item sits in the lens part; the rest puts the new bridge word in the lens's top 50 on 0.00-0.14 of items (conflict test: 9B 0.00<!-- src: docs/review/verify_pack_jspace.md \| Qwen3.5-9B :: S's bridge (word or symbol) :: 0.00 -->, 27B 0.02<!-- src: docs/review/verify_pack_jspace.md \| Qwen3.6-27B :: S's bridge (word or symbol) :: 0.02 -->, Muse 0.01, Lightning 0.06, 122B 0.05; the routes test's highest condition, Lightning C0: 0.14), against about 0.5 for a random part (0.52 / 0.53 / 0.66 / 0.65 / 0.83) and about 0.8 for the lens part (0.81 / 0.81 / 0.89 / 0.93 / 0.93); the random part reads the bridge because it keeps part of Δ itself.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+The result in full:
+
+  On the clean one-pick scenes Lightning misses the gate (recall 0.751<!-- src: results/x0_necessity/nem35l_x52_fresh/coverage.txt | (recall 0.751 :: 0.751 --> < 0.80), so it is not tested there; the below-gate run on the eligible scenes (295 at L14; the source of Lightning's below-gate runs) is descriptive only, hollow ○: recall ○ 0.39 [0.33, 0.45]<!-- src: results/x0_necessity/nem35l_x52_fresh/verdict-20261029T083122Z/verdict.md | PM | 295 :: 0.39 [0.33, 0.45] -->, lookup ○ 0.03 [-0.02, 0.08]<!-- src: results/x0_necessity/nem35l_x52_fresh/verdict-20261029T083122Z/verdict.md | PP | 295 :: 0.03 [-0.02, 0.08] --> blocked beyond a random part, the pattern the rule calls confirmed.
+
+More from the reading:
+
   - On the 122B, at its L33, the lookup has nothing blocked beyond random and the recall has about a third blocked: confirmed; with more lens directions (k = 50, 100) the lookup still has nothing blocked beyond random.
   - At L14 the recall follows the lens part and the lookup does not; the same split stands at L18 and L22.
+
 - **Caveats.**
   - The 122B: its L33 is the 27B's relative depth carried over (33/48), not the other models' rule; its J++ lens was fit on the bf16 weights; FP8; MoE, ~10B active.
   - The clean one-pick numbers are below gate, exploratory: never in claims or grades (Dan, 09:15 and 09:50).
   - The gate was chosen after the 60-scene pre-check had failed (accepted by Dan 01:10).
   - From L26 on the lookup switches on 0.02 of scenes or fewer, so those layers cannot tell.
 
+</details>
+
 ### Is it the bridge item or its answer that moves through the lens? <a id="t51-12"></a>
 
 `in README` *Used in: README Part I card "In a conflict, which part of the bridge word does each reader follow?" (the specificity rows); README "Tested and dropped" ("The described bridge on the fact passages").*
 
 Test 51.12 · opened 28 Oct · status: rule fixed in advance · hand-check: in sample (view b) · files: `results/x51_answer/x52_answer-20261029T082417Z/verdict.md` · recompute: `scripts/x51_answer.py` (the command in its docstring)
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** On the main test, is the recall's drop without the lens part about the bridge item or about its answer word?
 - **Why we asked.** At a described bridge the lens reads the answer about as well as the item; the same could hold at our bridge word.
@@ -185,6 +201,8 @@ The three arms side by side, per model:
 
 *The answer control, main test: the recall's switches blocked beyond a random part of the same size without the lens part, with the lens part removed but the answer word's directions kept, and with only the answer word's directions removed, one lane each per model. Whiskers 95% intervals; Lightning and the 122B hollow ○ (after the data).*
 
+</details>
+
 - **Result.** (recall)
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -197,19 +215,29 @@ The three arms side by side, per model:
 
 - **Read.**
   - On the 122B, as on Lightning and Muse, the recall's answer word is not read at the bridge word, so that is its label; the arms beside give the entity pattern (post hoc, with the answer directions in any language: mixed on the 27B and Muse, the item on the 9B; the shift of the retained-directions arm is explained by the number of directions).
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+More from the reading:
+
   - The recall's drop without the lens part is the item's: keeping the answer's lens directions keeps almost all of it, and those directions alone cost nothing.
   - On Lightning the answer word is not read at the bridge word for either reader; its lookup has too little blocked without the lens part to split into arms.
   - On the named fact passages with true facts (coverage runs, no prediction) the same arms say mixed for both readers on the 9B, the 27B and Lightning: keeping the answer's directions keeps 0.21<!-- src: results/x51_answer/x52_answer-20261029T081754Z/verdict.md | z1k :: qwen3.5-9b :: recall :: 0.21 --> (9B), 0.29<!-- src: results/x51_answer/x52_answer-20261029T081240Z/verdict.md | z1k :: qwen3.6-27b :: recall :: 0.29 --> (27B) and 0.29<!-- src: results/x51_answer/x52_answer-20261029T081239Z/verdict.md | z1k :: nemotron-3.5-lightning :: recall :: 0.29 --> (Lightning) of the recall's drop. On the made-up-fact passages the 9B's lookup cannot tell (no extra drop beyond random) and its recall is mixed; on the 27B the answer word is not read at the bridge word for the lookup (rank above 50 on 0.91 [0.86, 0.94]<!-- src: results/x51_answer/x52_answer-20261029T082432Z/verdict.md | z1p :: qwen3.6-27b :: lookup :: 0.91 [0.86, 0.94] --> of items) and the recall is mixed (results/x51_answer/x52_answer-20261029T082417Z/verdict.md). Muse not run; the made-up-fact half on Lightning is not tested (its source run missed the gate; results/x51_answer/x52_answer-20261029T081355Z/verdict.md).
+
 - **Caveats.**
   - The 122B: a coverage run (results/x51_answer/x52_answer-20261029T112359Z), no prediction; its L33 carried over from the 27B's relative depth, FP8 weights, its J++ lens fit in bf16 (see How to read).
   - Digits are not in the lens dictionary, so the answer directions are number words; the pre-amendment runs are kept, superseded.
   - On the fact passages' described bridge the same control finds the answer, not the item (see [Z2](#z2)).
+
+</details>
 
 ### At which layer does Lightning get the conflict test? <a id="lightning-layer"></a>
 
 `in README` *Used in: README "The question and the setup" (Lightning's layer).*
 
 Test Lightning's layer · opened 29 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x51_lightning/nem35l_x52_layer_r2/prereq.md` · recompute: `scripts/x51_lightning.py` (the command in its docstring)
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** At which layer does Nemotron 3.5 Lightning get the conflict test?
 - **Why we asked.** A new model needs its layer L fixed before any scored run.
@@ -224,6 +252,8 @@ The sweep that picked the layer:
 
 *Lightning's layer sweep on the pre-check scenes: the share of each reader's answers switched by the whole change at the bridge word, lookup (violet) and recall (black), at every swept layer; dashed: the bar both readers must reach. All estimates post hoc (the gate was chosen after the pre-check).*
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -234,15 +264,22 @@ The sweep that picked the layer:
 
 - **Read.**
   - L14 is the earliest layer at depth 0.25 or more where both readers switch on at least 0.3 of scenes.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - The 60-scene pre-check failed (lookup 0.883, recall 0.783); the main test's gate on all 516 scenes decided (accepted by Dan 01:10).
   - `layer.json`'s "rule" field holds the prerequisite text, not amendment 1's pick rule.
+
+</details>
 
 ### Does the split hold in prose, JSON and tables? <a id="x0b"></a>
 
 `in README` *Used in: README Part I card "Does the split hold in other texts?" (the varied scenes).*
 
 Test x0b · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.md` · recompute: `scripts/x0b_generalize.py` (the command in its docstring) · also: varied scenes; Lightning's coverage run 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** In scenes written as prose, JSON or a table, at three nesting levels and in several domains, does the lookup let go of the lens part while the recall follows it?
 - **Why we asked.** The main test is one template; the split could belong to that layout rather than to the two readers.
@@ -255,6 +292,8 @@ Test x0b · opened not stated · status: rule fixed in advance · hand-check: no
 
 - **Rule, fixed in advance.** "Holds iff lookup excess <= 0.1 (upper CI <= 0.2) and C >= 0.2 (lower CI >= 0.1); fails iff lookup excess >= 0.2 or C's upper CI < 0.1." (C: the recall's extra drop minus the lookup's.) Lightning: a coverage run on this rule, no prediction.
 
+</details>
+
 - **Result.** (pooled over the cells, at L)
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -266,16 +305,26 @@ Test x0b · opened not stated · status: rule fixed in advance · hand-check: no
 
 - **Read.**
   - The 122B (FP8; MoE, ~10B active; its L33 carried over from the 27B): mixed, its recall's drop beyond random small (the rule's C under 0.2).
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+More from the reading:
+
   - In prose, JSON and tables the recall follows the lens part and the lookup does not, on all four models, Lightning included.
+
 - **Caveats.**
   - Only cells that pass the gate count; about a quarter of Lightning's and Muse's cells fail it.
   - Muse's scene count is 1,388 here and 1,389 in the README (Flagged 6).
+
+</details>
 
 ### Does the split hold in natural passages? <a id="x5"></a>
 
 `in README` `below gate: Lightning` *Used in: README Part I card "Does the split hold in other texts?" (the natural passages).*
 
 Test x5 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x5_natural/qwen35_9b_x5_natural_g75/verdict-20261025T135050Z/verdict.md` · recompute: `scripts/x5_natural.py` (the command in its docstring) · also: natural passages, opened 25-26 Oct; Lightning's gate 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** In natural passages, where a fact sentence names the bridge, does the lookup let go of the lens part while the recall follows it?
 - **Why we asked.** Our scenes are templates; natural passages test the split outside them.
@@ -288,6 +337,8 @@ Test x5 · opened not stated · status: rule fixed in advance · hand-check: not
 
 - **Rule, fixed in advance.** "gap >= 0.3 with lower CI >= 0.15 holds; <= 0.1 fails; otherwise mixed."
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -299,17 +350,27 @@ Test x5 · opened not stated · status: rule fixed in advance · hand-check: not
 
 - **Read.**
   - The 122B (FP8; MoE, ~10B active): holds, at its L33.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+More from the reading:
+
   - In natural passages the recall follows the lens part on all three tested models; the 27B's lookup follows it too, so its split is mixed.
+
 - **Caveats.**
   - Lightning: its gate failed, so it is not tested; the below-gate run (29 Oct; 36 eligible passages) is exploratory, hollow ○, never in claims or grades.
   - The 9B's gate was lowered after the data; Muse's lookup switches rarely under the whole change, so its lookup effect is wide.
   - Few items (60 to 137).
+
+</details>
 
 ### Does each part, added by itself, move its reader? <a id="t51-1"></a>
 
 `ledger only` *Used in: README Part I, a one-line link to this card (the dose curves).*
 
 Test 51.1 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x51_dose/x52_dose-20261029T011635Z/verdict.md` · recompute: `scripts/x51_dose.py` (the command in its docstring) · also: Lightning's coverage run 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** Added by itself at a dose, does the lens part move the recall more than a random part of its share, and leave the lookup?
 - **Why we asked.** The conflict test takes a part away; a reader that follows a part should also move when only that part is added.
@@ -322,6 +383,8 @@ Test 51.1 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 
 - **Rule, fixed in advance.** "(i) the lookup is blind to the J++ part: switch minus random <= 0.10 at every α whose plain-text cross-entropy stays under 2x the whole change's, on all three. (ii) the recall reads the J++ part above its share: at the first α where the J++ part alone switches >= 0.3, J minus random >= 0.2, per model. (iii) together only (Muse): (1,1) >= 0.8 while the best single-part dose under the cross-entropy bar stays <= 0.3."
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -333,16 +396,26 @@ Test 51.1 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 
 - **Read.**
   - Added by itself, the lens part moves the recall more than a random part on all three models, and the 9B's and Muse's lookups no more than random; the 27B's lookup moves at the highest dose.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+More from the reading:
+
   - Lightning's lookup is blind to the lens part as on the 9B and Muse; its recall misses rule (ii)'s bar by a hair at the first dose that switches 0.3 of recalls.
+
 - **Caveats.**
   - At high doses random parts switch readers too (the 9B's random part at dose 3 switches most lookups).
   - Scenes with the lockers first only.
+
+</details>
 
 ### Does the recall need the lens part, or only follow it? <a id="t47-5"></a>
 
 `in README` *Used in: README Part I card "Does the recall need the lens part, or only follow it?" (zeroing).*
 
 Test 47.5 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_zero/x47_5-20261028T113106Z/x47_5.md` · recompute: `scripts/x47_zero.py` (the command in its docstring) · also: zeroing at one layer; Lightning's coverage run 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** Taking the lens part out of the changed prompt's own state at the bridge word, does the recall drop the changed answer (needed) or leave it unchanged (followed)?
 - **Why we asked.** The conflict test removes the lens part from the change; zeroing it in the changed prompt's own state asks whether the recall needs it there.
@@ -352,6 +425,8 @@ Test 47.5 · opened not stated · status: rule fixed in advance · hand-check: n
 *No figure: on every model 0.94-0.97 of its recall answers stay unchanged, so the four numbers per model are the Result's table (the zeroing figure drew every dot near 1.0).*
 
 - **Rule, fixed in advance.** ""followed, not needed at one layer" if 0.80 or more of the recall's answers stay unchanged under the zeroing, within 0.10 of the random arm; "needed" if it has >= 0.30 blocked beyond random. The lookup reported beside." Lightning and the 122B: coverage runs on this rule, no prediction.
+
+</details>
 
 - **Result.**
 
@@ -364,16 +439,23 @@ Test 47.5 · opened not stated · status: rule fixed in advance · hand-check: n
 
 - **Read.**
   - Zeroing the lens part in the changed prompt's own state at L costs the recall at most 0.06 of its answers beyond random on all five models: the recall follows the lens part but does not need it at one layer.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - Over L to L+3 the recall has more blocked (0.08 to 0.25 beyond random), between the bars (descriptive).
   - The lookup's answers stay unchanged in every arm on all five.
   - The 122B: a coverage run (FP8, L33; no prediction †).
+
+</details>
 
 ### Does the recall need the lens part once its other copies are gone? <a id="t49-2"></a>
 
 `in README` `below gate: Lightning` *Used in: README Part I card "Does the recall need the lens part, or only follow it?" (the ladder).*
 
 Test 49.2 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x49_ladder/x49_2-20261028T161612Z/x49_2.md` · recompute: `scripts/x49_ladder.py` (the command in its docstring)
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** Taking the lens part out of the changed prompt step by step (more layers, the earlier mention, the question, every token), when does the recall start to need it, and does the lookup ever?
 - **Why we asked.** At one layer the recall barely needs the lens part; it may have copies elsewhere.
@@ -388,6 +470,8 @@ The two rungs the rule compares, per reader and scene order:
 
 *The ladder at the two rungs its rule compares: the answers turned wrong beyond a random part of the same share when the lens part is taken out step by step, the recall in locker-first and in locker-after scenes and the lookup over every scene. Whiskers 95% intervals; Lightning and the 122B hollow ○.*
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -400,17 +484,27 @@ The two rungs the rule compares, per reader and scene order:
 
 - **Read.**
   - The recall needs the lens part once its copies over four layers and at the earlier mention go (9B); on Muse every step costs less. The lookup never needs it, on all three.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+More from the reading:
+
   - The 27B's recall has most blocked at step 6 (the breadth track's definition over its band); neither the earlier mention as its second copy (a) nor "only when everything goes" (b) holds there, and its lookup never needs the lens part (c).
+
 - **Caveats.**
   - Lightning: below the clean one-pick gate, so not tested; its below-gate run (295 eligible scenes, step 6 in the breadth track's band L27-33) is exploratory, hollow ○, never in claims or grades.
   - The reruns redraw every step: shared steps move by up to 0.02 against the first runs (Flagged 20); Muse's column keeps the first run, as the README.
   - Lightning: not tested, the clean one-pick design's gate fails there (recall 0.751).
+
+</details>
 
 ### Does the recall also read the item's earlier mention? <a id="t45p"></a>
 
 `in README` `below gate: Lightning` *Used in: README Part I card "Does the recall also read the item's earlier mention?".*
 
 Test 45p · opened 27 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x45p/x45p-20261027T012017Z/x45p.md` · recompute: `scripts/x45p.py` (the command in its docstring) · also: the earlier mention, opened 27 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** When the new item's locker sentence comes before the asked pick, does the recall also read the item's lens part at that earlier mention, beyond the bridge word?
 - **Why we asked.** The ladder's third step points to a second copy where the locker sentence comes first; the earlier mention is the item's own word there.
@@ -423,6 +517,8 @@ Test 45p · opened 27 Oct · status: rule fixed in advance · hand-check: not in
 
 - **Rule, fixed in advance.** "the recall reads the earlier mention if the recall's switch drop in (2) exceeds (3) by at least 0.2 and (4) by at least 0.15 (loss_k = 1 - S_k / S_1, point estimates), on at least 2 of 3 models; a model whose base edit switches fewer than 30 recalls is not tested."
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -434,16 +530,23 @@ Test 45p · opened 27 Oct · status: rule fixed in advance · hand-check: not in
 
 - **Read.**
   - On all three models the recall has more blocked switches when the lens part also goes at the item's earlier mention than when a random part or another item's lens part goes: the recall reads the earlier mention too.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - Lightning: below the clean one-pick gate, so not tested; its below-gate run (119 locker-first items) is exploratory, hollow ○, never in claims or grades.
   - The base edit switches few recalls on the 27B and Muse (75 and 55 switches), so the losses rest on few switches there.
   - Only scenes with the locker first; after the pick there is no earlier mention.
+
+</details>
 
 ### When the lens part points the recall to one item and the address to another, which does it follow? <a id="b53-6"></a>
 
 `in README` *Used in: README Part I card "When the lens part points the recall to one item and the address to another, which does it follow?".*
 
 Test 53.6 · opened 29 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x53_identity_address/x53_identity_address-20261029T105132Z` · recompute: `scripts/x53_identity_address.py` (the command in its docstring) · also: joint four-model verdict
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** When the lens part of the change points the recall to one item and the address points it to another, which does the recall follow?
 - **Why we asked.** The address swap redirects part of the recall ([swap](#swap)); the lens part carries the item's identity to the recall. Set against each other, the two show which the recall weights.
@@ -458,6 +561,8 @@ Which item the recall follows when the lens part and the address disagree:
 
 *The lens part from one scene (item B) and the address from another (item C) swapped in together (left) or alone (right): the share of the recall's answers that are B's (the lens part's item, teal) and C's (the address's item, orange), per model. Whiskers 95% intervals; Lightning hollow ○.*
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -470,12 +575,20 @@ Which item the recall follows when the lens part and the address disagree:
 
 - **Read.**
   - By the rule all four models give both. On the 9B and Lightning the recall splits between B's and C's answers, about a quarter each; on the 27B and Muse it mostly stays on the original answer, and the little that moves goes slightly more to B than to C.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+More from the reading:
+
   - Across models: does not hold as written (every model "both"). The 9B and Lightning give both as wanted; the 27B and Muse give both where the rule wanted the lens identity. Descriptive, beside: the recall moves under both levers on the 9B and Lightning (0.25-0.30<!-- src: jobs/c3/batch53.yaml \| Lightning (0.25-0.30 each) :: 0.25-0.30 --> each), barely on the 27B and Muse (<= 0.11<!-- src: jobs/c3/batch53.yaml \| barely on the 27B and Muse (<= 0.11) :: 0.11 -->), the same split as the address swap's collateral.
   - Each part alone moves the recall little on the 27B and Muse; on the 9B and Lightning the address alone moves about a fifth to C.
+
 - **Caveats.**
   - The 27B sits just under the identity bar: B's share 0.11<!-- src: results/x53_identity_address/x53_identity_address-20261029T105132Z/verdict.md \| qwen3.6-27b :: 300 :: 0.11 --> against twice C's 0.06<!-- src: results/x53_identity_address/x53_identity_address-20261029T105132Z/verdict.md \| qwen3.6-27b :: 300 :: 0.06 -->.
   - On the 27B and Muse the recall mostly stays on the original answer, so their "both" rests on small shares. The labels ignore magnitude (flag [30](../review/ledger_ops_2026-10.md#flagged)).
   - One joint verdict (results/x53_identity_address/x53_identity_address-20261029T105132Z); exploratory (batch 53), no prediction.
+
+</details>
 
 ### Does the lens effect follow the question's position or the answer's type? <a id="b53-1"></a>
 
@@ -483,9 +596,10 @@ Which item the recall follows when the lens part and the address disagree:
 
 Test 53.1 · opened 29 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x53_2x2/qwen35_122b_x53_2x2/qa_num/agreement.json` · recompute: `scripts/x53_2x2.py` (the command in its docstring) · also: five models, combined verdict 29 Oct; the word cells not tested
 
+<details><summary>Question, data, method, rule and figure</summary>
+
 - **Question.** On our locker scenes, does the recall's lens effect (the item or its answer, by 51.12's arms) change when the question comes before the scene instead of after it, or when the recall's answer is a word instead of a number?
 
-<details><summary>Why we asked, data, method and the rule fixed in advance</summary>
 
 - **Why we asked.** On the fact passages the answer word is readable and usable through the lens ([52 B](#b52-b)); on our scenes it is not. His questions and answers differ from ours in two ways at once: where the question sits and what kind of answer it asks for.
 
@@ -495,13 +609,14 @@ Test 53.1 · opened 29 Oct · status: rule fixed in advance · hand-check: not i
 
 - **Rule, fixed in advance.** "Rule per cell: 51.12's labels (entity / answer / mixed / answer word not read). Rule across cells: "position": (Q-before, number) is answer or mixed and (Q-after, word) is entity; "readability": (Q-after, word) is answer or mixed and (Q-before, number) is entity; "both": each single change gives mixed and (Q-before, word) gives answer; "neither": all four entity. Cross-check, decisive for the story: the conflict test's lookup has <= 0.10 blocked beyond random in all four cells ("the pointer [pointer: the address] does not depend on the question"); report per cell." Models: 9B, then 27B, then Lightning if its gate passes. Dan 11:10, across the number cells: "the pointer [pointer: the address] does not depend on the question's position" if the lookup has <= 0.10 blocked in both cells on a model. Dan 11:25: the paired difference (Q-before minus Q-after) with its cluster-bootstrap CI; "order dependence" only if that CI excludes 0. (jobs/c3/batch53.yaml, next_1110 and critic_1125; no prediction)
 
-</details>
 
 Both readers with a number answer, the question after and before the scene:
 
 ![With a number answer the recall follows the entity](../../figures/depth/42_number_answer.png)
 
 *A number as the answer: the switches blocked without the lens part beyond a random part, the recall (left) and the lookup (right), with the question after the scene and, on the 27B and the 122B, before it. Whiskers 95% intervals; Lightning and the 122B hollow ○.*
+
+</details>
 
 - **Result.**
 
@@ -522,15 +637,17 @@ Both readers with a number answer, the question after and before the scene:
 
 - **Read.**
   - With a number answer the recall follows the entity wherever the question sits: on the 9B with the question after the scene, on the 27B with it after and before; keeping the answer's directions keeps almost all of the recall's drop, and the answer directions alone cost little. On Lightning and Muse (question after) and on the 122B (both cells) the recall's answer word is not read at the bridge word, so that is their label; the arms beside give the entity pattern.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+More from the reading:
+
   - The conflict test's lookup has nothing blocked beyond random on the 9B, Lightning and Muse (question after) and on the 122B in both cells, so on the 122B the lookup's route does not depend on the question's position by the decided rule; on the 27B it has some blocked with the question after the scene and more with it before. On the 27B the decided rule ("the pointer [pointer: the address] does not depend on the question's position") and the cross-check do not hold, and the paired difference on the scenes both cells read excludes 0: order dependence by the decided wording. On the 9B, Lightning and Muse the question-before cell missed its gate, so they read can't tell.
   - Order dependence: a small order effect on the 27B (lower bound +0.01<!-- src: results/x53_2x2/x53_2x2-20261029T113335Z/verdict.md \| Paired difference (Dan 11:25) :: +0.01 -->, of the order of the 122B's rerun noise), none on the 122B.
 
-<details><summary>More of the read</summary>
 
 - Across models : order dependence on 1 of the 2 models where both number cells passed their gates: 27B yes, 122B no (the paired difference's CI includes 0); 9B / Muse / Lightning: Q-before gate failed.
 - Across cells no model gets a label: the word cells have none. On the 27B the question-before number cell is the entity, which rules out "position" and "both"; "readability" and "neither" stay open and only the word cells could decide between them. On the 9B all four patterns stay open; on Lightning and Muse "position", "readability" and "both" (their question-after label is not the entity, so "neither" is out); on the 122B none (both number cells "not read"). The word cells are not tested: the animal-class relation's recall reads too few of the 9B's answers with the question after the scene (the decided rule); with the question before the scene the 9B's recall misses the number cell's gate.
-
-</details>
 
 - **Caveats.**
   - The word cells used the animal-class relation on 191 animal scenes, the only relation that passed the coverage rule (Dan's 10:20 decision: words read by their first token); it then missed the accuracy bar, so neither word cell is tested.
@@ -542,11 +659,15 @@ Both readers with a number answer, the question after and before the scene:
   - The 122B: the rerun of its main cells matches the stored run on 193<!-- src: results/x53_2x2/x53_2x2-20261029T113335Z/verdict.md \| qwen35_122b_x0_necessity_r2 :: recall: whole 193/200 :: 193 -->-194<!-- src: results/x53_2x2/x53_2x2-20261029T113335Z/verdict.md \| qwen35_122b_x0_necessity_r2 :: lookup: whole 194/200 :: 194 --> of 200 items and arm 1's recall effect moves 0.315<!-- src: results/x53_2x2/x53_2x2-20261029T113335Z/verdict.md \| qwen35_122b_x0_necessity_r2 :: vs stored 0.315 :: 0.315 --> → 0.270<!-- src: results/x53_2x2/x53_2x2-20261029T113335Z/verdict.md \| qwen35_122b_x0_necessity_r2 :: arm 1 extra loss rerun 0.270 :: 0.270 --> (likely FP8 / MoE numerics, unchecked); its numbers carry ~±0.04<!-- src: jobs/c3/batch53.yaml \| run-to-run noise beyond the bootstrap :: 0.04 --> run-to-run noise beyond the bootstrap (per item: results/x53_2x2/qwen35_122b_x53_2x2/qa_num/agreement.json).
   - Exploratory (batch 53): no prediction.
 
+</details>
+
 ### Does each reader follow the lens part by weight, or by route? <a id="t49-1"></a>
 
 `ledger only` *Used in: not in the README (its rebuild).*
 
 Test 49.1 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x49_gain/x49_1-20261028T154510Z/x49_1.md` · recompute: `scripts/x49_gain.py` (the command in its docstring) · also: gain map; Lightning's coverage run 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** Scaling the lens part and the rest of the change separately, does the recall move with either part at enough gain (weights), or only with one of them (routes), and does the lookup ignore the lens part?
 - **Why we asked.** Removing a part shows what a reader needs; adding each part at several gains shows whether it reads that part at all.
@@ -556,6 +677,8 @@ Test 49.1 · opened not stated · status: rule fixed in advance · hand-check: n
 *No figure: five cells per model, each against its bar: the Result's table (the bars-and-ticks figure carried the verdict "(c) neither" on every model).*
 
 - **Rule, fixed in advance.** "(a) "weights, not routes": the recall's switch at (2,0) >= 0.5 and at (0,2, no U) >= 0.5, random corners <= 0.15; the lookup's switch at (2,0) <= 0.10 and at (0,1) >= 0.6. (b) "routes": the recall's switch at (0,2) <= 0.2 while (2,0) >= 0.5. (a') "the rest moves the recall only through the address": (0,2) >= 0.5 but (0,2, no U) <= 0.2. (c) "neither": report the two heatmaps." Lightning: a coverage run on this rule, no prediction.
+
+</details>
 
 - **Result.** (switch rates)
 
@@ -571,15 +694,22 @@ Test 49.1 · opened not stated · status: rule fixed in advance · hand-check: n
 
 - **Read.**
   - The gain map fits neither reading fixed in advance on any model: on the 9B and Lightning a random part at the lens part's share also moves the recall; on the 27B and Muse the lens part alone moves the recall little even at twice its size. The rest alone moves the lookup on all five; the 122B (coverage †) reads like the 9B: a random part at the lens part's share moves its recall too.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - Lightning's lookup with the lens part at twice its size sits at the rule's 0.10 bar, its point estimate just above it.
   - Locker-first main-test scenes only.
+
+</details>
 
 ### Do the two readers read two separate learned subspaces? <a id="t48-1"></a>
 
 `ledger only` *Used in: README Appendix A, a figure link ("Muse's learned subspaces", figures/depth/supp/s12_das_muse.png).*
 
 Test 48.1 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x48_das/x52_das-20261029T040955Z/verdict.md` · recompute: `scripts/x48_das.py` (the command in its docstring) · also: DAS at the bridge word; the 27B's coverage run 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** At the bridge word at L, does each reader's switch run through its own small learned subspace, the recall's inside the lens part and the lookup's holding the address or a third identity code?
 - **Why we asked.** Our parts are hand-built; a subspace trained for each reader tests the two-reader picture without that choice.
@@ -592,6 +722,8 @@ Test 48.1 · opened not stated · status: rule fixed in advance · hand-check: n
 
 - **Rule, fixed in advance.** "(a) "two readers, two subspaces": own-IIA >= 0.7 at some k <= 16 for both readers, and cross-IIA <= 0.25 in both directions (paired CI excluding overlap with own-IIA). (b) "the recall's subspace is the lens's part": R_recall's energy inside the J++-25 part >= 0.5 (random R <= 0.15); R_lookup's <= 0.2. (c) "the address is part of the lookup's subspace": ||R_lookup^T U||_F^2 / 4 >= 0.5 (random R ~ k/d). (d) "a third identity code": R_lookup's energy outside (J++-25 u U u W_E-25) >= 0.5 while its own-IIA >= 0.7, and R_lookup alone gives identity answers >= 0.3 in the routes read." The 27B: a coverage run on this rule, no prediction.
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -602,15 +734,22 @@ Test 48.1 · opened not stated · status: rule fixed in advance · hand-check: n
 
 - **Read.**
   - On none of the three models does each reader run through its own small learned subspace: at the chosen k neither reader's subspace carries 0.7 of its switches on held-out pairs, and (a) to (d) all fail.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - The 27B's run (r2) used BJ_DAS_GDN=torch, a run fix for the backward pass, as in 51.3 on the 27B.
   - Few test pairs (the 27B: 10 lookup, 8 recall).
+
+</details>
 
 ### What is inside the lens part's 25 directions? <a id="b52-a"></a>
 
 `in README` *Used in: README Part I card "What do the lens part's 25 directions stand for?".*
 
 Test batch 52 A · opened 29 Oct · status: descriptive · hand-check: not in sample · files: `results/x52_atoms/report-20261029T000125Z/verdict.md` · recompute: `scripts/x52_atoms.py` (the command in its docstring) · also: Lightning's
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** Which words do the 25 lens directions of the change stand for: the two bridge items, the answer words, or other words?
 - **Why we asked.** The answer control tests the answer words only; the rest of the lens part was never looked at.
@@ -623,6 +762,8 @@ Test batch 52 A · opened 29 Oct · status: descriptive · hand-check: not in sa
 
 - **Rule, fixed in advance.** None: descriptive inventory, no rule.
 
+</details>
+
 - **Result.** (main test, recall's view)
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -634,15 +775,22 @@ Test batch 52 A · opened 29 Oct · status: descriptive · hand-check: not in sa
 
 - **Read.**
   - On the main test the two bridge words carry about a fifth (9B, 27B, Lightning) to two fifths (Muse) of the rebuilt energy, the answer words almost none (none at all on Lightning).
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - The classifier was hand-checked on 5 items per model (blind on Muse's main test only) and misses non-English answer words.
   - On the fact passages the bridge names carry 0.02-0.03 and the descriptions' words dominate (see the report).
+
+</details>
 
 ### Where is the answer readable through the lens, and can it be written there? <a id="b52-b"></a>
 
 `ledger only` *Used in: not in the README (its rebuild).*
 
 Test batch 52 B · opened 29 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md` · recompute: `scripts/x52_answer_map.py` (the command in its docstring) · also: Lightning's main set 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** For each reader, on our scenes and on the fact passages, is the answer word readable through the lens before the answer is computed, and does writing its lens directions change the answer?
 - **Why we asked.** The answer control found the answer word not read at our bridge word but read at the fact passages' description; where else is it readable, and is it used there?
@@ -657,6 +805,8 @@ Readable and usable, per reader and data set:
 
 *Where the answer word is readable through the lens (left: the share of items with it in the lens top 5 at the best layer before the answer; one value, no interval) and whether adding its lens directions there changes the answer (right; at the size the run chose), lookup (violet) and recall (black), on our scenes and on the fact passages. Whiskers 95% intervals; Lightning and the 122B hollow ○ (coverage runs).*
 
+</details>
+
 - **Result.** (the combination; answers changed by the write at one / two times a real change's size)
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -666,15 +816,25 @@ Readable and usable, per reader and data set:
   | the fact passages, described, lookup | **readable and usable**: 0.63 [0.55, 0.72] / 0.55 [0.46, 0.64]<!-- src: results/x52_answer_map/x52-20261029T004559Z/verdict.md \| ['E', 10] :: 0.63 [0.55, 0.72] / 0.55 [0.46, 0.64] --> | **readable and usable**: 0.17 [0.11, 0.23] / 0.80 [0.73, 0.86]<!-- src: results/x52_answer_map/x52-20261029T004559Z/verdict.md \| best T L62 1.00 :: 0.17 [0.11, 0.23] / 0.80 [0.73, 0.86] --> | **readable and usable**: 0.97 [0.94, 0.99] / 0.92 [0.87, 0.96]<!-- src: results/x52_answer_map/x52-20261029T004559Z/verdict.md \| best T L48 1.00 :: 0.97 [0.94, 0.99] / 0.92 [0.87, 0.96] --> | read pending | – |
   | the fact passages, described, recall | **readable and usable**: 0.61 [0.53, 0.69] / 0.55 [0.46, 0.64]<!-- src: results/x52_answer_map/x52-20261029T004559Z/verdict.md \| ['E', 16] :: 0.61 [0.53, 0.69] / 0.55 [0.46, 0.64] --> | **readable and usable**: 0.86 [0.79, 0.91] / 0.84 [0.78, 0.90]<!-- src: results/x52_answer_map/x52-20261029T004559Z/verdict.md \| best T L60 1.00 :: 0.86 [0.79, 0.91] / 0.84 [0.78, 0.90] --> | **readable and usable**: 0.99 [0.97, 1.00] / 0.85 [0.79, 0.91]<!-- src: results/x52_answer_map/x52-20261029T004559Z/verdict.md \| best T L48 0.99 :: 0.99 [0.97, 1.00] / 0.85 [0.79, 0.91] --> | read pending | – |
 
-  The recall's write at twice a real change's size, what the model outputs (a CPU check after the data, descriptive; results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md): the table counts the changed prompt's answer token, but at twice the size the recall's top token is mostly one of the written answer word's own tokens ("Four", "Six", ...), on 0.76<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 35 :: 0.76 --> / 0.84<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 39 :: 0.84 --> / 0.96<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 40 :: 0.96 --> of items (9B / Muse / Lightning); the changed prompt's answer token on 0.03<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 35 :: 0.03 --> / 0.09<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 39 :: 0.09 --> / 0.01<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 40 :: 0.01 -->, the original answer on 0.04<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 35 :: 0.04 --> / 0.03<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 39 :: 0.03 --> / 0.00<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 40 :: 0.00 -->. The 27B differs: its top token stays the original answer on 0.74<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | recall | ans2 | 200 | 0.20 | 0.74 :: 0.74 -->.
-
 - **Read.**
   - On the fact passages the answer word is readable and writing it changes the answer, for both readers on all three models.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+The result in full:
+
+  The recall's write at twice a real change's size, what the model outputs (a CPU check after the data, descriptive; results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md): the table counts the changed prompt's answer token, but at twice the size the recall's top token is mostly one of the written answer word's own tokens ("Four", "Six", ...), on 0.76<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 35 :: 0.76 --> / 0.84<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 39 :: 0.84 --> / 0.96<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 40 :: 0.96 --> of items (9B / Muse / Lightning); the changed prompt's answer token on 0.03<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 35 :: 0.03 --> / 0.09<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 39 :: 0.09 --> / 0.01<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 40 :: 0.01 -->, the original answer on 0.04<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 35 :: 0.04 --> / 0.03<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 39 :: 0.03 --> / 0.00<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | 'Four' 40 :: 0.00 -->. The 27B differs: its top token stays the original answer on 0.74<!-- src: results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md | recall | ans2 | 200 | 0.20 | 0.74 :: 0.74 -->.
+
+More from the reading:
+
   - On our scenes the recall's answer is never readable before the answer layer, yet writing it at the last token moves the 9B's, Muse's and Lightning's recall; the lookup's is readable only on the 9B and Lightning, where writing it moves a tenth of answers or fewer.
+
 - **Caveats.**
   - The 27B's and Muse's lookup cells on our scenes were written where nothing was readable and where the whole change itself switches nothing, so their "not usable" cannot tell (see the flags in the operations log).
   - Only the most readable cell was written; writing at the most readable cell other than the last token waits for Dan.
   - The output classes at twice the size are a CPU check read after the data; B stays out of the README (Dan).
+
+</details>
 
 ## Part II. Identity: which item the lookup reads
 
@@ -683,6 +843,8 @@ Readable and usable, per reader and data set:
 `in README` *Used in: README Part II card "Does the lookup's identity route run outside the lens?".*
 
 Test 47.1 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_atoms/x47_1-20261028T113101Z/x47_1.md` · recompute: `scripts/x47_atoms.py` (the command in its docstring) · also: identity route outside the lens; Lightning's coverage run 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** The lookup barely needs the lens part's 25 directions; does its identity route sit in the next 75 lens directions, or outside the lens altogether?
 - **Why we asked.** On the 27B, taking out 100 lens directions cut identity answers far more than a random part, so "outside the lens" might only mean "outside the recall's 25".
@@ -694,6 +856,8 @@ Test 47.1 · opened not stated · status: rule fixed in advance · hand-check: n
 *Claim 5: switches blocked beyond a random part of the same size, lookup (violet) and recall (black), per model and per part taken out at the bridge word: the lens part, lens directions 26–100 (fixed in advance, filled), PCA directions of the same size, logit-lens directions and random lens directions (run after the data, hollow ○); grey band: within 0.10 of random; whiskers 95% intervals.*
 
 - **Rule, fixed in advance.** "(a) "the lookup's identity route sits in lens atoms beyond the recall's 25": without 26-100, identity answers fall >= 0.30 beyond the random part (paired CI excluding 0) and the recall's extra drop without 26-100 is <= 0.10, on >= 2 of 3 models; (b) "continuum": both readers has >= 0.20 blocked beyond random without 26-100; (c) "outside the lens": without 26-100, identity answers fall < 0.10 beyond random." Lightning: a coverage run on this rule, no prediction.
+
+</details>
 
 - **Result.**
 
@@ -707,17 +871,27 @@ Test 47.1 · opened not stated · status: rule fixed in advance · hand-check: n
 
 - **Read.**
   - On all four models the lookup's identity answers survive taking out lens directions 26-100 (under 0.10 beyond random): its identity route runs outside the lens, not in the lens beyond the recall's 25.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+More from the reading:
+
   - Only the 27B drops identity answers to directions 1-25 or to all 100 (redundant copies); on Lightning taking out all 100 costs less than a random part of their share.
+
 - **Caveats.**
   - The 122B (coverage, 30 Oct): the routes part not tested at its gate; on the main test without lens directions 26-100 its recall is blocked at 0.00 [-0.03, 0.03]<!-- src: results/x0_necessity/qwen35_122b_x47_1_main/verdict-20261029T212308Z/verdict.md | jpp26_100 :: PM :: 0.00 [-0.03, 0.03] --> and its lookup -0.02 [-0.09, 0.04]<!-- src: results/x0_necessity/qwen35_122b_x47_1_main/verdict-20261029T212308Z/verdict.md | jpp26_100 :: PP :: -0.02 [-0.09, 0.04] --> beyond random (both around the lens part; descriptive).
   - Lightning's verdict prints "(a) for the batch: does not hold (0 of 1 models; at least 2 needed)": that applies the across-models clause to one model and is not a result; the per-model label is the result.
   - Identity is read on routes scenes, the recall's switches on the main test: two scene sets.
+
+</details>
 
 ### Which route does the lookup take, and does the address carry the position route? <a id="routes"></a>
 
 `in README` `below gate: 122B` *Used in: README Part II card "Which route does the lookup take: the item's identity, its locker's position, or the number?"; README Part III card "Can the address be read, removed, added and swapped?" (removing and adding the address).*
 
 Test routes test · opened 29 Oct · status: rule fixed in advance · hand-check: in sample (view c) · files: `results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.md` · recompute: `scripts/x6_routes.py` (the command in its docstring) · also: Lightning's coverage run
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** When another item's locker sentence moves and takes a new number, does the lookup follow the item's identity, its locker's position, or the number, and is the position route carried by the address?
 - **Why we asked.** The conflict test says the lookup follows the rest of the bridge word; the routes test says what in it the lookup reads.
@@ -730,6 +904,8 @@ Test routes test · opened 29 Oct · status: rule fixed in advance · hand-check
 
 - **Rule, fixed in advance.** "A route counts as used if its share is >= 0.20 with lower CI >= 0.10." The sanity swap must reproduce the one-pick lookup switch rate within 0.10; Lightning has no one-pick reference, so it takes Muse's rule (switch rate >= 0.50).
 
+</details>
+
 - **Result.** (another item moved)
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -740,20 +916,29 @@ Test routes test · opened 29 Oct · status: rule fixed in advance · hand-check
   | the same without a random part | 0.54 [0.49, 0.59]<!-- src: results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.md \| 0.06 [0.03, 0.08] :: 0.54 [0.49, 0.59] --> | 0.25 [0.19, 0.31]<!-- src: results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.md \| 0.70 [0.64, 0.76] :: 0.25 [0.19, 0.31] --> | 0.55 [0.50, 0.60]<!-- src: results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.md \| 0.41 [0.36, 0.46] :: 0.55 [0.50, 0.60] --> | 0.56 [0.49, 0.63]<!-- src: results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.md \| 0.42 [0.35, 0.48] :: 0.56 [0.49, 0.63] --> | ○ 0.36 [0.31, 0.41]<!-- src: results/x6_routes/qwen35_122b_x6_routes_g75/verdict-20261025T134214Z/verdict.md \| C2 :: no_alf_rand :: 300 :: 0.36 [0.31, 0.41] --> |
   | position, the address alone | 0.26 [0.20, 0.32]<!-- src: results/x6_routes/qwen35_9b_x6_routes_keeponly/verdict-20261025T152603Z/verdict.md \| 0.72 [0.65, 0.78] :: 0.26 [0.20, 0.32] --> | 0.09 [0.06, 0.12]<!-- src: results/x6_routes/x6_routes_keeponly_27b/verdict-20261025T153505Z/verdict.md \| 0.88 [0.84, 0.91] :: 0.09 [0.06, 0.12] --> | 0.29 [0.25, 0.34]<!-- src: results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.md \| 0.66 [0.61, 0.71] :: 0.29 [0.25, 0.34] --> | 0.40 [0.35, 0.45]<!-- src: results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.md \| 0.53 [0.48, 0.58] :: 0.40 [0.35, 0.45] --> | ○ 0.21 [0.16, 0.26]<!-- src: results/x6_routes/qwen35_122b_x6_routes_keeponly_g75/verdict-20261025T202506Z/verdict.md \| C2 :: keep_alf :: 300 :: 0.21 [0.16, 0.26] --> |
 
-  Lightning's sanity swap switches 0.99<!-- src: results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.md \| | C0 | PP | jpp | 300 | :: 0.99 --> of lookups (rule: at least 0.50); removing the lens part there costs the lookup -0.00 [-0.02, 0.01]<!-- src: results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.md \| | C0 | PP | jpp | 300 | 0.99 | :: -0.00 [-0.02, 0.01] --> beyond random, removing the address 0.54 [0.48, 0.61]<!-- src: results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.md \| | C0 | PP | alf | 300 | 0.99 | :: 0.54 [0.48, 0.61] -->; the value: 0.00 on every model.
-
 - **Read.**
   - On all four models the lookup answers by the item's identity or its locker's position, never by the new number; removing the address takes the position route away beyond a random part of its share.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+The result in full:
+
+  Lightning's sanity swap switches 0.99<!-- src: results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.md \| | C0 | PP | jpp | 300 | :: 0.99 --> of lookups (rule: at least 0.50); removing the lens part there costs the lookup -0.00 [-0.02, 0.01]<!-- src: results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.md \| | C0 | PP | jpp | 300 | 0.99 | :: -0.00 [-0.02, 0.01] --> beyond random, removing the address 0.54 [0.48, 0.61]<!-- src: results/x6_routes/nem35l_x52_routes/verdict-20261029T004324Z/verdict.md \| | C0 | PP | alf | 300 | 0.99 | :: 0.54 [0.48, 0.61] -->; the value: 0.00 on every model.
+
 - **Caveats.**
   - The 122B (FP8; MoE, ~10B active): not tested (gate 0.797<!-- src: results/x6_routes/qwen35_122b_x6_routes_c0/gate.json \| "PM" :: 0.797 --> < 0.80) on the routes scenes; its g75 runs lowered the gate to 0.75 after the data (the README's °): below gate, exploratory, hollow ○, never in claims or grades. Gates just under 0.80 stay not tested: on the harder variants the eligible items are the easier ones.
   - Added by itself, the address brings position answers back on the 9B, Muse and Lightning, not on the 27B.
   - Lightning's gate was chosen after the 60-scene pre-check was seen; its sanity swap uses Muse's rule.
+
+</details>
 
 ### Does the lookup never take the value, in prose, JSON and tables too? <a id="t47-7c"></a>
 
 `ledger only` `below gate: 9B, Muse, Lightning` *Used in: not in the README (its rebuild).*
 
 Test 47.7 (c) · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_value/x47_7c-20261028T123632Z/x47_7c.md` · recompute: `scripts/x47_value.py` (the command in its docstring) · also: never the value by format; Lightning's coverage run 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** In varied scenes (prose, JSON, tables) where another item moved and took a new number, does the lookup's answer ever follow the number (the value route)?
 - **Why we asked.** On simple scenes the lookup never takes the value; "in any format" needs the formats.
@@ -768,6 +953,8 @@ The position and value routes per format:
 
 *The routes test in prose, JSON and a table: the share of the lookup's answers that follow the moved item's position (orange) and its new value (slate), per model and format run. Whiskers 95% intervals; Lightning hollow ○.*
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -779,16 +966,23 @@ The position and value routes per format:
 
 - **Read.**
   - Wherever a format passes the gate, the lookup never takes the value, on all four models; the verdict stays incomplete because some formats fail the gate.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - The gate reads the recall on question-last prompts: prose and tables fail it on Muse and Lightning, JSON on the 9B.
   - Gates just under 0.80 stay not tested: on the harder variants the eligible items are the easier ones (Muse's and Lightning's table gates).
   - No format shows a position route by the rule: Lightning's JSON position share 0.36 [0.27, 0.44]<!-- src: results/x47_value/x52_valuec-20261029T040037Z/x47_7c.md \| nemotron-3.5-lightning :: json :: 56 :: 0.36 [0.27, 0.44] --> is cut by 0.18 [0.11, 0.26]<!-- src: results/x47_value/x52_valuec-20261029T040037Z/x47_7c.md \| nemotron-3.5-lightning :: json :: 56 :: 0.18 [0.11, 0.26] --> by the refit address, under 0.3.
+
+</details>
 
 ### Does a learned subspace carry the readers' codes, and is the learned address ours? <a id="t51-3"></a>
 
 `ledger only` *Used in: README Appendix A, a figure link ("learned subspaces", figures/depth/fig14_learned.png).*
 
 Test 51.3 · opened 28 Oct · status: rule fixed in advance (part descriptive) · hand-check: not in sample · files: `results/x51_das/verdict-20261028T194630Z/verdict.md` · recompute: `scripts/x51_das.py` (the command in its docstring)
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** Does a learned (DAS) subspace of at most 128 directions carry the recall's identity switch, where does the lookup's learned subspace lie, and does the learned 4-direction address overlap ours?
 - **Why we asked.** Our parts are hand-built (lens directions, slot means); a trained subspace tests them without that choice.
@@ -801,6 +995,8 @@ Test 51.3 · opened 28 Oct · status: rule fixed in advance (part descriptive) �
 
 - **Rule, fixed in advance.** "Q51.3 (i) 'found' = >= 300 recall pairs and test own-IIA >= 0.5 at some k <= 128; (ii) the lookup subspace (R_lookup at its chosen k) on the test pairs: the share of R R^T Delta inside U, the J++-25 atoms, the W_E-25 atoms and outside their union, each part >= 0.5 named 'mostly' (descriptive; the parts overlap); (iii) U's energy in R_pos at k = 4 = ||R_pos^T U||_F^2 / rank U >= 0.6" (verdict.md, as computed)
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -812,9 +1008,14 @@ Test 51.3 · opened 28 Oct · status: rule fixed in advance (part descriptive) �
 
 - **Read.**
   - A learned subspace carries the recall's identity on all three; the lookup's lies mostly outside our parts, and the learned address holds about a quarter of ours.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - Few test entities (9 on the 9B's identity pairs).
   - (ii) and (iii) have no interval in the verdict's summary lines.
+
+</details>
 
 ### Is the item's identity at its locker sentence the code the lookup reads at the bridge word? <a id="b53-8"></a>
 
@@ -822,9 +1023,10 @@ Test 51.3 · opened 28 Oct · status: rule fixed in advance (part descriptive) �
 
 Test 53.8 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x53_bindid/x53_bindid-20261029T122650Z/verdict.md` · recompute: `scripts/x53_bindid.py` (the command in its docstring) · also: a binding-ID test; the 9B, the 27B and Muse, 29 Oct
 
+<details><summary>Question, data, method, rule and figure</summary>
+
 - **Question.** Is the item's identity at its mention in its locker sentence a code the lookup reads at the bridge word: added there, does it send lookups to that item's locker?
 
-<details><summary>Why we asked, data, method and the rule fixed in advance</summary>
 
 - **Why we asked.** The lookup reads an identity code outside the lens part beside the address ([47.1](#t47-1), [routes](#routes)); a binding-ID code would be one vector shared by the item's mention and the bridge word.
 
@@ -834,13 +1036,14 @@ Test 53.8 · opened not stated · status: rule fixed in advance · hand-check: n
 
 - **Rule, fixed in advance.** "Rule: "a shared identity code" if X's share minus random >= 0.25 at 2x and minus Y's version >= 0.15; "no" if <= 0.05; else in between." (jobs/c3/batch53.yaml, critic_1125 item 6, Dan 11:25; no prediction) The centered arm (decisions_1210b item 1, Dan 12:10, before any run): "the same rule thresholds reported for it beside"; the headline stays the uncentered arm's (Dan 13:15).
 
-</details>
 
 The identity code against another item's version and a random vector:
 
 ![Centered, the code moves lookups beyond random; raw, little or none](../../figures/depth/45_identity_code.png)
 
 *The item's identity code from its locker sentence added at the bridge word: the share of lookups moved by the item's own code (blue), by another item's version of it (slate) and by a random vector (grey), with the code as fit in advance and centered. Whiskers 95% intervals.*
+
+</details>
 
 - **Result.**
 
@@ -857,14 +1060,16 @@ The identity code against another item's version and a random vector:
 
 - **Read.**
   - The pre-specified vectors: no on the 9B and the 27B (about as many lookups to X's locker as a random vector); in between on Muse, where X's vector beats random but Y's version comes close.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+More from the reading:
+
   - The slot vectors are nearly parallel on both models: a shared component dominates them. Centered, the slot-specific part sends lookups to X's locker: in between on the 9B and the 27B, a shared identity code by the same thresholds on Muse.
   - The centered slot vectors lie in the address U above a random vector's 99th percentile on every slot of the three models, but at most a few percent of their energy (cos² at most 0.0455 on Muse): "not high" (decisions_1810 item 1).
 
-<details><summary>More of the read</summary>
 
 - In the decision's words: the centered arm moves lookups in between (X 0.25, Y 0.12, random 0.02; the 9B's cells) and its vector lies mostly outside the address U, consistent with [51.3](#t51-3) (the lookup's code mostly outside U); the uncentered pre-specified arm says no.
-
-</details>
 
 - **Caveats.**
   - The centered arm was added by Dan (12:10) before any run; the headline is the uncentered arm.
@@ -873,6 +1078,8 @@ The identity code against another item's version and a random vector:
   - Centered at 2x, the clean answers suffer: the lookup's answer stays unchanged on 0.63 [0.58, 0.69]<!-- src: results/x53_bindid/x53_bindid-20261029T122650Z/verdict.md \| 9B :: ccode_x2 :: 600 :: 0.63 [0.58, 0.69] --> of scenes on the 9B and 0.27 [0.22, 0.32]<!-- src: results/x53_bindid/x53_bindid-20261029T122650Z/verdict.md \| Muse :: ccode_x2 :: 600 :: 0.27 [0.22, 0.32] --> on Muse; on the 27B the lookup keeps it on 0.68 [0.64, 0.71]<!-- src: results/x53_bindid/x53_bindid-20261029T122650Z/verdict.md \| 27B :: ccode_x2 :: 600 :: 0.68 [0.64, 0.71] --> and the recall on 0.98 [0.95, 1.00]<!-- src: results/x53_bindid/x53_bindid-20261029T122650Z/verdict.md \| 27B :: ccode_x2 :: 600 :: 0.98 [0.95, 1.00] -->, where a real identity change sends the lookup to B's locker 0.98 [0.96, 1.00]<!-- src: results/x53_bindid/x53_bindid-20261029T122650Z/verdict.md \| 27B :: whole: lookup sent to B :: 0.98 [0.96, 1.00] -->.
   - Exploratory (batch 53), no prediction.
 
+</details>
+
 ## Part III. The address: where the item's locker sits
 
 ### Is the address readable at the bridge word? <a id="probe"></a>
@@ -880,6 +1087,8 @@ The identity code against another item's version and a random vector:
 `in README` *Used in: README Part III card "Can the address be read, removed, added and swapped?" (the probe).*
 
 Test x0_probe v4 · opened not stated · status: post hoc (descriptive) · hand-check: not in sample · files: `results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.md` · recompute: `scripts/x0_probe.py` (the command in its docstring) · also: the address probe; Lightning's coverage run 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** At the bridge word at L, can a probe read which locker sentence holds the item's locker, beyond what the layout of the scene gives away, and does it read the answer digit itself?
 - **Why we asked.** If the bridge word stores an address rather than the answer, the locker sentence should be readable and the digit should not.
@@ -898,6 +1107,8 @@ This card is the figure's first column.
 
 - **Rule, fixed in advance.** None: descriptive, added after the data (Dan, 24 Oct evening). The reading stated beside: "(b) high in locker-before with (a) at chance -> the word stores an address. Locker-after: the locker sentence follows the word, so the stratum is a control by construction." Lightning: a coverage run, no prediction.
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -909,16 +1120,26 @@ This card is the figure's first column.
 
 - **Read.**
   - The 122B reads the locker sentence at its bridge word too (locker first), near chance with the locker after.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+More from the reading:
+
   - With the locker before the pick, the bridge word holds which locker sentence the item's locker sits in, far above the layout baseline, on all four models; with the locker after, it does not (the control). The answer digit itself is read only weakly.
+
 - **Caveats.**
   - Descriptive, chosen after the data.
   - Lightning's probe reads the place less well than the other three.
+
+</details>
 
 ### Does swapping the address send the lookup to the swapped-in locker? <a id="swap"></a>
 
 `in README` `below gate: 122B` *Used in: README Part III card "Can the address be read, removed, added and swapped?" (the swap).*
 
 Test address swap by dose · opened 29 Oct · status: rule fixed in advance · hand-check: in sample (view d) · files: `results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.md` · recompute: `scripts/x8_write.py` (the command in its docstring) · also: Lightning's coverage run
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** Adding the difference between two slots' address codes at the bridge word, does the lookup go to the locker of the slot swapped in, and how much does the recall change with it?
 - **Why we asked.** Removing the address stops position answers; a swap tests whether the address is read as a reference to a place.
@@ -937,6 +1158,8 @@ This card is the figure's third column.
 
 - **Rule, fixed in advance.** "at s = 1 the target share minus the random direction's >= 0.15 with lower CI > 0; [...] among writes that move the lookup to another locker target / (target + third) >= 0.80, a model counting only with >= 30 such writes, fewer than two counting = can't tell; [...] target minus random >= 0.10 in each of the 6 (j, k) pairs" (jobs/c3/x8_a_9b.yaml; each over the 9B, the 27B, the 122B and Muse). Lightning: a coverage run on that rule, no prediction.
 
+</details>
+
 - **Result.** (all 600 swaps pooled; README E6 quotes the mean over the six slot pairs at s = 2 instead; a random vector sends 0.00 to 0.01 at every dose on every model)
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -946,22 +1169,34 @@ This card is the figure's third column.
   | lookups sent to the swapped-in locker, dose 4 | 0.73 [0.70, 0.77]<!-- src: results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.md \| 0.17 [0.13, 0.21] :: 0.73 [0.70, 0.77] --> | 0.50 [0.47, 0.53]<!-- src: results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.md \| 0.37 [0.34, 0.40] :: 0.50 [0.47, 0.53] --> | 0.52 [0.50, 0.54]<!-- src: results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.md \| 0.23 [0.20, 0.26] :: 0.52 [0.50, 0.54] --> | 0.69 [0.66, 0.71]<!-- src: results/x8_write/nem35l_x52_write/verdict-20261029T005021Z/verdict.md \| 0.25 [0.22, 0.28] :: 0.69 [0.66, 0.71] --> | ○ 0.66 [0.63, 0.69]<!-- src: results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.md \| write :: 4 :: all :: 600 :: 0.66 [0.63, 0.69] --> |
   | recalls changed by the swap, dose 1 / 2 / 4 | 0.04<!-- src: results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.md \| 0.02 [0.01, 0.03] :: 0.04 --> / 0.21<!-- src: results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.md \| 0.46 [0.42, 0.50] :: 0.21 --> / 0.43<!-- src: results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.md \| 0.73 [0.70, 0.77] :: 0.43 --> | 0.01<!-- src: results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.md \| 0.01 [0.00, 0.01] :: 0.01 --> / 0.04<!-- src: results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.md \| 0.24 [0.20, 0.29] :: 0.04 --> / 0.11<!-- src: results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.md \| 0.50 [0.47, 0.53] :: 0.11 --> | 0.01<!-- src: results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.md \| 0.05 [0.03, 0.07] :: 0.01 --> / 0.06<!-- src: results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.md \| 0.52 [0.48, 0.55] :: 0.06 --> / 0.11<!-- src: results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.md \| 0.52 [0.50, 0.54] :: 0.11 --> | 0.02<!-- src: results/x8_write/nem35l_x52_write/verdict-20261029T005021Z/verdict.md \| 0.03 [0.01, 0.04] :: 0.02 --> / 0.27<!-- src: results/x8_write/nem35l_x52_write/verdict-20261029T005021Z/verdict.md \| 0.50 [0.46, 0.54] :: 0.27 --> / 0.40<!-- src: results/x8_write/nem35l_x52_write/verdict-20261029T005021Z/verdict.md \| 0.69 [0.66, 0.71] :: 0.40 --> | ○ 0.03<!-- src: results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.md \| write :: 1 :: all :: 600 :: 0.03 --> / 0.23<!-- src: results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.md \| write :: 2 :: all :: 600 :: 0.23 --> / 0.45<!-- src: results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.md \| write :: 4 :: all :: 600 :: 0.45 --> |
 
-  What the recall changes to (a CPU check after the data, descriptive; results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.md): of the recalls the swap changes at dose 2, 0.84<!-- src: results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.md | write | 2 | 600 | 0.21 | 129 | 0.84 :: 0.84 --> (9B) / 0.85<!-- src: results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.md | write | 2 | 600 | 0.27 | 164 | 0.85 :: 0.85 --> (Lightning) name the swapped-in item's legs, 0.09<!-- src: results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.md | 129 | 0.84 | 0.09 :: 0.09 --> / 0.07<!-- src: results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.md | 164 | 0.85 | 0.07 :: 0.07 --> the third item's, 0.06<!-- src: results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.md | 129 | 0.84 | 0.09 | 0.06 :: 0.06 --> / 0.08<!-- src: results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.md | 164 | 0.85 | 0.07 | 0.08 :: 0.08 --> another digit, 0.00<!-- src: results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.md | 129 | 0.84 | 0.09 | 0.06 | 0.00 :: 0.00 --> / 0.00<!-- src: results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.md | 164 | 0.85 | 0.07 | 0.08 | 0.00 :: 0.00 --> a non-answer.
-
 - **Read.**
   - At s = 1, the dose fixed in advance, the rule says no on the 9B, 27B and Muse (target minus random 0.02 [0.01, 0.03]<!-- src: results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.md \| Q44.1: target minus random at s = 1 :: 0.02 [0.01, 0.03] --> / 0.00 [0.00, 0.01]<!-- src: results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.md \| Q44.1: target minus random at s = 1 :: 0.00 [0.00, 0.01] --> / 0.05 [0.03, 0.07]<!-- src: results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.md \| Q44.1: target minus random at s = 1 :: 0.05 [0.03, 0.07] -->; bar 0.15): s = 1 is below a real change's size, a design error (docs/shared/joint_story_draft.md). Lightning's coverage run says no there too (target minus random 0.03 [0.01, 0.04]<!-- src: results/x8_write/nem35l_x52_write/verdict-20261029T005021Z/verdict.md | Q44.1 :: 0.03 [0.01, 0.04] -->).
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+The result in full:
+
+  What the recall changes to (a CPU check after the data, descriptive; results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.md): of the recalls the swap changes at dose 2, 0.84<!-- src: results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.md | write | 2 | 600 | 0.21 | 129 | 0.84 :: 0.84 --> (9B) / 0.85<!-- src: results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.md | write | 2 | 600 | 0.27 | 164 | 0.85 :: 0.85 --> (Lightning) name the swapped-in item's legs, 0.09<!-- src: results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.md | 129 | 0.84 | 0.09 :: 0.09 --> / 0.07<!-- src: results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.md | 164 | 0.85 | 0.07 :: 0.07 --> the third item's, 0.06<!-- src: results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.md | 129 | 0.84 | 0.09 | 0.06 :: 0.06 --> / 0.08<!-- src: results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.md | 164 | 0.85 | 0.07 | 0.08 :: 0.08 --> another digit, 0.00<!-- src: results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.md | 129 | 0.84 | 0.09 | 0.06 | 0.00 :: 0.00 --> / 0.00<!-- src: results/x8_write/x52_swaprecall-20261029T080538Z/swaprecall.md | 164 | 0.85 | 0.07 | 0.08 | 0.00 :: 0.00 --> a non-answer.
+
+More from the reading:
+
   - At s = 2 (about a real change's size) and s = 4 the swap sends a quarter to three quarters of lookups to the swapped-in locker on every model, Lightning included, against none for a random vector.
+
 - **Caveats.**
   - The 122B (FP8; MoE, ~10B active): not tested (gate 0.797<!-- src: results/x6_routes/qwen35_122b_x6_routes_c0/gate.json \| "PM" :: 0.797 --> < 0.80) on the routes scenes; its g75 runs lowered the gate to 0.75 after the data (the README's °): below gate, exploratory, hollow ○, never in claims or grades. Gates just under 0.80 stay not tested: on the harder variants the eligible items are the easier ones.
   - The swap also changes the recall's answer, most on the 9B and Lightning (the collateral).
   - Pooled over pairs: some pairs move no lookup at all (Lightning: two of six at dose 2).
   - The recall's collateral is mostly the recall following the swapped-in item (the CPU check above; 9B and Lightning only).
 
+</details>
+
 ### Does the address survive neutral sentences between the lockers and the picks? <a id="t47-16"></a>
 
 `in README` *Used in: README Part III card "Can the address be read, removed, added and swapped?" (the swap with no / 50 neutral sentences: the 9B, 27B, Muse (its rerun r2) and Lightning).*
 
 Test 47.16 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_distance/x47_16-20261028T131501Z/x47_16.md` · recompute: `scripts/x47_distance.py` (the command in its docstring) · also: the swap after neutral sentences; the 27B's and Lightning's coverage runs 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** With 5, 20 or 50 neutral sentences between the lockers and the picks, does the address still carry position answers, and does the address swap still work?
 - **Why we asked.** An address read at the bridge word could be a short-range effect of the sentences next to it.
@@ -974,6 +1209,8 @@ Test 47.16 · opened not stated · status: rule fixed in advance · hand-check: 
 
 - **Rule, fixed in advance.** "breaks = the gate failed at some k (the test stops there); distance-robust = position share and probe within 0.1 of k = 0 at every k, swap success within 0.15; address near, identity far = position falls >= 0.2 and identity rises >= 0.2 by k = 50 with accuracy >= 0.8". The 27B and Lightning: coverage runs on this rule, no prediction.
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -984,16 +1221,23 @@ Test 47.16 · opened not stated · status: rule fixed in advance · hand-check: 
 
 - **Read.**
   - On the 9B, 27B and Lightning the address keeps carrying position answers and the swap keeps working with up to 50 neutral sentences before the picks.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - The 122B (coverage, 30 Oct; the lookup-only gate, ○ †) reads "none of the three": its swap sends fewer lookups to the target with 50 neutral sentences than with none.
   - Muse's first run had no outcomes (Flagged 22); its rerun r2 (29 Oct, a coverage run on the same rule, no prediction) gives the column here.
   - The 27B's position share falls by 0.09 at 50 sentences, just inside the rule's 0.1.
+
+</details>
 
 ### With six lockers, does each locker have its own code? <a id="six"></a>
 
 `in README` *Used in: README Part III card "With six lockers, does each locker have its own code?".*
 
 Test six lockers · opened 29 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_six/x47_2-20261028T113102Z/x47_2.md` · recompute: `scripts/x47_six.py` (the command in its docstring) · also: the 27B's coverage run , Lightning's 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** With six locker sentences, is the address a line over slots (one shift steps the lookup one slot), a first-versus-rest marker, or one code per slot?
 - **Why we asked.** With three lockers a line and a first-versus-rest marker look the same.
@@ -1003,6 +1247,8 @@ Test six lockers · opened 29 Oct · status: rule fixed in advance · hand-check
 *No figure: two counts per model (one shift: 0 of 5 start slots everywhere; given-slot swaps of 30) and a label: the Result's table.*
 
 - **Rule, fixed in advance.** "Ordinal: the first PCA component is monotone in slot (|Spearman| >= 0.9) and v sends >= 0.25 of lookups to slot k+1 from >= 4 of 5 start slots, the random vector <= 0.05; Categorical, first vs rest: v works only from slot 1 (others < 0.10) and U's removal on 2-6 moves is within 0.10 of random; Slot-specific: pairwise writes reach >= 0.25 on most pairs but no single v does." Dose 2 decides. The 27B and Lightning: coverage runs on this rule, no prediction.
+
+</details>
 
 - **Result.**
 
@@ -1015,15 +1261,22 @@ Test six lockers · opened 29 Oct · status: rule fixed in advance · hand-check
 
 - **Read.**
   - No single shift moves the lookup on any model; given-slot swaps work on most pairs on the 9B, Muse, Lightning and the 122B †, so each slot is its own target there; on the 27B neither the line nor the per-slot pattern holds.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - The 27B's shift writes move 0.00 at every start slot, though its slot means lie in order.
   - A different test of the code's size (see [51.11](#t51-11)) does not find one dimension per slot on the 9B.
+
+</details>
 
 ### What is the address, independent of how we built it? <a id="t51-11"></a>
 
 `in README` *Used in: README Part III card "With six lockers, does each locker have its own code?" (the held-out code); README "Tested and dropped" ("One code per locker").*
 
 Test 51.11 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x51_addr/verdict-20261028T215138Z/verdict.md` · recompute: `scripts/x51_addr.py` (the command in its docstring)
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** Is the address one code per locker, one shared code, or an order line, by methods that do not use our construction?
 - **Why we asked.** Our address was built from means of four slots; its size and shape could be an artefact of that build.
@@ -1033,6 +1286,8 @@ Test 51.11 · opened 28 Oct · status: rule fixed in advance · hand-check: not 
 *No figure: the code's shape per number of lockers is supplementary (figure); the table has the rule's numbers.*
 
 - **Rule, fixed in advance.** Part 1: "One dimension per slot: d*(S) ≥ S − 2 for every S and d*(8) ≥ 5"; "An ordinal (low-dimensional) code: d*(S) ≤ 2 for every S up to 8"; else in between. Part 2: "One code, three bases: every projected swap reaches ≥ 0.6 of the whole swap's effect, and each cross-removal cuts the other's swap by ≥ 0.6." Part 3: "Categories: midpoint swaps send < 0.1 to the midpoint slot while the full swaps reach ≥ 0.4 of the target"; "A metric order: midpoint swaps send ≥ 0.3 of lookups to the midpoint slot, from both ends." (jobs/c3/batch51.yaml, addendum 3)
+
+</details>
 
 - **Result.**
 
@@ -1045,15 +1300,22 @@ Test 51.11 · opened 28 Oct · status: rule fixed in advance · hand-check: not 
 
 - **Read.**
   - No row of the wording table matches the labels; the methods agree only in part, and midpoint swaps do not land between slots.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - The 9B's d* at 6 lockers was not found below 8; Muse's "one per slot" rests on the literal rule (d*(8) not found counts as > 7).
   - The 27B ran part 2 only.
+
+</details>
 
 ### On the scenes where the 27B's lookup goes by position, does the address work as on the 9B? <a id="b53-5"></a>
 
 `ledger only` *Used in: not in the README (its rebuild).*
 
 Test 53.5 · opened 29 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x53_subset27b/x53_subset27b-20261029T085435Z/verdict.md` · recompute: `scripts/x53_subset27b.py` (the command in its docstring) · also: CPU, existing outcomes
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** On the scenes where the 27B's lookup goes by position, does the address work as it does on the 9B?
 - **Why we asked.** Added by itself, the 27B's address brings few position answers back overall ([routes](#routes)); the 27B takes the position route less often, so its address could be the same mechanism, used less.
@@ -1068,6 +1330,8 @@ The address removed and added alone on the 27B's position scenes, beside the 9B:
 
 *The 27B's scenes where its lookup goes by position, beside the 9B: the position answers left without the address and without a random part (grey), and brought back by the address alone and by a random part alone (grey). Whiskers 95% intervals.*
 
+</details>
+
 - **Result.**
 
   | | 9B (beside) | 27B | Muse | Lightning | 122B |
@@ -1080,17 +1344,24 @@ The address removed and added alone on the 27B's position scenes, beside the 9B:
 
 - **Read.**
   - On its own position-route scenes the 27B's address, added by itself, brings back fewer position answers than the rule's bar, and its removal leaves few: by the rule the 27B differs; the 9B's subset shows its pattern.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - The 27B's interval for the address alone ([0.15, 0.29]) contains the 0.25 bar.
   - The 9B's pattern holds only with the two conditions pooled: per condition, the first holds and the second does not, on both models.
   - In the first condition, removing a random part of the address's share also leaves few position answers (0.07 [0.03, 0.11]<!-- src: results/x53_subset27b/x53_subset27b-20261029T085435Z/verdict.md | Without a random part of the address's share, C1 keeps :: 0.07 [0.03, 0.11] --> on the 27B), so there the removal clause cannot tell the address from a random part.
   - CPU on existing outcomes; exploratory (batch 53); no prediction.
 
+</details>
+
 ### Can the lens read the address? <a id="t47-0"></a>
 
 `in README` *Used in: README Part III card "Can the lens read the address?" (the lens readout of the swap).*
 
 Test 47.0 · opened not stated · status: descriptive · hand-check: not in sample · files: `results/x47_verbal/summary-20261028T033646Z/verbal.md` · recompute: `scripts/x47_verbal.py` (the command in its docstring) · also: lens readout of an address swap; Lightning's coverage run 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** Read through the lens, does an address swap at a real change's size show up as a position word, get rebuilt by the lens's own directions, or move the lens's readout more than a random vector of the same size?
 - **Why we asked.** Neel's question: is the address verbalizable? A lens monitor would have to see it.
@@ -1109,6 +1380,8 @@ This card is the figure's fourth column.
 
 - **Rule, fixed in advance.** Descriptive, with the reading fixed in advance: ""Not verbalizable": reconstruction at k = 25 within 2x the random null's share, no ordinal token in the top-20 beyond the null's 5th-percentile rank, and the KL under the write within the null's 95th percentile, on all three models." Lightning: a coverage run on that reading, no prediction.
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -1122,10 +1395,18 @@ This card is the figure's fourth column.
 
 - **Read.**
   - On all four models the address swap reads through the lens like a random vector of its size, while an item change of the same size stands far outside the random range.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+More from the reading:
+
   - Lightning's swap moves its lookup to the written locker in 0.50<!-- src: results/x47_verbal/summary-20261029T005548Z/verbal.md \| x8's lookup on these writes at s = 2: to the written locker :: 0.50 --> of these cases, yet none of the lens's three readings leaves the null.
+
 - **Caveats.**
   - Descriptive: the reading is the spec's, not a pre-registered claim.
   - The reading uses medians; per case, some readouts do move beyond their own null on the 9B and Muse.
+
+</details>
 
 ### What can a probe on the lens subspace decode, against the full state? <a id="b53-2"></a>
 
@@ -1133,13 +1414,14 @@ This card is the figure's fourth column.
 
 Test 53.2 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x53_monitor/x53_monitor_122b-20261029T175223Z/verdict.md` · recompute: `scripts/x53_monitor.py` (the command in its docstring) · also: the monitor test; four models, 29 Oct; the 122B's coverage run 29 Oct
 
+<details><summary>Question, data, method, rule and figure</summary>
+
 - **Question.** What can a probe on the lens subspace decode, against the full state: the bridge item's locker slot (the address) and the lookup's answer digit, with which item and the recall's answer as positive controls?
 
 ![The address is decodable but under-represented in the lens directions](../../figures/readme/11_monitor.png)
 
 *The locker probe's accuracy for the address at the last token, per model, for the lens part as used throughout (left) and with four times as many directions (right): the lens part (teal) against a random part of the same energy (grey), with 95% intervals; the lens part's value and interval, and the full state's accuracy, in their own columns. Lightning hollow (○, post hoc).*
 
-<details><summary>Why we asked, data, method and the rule fixed in advance</summary>
 
 - **Why we asked.** The lens readout does not show the address ([47.0](#t47-0)); a trained probe on the lens part's coordinates asks whether the address is there but not verbalized, or absent from the lens directions.
 
@@ -1166,14 +1448,16 @@ Test 53.2 · opened not stated · status: rule fixed in advance · hand-check: n
 
 - **Read.**
   - The lens readout does not show the address (47.0). At the last token the full state reads the locker slot, and at that layer a probe on the lens part's coordinates reads it no better than a random subspace of the same size on all four models. The rule, over every layer: "J-space blind" on the 9B and Muse at k = 25; in between on the 27B and Lightning, and on all four at k = 100.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+More from the reading:
+
   - Against random directions of the same energy the lens part reads the slot worse on all four models, at both sizes: the address is under-represented in the lens directions, not an energy artefact.
   - At the bridge word and on JSON scenes the full state reads the slot under 0.8, so the rule can't tell there. The lookup's answer digit at the last token, k = 100, is decodable from many subspaces, the lens part included (7 of the 8 model and dataset cells; the 27B's main test in between); at the bridge word even the full state reads it near chance (the 9B: 0.13 [0.11, 0.16]<!-- src: results/x53_monitor/x53_monitor-20261029T124428Z/verdict.md \| Qwen3.5-9B :: main :: B :: (c) lookup's digit :: 25 :: L0 :: 0.13 [0.11, 0.16] --> vs chance 0.12 [0.09, 0.15]<!-- src: results/x53_monitor/x53_monitor-20261029T124428Z/verdict.md \| Qwen3.5-9B :: main :: B :: (c) lookup's digit :: 25 :: L0 :: 0.12 [0.09, 0.15] -->).
 
-<details><summary>More of the read</summary>
 
 - The positive controls work: at the bridge word the full state reads which item is the bridge and the recall's answer at 0.99 or more at its best layer, on every model and dataset. The recall's answer there is "J-space carries X" at k = 25 on 7 of the 8 cells (the 9B: lens part 0.98 [0.96, 0.99]<!-- src: results/x53_monitor/x53_monitor-20261029T124428Z/verdict.md \| Qwen3.5-9B :: main :: B :: (d) recall's answer :: 25 :: L14 :: 0.98 [0.96, 0.99] --> vs random 0.68 [0.63, 0.71]<!-- src: results/x53_monitor/x53_monitor-20261029T124428Z/verdict.md \| Qwen3.5-9B :: main :: B :: (d) recall's answer :: 25 :: L14 :: 0.68 [0.63, 0.71] -->), but no different from random directions of the same energy (0.97 [0.95, 0.98]<!-- src: results/x53_monitor/x53_monitor-20261029T124428Z/verdict.md \| Qwen3.5-9B :: main :: B :: (d) recall's answer :: 25 :: L14 :: 0.97 [0.95, 0.98] -->). The controls' full labels are in the verdict, under their own heading.
-
-</details>
 
 - **Caveats.**
   - The verdict flags its readings of the rule's wordings: "while" read as at some layer where the full state reaches 0.8, "within 0.10" as at every layer, "random is under 0.8" as at every layer, and the target named in the "many subspaces" wording for the digit.
@@ -1182,11 +1466,15 @@ Test 53.2 · opened not stated · status: rule fixed in advance · hand-check: n
   - Exploratory (batch 53), no prediction.
 - **The 122B (addendum; coverage, not hand-checked; Dan 12:20 / 18:20).** [verdict](../../results/x53_monitor/x53_monitor_122b-20261029T175223Z/verdict.md), L33 carried over, FP8, the same rule, not part of the four models' verdict. At the last token, main test: the locker slot "J-space blind to X" at k = 25 (in between at k = 100), and under the energy rule "the address is under-represented in the lens directions" at both sizes, as on the four models. JSON scenes, last token: the slot "J-space blind to X" at both sizes and under-represented by the energy rule (the full state reaches 0.80 there, at the bar). The lookup's digit at the last token, both datasets, k = 25 and 100: decodable from many subspaces, J++ included (random reads it too; energy rule: no different from random directions of the same energy). At the bridge word the full state reads the slot and the digit under 0.8: can't tell.
 
+</details>
+
 ### Asked for the position, does the address surface in the lens? <a id="t47-10"></a>
 
 `in README` `below gate: 9B, Muse, Lightning` *Used in: README Part III card "Can the lens read the address?" (the report prompt).*
 
 Test 47.10 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_report/x47_10-20261028T113109Z/x47_10.md` · recompute: `scripts/x47_report.py` (the command in its docstring) · also: the report prompt, opened 28 Oct; Lightning's gate 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** When the prompt asks which locker sentence holds the item (a report reader), does the lens at the bridge word show the right ordinal, and does the report need the lens part or the address?
 - **Why we asked.** The lens cannot read the address under the lookup's prompt; asked for it directly, the model might surface it into the lens.
@@ -1196,6 +1484,8 @@ Test 47.10 · opened 28 Oct · status: rule fixed in advance · hand-check: not 
 *No figure: one model tested (the 27B), three numbers: the Result's table.*
 
 - **Rule, fixed in advance.** ""Surfaced on demand": under the report prompt the lens ranks the correct ordinal in its top-5 in >= 0.4 of items (under the lookup prompt <= 0.1), and the report has >= 0.3 blocked of its switches without J++ beyond random, while the lookup on the same scenes has <= 0.10 blocked (as before). "Reported late, not surfaced": the lens stays <= 0.1 at the bridge word under the report prompt and the report has <= 0.1 blocked without J++ but >= 0.3 without U [...]"
+
+</details>
 
 - **Result.**
 
@@ -1208,15 +1498,22 @@ Test 47.10 · opened 28 Oct · status: rule fixed in advance · hand-check: not 
 
 - **Read.**
   - Asked for the position, the 27B's lens never shows the right ordinal at the bridge word, and the report needs the address more than the lens part, but not by the 0.3 the rule asks: neither reading holds.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - One cell tested (the 27B, question last); every other cell failed its gate.
   - The report is blocked at 0.28 without the address, just under the rule's 0.3.
+
+</details>
 
 ### Reworded, does the report read slot 1? <a id="t49-6"></a>
 
 `ledger only` *Used in: not in the README (its rebuild).*
 
 Test 49.6 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x49_report/x49_6-20261028T154511Z/x49_6.md` · recompute: `scripts/x49_report.py` (the command in its docstring) · also: the report of slot 1 reworded, opened 28 Oct; Lightning's coverage run 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** Asked for the position of the asked item's locker, the report reads slot 1 badly ([47.10](#t47-10)); asked in other words, does it read slot 1?
 - **Why we asked.** If slot 1 stays unread under any wording, the report's gap is about slot 1 itself; if it recovers, it was the wording.
@@ -1231,6 +1528,8 @@ The report under each wording:
 
 *The model's report of where the item sits, reworded: the share of reports naming the first position under the earlier wording, when a digit is asked for and when a word is asked for, per model. Whiskers 95% intervals; Lightning hollow ○.*
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -1242,16 +1541,23 @@ The report under each wording:
 
 - **Read.**
   - Under the sentence wording the 9B reads slot 1 right on most slot-1 scenes, against almost none under the earlier wording; by the rule, slot 1 recovers and the test is dropped. The 27B and Lightning recover under both new wordings.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - On the 9B the position wording stays just under the bar (0.18); the recovery rests on the sentence wording.
   - The 06:29 coverage matrix named this row "One question, two instructions" and marked the 9B's cell as a gate miss; the verdict scores the 9B. Fixed in the 09:45 matrix (fb9667eb; Appendix A, flag 28).
   - Lightning: a coverage run with the 9B / 27B design, no prediction.
+
+</details>
 
 ### Do a few heads read the swapped address? <a id="t51-2"></a>
 
 `ledger only` *Used in: not in the README (its rebuild).*
 
 Test 51.2 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x51_heads/x52_heads-20261029T015136Z/verdict.md` · recompute: `scripts/x51_heads.py` (the command in its docstring) · also: Lightning's coverage run 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** Does a small set of attention heads carry the address swap's effect at the last token, or is it spread over heads?
 - **Why we asked.** Attention follows the swapped address; a few heads could be the readers.
@@ -1264,6 +1570,8 @@ Test 51.2 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 
 - **Rule, fixed in advance.** "small_set: some top-k set, k in {1, 3, 5, 10}, cuts >= 0.5 while the identity answers (...) change <= 0.10 and the recall's answer changes <= 0.10 (...), and the matched random sets of k heads (same layers) cut <= 0.15 (mean over the draws). distributed: every head of the best layer together cuts < 0.3." Lightning: a coverage run on this rule, no prediction.
 
+</details>
+
 - **Result.** (last token)
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -1274,15 +1582,22 @@ Test 51.2 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 
 - **Read.**
   - No small set of heads carries the swap's effect on any of the four models; even all heads of the best layer together cut almost none of it.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - Linear-attention layers have no heads: Gated DeltaNet on the 9B and 27B, Mamba-2 on Lightning (its verdict says Gated DeltaNet, a wording inherited from Muse's run).
   - Mean ablation at the last token and the question tokens only.
+
+</details>
 
 ### Do attention heads follow the swapped address to its locker? <a id="t49-7"></a>
 
 `ledger only` *Used in: not in the README (its rebuild).*
 
 Test 49.7 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x49_attn/x49_7-20261028T154511Z/verdict.md` · recompute: `scripts/x49_attn.py` (the command in its docstring) · also: attention under the swap; Lightning's coverage run 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** When the address swap sends the lookup to another locker, does some attention head at the last token move its weight to that locker on the pairs that switched, and only there?
 - **Why we asked.** A head that reads the address should move with the swap where the lookup switches and stay put where it does not.
@@ -1294,6 +1609,8 @@ Test 49.7 · opened not stated · status: rule fixed in advance · hand-check: n
 *The last token's attention on the old and the new locker sentence under the address swap (amber), on the scenes where the answer switched and where it stayed, against no change and a random vector (grey), per model. Whiskers: 95% intervals.*
 
 - **Rule, fixed in advance.** "follows: on read-half pairs where the lookup switched to slot k's locker under the swap, >= 1 of the five candidate heads has mean move >= 0.30 (cluster-bootstrap CI excluding 0), its mean move under the random vector on the same pairs <= 0.05, and its mean move on the non-switched swap pairs <= 0.10. elsewhere: the lookup switches to slot k on >= 0.3 of the read-half swap pairs and no recorded head [...] reaches a mean move of 0.15 on the switched pairs. distributed: the summed mean move over the five candidate heads, or over every head of the best head's layer, is >= 0.30 while no single candidate head reaches 0.30." Lightning: a coverage run on this rule, no prediction.
+
+</details>
 
 - **Result.**
 
@@ -1308,15 +1625,22 @@ Test 49.7 · opened not stated · status: rule fixed in advance · hand-check: n
 
 - **Read.**
   - On all four models the best head moves its attention to the swapped-in locker where the lookup switched, but also, above the 0.10 bar, where it did not; zeroing it leaves the switch in place. No head follows the address by the rule: neither, on all four.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - Only full-attention layers after L are recorded. Lightning's verdict calls its skipped blocks "Gated DeltaNet", a wording inherited from Muse's run; on Lightning they are Mamba-2 blocks.
   - The 27B's lookup switches on 0.220<!-- src: results/x49_attn/x49_7-20261028T154511Z/verdict.md \| switch share 0.220 :: 0.220 --> of read pairs, under the 0.3 that "elsewhere" needs.
+
+</details>
 
 ### Does the second hop, hall to locker, run through an address too? <a id="t47-14"></a>
 
 `in README` `below gate: Lightning` *Used in: README Part VI, one line with a link ("the second hop's key token").*
 
 Test 47.14 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_chain/x47_14-20261028T115841Z/x47_14.md` · recompute: `scripts/x47_chain.py` (the command in its docstring) · also: chained addresses; the 27B's coverage run 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** With hall sentences before the locker sentences, is the hall of the pick's locker read through an address at the locker digit, as the locker is read through one at the bridge word?
 - **Why we asked.** If the address is a general reference to a place, the next hop (locker to hall) should use one too.
@@ -1329,6 +1653,8 @@ Test 47.14 · opened not stated · status: rule fixed in advance · hand-check: 
 
 - **Rule, fixed in advance.** "probe >= 0.8 with the layout baseline <= 0.6; without U_num the hall question's position share falls >= 0.3 below the share without its random part; only U_num gives position >= 0.15; the locker question's unchanged share within 0.05 of unedited under every arm; on both models." The 27B: a coverage run on this rule, no prediction.
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -1340,15 +1666,22 @@ Test 47.14 · opened not stated · status: rule fixed in advance · hand-check: 
 
 - **Read.**
   - On the 9B, 27B and Muse the hall is readable at the locker digit, but taking out the hall address cuts no more hall answers than a random part: the second hop does not run through an address the way the first does.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - The verdicts' batch line ("0 of 2 models hold; the rule needs both") applies the across-models clause; the per-model labels are the result.
   - Retained alone, the hall address gives position answers above the 0.15 bar on the 9B and 27B; only its removal fails.
+
+</details>
 
 ### Must the address be refit for each text format? <a id="x45d"></a>
 
 `in README` *Used in: README Part III card "Must the address be refit for each text format?".*
 
 Test x45d · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x0b_generalize/nem35l_x52_x45d/x45d-20261029T035250Z/verdict.md` · recompute: `scripts/x0b_generalize.py` (the command in its docstring) · also: address refit per format; Lightning's coverage run 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** On varied scenes (prose, JSON, tables), does an address refit on each format's own scenes carry the lookup's position answers, where the address fit on simple scenes does little?
 - **Why we asked.** The address was fit on one template; in other formats the code may sit elsewhere.
@@ -1363,6 +1696,8 @@ The fitted address against one refit per format:
 
 *Top, after the data: the switches blocked beyond a random part without the lens part (teal) and without the address fit on simple scenes (orange), per model and setting, all hollow ○. Bottom, rule 45d: per format, without the address fit on simple scenes (left) and refit on that format (right); a cell under its switch bar says so. Whiskers 95% intervals.*
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -1374,9 +1709,14 @@ The fitted address against one refit per format:
 
 - **Read.**
   - Refit on each format, the address carries the lookup again on the 9B, Muse and Lightning ("pointer elsewhere" [pointer: the address]); on the 27B it stays under 0.2 in every format (neither).
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - The 30-switch bar was set after the first results; it drops Muse's JSON (29 switches).
   - Lightning's JSON rests on 40 scenes from 4 bridge items.
+
+</details>
 
 ### Does the address carry over to code and tool output? <a id="b53-7"></a>
 
@@ -1384,13 +1724,14 @@ The fitted address against one refit per format:
 
 Test 53.7 · opened not stated · status: rule fixed in advance (part descriptive) · hand-check: not in sample · files: `results/x0_probe/x53_7_probe-20261029T130251Z/verdict.md` · recompute: `scripts/x0_probe.py` (the command in its docstring) · also: adapted design; the 9B and the 27B, code and tool output, 29 Oct
 
+<details><summary>Question, data, method, rule and figure</summary>
+
 - **Question.** Does the address carry over to code and tool output: does a probe read it at the bridge word, and does the routes test find the lookup using it, when the scene is rendered as Python or as a tool's response?
 
 ![In code and tool output the address carries the position route](../../figures/depth/04_code_tool.png)
 
 *Python code and tool output on the 9B and the 27B (rows): the locker probe's accuracy for the address (amber) against a random part and a layout-only probe (grey); the lookups left on position without the address, and brought back with only the address kept. The 9B's code probe is below its gate. Whiskers: 95% intervals.*
 
-<details><summary>Why we asked, data, method and the rule fixed in advance</summary>
 
 - **Why we asked.** The address is found in prose, JSON and tables ([probe](#probe), [routes](#routes), [refit](#x45d)); code and tool output are where an address would matter in practice.
 
@@ -1420,14 +1761,16 @@ Test 53.7 · opened not stated · status: rule fixed in advance (part descriptiv
 
 - **Read.**
   - In code and in tool output the lookup takes the item's identity or its locker's position, never the value, on the 9B and the 27B; removing the address cuts position answers beyond a random part of its share in both formats on both models.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+More from the reading:
+
   - Added by itself, the address brings few position answers back in either format (in prose it brought them back on the 9B, [routes](#routes)); the only route it uses is the original answer.
   - The probe reads which locker sentence holds the item's locker, locker first, as in prose: the 9B in tool output and the 27B in code and in tool output; locker after it reads no better than the baselines. The answer digit, locker first, reads above chance but far below the locker sentence.
 
-<details><summary>More of the read</summary>
 
 - On the 9B in tool output the monitor test reads as in prose: the full state reads the slot at the last token, the lens part in between, and worse than random directions of the same energy (under-represented in the lens directions); the lookup's digit at the bridge word is not decodable even from the full state.
-
-</details>
 
 - **Caveats.**
   - Dan (12:10b), verbatim: tool output as prose (JSON is covered by x0b_v2), and the bridge ~250 tokens later in the tool format, not separated from the format (47.16's distance robustness beside). The probe only shows the address is readable; the routes test decides whether the lookup uses it.
@@ -1435,6 +1778,8 @@ Test 53.7 · opened not stated · status: rule fixed in advance (part descriptiv
   - Adapted design: the lookup-only gate replaces X0's two-reader gate; the recall's rates are descriptive. The 27B's probes and the 9B tool probe pass either gate or were computed after the decision; the 9B code probe is not tested (hollow: its gate was changed after the data).
   - U is carried over from prose, not refit in code or tool output (Dan 13:15 asked): the address fit on prose scenes is the one removed and added. The monitor on the 27B was not completed in the sprint; the CH2 add-on on the code's address (descriptive) is left out.
   - Exploratory (batch 53): no prediction.
+
+</details>
 
 ## Part IV. Where and when the link is made
 
@@ -1444,13 +1789,14 @@ Test 53.7 · opened not stated · status: rule fixed in advance (part descriptiv
 
 Test the split by sentence order · opened 29 Oct · status: post hoc (descriptive) · hand-check: in sample (view g) · files: `results/x0_composition/split-by-order-20261026T173323Z/split.md` · recompute: `scripts/x0_composition.py` (the command in its docstring) · also: Lightning's
 
+<details><summary>Question, data, method, rule and figure</summary>
+
 - **Question.** On the main test, does the change at the bridge word switch the lookup when the item's locker sentence came before the asked pick, and when it came after?
 
 ![The bridge word switches the lookup when its locker came first](../../figures/readme/09_sentence_order.png)
 
 *Lookups switched by the whole change when the locker sentence comes first and when it comes after the pick, per model, and (post hoc, hollow ○) with the changed prompt's locker sentence before or after the pick, for each original order. Whiskers: 95% cluster-bootstrap intervals over bridge entities; n per cell in the depth README; Lightning ○ (gate chosen after its pre-check). The sentence order is view g of the hand-checked sample; the 2 × 2 is post hoc and was not hand-checked.*
 
-<details><summary>Why we asked, data, method and the rule fixed in advance</summary>
 
 - **Why we asked.** The bridge word can only point back: if the locker sentence comes after it, the link must be made elsewhere.
 
@@ -1475,6 +1821,11 @@ Test the split by sentence order · opened 29 Oct · status: post hoc (descripti
 
 - **Read.**
   - On every model, Lightning included, the change at the bridge word switches most lookups when the locker sentence came first and few when it came after.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+More from the reading:
+
   - The recall has more blocked switches without the lens part when the locker came after, on every model.
 
 - **Caveats.**
@@ -1490,11 +1841,15 @@ Test the split by sentence order · opened 29 Oct · status: post hoc (descripti
   | Lightning ○ | 59: 0.983 [0.941, 1.000]<!-- src: results/x0_order_2x2/20261030T224216Z/tables.md \| original before :: 59: 0.983 [0.941, 1.000] --> | 26: 0.577 [0.385, 0.769]<!-- src: results/x0_order_2x2/20261030T224216Z/tables.md \| original before :: 26: 0.577 [0.385, 0.769] --> | 36: 0.361 [0.222, 0.500]<!-- src: results/x0_order_2x2/20261030T224216Z/tables.md \| original after :: 36: 0.361 [0.222, 0.500] --> | 79: 0.051 [0.012, 0.102]<!-- src: results/x0_order_2x2/20261030T224216Z/tables.md \| original after :: 79: 0.051 [0.012, 0.102] --> | 0.358 [0.235, 0.489]<!-- src: results/x0_order_2x2/20261030T224216Z/tables.md \| changed order's effect :: 0.358 [0.235, 0.489] --> | 0.574 [0.453, 0.681]<!-- src: results/x0_order_2x2/20261030T224216Z/tables.md \| original order's effect :: 0.574 [0.453, 0.681] --> |
   | 122B ○ | 53: 0.962 [0.902, 1.000]<!-- src: results/x0_order_2x2/20261030T224216Z/tables.md \| original before :: 53: 0.962 [0.902, 1.000] --> | 32: 0.781 [0.633, 0.938]<!-- src: results/x0_order_2x2/20261030T224216Z/tables.md \| original before :: 32: 0.781 [0.633, 0.938] --> | 33: 0.364 [0.200, 0.565]<!-- src: results/x0_order_2x2/20261030T224216Z/tables.md \| original after :: 33: 0.364 [0.200, 0.565] --> | 82: 0.012 [0.000, 0.042]<!-- src: results/x0_order_2x2/20261030T224216Z/tables.md \| original after :: 82: 0.012 [0.000, 0.042] --> | 0.266 [0.157, 0.375]<!-- src: results/x0_order_2x2/20261030T224216Z/tables.md \| changed order's effect :: 0.266 [0.157, 0.375] --> | 0.684 [0.557, 0.802]<!-- src: results/x0_order_2x2/20261030T224216Z/tables.md \| original order's effect :: 0.684 [0.557, 0.802] --> |
 
+</details>
+
 ### When the locker comes after the pick, is the link made in the locker sentences? <a id="t45q"></a>
 
 `in README` `below gate: Lightning` *Used in: README Part IV card "Does the bridge word redirect the lookup only when its locker sentence came first?" (the copy).*
 
 Test 45q · opened 27 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x45b_binding/x45q-20261027T005345Z/x45q.md` · recompute: `scripts/x45b_binding.py` (the command in its docstring) · also: the copy test, opened 27 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** In clean scenes whose locker sentence comes after the asked pick, does copying the changed prompt's states into the locker sentences switch the lookup, while the change at the bridge word does not?
 - **Why we asked.** With the locker after the pick the bridge word cannot point back; the link must be made where the locker sentence is read.
@@ -1507,6 +1862,8 @@ Test 45q · opened 27 Oct · status: rule fixed in advance · hand-check: not in
 
 - **Rule, fixed in advance.** ""the link is made in the locker sentences" if (c) or (d) switches at least half of the lookups S switches while (a) stays at or below 0.25, on at least 2 of 3 models."
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -1518,16 +1875,23 @@ Test 45q · opened 27 Oct · status: rule fixed in advance · hand-check: not in
 
 - **Read.**
   - With the locker after the pick, copying the changed states into the locker sentences at L carries about three quarters of the lookup's switches on all three models, while the change at the bridge word carries almost none: the link is made in the locker sentences.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - Lightning: below the clean one-pick gate, so not tested; the below-gate run (eligible items only) is exploratory, hollow ○, never in claims or grades.
   - At L/2 the copy carries little on the 9B and 27B and about half on Muse.
   - Clean scenes only; the main test's locker-after lookups are in the order-split card.
+
+</details>
 
 ### Which token and layer carry each reader's switch, and when does the bridge word stop being read? <a id="d1"></a>
 
 `in README` `below gate: Lightning` *Used in: README Part IV card "Which token and layer carry the lookup when the locker sentence comes after the pick?".*
 
 Test D1 / D2 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_depthmap/x52_depthmap-20261029T011452Z/depth.md` · recompute: `scripts/x47_depthmap.py` (the command in its docstring) · also: token-by-layer map and window patching; the 27B's and Lightning's coverage runs 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** With the changed prompt's state placed in one token group at one layer, which cell switches each reader, and after which layer does nothing downstream read the bridge word?
 - **Why we asked.** With the locker sentence after the pick the bridge word cannot point back; the map says where the link sits instead.
@@ -1537,6 +1901,8 @@ Test D1 / D2 · opened not stated · status: rule fixed in advance · hand-check
 *No figure: the token-by-layer heat strips are supplementary (figure); the table has the rule's numbers.*
 
 - **Rule, fixed in advance.** D1: "(a) In locker-after scenes the lookup's mass sits at the locker sentences, not at the bridge word, at every layer (bridge-word cells <= 0.25 everywhere; some locker-sentence cell >= 0.5). (b) In locker-first scenes the lookup's bridge-word mass ends before the recall's does (the last layer with bridge-word switch >= 0.3 is earlier for the lookup, by >= 2 layers on the 9B, >= 4 on Muse). (c) The recall's map has a second hot token, the item's earlier mention, in locker-first scenes (>= 0.3 at some layer), absent in locker-after." D2: ""The handover from the mention to the question" if l_R(recall) lies at or below the start of his late band on the 9B and 27B." The 27B and Lightning: coverage runs on these rules, no prediction.
+
+</details>
 
 - **Result.** (clean design; the main test gives the same D1 and D2 answers on the 9B, 27B and Muse; Lightning: the main test)
 
@@ -1551,17 +1917,27 @@ Test D1 / D2 · opened not stated · status: rule fixed in advance · hand-check
 
 - **Read.**
   - On the 27B as on the 9B and Muse, all three D1 readings fail on both designs (Lightning: on the main test): no locker-sentence cell carries the locker-after lookup, the lookup does not leave the bridge word before the recall by the margin fixed in advance, and the recall has no second hot token.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+More from the reading:
+
   - With the locker after the pick, the lookup stops reading the bridge word far earlier than the recall on all four; the 27B's recall reads it up to the start of the breadth track's late band, as on the 9B.
+
 - **Caveats.**
   - Lightning's clean design is below its gate (recall 0.751 < 0.80): its ○ entries are exploratory, never in claims or grades.
   - The 27B, Muse and Lightning were sampled every 4th layer, so their read-out layers are known to 4 layers; Lightning's in-job verdict crashed on a missing margin for rule (b), added after the run (Flagged 19).
   - Muse and Lightning have no late band in the breadth track, so D2 is scored on the 9B and 27B only.
+
+</details>
 
 ### When the change at L misses a lookup, where is the rest read? <a id="t47-4"></a>
 
 `in README` `below gate: Lightning` *Used in: README Part IV card "Which token and layer carry the lookup when the locker sentence comes after the pick?" (the cumulative patches).*
 
 Test 47.4 · opened not stated · status: descriptive · hand-check: not in sample · files: `results/x47_cumulative/x52_cumulative-20261029T044453Z/x47_4.md` · recompute: `scripts/x47_cumulative.py` (the command in its docstring) · also: cumulative patches; the 27B's and Lightning's coverage runs 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** When the change at the bridge word at L leaves a lookup unswitched, is the rest read from the bridge word before L, from the pick sentence's other tokens, or from outside the pick sentence?
 - **Why we asked.** The conflict test changes one layer; the lookups it misses may read the bridge word earlier.
@@ -1574,6 +1950,8 @@ Test 47.4 · opened not stated · status: descriptive · hand-check: not in samp
 
 - **Rule, fixed in advance.** None: descriptive, no bar; the verdict reads which part is largest in locker-first scenes. The 27B and Lightning: coverage runs, no prediction.
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -1582,20 +1960,29 @@ Test 47.4 · opened not stated · status: descriptive · hand-check: not in samp
   | locker first: where most of that rest is read, main / clean | outside<!-- src: results/x47_cumulative/x47_4-20261028T113105Z/x47_4.md \| qwen3.5-9b :: main :: 75 :: outside --> / before_L<!-- src: results/x47_cumulative/x47_4-20261028T113105Z/x47_4.md \| qwen3.5-9b :: clean :: 151 :: before_L --> | outside<!-- src: results/x47_cumulative/x52_cumulative-20261029T023427Z/x47_4.md \| qwen3.6-27b :: main :: 69 :: outside --> / before_L<!-- src: results/x47_cumulative/x52_cumulative-20261029T023427Z/x47_4.md \| qwen3.6-27b :: clean :: 202 :: before_L --> | before_L<!-- src: results/x47_cumulative/x47_4-20261028T113105Z/x47_4.md \| muse-glimmer-30b :: main :: 68 :: before_L --> / before_L<!-- src: results/x47_cumulative/x47_4-20261028T113105Z/x47_4.md \| muse-glimmer-30b :: clean :: 143 :: before_L --> | outside<!-- src: results/x47_cumulative/x52_cumulative-20261029T044453Z/x47_4.md \| nemotron-3.5-lightning :: main :: 59 :: outside --> / ○ before_L<!-- src: results/x47_cumulative/x52_cumulative_below-20261029T085952Z/x47_4.md \| clean :: 89 :: before_L --> | outside<!-- src: results/x47_cumulative/x52_cumulative-20261030T010712Z/x47_4.md \| qwen3.5-122b-a10b :: main :: 53 :: outside --> / before_L<!-- src: results/x47_cumulative/x52_cumulative-20261030T010712Z/x47_4.md \| qwen3.5-122b-a10b :: clean :: 134 :: before_L --> |
   | locker after: lookups carried by the bridge word before L (main) | 0.93 [0.85, 0.98]<!-- src: results/x47_cumulative/x47_4-20261028T113105Z/x47_4.md \| qwen3.5-9b :: main :: lookup :: locker-after :: 68 :: 0.93 [0.85, 0.98] --> | 1.00 [1.00, 1.00]<!-- src: results/x47_cumulative/x52_cumulative-20261029T023427Z/x47_4.md \| qwen3.6-27b :: main :: lookup :: locker-after :: 61 :: 1.00 [1.00, 1.00] --> | 0.99 [0.95, 1.00]<!-- src: results/x47_cumulative/x47_4-20261028T113105Z/x47_4.md \| muse-glimmer-30b :: main :: lookup :: locker-after :: 69 :: 0.99 [0.95, 1.00] --> | 0.92 [0.86, 0.98]<!-- src: results/x47_cumulative/x52_cumulative-20261029T044453Z/x47_4.md \| nemotron-3.5-lightning :: main :: lookup :: locker-after :: 0.92 [0.86, 0.98] --> | 1.00 [1.00, 1.00]<!-- src: results/x47_cumulative/x52_cumulative-20261030T010712Z/x47_4.md \| qwen3.5-122b-a10b :: main :: lookup :: locker-after :: 82 :: 1.00 [1.00, 1.00] --> |
 
-  Lightning's clean design is below its gate (recall 0.751 < 0.80), so it is not tested there; the below-gate run (exploratory, hollow ○) finds the rest read mostly at the bridge word before L in locker-first scenes, and, with the locker after the pick, the bridge word before L carries the lookup on ○ 0.94 [0.89, 0.98]<!-- src: results/x47_cumulative/x52_cumulative_below-20261029T085952Z/x47_4.md | lookup :: locker-after :: 0.94 [0.89, 0.98] --> of scenes.
-
 - **Read.**
   - With the locker first the change at L misses few lookups on every model, the 27B included; with the locker after, almost all lookups are carried by the bridge word before L, on the 27B and Lightning too.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+The result in full:
+
+  Lightning's clean design is below its gate (recall 0.751 < 0.80), so it is not tested there; the below-gate run (exploratory, hollow ○) finds the rest read mostly at the bridge word before L in locker-first scenes, and, with the locker after the pick, the bridge word before L carries the lookup on ○ 0.94 [0.89, 0.98]<!-- src: results/x47_cumulative/x52_cumulative_below-20261029T085952Z/x47_4.md | lookup :: locker-after :: 0.94 [0.89, 0.98] --> of scenes.
+
 - **Caveats.**
   - Lightning's clean-design numbers are below gate, exploratory: never in claims or grades.
   - Descriptive: no rule fixed in advance.
   - In the main test the rest of a locker-first miss sits outside the pick sentence on the 9B, 27B and Lightning (the other person's pick also changes there); in clean scenes it is before L on all three.
+
+</details>
 
 ### Does the lookup drop the lens part before it takes up the address? <a id="t47-8"></a>
 
 `in README` *Used in: README Part IV card "Does the lookup drop the lens part before it takes up the address?".*
 
 Test 47.8 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_anatomy/x47_8-20261028T154518Z/x47_8.md` · recompute: `scripts/x47_anatomy.py` (the command in its docstring) · also: anatomy by layer; Lightning's coverage run and the 27B's full grid 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** Layer by layer, when does the lookup stop needing the lens part, when does it start using the address, when is the address readable, and is the value ever used?
 
@@ -1607,7 +1994,6 @@ Test 47.8 · opened not stated · status: rule fixed in advance · hand-check: n
 
 *As the figure above, on Lightning and the 122B, whose gates were chosen after the data (all estimates post hoc); Lightning in its own block: its interval runs far below zero outside its gate.*
 
-<details><summary>Why we asked, data, method and the rule fixed in advance</summary>
 
 - **Why we asked.** At L the lookup takes an identity route and a position route; depth says which comes first and whether the address is written before it is read.
 
@@ -1636,17 +2022,26 @@ Test 47.8 · opened not stated · status: rule fixed in advance · hand-check: n
 
 - **Read.**
   - On the 9B, Muse and Lightning the lookup stops needing the lens part no later than position answers begin; on the 27B's full grid it still needs it after they begin, so (a) fails there. On all four the address is readable before position answers begin and the value is never used; (c) fails on every model.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+More from the reading:
+
   - Lightning's handoff and first position answers fall at L14 (L), as on the 9B. The address code does not persist across depth on any of the four (re-encoded on the 9B and Muse, mixed on the 27B and Lightning).
 
 - **Caveats.**
   - The 27B's column is its full grid. The reduced grid behind README E12 (9 layers) gave l_J L16, l_P L30, (a) yes; l_J needs the effect to stay under the bar at every later sampled layer, and the full grid samples L36, which the reduced grid skipped (Flagged, top).
   - Each layer's address part and probe are refit on the fit half; early-layer refits read less well (the verdicts give their held-out accuracy).
 
+</details>
+
 ### Does the address travel to the last token? <a id="t51-4"></a>
 
 `in README` *Used in: README claims table, claim 12 (whether the address travels to the last token).*
 
 Test 51.4 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x51_travel/x52_travel-20261029T012517Z/verdict.md` · recompute: `scripts/x51_travel.py` (the command in its docstring) · also: Lightning's coverage run 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** Does the address swap work at the last token, with the bridge word's slot means or with means refit there?
 - **Why we asked.** The answer is read at the last token; the address could be copied there or re-encoded.
@@ -1661,6 +2056,8 @@ The swap at the last token, per model:
 
 *The address fit at the bridge word swapped in at the last token, a few layers after L at twice a real change's size: the share of lookups sent to the target item, per model. Whiskers 95% intervals; Lightning hollow ○ (a coverage run).*
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -1671,16 +2068,26 @@ The swap at the last token, per model:
 
 - **Read.**
   - On the 9B and 27B the slot is readable at the last token but the bridge word's code does not work there; on Muse it does.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+More from the reading:
+
   - On Lightning the slot is not yet readable at the last token at L and L+4 (the probe sits near the majority slot) and the swap moves nothing there, so the rule says in between; the probe reads the slot only after L+4.
+
 - **Caveats.**
   - "Not at the last token" means not usable there by this swap, not absent: the probe reads the slot there.
   - Doses 1 and 2 only.
+
+</details>
 
 ### Is the recall's bridge entity read through the lens at the last token? <a id="t51-10"></a>
 
 `in README` *Used in: README Part IV card "At the last token, is the bridge entity in the lens part of the state, and does the model use it there?".*
 
 Test 51.10 · opened 28 Oct · status: rule fixed in advance · hand-check: in sample (view f) · files: `results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md` · recompute: `scripts/x51_jread.py` (the command in its docstring) · also: Lightning's coverage run 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** At the last token and at the question's pick token, is the bridge entity readable through the lens, and does writing it through the lens move the answer?
 - **Why we asked.** The bridge word's lens part is followed by the recall; the answer is computed later, at the last token.
@@ -1693,6 +2100,8 @@ Test 51.10 · opened 28 Oct · status: rule fixed in advance · hand-check: in s
 
 - **Rule, fixed in advance.** "read: through-the-lens probe >= 0.8 and lens top-5 >= 0.5 at some layer before the answer digit's layer, while the full-residual probe >= 0.9 there. write: at the layer of the read peak, his swap or the J++ part of the change (gain <= 2) switches >= 0.5 of what the whole-state patch switches at that layer, with the random part <= 0.10."
 
+</details>
+
 - **Result.** (recall, last token)
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -1702,13 +2111,20 @@ Test 51.10 · opened 28 Oct · status: rule fixed in advance · hand-check: in s
   | swap / whole-state patch, switches | 0.00 / 0.95<!-- src: results/x51_jread/x51_10-20261028T190608Z/verdict.md \| L24: 0.00 / 0.95 :: 0.00 / 0.95 --> | 0.01 / 0.97<!-- src: results/x51_jread/x51_10-20261028T190608Z/verdict.md \| L56: 0.01 / 0.97 :: 0.01 / 0.97 --> | 0.01 / 1.00<!-- src: results/x51_jread/x51_10-20261028T190608Z/verdict.md \| L40: 0.01 / 1.00 :: 0.01 / 1.00 --> | 0.14 / 0.97<!-- src: results/x51_jread/x52_jread-20261029T005707Z/verdict.md \| L36: 0.14 / 0.97 :: 0.14 / 0.97 --> | 0.00 / 0.79<!-- src: results/x51_jread/x53_jread-20261029T140044Z/verdict.md \| L44: 0.00 / 0.79 :: 0.00 / 0.79 --> |
   | the rule (recall, last token) | **readable, not used** | **readable, not used** | **readable, not used** | **readable, not used** (no prediction) | **(b) readable, not used<!-- src: results/x51_jread/x53_jread-20261029T140044Z/verdict.md \| qwen3.5-122b-a10b :: recall :: (b) readable, not used -->** (no prediction) |
 
-  What the model outputs under the writes at the last token (a CPU check after the data, descriptive; results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md): the recall never outputs the bridge entity's name or a number word, on any of the four models. Under the lens swap its original answer stays unchanged on 0.95<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | swap | 75 |  :: 0.95 --> / 0.97<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | swap | 69 |  :: 0.97 --> / 0.94<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | swap | 68 |  :: 0.94 --> / 0.78<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | swap | 59 |  :: 0.78 --> of items (9B / 27B / Muse / Lightning); the lens part of the change at gain 2 gives the changed prompt's answer on 0.15<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | jpp2 | 75 | 0.65 :: 0.15 --> / 0.03<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | jpp2 | 69 | 0.91 :: 0.03 --> / 0.38<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | jpp2 | 68 | 0.38 :: 0.38 --> / 0.56<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | jpp2 | 59 | 0.15 :: 0.56 -->, a random part at the same gain on 0.04<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | rand2 | 75 | 0.84 :: 0.04 --> / 0.03<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | rand2 | 69 | 0.93 :: 0.03 --> / 0.04<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | rand2 | 68 | 0.90 :: 0.04 --> / 0.19<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | rand2 | 59 | 0.61 :: 0.19 -->.
-
 - **Read.**
   - At the last token the recall's bridge entity is readable through the lens on all four models, Lightning included, but writing it through the lens does not switch it to the swapped-in entity's answer.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+The result in full:
+
+  What the model outputs under the writes at the last token (a CPU check after the data, descriptive; results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md): the recall never outputs the bridge entity's name or a number word, on any of the four models. Under the lens swap its original answer stays unchanged on 0.95<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | swap | 75 |  :: 0.95 --> / 0.97<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | swap | 69 |  :: 0.97 --> / 0.94<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | swap | 68 |  :: 0.94 --> / 0.78<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | swap | 59 |  :: 0.78 --> of items (9B / 27B / Muse / Lightning); the lens part of the change at gain 2 gives the changed prompt's answer on 0.15<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | jpp2 | 75 | 0.65 :: 0.15 --> / 0.03<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | jpp2 | 69 | 0.91 :: 0.03 --> / 0.38<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | jpp2 | 68 | 0.38 :: 0.38 --> / 0.56<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | jpp2 | 59 | 0.15 :: 0.56 -->, a random part at the same gain on 0.04<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | rand2 | 75 | 0.84 :: 0.04 --> / 0.03<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | rand2 | 69 | 0.93 :: 0.03 --> / 0.04<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | rand2 | 68 | 0.90 :: 0.04 --> / 0.19<!-- src: results/x51_jread/x52_lenswrite-20261029T080535Z/lenswrite.md | recall | rand2 | 59 | 0.61 :: 0.19 -->.
+
 - **Caveats.**
   - The lookup's cells: routes around J-space (9B) or none of the four (27B, Muse, Lightning); the question's pick token: not represented or none of the four on almost every cell.
   - Locker-first scenes only.
+
+</details>
 
 ### At the last token, does each reader compute its answer through the lens part or outside it? <a id="b53-3"></a>
 
@@ -1716,9 +2132,10 @@ Test 51.10 · opened 28 Oct · status: rule fixed in advance · hand-check: in s
 
 Test 53.3 · opened 29 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x53_lastconflict/x53_lastconflict-20261029T090326Z/verdict.md` · recompute: `scripts/x53_lastconflict.py` (the command in its docstring) · also: four models
 
+<details><summary>Question, data, method, rule and figure</summary>
+
 - **Question.** At the last token, does each reader compute its answer through the lens part of the last token's change, or outside it?
 
-<details><summary>Why we asked, data, method and the rule fixed in advance</summary>
 
 - **Why we asked.** At the last token the recall's bridge entity is readable through the lens, yet writing it there does not switch it to the swapped-in entity's answer ([51.10](#t51-10)); the conflict test at that token asks which part of the change each reader follows there.
 
@@ -1728,13 +2145,14 @@ Test 53.3 · opened 29 Oct · status: rule fixed in advance · hand-check: not i
 
 - **Rule, fixed in advance.** "Rule per reader: "computes outside the lens at the last token" if the effect without the lens part is <= 0.10 beyond random and the rest alone switches >= 0.7 of the whole; "through the lens" if the effect is >= 0.30 beyond random; else in between." (jobs/c3/batch53.yaml, Dan 29 Oct 09:30; no prediction)
 
-</details>
 
 Both readers at the last token:
 
 ![At the read peak no lookup goes through the lens part](../../figures/depth/49_last_conflict.png)
 
 *The conflict test at the last token: the switches blocked without the lens part beyond a random part, lookup (left) and recall (right), at the two layers tested for each reader (its own layers, earlier first; the 122B at one). Whiskers 95% intervals; Lightning and the 122B hollow ○.*
+
+</details>
 
 - **Result.**
 
@@ -1748,6 +2166,11 @@ Both readers at the last token:
 
 - **Read.**
   - At the read peak: the lookup is in between on the 9B and the 27B and computes outside the lens part on Muse and Lightning; the recall computes outside the lens part on the 9B and the 27B, is in between on Muse and goes through the lens on Lightning.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+More from the reading:
+
   - Two layers before the answer the cells are uninformative near the output (dictionary): close to the output the letter-token dictionary decides "through" vs "outside", and digits have no atoms. Their numbers stay in the table as descriptive, the verdict's labels beside. Muse's lookup at L33 and Lightning's at L43 keep their own labels ("the last layers" does not hold there): Muse's computes outside the lens part, Lightning's is in between.
 
 - **Caveats.**
@@ -1756,15 +2179,18 @@ Both readers at the last token:
   - The cells two layers before the answer sit at L27 of 32<!-- src: src/bridge_jspace/pins.py \| "n_layers" :: 32 --> (9B), L59 of 64<!-- src: configs/models/qwen3.6-27b.yaml \| Target model :: 64 --> (27B), L33 / L44 of 52<!-- src: configs/models/muse-glimmer-30b.yaml \| decoder layers :: 52 --> (Muse's lookup / recall) and L43 / L47 of 52<!-- src: src/bridge_jspace/pins.py \| hybrid :: 52 --> (Lightning's): on these digit answers the answer layer is earlier than on words ([53.3b](#b53-3b)). Muse's and Lightning's lookup cells keep their labels: near the reader's answer layer; the lens dictionary has no digit atoms, but the recall's digits were captured under the same conditions, so this asymmetry is unresolved. The 27B's lookup read peak L60 is also its answer layer minus 1; it keeps its read-peak label.
   - Exploratory (batch 53): no prediction.
 
+</details>
+
 ### Does the last-token conflict test change when the answers are words? <a id="b53-3b"></a>
 
 `in README` `below gate: Muse, Lightning` *Used in: README "Tested and dropped" ("The copy bypasses the lens").*
 
 Test 53.3b · opened 29 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x53_lastconflict/x53_lastconflict_words-20261029T100850Z/verdict.md` · recompute: `scripts/x53_lastconflict.py` (the command in its docstring) · also: four models, joint verdict 29 Oct
 
+<details><summary>Question, data, method, rule and figure</summary>
+
 - **Question.** At the last token, does the lookup compute its answer through the lens part when the answer is a word the passage states, as the recall does, or outside it as with digits?
 
-<details><summary>Why we asked, data, method and the rule fixed in advance</summary>
 
 - **Why we asked.** On our locker scenes (digit answers) the lookup computes outside the lens part at the last token on two models while the recall goes through it near the answer ([53.3](#b53-3)); the asymmetry could belong to digits or to copying. (53.3's near-answer recall cells are now labelled uninformative near the output, Dan 11:25; its Muse and Lightning digit lookups keep their labels, Dan 11:55.)
 
@@ -1774,13 +2200,14 @@ Test 53.3b · opened 29 Oct · status: rule fixed in advance · hand-check: not 
 
 - **Rule, fixed in advance.** "Rule per reader and layer: 53.3's labels. Across readers: "copy bypasses the lens" if at answer - 1 and - 2 the recall is "through the lens" and the lookup "outside" on >= 3 of 4 models; "digits only" if on words the lookup goes through the lens like the recall; else in between." (jobs/c3/batch53.yaml, test_53_3b, Dan ~10:05; no prediction)
 
-</details>
 
 Both readers at the last token, with words as answers:
 
 ![Near the output the test is uninformative; read peaks differ](../../figures/depth/50_last_conflict_words.png)
 
 *As the figure above with words as the answers: per model, three, two and one layers before the answer and at the read peak (the rule counts the two layers nearest the answer as uninformative). Whiskers 95% intervals; Lightning hollow ○.*
+
+</details>
 
 - **Result.**
 
@@ -1797,14 +2224,16 @@ Both readers at the last token, with words as answers:
 
 - **Read.**
   - By the rule, across readers: in between. Only the 9B and the 27B are at their gates, so neither clause can reach 3 of 4.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+More from the reading:
+
   - The "digits only" pattern under the label (the lookup through the lens part like the recall at answer - 1 and - 2 on all four models; copy bypasses on none) sits in cells labelled uninformative near the output (dictionary): at those layers the lens is close to the output and the letter-token dictionary decides "through" vs "outside", while digits have no atoms. Their numbers stay beside, descriptive.
   - Away from the output: three layers before the answer the lookup is in between on the 9B and goes through the lens on the 27B (and on Muse and Lightning, below gate); the recall goes through it on all four. At the read peak the lookup is weak (whole change 0.34<!-- src: results/x53_lastconflict/x53_lastconflict_words-20261029T100850Z/verdict.md \| qwen3.5-9b :: lookup :: 24 (read peak) :: 0.34 --> on the 9B, 0.27<!-- src: results/x53_lastconflict/x53_lastconflict_words-20261029T100850Z/verdict.md \| muse-glimmer-30b :: lookup :: 32 (read peak) :: 0.27 --> on Muse, 0.47<!-- src: results/x53_lastconflict/x53_lastconflict_words-20261029T100850Z/verdict.md \| nemotron-3.5-lightning :: lookup :: 32 (read peak) :: 0.47 --> on Lightning) and in between or outside the lens; on the 27B the read peak is its answer layer minus 3 and goes through. Three read-peak cells are under the validity bar: the 9B's recall, Muse's lookup, Lightning's recall.
 
-<details><summary>More of the read</summary>
 
 - On our locker scenes, away from the output: the 9B in between at L26, the 27B in between at its read peak L60 (L58 invalid), Muse outside at its read peak L32, Lightning in between at L42.
-
-</details>
 
 - **Caveats.**
   - Muse (Z1-P's lookup right on 0.781<!-- src: results/x50_zach/x52_z1p-20261029T094820Z/z1p.md | 'K': 0.78125 :: 0.781 --> < 0.80) and Lightning (0.794<!-- src: jobs/c3/batch52.yaml | Z1-P on Lightning :: 0.794 --> < 0.80) are below their gates on these passages: exploratory, hollow ○, never in claims or grades, and they do not count toward "3 of 4". With two models at gate, "in between" follows from the gates; the pattern under it is descriptive.
@@ -1813,15 +2242,18 @@ Both readers at the last token, with words as answers:
   - The 27B's check at L58 is invalid (whole change 0.29<!-- src: results/x53_lastconflict/x53_lastconflict_words-20261029T100850Z/verdict.md \| qwen3.6-27b :: lookup :: 58 (answer L61 - 3) :: 0.29 --> < 0.30), so its locker label rests on L60 alone.
   - Exploratory (batch 53): no prediction.
 
+</details>
+
 ### On Lightning, does the lookup read the bridge word through attention blocks 19 and 26? <a id="b53-4"></a>
 
 `in README` *Used in: README Part IV card "On Lightning, does the lookup read the bridge word through its attention blocks?".*
 
 Test 53.4 · opened 29 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x53_attnblock/x53_attnspan-20261029T102727Z` · recompute: `scripts/x53_attnblock.py` (the command in its docstring) · also: a follow-up with a later control
 
+<details><summary>Question, data, method, rule and figure</summary>
+
 - **Question.** On Lightning, does the lookup read the bridge word through its attention blocks 19 and 26?
 
-<details><summary>Why we asked, data, method and the rule fixed in advance</summary>
 
 - **Why we asked.** Lightning's attention heads move with the address swap in blocks 19 and 26 ([attention under the swap](#t49-7)); its other blocks are Mamba-2 state, so the bridge word could reach the lookup through two attention blocks.
 
@@ -1831,13 +2263,14 @@ Test 53.4 · opened 29 Oct · status: rule fixed in advance · hand-check: not i
 
 - **Rule, fixed in advance.** "Rule: "read through two blocks" if (iii) cuts the lookup's switches by >= 0.6 of the whole change's and (v) by <= 0.15; "one block" if (i) or (ii) alone cuts >= 0.6; "not through attention at the bridge" if (iv) cuts < 0.3 (the Mamba state carries it); else in between." (jobs/c3/batch52.yaml, lightning_attn_block, Dan ~10:05; no prediction) Follow-up (span): "the pointer [pointer: the address] is read by attention after the Mamba state spreads it" if the span cuts the lookup's switches by >= 0.6 and the control by <= 0.15; else as 53.4. (jobs/c3/batch53.yaml, next_1110, Dan 11:10; no prediction)
 
-</details>
 
 Each block or span cut on Lightning:
 
 ![Two attention blocks carry a third of Lightning's lookup switch](../../figures/depth/51_attention_blocks.png)
 
 *Lightning: the switches blocked when attention blocks are cut, lookup (left) and recall (right), per block or span cut (rows), with a control block and a control span. Whiskers 95% intervals; all estimates post hoc.*
+
+</details>
 
 - **Result.**
 
@@ -1859,6 +2292,11 @@ Each block or span cut on Lightning:
 
 - **Read.**
   - Blocking the bridge word in attention blocks 19 and 26 cuts about a third of Lightning's lookup switches, as much as blocking every attention block after L; either block alone cuts little, and the control cuts nothing. By the rule this is in between: the lookup is partly read through those two blocks.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+More from the reading:
+
   - Follow-up (a later control): blocking the whole span from the bridge word to the scene's end in blocks 19 and 26 cuts about half of the lookup's switches on the 83 scenes where the control fits, the control span nothing; under 0.6, so in between by the rule. The span also costs the clean answer on more than half of those scenes. The first run, with the superseded control, gave the same picture.
   - On the scenes the span block leaves readable (the lookup's clean answer survives), the span still cuts about the same share: the cut is not just general damage (descriptive, the label stays as computed on all 83).
 
@@ -1868,6 +2306,8 @@ Each block or span cut on Lightning:
   - The span's collateral is large: the clean answer is unchanged on less than half of the rule's scenes under the span, on all of them under the control. On the 117 scenes without a control the lookup mostly does not switch, so the span's cut there is uninformative.
   - One model by design; exploratory (batch 53), no prediction.
 
+</details>
+
 ## Part V. Other datasets and operations
 
 ### Does the split hold on the fact passages with a named bridge? <a id="z1"></a>
@@ -1876,13 +2316,14 @@ Each block or span cut on Lightning:
 
 Test Z1 · opened 28 Oct · status: rule fixed in advance · hand-check: in sample (view e) · files: `results/x50_zach/z1-20261028T161649Z/z1.md` · recompute: `scripts/x50_zach.py` (the command in its docstring) · also: Lightning's coverage run 29 Oct
 
+<details><summary>Question, data, method, rule and figure</summary>
+
 - **Question.** On the fact passages with a named bridge, does the lookup let go of the lens part while the recall follows it?
 
 ![On the named fact passages the lookup follows the lens part too](../../figures/readme/15_facts.png)
 
 *The lookup on passages with true and with made-up facts, per model; whiskers: intervals on the true-fact values (Muse: too few lookup switches, not drawn).*
 
-<details><summary>Why we asked, data, method and the rule fixed in advance</summary>
 
 - **Why we asked.** Our scenes are short lists; the fact passages scatter the facts in prose.
 
@@ -1911,14 +2352,16 @@ Test Z1 · opened 28 Oct · status: rule fixed in advance · hand-check: in samp
 
 - **Read.**
   - Rechecked on the 9B without the 60 passages where the bridge's true value stands in the lookup's passage as another entity's value: the split holds on the remaining 140 as on the full set, with the same gap.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+More from the reading:
+
   - On the named-bridge fact passages the lookup follows the lens part too on the 9B and 27B; Muse's lookup switches too rarely to tell (see the flags in the operations log). The order pattern replicates on all three.
   - On Lightning at L14 the split is in between: the lookup has more blocked than the 0.10 bar but far less than the recall; its order pattern does not replicate (fact-first under twice fact-after).
 
-<details><summary>More of the read</summary>
 
 - On the fact passages with made-up facts (Z1-P) the 9B's split holds and the 27B's is in between; Muse and Lightning missed the gate there, so their numbers are descriptive only.
-
-</details>
 
 - **Caveats.**
   - The fact passages' true-fact lookups (the first four rows) state facts the model may know; the made-up-fact rerun (Z1-P, 29 Oct) ran on the 9B, 27B (L32) and Lightning (L14): coverage runs on the same rule, no prediction, 200 passages each; Muse not run.
@@ -1926,11 +2369,15 @@ Test Z1 · opened 28 Oct · status: rule fixed in advance · hand-check: in samp
   - Gates just under 0.80 stay not tested: on the harder variants the eligible items are the easier ones (Muse's and Lightning's made-up-fact gates).
   - Muse's lookup switches under the whole change on 0.12 of passages; at L36 it cannot tell. Lightning's L27 (beside) likewise: its lookup switches on 1<!-- src: results/x50_zach/x52_z1-20261029T013035Z/z1.md \| L27: routes :: "original": 198, "switch": 1 :: 1 --> of 200 passages there, so the verdict's "follows the lens here" at L27 is not valid (Flagged 13).
 
+</details>
+
 ### On the fact passages, does the answer control read the same with the bridge named and described? <a id="b53-1b"></a>
 
 `ledger only` *Used in: not in the README (its rebuild).*
 
 Test 53.1b · opened 29 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x51_answer/x53_jsuite-20261029T095443Z/verdict.md` · recompute: `scripts/x51_answer.py` (the command in its docstring) · also: the 9B and the 27B
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** On the fact passages with made-up facts, what do 51.12's arms (is it the bridge item or its answer that moves through the lens?) say when the passage names the bridge (PP: the lookup reads the made-up value the passage states; PM: the recall answers from memory) and when it describes the bridge instead (MP: the lookup; MM: the recall)? In his codes the first letter is how the bridge enters, the second where the answer comes from; the made-up fact is stated in every cell, so PP against MP is a named against a described bridge, for the lookup.
 - **Why we asked.** A priority of 29 Oct ("jsuite PP vs MP, 51.12's arms + readout"): on the fact passages the cells exist already, no new scenes.
@@ -1944,6 +2391,8 @@ The answer control per chain:
 ![Named: both recalls mixed; described: the 27B's reads as the answer](../../figures/depth/52_fact_answer_control.png)
 
 *The answer control on the fact passages with the bridge named, per chain (P: read in the passage, M: recalled; the last letter is the hop the reader answers): the switches blocked without the lens part and with only the answer word's directions removed, lookup (violet) and recall (black). Whiskers 95% intervals.*
+
+</details>
 
 - **Result.**
 
@@ -1960,17 +2409,27 @@ The answer control per chain:
 
 - **Read.**
   - On the named-bridge passages both recalls read as mixed: keeping the answer's directions keeps only part of the recall's drop, and the answer directions alone cost some of it; the 9B's lookup has nothing blocked beyond random (cannot tell), and the 27B's answer word is not read at the bridge word.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+More from the reading:
+
   - On the described bridge the 27B's recall reads as the answer: keeping the answer's directions keeps little of its drop, and the answer directions alone cost most of it; its lookup's answer word is not read at the bridge word.
+
 - **Caveats.**
   - The 9B's described-bridge passages missed the gate (lookup right on 0.757 of 169 cases), so its MP and MM cells are not tested and have no numbers; the 27B's passed theirs (read right on 0.940, 140 chosen of 184).
   - Gates just under 0.80 stay not tested: on the harder variants the eligible items are the easier ones (the 9B's described-bridge passages).
   - Exploratory (batch 53): no prediction.
+
+</details>
 
 ### Does the split survive when the bridge is changed at every layer up to L? <a id="t51-7"></a>
 
 `in README` *Used in: README Part V card "Does the split hold on the fact passages, and do the two operations agree?" (the full carrier).*
 
 Test 51.7 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x51_carrier/x52_carrier-20261029T014338Z/verdict.md` · recompute: `scripts/x51_carrier.py` (the command in its docstring) · also: Lightning's coverage run 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** On the fact passages, does changing the bridge token at every layer up to L (the full carrier) explain the one-layer result, and does the split hold there?
 - **Why we asked.** At one layer his fact-after lookups barely switch; the link may be carried by the bridge token over several layers.
@@ -1985,6 +2444,8 @@ One layer against every layer up to L:
 
 *The change at the bridge word at one layer (left) and at every layer up to L (right): the switches blocked without the lens part beyond a random part, lookup (violet) and recall (black), with the fact sentence before the pick and after it. Whiskers 95% intervals; Lightning hollow ○.*
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -1997,16 +2458,26 @@ One layer against every layer up to L:
 
 - **Read.**
   - Carried over every layer up to L, the fact-after lookups switch as often as the fact-first ones, so the one-layer result was a slice; the same on Lightning.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+More from the reading:
+
   - On the full carrier the fact-first split is in between; fact-after lookups follow the lens part.
+
 - **Caveats.**
   - The fact passages' lookups state true facts (see [Z1](#z1)).
   - Muse not run (designed for the 9B and 27B).
+
+</details>
 
 ### Does the lookup take a position route on the fact passages? <a id="z3"></a>
 
 `in README` *Used in: README Part V card "Does the split hold on the fact passages, and do the two operations agree?" (the routes test on the fact passages).*
 
 Test Z3 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x50_zach/x52_z3-20261029T024151Z/z3.md` · recompute: `scripts/x50_zach.py` (the command in its docstring) · also: the 27B's and Lightning's coverage runs 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** On the fact passages with scattered facts, does the lookup take a position route besides the identity route?
 - **Why we asked.** The address codes where a locker sentence sits in a list; the fact passages have no list.
@@ -2021,6 +2492,8 @@ The three routes on the fact passages:
 
 *The routes test on the fact passages: the share of the lookup's answers by identity (blue), by position (orange) and by value (slate), at each model's layer tested and, where run, a later one. Whiskers 95% intervals; the 27B, Lightning and the 122B hollow ○ (coverage runs, or after the data).*
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B (L32) | Muse (L26) | Lightning (L14) | 122B |
@@ -2032,15 +2505,22 @@ The three routes on the fact passages:
 
 - **Read.**
   - On the fact passages the lookup rarely takes the position route: in between on the 9B, Muse and Lightning at L, and almost none on the 27B (no position route in the fact passages' layout); it never takes the value.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - Small n (60 / 81 / 48 / 52); the lookup only.
   - The 27B is read at L32 only (X0's layer and the start of the breadth track's band).
+
+</details>
 
 ### Does the breadth track's read window match ours? <a id="t51-5"></a>
 
 `ledger only` *Used in: not in the README (its rebuild).*
 
 Test 51.5 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x51_depth/x51_5-20261028T181100Z/verdict.md` · recompute: `scripts/x51_depth.py` (the command in its docstring)
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** On the fact passages, does each reader's read window end within 4 layers of ours?
 - **Why we asked.** His swap works up to about L20; ours up to L16 on the 9B; the windows decide where the two operations can be compared.
@@ -2055,6 +2535,8 @@ Each reader's switches by layer on the fact passages:
 
 *The fact passages' read window: the share of each reader's answers switched by the whole change at the bridge name, one layer at a time, lookup (violet) and recall (black); dashed: the bar fixed in advance. Lightning post hoc (a coverage run).*
 
+</details>
+
 - **Result.** (window ends, his / ours)
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -2065,10 +2547,15 @@ Each reader's switches by layer on the fact passages:
 
 - **Read.**
   - On the 9B the fact passages are read over the same layers as our scenes; on the 27B the lookup's window ends 6 layers earlier.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - Lightning's run uses the 9B / 27B design (adapted design, coverage run); its own window from its anatomy run (L22 for both readers).
   - Our 27B window comes from a coarser grid (every 8th layer with L30-34).
   - Layer ends carry no interval.
+
+</details>
 
 ## Part VI. What did not hold
 
@@ -2077,6 +2564,8 @@ Each reader's switches by layer on the fact passages:
 `in README` `below gate: Lightning` *Used in: README Part VI, one line with a link ("A described bridge in our scenes").*
 
 Test 47.3 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_cue/x47_3-20261028T113104Z/x47_3.md` · recompute: `scripts/x47_cue.py` (the command in its docstring) · also: described bridge, opened 28 Oct; Lightning's gate 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** When the asked pick describes the item instead of naming it ("picked the one known for honey"), does the lookup still let go of the lens part at the description's word while the recall follows it?
 - **Why we asked.** A described bridge must be computed first; the computed item could travel through the lens.
@@ -2089,6 +2578,8 @@ Test 47.3 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
 
 - **Rule, fixed in advance.** "(a) "the split holds for a recalled bridge": gap >= 0.3 and lookup extra drop <= 0.10; (a') "a recalled bridge is handed through the lens": lookup extra drop >= 0.20 [...]; (b) "never the value": value <= 0.05; (c) "a pointer [pointer: the address] at the cue token": U' removal cuts position answers >= 0.30 beyond random."
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -2100,21 +2591,33 @@ Test 47.3 · opened 28 Oct · status: rule fixed in advance · hand-check: not i
   | answer control (51.12 cue r2): the answer word not read at the cue word, lookup / recall | 1.00 [1.00, 1.00]<!-- src: results/x51_answer/x51_12-20261028T201842Z/verdict.md \| cue :: qwen3.5-9b :: lookup :: 1.00 [1.00, 1.00] --> / 1.00 [1.00, 1.00]<!-- src: results/x51_answer/x51_12-20261028T201842Z/verdict.md \| cue :: qwen3.5-9b :: recall :: 1.00 [1.00, 1.00] --> | 1.00 [1.00, 1.00]<!-- src: results/x51_answer/x51_12-20261028T201842Z/verdict.md \| cue :: qwen3.6-27b :: lookup :: 1.00 [1.00, 1.00] --> / 1.00 [1.00, 1.00]<!-- src: results/x51_answer/x51_12-20261028T201842Z/verdict.md \| cue :: qwen3.6-27b :: recall :: 1.00 [1.00, 1.00] --> | not run | cancelled with 47.3 | not run |
   | answer control: the recall's arms beside, remaining with the answer directions retained / the answer directions alone | 1.00 [0.95, 1.07]<!-- src: results/x51_answer/x51_12-20261028T201842Z/verdict.md \| cue :: qwen3.5-9b :: recall :: 1.00 [0.95, 1.07] --> / 0.01 [0.00, 0.03]<!-- src: results/x51_answer/x51_12-20261028T201842Z/verdict.md \| cue :: qwen3.5-9b :: recall :: 0.01 [0.00, 0.03] --> | 0.97 [0.92, 1.03]<!-- src: results/x51_answer/x51_12-20261028T201842Z/verdict.md \| cue :: qwen3.6-27b :: recall :: 0.97 [0.92, 1.03] --> / 0.05 [0.02, 0.09]<!-- src: results/x51_answer/x51_12-20261028T201842Z/verdict.md \| cue :: qwen3.6-27b :: recall :: 0.05 [0.02, 0.09] --> (the entity) | | | |
 
-  Lightning, below its gate (exploratory, hollow ○): the answer control (51.12's arms on these scenes) finds the answer word not read at the bridge word for either reader, on 1.00 [1.00, 1.00]<!-- src: results/x51_answer/x52_answer_below-20261029T083454Z/verdict.md | cue :: nemotron-3.5-lightning :: recall :: 1.00 [1.00, 1.00] --> of items (the arms beside say the entity).
-
 - **Read.**
   - The answer control: on the 9B and the 27B the answer word is not read at the cue word on every item, and the recall's arms beside say the item.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
+The result in full:
+
+  Lightning, below its gate (exploratory, hollow ○): the answer control (51.12's arms on these scenes) finds the answer word not read at the bridge word for either reader, on 1.00 [1.00, 1.00]<!-- src: results/x51_answer/x52_answer_below-20261029T083454Z/verdict.md | cue :: nemotron-3.5-lightning :: recall :: 1.00 [1.00, 1.00] --> of items (the arms beside say the entity).
+
+More from the reading:
+
   - For a described bridge the split holds on the 9B and Muse; on the 27B the lookup follows the lens part too (the bridge is handed through the lens there). The lookup never takes the value, and no address sits at the description's word.
+
 - **Caveats.**
   - Lightning's columns are below its gate (the lookup right on 0.72): exploratory, hollow ○, never in claims or grades.
   - Few bridge items (9 to 15).
   - Muse's recall effect is wide.
+
+</details>
 
 ### Under one question with two instructions, does the lens part follow the source or the question? <a id="t47-15"></a>
 
 `in README` `below gate: 9B, Muse, Lightning` *Used in: README Part VI, one line with a link ("One question under two instructions").*
 
 Test 47.15 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_source/x47_15-20261028T142722Z/x47_15.md` · recompute: `scripts/x47_source.py` (the command in its docstring) · also: one question, two sources; the 27B
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** When one question asks for the answer "from the passage" or "from what you know", does each part of the change follow the source of the answer or the question?
 - **Why we asked.** The lookup answers from the passage and the recall from memory: the split could follow the source, or the question the reader is asked.
@@ -2124,6 +2627,8 @@ Test 47.15 · opened not stated · status: rule fixed in advance · hand-check: 
 *No figure: one model tested (the 27B), three numbers per instruction: the Result's table.*
 
 - **Rule, fixed in advance.** "a condition is like a lookup if without J++ <= 0.10 and without U + I >= 0.30, like a recall if without J++ >= 0.30 and without U + I <= 0.10, can't tell if its whole cell is invalid (S_whole < 0.30 or < 30 switches), else neither; the part follows the source if text is like a lookup and memory like a recall; follows the question if both give the same label (lookup or recall); each on the batch on >= 2 of 3 models; a model whose gate (0.80 per instruction) fails is not tested." (results/x47_source/x47_15-20261028T142722Z/x47_15.md; Dan's Q47.15 prediction)
+
+</details>
 
 - **Result.** (the fact placed after)
 
@@ -2135,15 +2640,22 @@ Test 47.15 · opened not stated · status: rule fixed in advance · hand-check: 
 
 - **Read.**
   - On the 27B both instructions have most of their switches blocked without the lens part and many without the address and identity parts: neither instruction reads like a lookup or a recall, so the part follows neither the source nor the question. With no instruction the 27B answers from the passage.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - One model; the 9B, Muse and Lightning missed the gate (Lightning's coverage rerun: results/x47_source/x52_source-20261029T062807Z).
   - The coverage matrix named this test "the second hop's key token" until its 12:20 build; that is another failure ([47.14](#t47-14)).
+
+</details>
 
 ### Are the lookup's errors address errors? <a id="t47-13"></a>
 
 `in README` *Used in: README Part VI, one line with a link ("The lookup's errors are not address errors").*
 
 Test 47.13 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_errors/x47_13-20261028T113107Z/x47_errors.md` · recompute: `scripts/x47_errors.py` (the command in its docstring) · also: the address probe on the lookup's errors; Lightning's coverage run 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** Where the lookup answers wrong on unedited varied scenes, does the address probe read the slot of the wrong answer, while the lens still names the right item?
 - **Why we asked.** If the address carries the position route, some of the lookup's errors could come from a wrong address.
@@ -2153,6 +2665,8 @@ Test 47.13 · opened not stated · status: rule fixed in advance · hand-check: 
 *No figure: one or two numbers per model against chance: the Result's table (the two-panel figure was mostly text).*
 
 - **Rule, fixed in advance.** ""The address predicts the error" if the probe's slot matches the wrong answer's slot in >= 0.5 of wrong items (chance ~ 0.33 with three lockers; the layout baseline beside), and the lens's top item at the bridge word is still the right item in >= 0.8 of those." Lightning: a coverage run on this rule, no prediction.
+
+</details>
 
 - **Result.**
 
@@ -2165,15 +2679,22 @@ Test 47.13 · opened not stated · status: rule fixed in advance · hand-check: 
 
 - **Read.**
   - On the 9B and Lightning the probe matches the wrong answer's slot in under a tenth of errors, below chance: the lookup's errors are not address errors. The 27B makes too few errors to test, and Muse's lens read never landed.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - Lightning's verdict header prints "Q47.13, Dan: 65%", but this is a coverage run with no prediction (Flagged 23).
   - Errors are few: about 100 per model over 40 bridge items.
+
+</details>
 
 ### Does the lens part key the item's attribute, and do late MLPs at the bridge word carry the recall? <a id="t48-2"></a>
 
 `in README` *Used in: README "Tested and dropped" ("Four mechanisms for the split").*
 
 Test 48.2 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x48_enrich/x48_2-20261028T113111Z/x48_2.md` · recompute: `scripts/x48_enrich.py` (the command in its docstring) · also: enrichment; the 27B's and Lightning's coverage runs 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** (A) After L, does a probe for the item's attribute at the bridge word move with the lens part and not without it? (B) Does mean-ablating the bridge word's MLPs after L cost the recall its answer while the lookup's own is unchanged?
 - **Why we asked.** The recall could fetch the item's attribute at the bridge word, keyed by the lens part, through late MLPs.
@@ -2183,6 +2704,8 @@ Test 48.2 · opened not stated · status: rule fixed in advance · hand-check: n
 *No figure: one deciding number per model against its bar: the Result's table (the five-panel mechanism figure is retired).*
 
 - **Rule, fixed in advance.** A: "J++ keys the enrichment if, at every probed layer >= L + 4 where the legs probe (animals, entities held out) reads the attribute (held-out accuracy >= 2x chance), the probe moves >= 0.6 of the way under whole and under no_rand and <= 0.3 under no_jpp (the paired CI of no_rand - no_jpp excluding 0), on both models". B: "the recall's retrieval runs through the bridge token's late MLPs if recall accuracy falls >= 0.4 under bridge_late while lookup accuracy stays within 0.1, and both controls stay within 0.1 for both readers." The 27B and Lightning: coverage runs on these rules, no prediction.
+
+</details>
 
 - **Result.**
 
@@ -2195,15 +2718,22 @@ Test 48.2 · opened not stated · status: rule fixed in advance · hand-check: n
 
 - **Read.**
   - On the 9B, 27B and Muse neither holds, and design A fails on Lightning too: the lens part does not key the attribute probe at the bridge word, and the bridge word's late MLPs are not needed for the recall.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - Design B's early-MLP control moves answers on all three, so the controls do not stay within 0.1 either.
   - The verdicts read that the recall survives because the attribute is fetched at the last token; that reading is the verdict's, not tested here.
+
+</details>
 
 ### Is the person who picked an item marked at its locker sentence? <a id="t48-3"></a>
 
 `in README` `below gate: Lightning` *Used in: README "Tested and dropped" ("Four mechanisms for the split").*
 
 Test 48.3 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x48_bind/x48_bind-20261028T113120Z/x48_bind.md` · recompute: `scripts/x48_bind.py` (the command in its docstring) · also: person mark; the 27B's coverage run 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** Is the person who picked an item written into the item's locker sentence, readable by a probe there, outside the lens, and able to move the lookup when written?
 - **Why we asked.** A forward binding at the locker sentence would let the lookup find the pick's locker without reading the bridge word through the lens.
@@ -2213,6 +2743,8 @@ Test 48.3 · opened not stated · status: rule fixed in advance · hand-check: n
 *No figure: one deciding number per model against its bar: the Result's table (the five-panel mechanism figure is retired).*
 
 - **Rule, fixed in advance.** "forward binding at the locker sentence, outside the lens: probe >= 0.85 in locker-after and <= 0.5 in locker-first; the person contrast's J++ share (k = 25) <= 2x a random direction's; the write sends >= 0.3 of lookups to the written item's locker (random <= 0.05); on both models." The 27B: a coverage run on this rule, no prediction.
+
+</details>
 
 - **Result.**
 
@@ -2225,15 +2757,22 @@ Test 48.3 · opened not stated · status: rule fixed in advance · hand-check: n
 
 - **Read.**
   - On all three models the person who picked an item cannot be read at its locker sentence (near the 0.33 chance, far under 0.85), and writing a person contrast there moves almost no lookup.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - The 27B's item-token probe reads 0.50, above chance but far under the bar.
   - The lens-share clause holds on the 27B and Muse and fails on the 9B; it does not decide alone.
+
+</details>
 
 ### Is the person mark spread over the locker sentence? <a id="t49-3"></a>
 
 `ledger only` `below gate: Lightning` *Used in: not in the README (its rebuild).*
 
 Test 49.3 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x49_probe/x49_3-20261028T154604Z/x49_3.md` · recompute: `scripts/x49_probe.py` (the command in its docstring) · also: pooled person probe; the 27B's coverage run 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** In locker-after scenes, is who picked an item readable from the item's whole locker sentence pooled, though no single token holds it, or as a flag "picked by the asked person"?
 - **Why we asked.** The single-token probe (48.3) reads chance; a mark spread over the sentence would escape it.
@@ -2248,6 +2787,8 @@ The pooled probe against the best single token:
 
 *Who picked the item, read by a probe at its locker sentence: the accuracy pooled over the sentence (with its 95% interval) and at the best single token, at half the test layer and at it. The 27B and Lightning hollow ○ (a coverage run; below its gate).*
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -2259,16 +2800,23 @@ The pooled probe against the best single token:
 
 - **Read.**
   - No probe reads who picked an item from its locker sentence, pooled or at one token, on any of the three models: the 9B and Muse sit at chance at both layers ("neither at the sentence"); the 27B's best token at L comes out "in between", far under 0.85; the picked-flag probe is at chance everywhere.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - Lightning: below the clean one-pick gate, so not tested; its below-gate run (eligible items, L7 and L14) is exploratory, hollow ○, never in claims or grades.
   - "In between" at the 27B's L does not contradict "did not hold": neither reading fixed in advance holds there.
   - The locker-first control is at chance on all three, as the rule requires.
+
+</details>
 
 ### Do the copying heads pass the rest of the change at twice the lens part? <a id="t48-4"></a>
 
 `in README` *Used in: README "Tested and dropped" ("Four mechanisms for the split").*
 
 Test 48.4 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x48_heads/x48_heads-20261028T113126Z/x48_heads.md` · recompute: `scripts/x48_heads.py` (the command in its docstring) · also: copying heads; the 27B's and Lightning's coverage runs 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** Do the five heads that copy most from the bridge word to the last token pass the rest of the change at least twice as strongly as the lens part?
 - **Why we asked.** The lookup follows the rest of the change; heads that copy the rest would be its path.
@@ -2278,6 +2826,8 @@ Test 48.4 · opened not stated · status: rule fixed in advance · hand-check: n
 *No figure: one deciding number per model against its bar: the Result's table (the five-panel mechanism figure is retired).*
 
 - **Rule, fixed in advance.** "a head reads the rest if r(rest) >= 2 r(J++) with r(random) between them or below both (r(random) <= r(rest)), medians over items, W_OV = W_O W_V; a model holds on at least 3 of its 5 heads; the batch holds if both models hold." The 27B and Lightning: coverage runs on this rule, no prediction.
+
+</details>
 
 - **Result.**
 
@@ -2289,15 +2839,22 @@ Test 48.4 · opened not stated · status: rule fixed in advance · hand-check: n
 
 - **Read.**
   - On all four models at most one of the five heads that copy most passes the rest at twice the lens part; the rule fails.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - The coverage verdicts print "0 of 1" or "0 of 2 models hold (both needed)": the across-models clause read on the given runs; the per-model labels are the result. Lightning's heads are read on its attention layers (the attention port).
   - Five heads per model, chosen by attention from the last token to the bridge word.
+
+</details>
 
 ### Is the address the recall's second route? <a id="t48-5"></a>
 
 `in README` `below gate: Lightning` *Used in: README "Tested and dropped" ("Four mechanisms for the split").*
 
 Test 48 route2 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x48_route2/x48_route2-20261028T113127Z/x48_route2.md` · recompute: `scripts/x48_route2.py` (the command in its docstring) · also: the address as the recall's second route, opened 28 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** Writing another slot's address at the bridge word, does the recall then name the item in that slot (slot k's item), as a second route besides the lens part?
 - **Why we asked.** The recall has some blocked switches without the address; the address might be a route into the recall too.
@@ -2307,6 +2864,8 @@ Test 48 route2 · opened 28 Oct · status: rule fixed in advance · hand-check: 
 *No figure: one deciding number per model against its bar: the Result's table (the five-panel mechanism figure is retired).*
 
 - **Rule, fixed in advance.** "the recall's second route is the address if under (ii) the recall names slot k's item in >= 0.3 of the informative writes with the random vector (iv) <= 0.05 (point estimates), on >= 2 of 3 models."
+
+</details>
 
 - **Result.**
 
@@ -2318,16 +2877,23 @@ Test 48 route2 · opened 28 Oct · status: rule fixed in advance · hand-check: 
 
 - **Read.**
   - Writing another slot's address makes the recall name that slot's item in at most a tenth of writes on all three models: the address is not the recall's second route.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - Lightning: below the clean one-pick gate, so not tested; the below-gate run (eligible items only) is exploratory, hollow ○, never in claims or grades.
   - Muse's random vector reaches 0.05, at the rule's bar.
   - Clean scenes with both lockers first only.
+
+</details>
 
 ### Is the address formed by the pick sentence reading the lockers? <a id="t47-6"></a>
 
 `in README` *Used in: README Part VI, one line with a link ("Blocking the pick sentence from the lockers").*
 
 Test 47.6 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_edges/x47_6-20261028T113107Z/verdict.md` · recompute: `scripts/x47_edges.py` (the command in its docstring) · also: blocking the pick sentence; the 27B's coverage run 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** Blocking the pick sentence from reading the locker sentences at every layer up to L, are only the position answers blocked, with identity answers and the recall's switch still there?
 - **Why we asked.** If the pick token forms the address by reading the lockers, blocking those reads should remove position answers alone.
@@ -2337,6 +2903,8 @@ Test 47.6 · opened not stated · status: rule fixed in advance · hand-check: n
 *No figure: one deciding number per model against its bar: the Result's table (the five-panel mechanism figure is retired).*
 
 - **Rule, fixed in advance.** ""the pointer [pointer: the address] is formed by the pick token reading the lockers" if position answers fall to <= 0.10 (from 0.51 / 0.54) while identity answers stay within 0.10 and the recall's switch within 0.10, on Muse and the 9B; the control within 0.10 of none." The 27B: a coverage run on this rule, no prediction.
+
+</details>
 
 - **Result.** (paired, the block minus no block)
 
@@ -2349,15 +2917,22 @@ Test 47.6 · opened not stated · status: rule fixed in advance · hand-check: n
 
 - **Read.**
   - On all three models the block removes position answers, but identity answers and the recall's switch fall too, by more than 0.10: blocking the pick sentence does not single out the address.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - Part (c), blocking the question's reads, was dropped before any run.
   - The control (edges to the filler sentence) stays within 0.10 of no block on all three.
+
+</details>
 
 ### Is the address the same for any kind of item? <a id="t47-11"></a>
 
 `in README` *Used in: README Part VI, one line with a link ("the address for other kinds of item").*
 
 Test 47.11 · opened not stated · status: rule fixed in advance · hand-check: not in sample · files: `results/x47_agnostic/x47_11-20261028T143952Z/x47_11.md` · recompute: `scripts/x47_agnostic.py` (the command in its docstring) · also: other kinds of item; the 27B's and Lightning's coverage runs 29 Oct
+
+<details><summary>Question, data, method, rule and figure</summary>
 
 - **Question.** With fruits or names as the items instead of animals, does the address fit on animal scenes still carry the lookup's position answers?
 - **Why we asked.** An address, not an animal code, should work for any kind of item.
@@ -2372,6 +2947,8 @@ The address fit on animals against one refit on each kind:
 
 *The address on other kinds of item: the position answers cut beyond random without the address fit on animals (left) and refit on each kind (right), per model and kind. Whiskers 95% intervals; Lightning hollow ○.*
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B | Muse | Lightning | 122B |
@@ -2383,9 +2960,14 @@ The address fit on animals against one refit on each kind:
 
 - **Read.**
   - On all three models the animal-fit address does not carry over as the rule asks: on the 9B it cuts fruits and names more than animals, on Muse names fall short, and on the 27B it cuts no kind by 0.3 and retained alone gives few position answers. Refit per kind, it passes for names on all three and for fruits on the 9B and Muse. On Lightning the rule also says no, though its names take the animal-fit address as it is (an address); its fruits need the refit.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - Lightning's column comes from a later verdict folder that re-reads the 27B with the same rows.
   - The refit is read on half the scenes (150 per kind).
+
+</details>
 
 ## Also failed (one line each) <a id="also-failed"></a>
 
@@ -2405,6 +2987,8 @@ The README's Part VI "Also failed" line (its cards move here); each with its ver
 
 Test 49.5 · opened 28 Oct · status: descriptive · hand-check: not in sample · files: `results/checks/clean49_9b.json` · recompute: not stated
 
+<details><summary>Question, data, method, rule and figure</summary>
+
 - **Question.** Run again from one committed, clean tree, do the 9B's headline runs give the same stored answers?
 - **Why we asked.** Every run of record ran from a dirty tree.
 - **Data.** The 9B's main test (200), routes (300), only-U (300), zeroing (200) and the depth anatomy at L10 and L12 (200).
@@ -2413,6 +2997,8 @@ Test 49.5 · opened 28 Oct · status: descriptive · hand-check: not in sample �
 *No figure: the record and the clean rerun side by side are the table's columns.*
 
 - **Rule, fixed in advance.** None: descriptive, no prediction.
+
+</details>
 
 - **Result.** (9B; record / clean rerun)
 
@@ -2424,9 +3010,14 @@ Test 49.5 · opened 28 Oct · status: descriptive · hand-check: not in sample �
 
 - **Read.**
   - Four of the five runs reproduce row for row; the anatomy differs on a few rows.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - The clean runs' own commit is marked dirty in the pack (90210687).
   - Source: docs/depth/notes/handcheck_clean49.md and results/checks/clean49_9b.json (point values, no intervals).
+
+</details>
 
 ## Run on one model only (one line each)
 
@@ -2442,6 +3033,8 @@ Rows of the coverage matrix whose result exists on one model only, by design or 
 
 Test Z2 · opened 28 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x52_coverage/matrix-20261029T122040Z/matrix.json` · recompute: `scripts/x52_coverage.py` (the command in its docstring) · also: withdrawn; Lightning's coverage run 29 Oct
 
+<details><summary>Question, data, method, rule and figure</summary>
+
 - **Question.** On the fact passages with a described (never named) bridge, does the lookup let go of the lens part?
 - **Why we asked.** A described bridge must be computed before it can be used; the computed item could travel through the lens.
 - **Data.** His described-bridge passages: 158 / 166 / 157 (below the 200 aimed for) / 200<!-- src: results/x50_zach/x52_z2-20261029T025625Z/z2.md \| nem35l_x52_z2 :: 200 (124) :: 200 --> (Lightning, at L14; L27 beside).
@@ -2455,6 +3048,8 @@ Both operations' gaps on the described bridge:
 
 *The fact passages with the bridge described: the gap, recall minus lookup, under the change at one layer (left, a share of switches) and under removal everywhere (right, a share of answers); the 122B not run at one layer. Whiskers 95% intervals; Lightning and the 122B hollow ○.*
 
+</details>
+
 - **Result.**
 
   | | 9B | 27B | Muse (L26) | Lightning (L14) | 122B |
@@ -2464,15 +3059,22 @@ Both operations' gaps on the described bridge:
 
 - **Read.**
   - Withdrawn: at the description's last token the lens part moves the answer, so removing it is not a test of the bridge.
+
+<details><summary>The result in full, more reading and caveats</summary>
+
 - **Caveats.**
   - Muse's lookup switches under the whole change on 0.02 of passages; Lightning's L27 cell rests on 15<!-- src: results/x50_zach/x52_z2-20261029T025625Z/z2.md \| L27: routes :: "original": 184, "switch": 15 :: 15 --> lookup switches (under 30) and is not valid.
   - n below the 200 aimed for on the first three models. Lightning's run reads the design the README withdrew (Part VI) and stands under the same withdrawal; its own answer control (coverage run, no prediction) says mixed for both readers: without the answer directions only, the lookup is blocked at 0.29 [0.16, 0.44]<!-- src: results/x51_answer/x52_answer-20261029T080050Z/verdict.md | z2 :: nemotron-3.5-lightning :: lookup :: 0.29 [0.16, 0.44] --> and the recall 0.38 [0.26, 0.52]<!-- src: results/x51_answer/x52_answer-20261029T080050Z/verdict.md | z2 :: nemotron-3.5-lightning :: recall :: 0.38 [0.26, 0.52] --> beyond a random part.
+
+</details>
 
 ## Operations during the sprint <a id="operations"></a>
 
 Moved to [docs/review/ledger_ops_2026-10.md](../review/ledger_ops_2026-10.md) on 7 Nov, verbatim: the 122B coverage runs of the night of 29-30 Oct; the runs not completed in the sprint (batch 52 C); the items flagged for a decision during the sprint (old Appendix A); the README changes proposed during the sprint (old Appendix B); the checks of the retired ledger figures (old Appendix D).
 
 ## Appendix C. Coverage table <a id="coverage"></a>
+
+<details><summary>Coverage table</summary>
 
 Which test ran on which model, from the committed coverage matrix (results/x52_coverage/matrix-20261029T122040Z/matrix.json, built 12:20 UTC 29 Oct; each cell's source is in that file). Rows in the README's order, under their Part; a linked test has a card above. Each cell is a symbol (legend under the table) and, where the matrix has a note for it, a number pointing to that note. Lightning's gate (all its cells): the main test's gate on all 516 scenes, chosen after the 60-scene pre-check was seen (its cells are read as hollow); layer L14 (see [Lightning's layer](#lightning-layer)). Nemotron 3.5 Bolt: out of scope, only a J-lens exists, no J++ lens.
 
@@ -2596,3 +3198,4 @@ As of the matrix at 12:20 UTC (13:20 Paris; 8e2ef0cb: 47.15's row renamed "One q
 54. 9B only by design
 <!-- coverage:end -->
 
+</details>
