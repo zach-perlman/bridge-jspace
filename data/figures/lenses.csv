@@ -1,0 +1,162 @@
+key,model,quantity,value,unit,source
+lens.q27.model,q27,model checkpoint,Qwen/Qwen3.6-27B@6a9e13bd,,src/bridge_jspace/pins.py | TARGETS['qwen3.6-27b']
+lens.q27.target,q27,pins target of the run's lens,qwen3.6-27b,,results/ablate_v2/jsuite_v2_test_chat_ko_cand2_v1/manifest.json | lens (run of docs/breadth/data.csv ko.q27.mk)
+lens.q27.type,q27,lens type,J++,,src/bridge_jspace/pins.py | TARGETS['qwen3.6-27b']
+lens.q27.sha256,q27,lens file sha256,bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f,,results/ablate_v2/jsuite_v2_test_chat_ko_cand2_v1/manifest.json | lens
+lens.q27.kind,q27,who fitted the lens,published,,src/bridge_jspace/pins.py | TARGETS['qwen3.6-27b']
+lens.q27.lens,q27,published file,neuronpedia/jacobian-lens/qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt@e166deb5,,src/bridge_jspace/pins.py | TARGETS['qwen3.6-27b']
+lens.q27.passk,q27,lens quality,0.717,"pass@10, held-out macro","results/lens_check/qwen3.6-27b/eval_ranks_pass_at_k.csv | eval=macro, lens=Qwen3.6-27B_jpp_lens, k=10, weighting=item"
+lens.q27.n,q27,held-out items scored,329,items,"results/lens_check/qwen3.6-27b/eval_ranks.csv | lens=Qwen3.6-27B_jpp_lens, evals association/multihop/multilingual/poetry/typo"
+lens.q27.layers,q27,layers scored (best rank over them),0-62,layers,results/lens_check/qwen3.6-27b/eval_ranks.csv | lens=Qwen3.6-27B_jpp_lens
+lens.q27.logit,q27,"logit lens, same items",0.436,"pass@10, held-out macro","results/lens_check/qwen3.6-27b/eval_ranks_pass_at_k.csv | eval=macro, lens=logit, k=10, weighting=item"
+lens.q9.model,q9,model checkpoint,Qwen/Qwen3.5-9B@c2022362,,src/bridge_jspace/pins.py | TARGETS['qwen3.5-9b']
+lens.q9.target,q9,pins target of the run's lens,qwen3.5-9b,,results/ablate_v2/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1/manifest.json | lens (run of docs/breadth/data.csv ko.q9.mk)
+lens.q9.type,q9,lens type,J++,,src/bridge_jspace/pins.py | TARGETS['qwen3.5-9b']
+lens.q9.sha256,q9,lens file sha256,8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5,,results/ablate_v2/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1/manifest.json | lens
+lens.q9.kind,q9,who fitted the lens,published,,src/bridge_jspace/pins.py | TARGETS['qwen3.5-9b']
+lens.q9.lens,q9,published file,neuronpedia/jacobian-lens/qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt@e166deb5,,src/bridge_jspace/pins.py | TARGETS['qwen3.5-9b']
+lens.q9.passk,q9,lens quality,0.630,"pass@10, held-out macro","results/lens_check/qwen3.5-9b/eval_ranks_pass_at_k.csv | eval=macro, lens=Qwen3.5-9B_jpp_lens, k=10, weighting=item"
+lens.q9.n,q9,held-out items scored,309,items,"results/lens_check/qwen3.5-9b/eval_ranks.csv | lens=Qwen3.5-9B_jpp_lens, evals association/multihop/multilingual/poetry/typo"
+lens.q9.layers,q9,layers scored (best rank over them),0-30,layers,results/lens_check/qwen3.5-9b/eval_ranks.csv | lens=Qwen3.5-9B_jpp_lens
+lens.q9.logit,q9,"logit lens, same items",0.391,"pass@10, held-out macro","results/lens_check/qwen3.5-9b/eval_ranks_pass_at_k.csv | eval=macro, lens=logit, k=10, weighting=item"
+lens.nl.model,nl,model checkpoint,nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16@a9904d24,,src/bridge_jspace/pins.py | TARGETS['nemotron-3.5-lightning']
+lens.nl.target,nl,pins target of the run's lens,nemotron-3.5-lightning,,results/ablate_v2/nem35l_jsuite_v2_test_chat_ko_cand2_v1/manifest.json | lens (run of docs/breadth/data.csv ko.nl.mk)
+lens.nl.type,nl,lens type,J++,,src/bridge_jspace/pins.py | TARGETS['nemotron-3.5-lightning']
+lens.nl.sha256,nl,lens file sha256,3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44,,results/ablate_v2/nem35l_jsuite_v2_test_chat_ko_cand2_v1/manifest.json | lens
+lens.nl.kind,nl,who fitted the lens,our fit,,src/bridge_jspace/pins.py | TARGETS['nemotron-3.5-lightning']
+lens.nl.lens,nl,fit record,results/lens_fit/nemotron-3.5-lightning,,results/lens_fit/nemotron-3.5-lightning | commit 04797e0e sets this sha256 in src/bridge_jspace/pins.py
+lens.nl.passk,nl,lens quality,0.587,"pass@10, held-out macro","results/lens_fit/nemotron-3.5-lightning/eval_ranks_pass_at_k.csv | eval=macro, lens=NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens, k=10, weighting=item"
+lens.nl.n,nl,held-out items scored,247,items,"results/lens_fit/nemotron-3.5-lightning/eval_ranks.csv | lens=NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens, evals association/multihop/multilingual/poetry/typo"
+lens.nl.layers,nl,layers scored (best rank over them),0-50,layers,results/lens_fit/nemotron-3.5-lightning/eval_ranks.csv | lens=NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens
+lens.nl.logit,nl,"logit lens, same items",0.443,"pass@10, held-out macro","results/lens_fit/nemotron-3.5-lightning/eval_ranks_pass_at_k.csv | eval=macro, lens=logit, k=10, weighting=item"
+lens.ds.model,ds,model checkpoint,deepseek-ai/DeepSeek-V4-Flash@60d8d707,,src/bridge_jspace/pins.py | TARGETS['deepseek-v4-flash']
+lens.ds.target,ds,pins target of the run's lens,deepseek-v4-flash,,results/ablate_v2/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1/manifest.json | lens (run of docs/breadth/data.csv ko.ds.mk)
+lens.ds.type,ds,lens type,J++,,src/bridge_jspace/pins.py | TARGETS['deepseek-v4-flash']
+lens.ds.sha256,ds,lens file sha256,e7dc42a68afb8411c4cba01605ce51eec17d7ad0f3150009173224e96864633e,,results/ablate_v2/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1/manifest.json | lens
+lens.ds.kind,ds,who fitted the lens,published,,src/bridge_jspace/pins.py | TARGETS['deepseek-v4-flash']
+lens.ds.lens,ds,published file,neuronpedia/jacobian-lens/deepseek-v4-flash/jpp/Salesforce-wikitext/DeepSeek-V4-Flash_jpp_lens.pt@e166deb5,,src/bridge_jspace/pins.py | TARGETS['deepseek-v4-flash']
+lens.ds.passk,ds,lens quality,not measured,"pass@10, held-out macro",
+lens.mi.model,mi,model checkpoint,mistralai/Ministral-3-14B-Instruct-2512-BF16@3cea74c1,,src/bridge_jspace/pins.py | TARGETS['ministral-3-14b']
+lens.mi.target,mi,pins target of the run's lens,ministral-3-14b,,results/ablate_v2/min14_jsuite_v2_test_chat_ko_cand2_v1/manifest.json | lens (run of docs/breadth/data.csv ko.mi.mk)
+lens.mi.type,mi,lens type,J++,,src/bridge_jspace/pins.py | TARGETS['ministral-3-14b']
+lens.mi.sha256,mi,lens file sha256,45977bd89f5310ec93726d69c198dd788b64b77c8f3b5884ef21fc58652ed3e3,,results/ablate_v2/min14_jsuite_v2_test_chat_ko_cand2_v1/manifest.json | lens
+lens.mi.kind,mi,who fitted the lens,our fit,,src/bridge_jspace/pins.py | TARGETS['ministral-3-14b']
+lens.mi.lens,mi,fit record,results/lens_fit/ministral-3-14b,,results/lens_fit/ministral-3-14b | commit 575d903a sets this sha256 in src/bridge_jspace/pins.py
+lens.mi.passk,mi,lens quality,0.651,"pass@10, held-out macro","results/lens_fit/ministral-3-14b/eval_ranks_pass_at_k.csv | eval=macro, lens=Ministral-3-14B-Instruct-2512-BF16_jpp_lens, k=10, weighting=item"
+lens.mi.n,mi,held-out items scored,318,items,"results/lens_fit/ministral-3-14b/eval_ranks.csv | lens=Ministral-3-14B-Instruct-2512-BF16_jpp_lens, evals association/multihop/multilingual/poetry/typo"
+lens.mi.layers,mi,layers scored (best rank over them),0-38,layers,results/lens_fit/ministral-3-14b/eval_ranks.csv | lens=Ministral-3-14B-Instruct-2512-BF16_jpp_lens
+lens.mi.logit,mi,"logit lens, same items",0.461,"pass@10, held-out macro","results/lens_fit/ministral-3-14b/eval_ranks_pass_at_k.csv | eval=macro, lens=logit, k=10, weighting=item"
+lens.nb.model,nb,model checkpoint,nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16@e09a4ced,,src/bridge_jspace/pins.py | TARGETS['nemotron-3.5-bolt']
+lens.nb.target,nb,pins target of the run's lens,nemotron-3.5-bolt,,results/ablate_v2/nem35b_jsuite_v2_test_chat_ko_cand2_v1/manifest.json | lens (run of docs/breadth/data.csv ko.nb.mk)
+lens.nb.type,nb,lens type,J++,,src/bridge_jspace/pins.py | TARGETS['nemotron-3.5-bolt']
+lens.nb.sha256,nb,lens file sha256,a29ea5bf92976c202c65a72a3a0e139bfd19ea68353722bbab78a094d8e24040,,results/ablate_v2/nem35b_jsuite_v2_test_chat_ko_cand2_v1/manifest.json | lens
+lens.nb.kind,nb,who fitted the lens,our fit,,src/bridge_jspace/pins.py | TARGETS['nemotron-3.5-bolt']
+lens.nb.lens,nb,fit record,results/lens_fit/nemotron-3.5-bolt,,results/lens_fit/nemotron-3.5-bolt | commit 4525f2b0 sets this sha256 in src/bridge_jspace/pins.py
+lens.nb.passk,nb,lens quality,0.800,"pass@10, held-out macro","results/lens_fit/nemotron-3.5-bolt/eval_ranks_pass_at_k.csv | eval=macro, lens=NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16_jpp_lens, k=10, weighting=item"
+lens.nb.n,nb,held-out items scored,244,items,"results/lens_fit/nemotron-3.5-bolt/eval_ranks.csv | lens=NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16_jpp_lens, evals association/multihop/multilingual/poetry/typo"
+lens.nb.layers,nb,layers scored (best rank over them),0-86,layers,results/lens_fit/nemotron-3.5-bolt/eval_ranks.csv | lens=NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16_jpp_lens
+lens.nb.logit,nb,"logit lens, same items",0.658,"pass@10, held-out macro","results/lens_fit/nemotron-3.5-bolt/eval_ranks_pass_at_k.csv | eval=macro, lens=logit, k=10, weighting=item"
+lens.ol.model,ol,model checkpoint,allenai/Olmo-3-1125-32B@c2b61dae,,src/bridge_jspace/pins.py | TARGETS['olmo-3-32b']
+lens.ol.target,ol,pins target of the run's lens,olmo-3-32b,,results/ablate_v2/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1/manifest.json | lens (run of docs/breadth/data.csv ko.ol.mk)
+lens.ol.type,ol,lens type,J++,,src/bridge_jspace/pins.py | TARGETS['olmo-3-32b']
+lens.ol.sha256,ol,lens file sha256,bf3efcf2007fb8ff9683ae23833027dd16d674aecc4ff9e6f0e66d14210e4466,,results/ablate_v2/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1/manifest.json | lens
+lens.ol.kind,ol,who fitted the lens,published,,src/bridge_jspace/pins.py | TARGETS['olmo-3-32b']
+lens.ol.lens,ol,published file,neuronpedia/jacobian-lens/olmo-3-1125-32b/jpp/Salesforce-wikitext/Olmo-3-1125-32B_jpp_lens.pt@e166deb5,,src/bridge_jspace/pins.py | TARGETS['olmo-3-32b']
+lens.ol.passk,ol,lens quality,not measured,"pass@10, held-out macro",
+lens.mu.model,mu,model checkpoint,meta-models/Muse-Glimmer-30B@cec94fcf,,src/bridge_jspace/pins.py | TARGETS['muse-glimmer-30b']
+lens.mu.target,mu,pins target of the run's lens,muse-glimmer-30b,,results/ablate_v2/muse30_jsuite_v2_test_chat_ko_cand2_v1/manifest.json | lens (run of docs/breadth/data.csv ko.mu.mk)
+lens.mu.type,mu,lens type,J++,,src/bridge_jspace/pins.py | TARGETS['muse-glimmer-30b']
+lens.mu.sha256,mu,lens file sha256,90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12,,results/ablate_v2/muse30_jsuite_v2_test_chat_ko_cand2_v1/manifest.json | lens
+lens.mu.kind,mu,who fitted the lens,our fit,,src/bridge_jspace/pins.py | TARGETS['muse-glimmer-30b']
+lens.mu.lens,mu,fit record,results/lens_fit/muse30,,results/lens_fit/muse30 | commit d6b03e7c sets this sha256 in src/bridge_jspace/pins.py
+lens.mu.hub,mu,"our fit, uploaded",zachperlman20/Muse-Glimmer-30B-jpp-lens@68ecd838ad0b13653af7fac985995606f37911dc,,configs/models/muse-glimmer-30b.yaml | lenses
+lens.mu.passk,mu,lens quality,0.959,"pass@10, held-out macro","results/lens_fit/muse30/eval_ranks_pass_at_k.csv | eval=macro, lens=Muse-Glimmer-30B_jpp_lens, k=10, weighting=item"
+lens.mu.n,mu,held-out items scored,247,items,"results/lens_fit/muse30/eval_ranks.csv | lens=Muse-Glimmer-30B_jpp_lens, evals association/multihop/multilingual/poetry/typo"
+lens.mu.layers,mu,layers scored (best rank over them),0-50,layers,results/lens_fit/muse30/eval_ranks.csv | lens=Muse-Glimmer-30B_jpp_lens
+lens.mu.logit,mu,"logit lens, same items",0.670,"pass@10, held-out macro","results/lens_fit/muse30/eval_ranks_pass_at_k.csv | eval=macro, lens=logit, k=10, weighting=item"
+lens.q122.model,q122,model checkpoint,Qwen/Qwen3.5-122B-A10B-FP8@a099dee7,,src/bridge_jspace/pins.py | TARGETS['qwen3.5-122b-a10b']
+lens.q122.target,q122,pins target of the run's lens,qwen3.5-122b-a10b,,results/ablate_v2/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1/manifest.json | lens (run of docs/breadth/data.csv ko.q122.mk)
+lens.q122.type,q122,lens type,J++,,src/bridge_jspace/pins.py | TARGETS['qwen3.5-122b-a10b']
+lens.q122.sha256,q122,lens file sha256,b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53,,results/ablate_v2/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1/manifest.json | lens
+lens.q122.kind,q122,who fitted the lens,published,,src/bridge_jspace/pins.py | TARGETS['qwen3.5-122b-a10b']
+lens.q122.lens,q122,published file,neuronpedia/jacobian-lens/qwen3.5-122b-a10b/jpp/Salesforce-wikitext/Qwen3.5-122B-A10B_jpp_lens.pt@e166deb5,,src/bridge_jspace/pins.py | TARGETS['qwen3.5-122b-a10b']
+lens.q122.passk,q122,lens quality,not measured,"pass@10, held-out macro",
+lens.gemma.model,gemma,model checkpoint,google/gemma-4-31B-it@842da379,,src/bridge_jspace/pins.py | TARGETS['gemma-4-31b-it-full']
+lens.gemma.target,gemma,pins target of the run's lens,gemma-4-31b-it-full,,results/removal_textloss/gemma4itf_sink_textloss_v1/manifest.json | lens (run of docs/breadth/data.csv text.gemma)
+lens.gemma.type,gemma,lens type,J++,,src/bridge_jspace/pins.py | TARGETS['gemma-4-31b-it-full']
+lens.gemma.sha256,gemma,lens file sha256,d16d81d8751ad69df3493c0b3ea7410da97f69abfb07ee115600ad21ef9ef30a,,results/removal_textloss/gemma4itf_sink_textloss_v1/manifest.json | lens
+lens.gemma.kind,gemma,who fitted the lens,our fit,,src/bridge_jspace/pins.py | TARGETS['gemma-4-31b-it-full']
+lens.gemma.lens,gemma,fit record,results/lens_fit/gemma_it_full,,results/lens_fit/gemma_it_full | commit ade3b5f7 sets this sha256 in src/bridge_jspace/pins.py
+lens.gemma.passk,gemma,lens quality,0.633,"pass@10, held-out macro","results/lens_fit/gemma_it_full/eval_ranks_pass_at_k.csv | eval=macro, lens=gemma-4-31B-it_jpp_lens, k=10, weighting=item"
+lens.gemma.n,gemma,held-out items scored,244,items,"results/lens_fit/gemma_it_full/eval_ranks.csv | lens=gemma-4-31B-it_jpp_lens, evals association/multihop/multilingual/poetry/typo"
+lens.gemma.layers,gemma,layers scored (best rank over them),0-58,layers,results/lens_fit/gemma_it_full/eval_ranks.csv | lens=gemma-4-31B-it_jpp_lens
+lens.gemma.logit,gemma,"logit lens, same items",0.560,"pass@10, held-out macro","results/lens_check/gemma-4-31b-it-full/eval_ranks_logit_pass_at_k.csv | eval=macro, lens=logit, k=10, weighting=item"
+lens.gemma.ref,gemma,"published J++ gemma-4-31b/jpp/Salesforce-wikitext/gemma-4-31B_jpp_lens.pt (pins gemma-4-31b-it-baselens), same items",0.522,"pass@10, held-out macro","results/lens_eval/gemma4it_lens_eval/eval_ranks_g0_pass_at_k.csv | eval=macro, lens=gemma-4-31B_jpp_lens, k=10, weighting=item"
+lens.gptoss.model,gptoss,model checkpoint,openai/gpt-oss-20b@6cee5e81,,src/bridge_jspace/pins.py | TARGETS['gpt-oss-20b']
+lens.gptoss.target,gptoss,pins target of the run's lens,gpt-oss-20b,,results/removal_textloss/gptoss20_textloss_top_v1/manifest.json | lens (run of docs/breadth/data.csv text.gptoss)
+lens.gptoss.type,gptoss,lens type,J++,,src/bridge_jspace/pins.py | TARGETS['gpt-oss-20b']
+lens.gptoss.sha256,gptoss,lens file sha256,2902332d4852b27868db7f92182b1b006728b866bb2f1e25b58baedbf22ff077,,results/removal_textloss/gptoss20_textloss_top_v1/manifest.json | lens
+lens.gptoss.kind,gptoss,who fitted the lens,our fit,,src/bridge_jspace/pins.py | TARGETS['gpt-oss-20b']
+lens.gptoss.lens,gptoss,fit record,results/lens_fit/gpt-oss-20b,,results/lens_fit/gpt-oss-20b | commit af659ba5 sets this sha256 in src/bridge_jspace/pins.py
+lens.gptoss.passk,gptoss,lens quality,not measured,"pass@10, held-out macro",
+lens.kol.model,kol,model checkpoint,Aleph-Alpha/Kolibri-1@5bb7075b,,src/bridge_jspace/pins.py | TARGETS['kolibri-1']
+lens.kol.target,kol,pins target of the run's lens,kolibri-1,,results/removal_textloss/kol1_textloss_top_l15_35_v1/manifest.json | lens (run of docs/breadth/data.csv text.kol)
+lens.kol.type,kol,lens type,J++,,src/bridge_jspace/pins.py | TARGETS['kolibri-1']
+lens.kol.sha256,kol,lens file sha256,cc8d19282258a20416d7fd106ad20a784ce8f1fd80983d12b8bfc7f2e245ac54,,results/removal_textloss/kol1_textloss_top_l15_35_v1/manifest.json | lens
+lens.kol.kind,kol,who fitted the lens,our fit,,src/bridge_jspace/pins.py | TARGETS['kolibri-1']
+lens.kol.lens,kol,fit record,results/lens_fit/kolibri-1,,results/lens_fit/kolibri-1 | commit a3dc4609 sets this sha256 in src/bridge_jspace/pins.py
+lens.kol.passk,kol,lens quality,0.484,"pass@10, held-out macro","results/lens_fit/kolibri-1/eval_ranks_pass_at_k.csv | eval=macro, lens=Kolibri-1_jpp_lens, k=10, weighting=item"
+lens.kol.n,kol,held-out items scored,178,items,"results/lens_fit/kolibri-1/eval_ranks.csv | lens=Kolibri-1_jpp_lens, evals association/multihop/multilingual/poetry/typo"
+lens.kol.layers,kol,layers scored (best rank over them),0-48,layers,results/lens_fit/kolibri-1/eval_ranks.csv | lens=Kolibri-1_jpp_lens
+lens.kol.logit,kol,"logit lens, same items",0.447,"pass@10, held-out macro","results/lens_fit/kolibri-1/eval_ranks_pass_at_k.csv | eval=macro, lens=logit, k=10, weighting=item"
+lens.q9base.model,q9base,model checkpoint,Qwen/Qwen3.5-9B-Base@68c46c4b,,src/bridge_jspace/pins.py | TARGETS['qwen3.5-9b-base']
+lens.q9base.target,q9base,pins target of the run's lens,qwen3.5-9b-base,,results/ablate_v2/qwen35_9bb_jsuite_v2_test_qa_ko_cand2_v1/manifest.json | lens (run of docs/breadth/data.csv ko.q9base.mk)
+lens.q9base.type,q9base,lens type,J++,,src/bridge_jspace/pins.py | TARGETS['qwen3.5-9b-base']
+lens.q9base.sha256,q9base,lens file sha256,d80ffa435c1e5e0a7afa26e8e653df47f81085f64330429b1e023d8c99b55adf,,results/ablate_v2/qwen35_9bb_jsuite_v2_test_qa_ko_cand2_v1/manifest.json | lens
+lens.q9base.kind,q9base,who fitted the lens,our fit,,src/bridge_jspace/pins.py | TARGETS['qwen3.5-9b-base']
+lens.q9base.lens,q9base,fit record,results/lens_fit/qwen3.5-9b-base,,results/lens_fit/qwen3.5-9b-base | commit dc20b636 sets this sha256 in src/bridge_jspace/pins.py
+lens.q9base.passk,q9base,lens quality,0.621,"pass@10, held-out macro","results/lens_fit/qwen3.5-9b-base/eval_ranks_pass_at_k.csv | eval=macro, lens=Qwen3.5-9B-Base_jpp_lens, k=10, weighting=item"
+lens.q9base.n,q9base,held-out items scored,304,items,"results/lens_fit/qwen3.5-9b-base/eval_ranks.csv | lens=Qwen3.5-9B-Base_jpp_lens, evals association/multihop/multilingual/poetry/typo"
+lens.q9base.layers,q9base,layers scored (best rank over them),0-30,layers,results/lens_fit/qwen3.5-9b-base/eval_ranks.csv | lens=Qwen3.5-9B-Base_jpp_lens
+lens.q9base.logit,q9base,"logit lens, same items",0.402,"pass@10, held-out macro","results/lens_fit/qwen3.5-9b-base/eval_ranks_pass_at_k.csv | eval=macro, lens=logit, k=10, weighting=item"
+lens.q9oj.model,q9oj,model checkpoint,Qwen/Qwen3.5-9B@c2022362,,src/bridge_jspace/pins.py | TARGETS['qwen3.5-9b-ourjpp']
+lens.q9oj.target,q9oj,pins target of the run's lens,qwen3.5-9b-ourjpp,,results/ablate_v2/qwen35_9boj_jsuite_v2_test_chat_ko_cand2_v1/manifest.json | lens (run of docs/breadth/data.csv ko.q9oj.mk)
+lens.q9oj.type,q9oj,lens type,J++,,src/bridge_jspace/pins.py | TARGETS['qwen3.5-9b-ourjpp']
+lens.q9oj.sha256,q9oj,lens file sha256,690f19e7caba242b5aa027d7d4c326f546b98bd2c720bd8fdee772965f49f7eb,,results/ablate_v2/qwen35_9boj_jsuite_v2_test_chat_ko_cand2_v1/manifest.json | lens
+lens.q9oj.kind,q9oj,who fitted the lens,our fit,,src/bridge_jspace/pins.py | TARGETS['qwen3.5-9b-ourjpp']
+lens.q9oj.lens,q9oj,fit record,results/lens_fit/qwen3.5-9b-ourjpp,,results/lens_fit/qwen3.5-9b-ourjpp | commit b3fd3296 sets this sha256 in src/bridge_jspace/pins.py
+lens.q9oj.passk,q9oj,lens quality,0.625,"pass@10, held-out macro","results/lens_fit/qwen3.5-9b-ourjpp/eval_ranks_pass_at_k.csv | eval=macro, lens=Qwen3.5-9B_jpp_lens, k=10, weighting=item"
+lens.q9oj.n,q9oj,held-out items scored,309,items,"results/lens_fit/qwen3.5-9b-ourjpp/eval_ranks.csv | lens=Qwen3.5-9B_jpp_lens, evals association/multihop/multilingual/poetry/typo"
+lens.q9oj.layers,q9oj,layers scored (best rank over them),0-30,layers,results/lens_fit/qwen3.5-9b-ourjpp/eval_ranks.csv | lens=Qwen3.5-9B_jpp_lens
+lens.q9oj.logit,q9oj,"logit lens, same items",0.391,"pass@10, held-out macro","results/lens_fit/qwen3.5-9b-ourjpp/eval_ranks_pass_at_k.csv | eval=macro, lens=logit, k=10, weighting=item"
+lens.q9oj.ref,q9oj,"published J++ qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt (pins qwen3.5-9b), same items",0.630,"pass@10, held-out macro","results/lens_check/qwen3.5-9b/eval_ranks_pass_at_k.csv | eval=macro, lens=Qwen3.5-9B_jpp_lens, k=10, weighting=item"
+lens.q32.model,q32,model checkpoint,Qwen/Qwen3-32B@9216db57,,src/bridge_jspace/pins.py | TARGETS['qwen3-32b']
+lens.q32.target,q32,pins target of the run's lens,qwen3-32b,,results/removal_textloss/qwen3_32b_textloss_top_l44_52_v1/manifest.json | lens (run of docs/breadth/data.csv text.q32)
+lens.q32.type,q32,lens type,J++,,src/bridge_jspace/pins.py | TARGETS['qwen3-32b']
+lens.q32.sha256,q32,lens file sha256,6fbc03865ec674a2d2f346b23ea8220a7c7e2b0b3922d1afd1b300f455d3253e,,results/removal_textloss/qwen3_32b_textloss_top_l44_52_v1/manifest.json | lens
+lens.q32.kind,q32,who fitted the lens,our fit,,src/bridge_jspace/pins.py | TARGETS['qwen3-32b']
+lens.q32.lens,q32,fit record,results/lens_fit/qwen3_32b,,results/lens_fit/qwen3_32b | commit a9d5233d sets this sha256 in src/bridge_jspace/pins.py
+lens.q32.passk,q32,lens quality,0.638,"pass@10, held-out macro","results/lens_fit/qwen3_32b/eval_ranks_pass_at_k.csv | eval=macro, lens=Qwen3-32B_jpp_lens, k=10, weighting=item"
+lens.q32.n,q32,held-out items scored,301,items,"results/lens_fit/qwen3_32b/eval_ranks.csv | lens=Qwen3-32B_jpp_lens, evals association/multihop/multilingual/poetry/typo"
+lens.q32.layers,q32,layers scored (best rank over them),0-62,layers,results/lens_fit/qwen3_32b/eval_ranks.csv | lens=Qwen3-32B_jpp_lens
+lens.q32.logit,q32,"logit lens, same items",0.351,"pass@10, held-out macro","results/lens_check/qwen3-32b/eval_ranks_logit_pass_at_k.csv | eval=macro, lens=logit, k=10, weighting=item"
+lens.oh7.model,oh7,model checkpoint,allenai/Olmo-Hybrid-Instruct-DPO-7B@ec62da5a,,src/bridge_jspace/pins.py | TARGETS['olmo-hybrid-7b']
+lens.oh7.target,oh7,pins target of the run's lens,olmo-hybrid-7b,,results/removal_textloss/olmoh7_textloss_top_l4_8_v1/manifest.json | lens (run of docs/breadth/data.csv text.oh7)
+lens.oh7.type,oh7,lens type,J++,,src/bridge_jspace/pins.py | TARGETS['olmo-hybrid-7b']
+lens.oh7.sha256,oh7,lens file sha256,b8dd5d16ba1ee7318c943ec1f3def36aed30f286185724c55afcb14a350c25dc,,results/removal_textloss/olmoh7_textloss_top_l4_8_v1/manifest.json | lens
+lens.oh7.kind,oh7,who fitted the lens,our fit,,src/bridge_jspace/pins.py | TARGETS['olmo-hybrid-7b']
+lens.oh7.lens,oh7,fit record,results/lens_fit/olmo-hybrid-7b,,results/lens_fit/olmo-hybrid-7b | commit 9522c3c5 sets this sha256 in src/bridge_jspace/pins.py
+lens.oh7.passk,oh7,lens quality,0.605,"pass@10, held-out macro","results/lens_fit/olmo-hybrid-7b/eval_ranks_pass_at_k.csv | eval=macro, lens=Olmo-Hybrid-Instruct-DPO-7B_jpp_lens, k=10, weighting=item"
+lens.oh7.n,oh7,held-out items scored,271,items,"results/lens_fit/olmo-hybrid-7b/eval_ranks.csv | lens=Olmo-Hybrid-Instruct-DPO-7B_jpp_lens, evals association/multihop/multilingual/poetry/typo"
+lens.oh7.layers,oh7,layers scored (best rank over them),0-30,layers,results/lens_fit/olmo-hybrid-7b/eval_ranks.csv | lens=Olmo-Hybrid-Instruct-DPO-7B_jpp_lens
+lens.oh7.logit,oh7,"logit lens, same items",0.399,"pass@10, held-out macro","results/lens_fit/olmo-hybrid-7b/eval_ranks_pass_at_k.csv | eval=macro, lens=logit, k=10, weighting=item"
+lens.o7.model,o7,model checkpoint,allenai/Olmo-3-7B-Instruct-DPO@b33130b7,,src/bridge_jspace/pins.py | TARGETS['olmo-3-7b']
+lens.o7.target,o7,pins target of the run's lens,olmo-3-7b,,results/removal_textloss/olmo3d7_textloss_top_l10_14_v1/manifest.json | lens (run of docs/breadth/data.csv text.o7)
+lens.o7.type,o7,lens type,J++,,src/bridge_jspace/pins.py | TARGETS['olmo-3-7b']
+lens.o7.sha256,o7,lens file sha256,1ca44bf5938b400b64a32bf9585b5e4cedb6a10249005b0cb6643f9115e94c11,,results/removal_textloss/olmo3d7_textloss_top_l10_14_v1/manifest.json | lens
+lens.o7.kind,o7,who fitted the lens,our fit,,src/bridge_jspace/pins.py | TARGETS['olmo-3-7b']
+lens.o7.lens,o7,fit record,results/lens_fit/olmo-3-7b,,results/lens_fit/olmo-3-7b | commit 121caa92 sets this sha256 in src/bridge_jspace/pins.py
+lens.o7.passk,o7,lens quality,0.487,"pass@10, held-out macro","results/lens_fit/olmo-3-7b/eval_ranks_pass_at_k.csv | eval=macro, lens=Olmo-3-7B-Instruct-DPO_jpp_lens, k=10, weighting=item"
+lens.o7.n,o7,held-out items scored,226,items,"results/lens_fit/olmo-3-7b/eval_ranks.csv | lens=Olmo-3-7B-Instruct-DPO_jpp_lens, evals association/multihop/multilingual/poetry/typo"
+lens.o7.layers,o7,layers scored (best rank over them),0-30,layers,results/lens_fit/olmo-3-7b/eval_ranks.csv | lens=Olmo-3-7B-Instruct-DPO_jpp_lens
+lens.o7.logit,o7,"logit lens, same items",0.384,"pass@10, held-out macro","results/lens_fit/olmo-3-7b/eval_ranks_pass_at_k.csv | eval=macro, lens=logit, k=10, weighting=item"
