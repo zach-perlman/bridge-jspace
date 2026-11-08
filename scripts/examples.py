@@ -41,8 +41,7 @@ KO = REPO / "results/ablate_v2/jsuite_v2_test_chat_ko_cand2_v1/rows.jsonl"
 THREE = REPO / "results/ablate_v2/jsuite_v2_test_chat_threehop_ko_cand2_v1/rows.jsonl"
 MAIN = ("jpp", 25, "signed")  # the main test's lens part (scripts/x0_necessity.py MAIN)
 READER = {"PP": ("lookup", "lookup"), "PM": ("recall", "recall")}
-BREADTH_ARMS = (("none", "before"), ("paper10", "the lens part removed everywhere"),
-                ("paper10_rot", "a rotated part removed everywhere"))  # fmt: skip
+BREADTH_ARMS = (("none", "before"), ("paper10", "lens part removed"), ("paper10_rot", "rotated part removed"))  # fmt: skip
 
 
 def jsonl(p: Path) -> list[dict]:
@@ -97,8 +96,9 @@ def e1_locker_scene() -> sp.Figure:
                                              f"with {asked} picking the {case['cf_bridge']}.", None)]]  # fmt: skip
     card = sp.Card(prompt=prompt, columns=columns,
                    rows=[sp.CardRow(*READER[r], answers[r]) for r in READER],
-                   note=f"Picked by rule: the main test's first scene in its per-item file ({rel(DEPTH)}/outcomes.jsonl), "
-                        f"Qwen 27B, layer {layer} · item {first}")  # fmt: skip
+                   note=f"Qwen 27B · layer {layer}")
+    write_keys({"e1.items": (first, "id", f"rule: the main test's first scene in {rel(DEPTH)}/outcomes.jsonl, "
+                                         f"Qwen 27B, layer {layer}")})  # fmt: skip
     return sp.Figure("e1_locker_scene", vocab(), direct_labels=True).add(card)
 
 
@@ -147,31 +147,31 @@ def e2_fact_passage() -> sp.Figure:
     # recall's replaces with filler about the same entities
     lookup_s, recall_s = _sentences(pk["context"]), _sentences(pm["context"])
     stated = [s for s in lookup_s if s not in recall_s]
-    filler = [s for s in recall_s if s not in lookup_s]
     repo = json.loads((KO.parent / "manifest.json").read_text())["model"]["repo"]
     bridge = pm["bridge"]
     # the chain the card spells out (Dan, 8 Nov: "how the lookup works" must be visible): hop 1 names the bridge in
     # both passages; hop 2, the bridge's fact, is the stated sentence about the bridge, in the lookup's passage only
     hop1 = next(s for s in lookup_s if bridge in s and s in recall_s)
     hop2 = next(s for s in stated if bridge in s)
-    passage: list[tuple] = []
-    for s in lookup_s:
-        text = s.removeprefix("- ")
-        if s == hop2:
-            passage.append((text + " ", "lookup"))
-        elif s == hop1:
-            passage += [*bold(text, bridge, text.index(bridge)), (" ", None)]
-        else:
-            passage.append((text + " ", None))
-    others = len(stated) - 1
-    parts = [passage,
-             [("Question (both):", None, True), (f" {pk['question']}", None)],
-             [("Lookup:", "lookup", True), (f" hop 1 in the passage (“{hop1.removeprefix('- ')}”), hop 2 too: "
-                                            f"it reads “{hop2.removeprefix('- ')}” (in the lookup's colour).",
-                                            None)],
-             [("Recall:", "recall", True), (f" the same passage, but that sentence and {others} like it "
-                                            f"{'is' if others == 0 else 'are'} replaced by others (", None),
-              (" ".join(filler), "recall"), ("), so hop 2 must come from memory.", None)]]  # fmt: skip
+    def prompt(label: str, role: str, sentences: list[str]) -> list[tuple]:
+        """One reader's real prompt, cut to the sentences that name the bridge (in order; … = the rest), then the
+        question: the bridge bold where hop 1 names it, the stated fact (hop 2) in the lookup's colour."""
+        out: list[tuple] = [(label, role, True), (" ", None)]
+        named = [s for s in sentences if bridge in s]
+        if sentences[0] not in named:
+            out.append(("… ", None))
+        for s in named:
+            text = s.removeprefix("- ")
+            if s == hop1:
+                out += bold(text, bridge, text.index(bridge))
+            elif s == hop2:
+                out.append((text, "lookup"))
+            else:
+                out.append((text, None))
+            out.append((" … ", None))
+        return [*out, (pk["question"], None)]
+
+    parts = [prompt("Lookup prompt:", "lookup", lookup_s), prompt("Recall prompt:", "recall", recall_s)]
     answers: dict[str, dict[str, str]] = {"lookup": {}, "recall": {}}
     for r in rows:
         for item, reader in ((pk, "lookup"), (pm, "recall")):
@@ -181,10 +181,12 @@ def e2_fact_passage() -> sp.Figure:
     card = sp.Card(prompt=parts, columns=[c for _, c in BREADTH_ARMS],
                    rows=[sp.CardRow("lookup", "lookup", answers["lookup"]),
                          sp.CardRow("recall", "recall", answers["recall"])],
-                   note=f"Picked to show the typical flip: the first final-from-memory item in {rel(ITEMS)} whose "
-                        f"recall turns wrong with the lens part removed and stays right with a rotated part removed, "
-                        f"while its stated pair's lookup stays right, Qwen 27B; the removal at layers {_band(rows)} · "
-                        f"items {pk['id']}, {pm['id']}")  # fmt: skip
+                   note="Qwen 27B · … = the rest of the letter")
+    write_keys({"e2.items": (f"{pk['id']} {pm['id']}", "id",
+                             f"rule (picked by its outcome, to show the typical flip): the first final-from-memory "
+                             f"item in {rel(ITEMS)} whose recall turns wrong with the lens part removed and stays "
+                             f"right with a rotated part removed, its stated pair's lookup right throughout; Qwen "
+                             f"27B, removal at layers {_band(rows)}")})  # fmt: skip
     return sp.Figure("e2_fact_passage", vocab(), direct_labels=True).add(card)
 
 
@@ -231,23 +233,36 @@ def e3_chains() -> sp.Figure:
     for i in items:
         if i["word"] in CHAINS:
             groups.setdefault(re.sub(r":(PPP|PMM|MPM)-", ":X-", i["scene"]), {})[i["word"]] = i
-    key, chain = next((k, g) for k, g in groups.items()
+    chain = next(g for g in groups.values()
                       if len(g) == len(CHAINS) and all(g[w]["id"] in right_before for w in g))  # fmt: skip
     repo = json.loads((THREE.parent / "manifest.json").read_text())["model"]["repo"]
     fig = sp.Figure("e3_chains", vocab(), direct_labels=True)
+    ids: list[str] = []
     for w in CHAINS:
         it = chain[w]
-        hops = " → ".join(f"{c} ({LETTER[c]})" for c in w)
         reader = "recall" if w[-1] == "M" else "lookup"
         ans = {col: _breadth_answer(r, it["answer"], repo) for r in rows if r["id"] == it["id"]
                for cond, col in BREADTH_ARMS if r["condition"] == cond}  # fmt: skip
-        ctx = " ".join(ln.removeprefix("- ") for ln in it["context"].split("\n"))
-        prompt = [[(f"{' → '.join(w)}:", None, True), (f" {hops}.", None)], bold(ctx, it["bridge"]),
-                  [("Question:", None, True), (f" {it['question']}", None)]]  # fmt: skip
+        # the chain itself, each hop's answer with where it comes from (Dan, 8 Nov: the passage alone is unreadable)
+        chain_parts: list[tuple] = [(f"{' → '.join(w)}:", None, True), (" ", None)]
+        for n, step in enumerate(it["steps"]):
+            where = "in the passage" if step["source"] == "P" else "from memory"
+            chain_parts += [(" → " if n else "", None), (step["answer"], None, step["answer"] == it["bridge"]),
+                            (f" ({where})", None)]  # fmt: skip
+        # the prompt cut to the sentences that state a hop read in the passage; … is the rest
+        read = [s["answer"] for s in it["steps"] if s["source"] == "P"]
+        sents = _sentences(" ".join(ln.removeprefix("- ") for ln in it["context"].split("\n")))
+        kept = [s for s in sents if any(a in s for a in read)]
+        text: list[tuple] = [("… ", None)] if kept and sents[0] != kept[0] else []
+        for s in kept:
+            text += [*(bold(s, it["bridge"], s.index(it["bridge"])) if it["bridge"] in s else [(s, None)]),
+                     (" … ", None)]  # fmt: skip
+        prompt = [chain_parts, [*text, (it["question"], None)]]
         fig.add(sp.Card(prompt=prompt, columns=[c for _, c in BREADTH_ARMS],
-                        rows=[sp.CardRow(reader, reader, ans)],
-                        note=(f"Picked by rule: the first entity in {rel(ITEMS)} with all three chain types, each "
-                              f"answered right before any removal, Qwen 27B · {key} · item {it['id']}")))  # fmt: skip
+                        rows=[sp.CardRow(reader, reader, ans)], note="Qwen 27B · … = the rest of the post"))
+        ids.append(it["id"])
+    write_keys({"e3.items": (" ".join(ids), "id", f"rule: the first entity in {rel(ITEMS)} with all three chain "
+                                                   f"types, each answered right before any removal, Qwen 27B")})  # fmt: skip
     return fig
 
 
@@ -282,8 +297,9 @@ def e4_routes() -> sp.Figure:
                                              f"{case['cf_context']}", None)],
               predicted]  # fmt: skip
     card = sp.Card(prompt=prompt, columns=[c for _, c in ROUTE_ARMS], rows=[sp.CardRow("lookup", "lookup", ans)],
-                   note=f"Picked by rule: the first scene of the routes test's 'another item moved' condition in "
-                        f"{rel(ROUTES)}/outcomes.jsonl, Qwen 9B · item {first}")  # fmt: skip
+                   note="Qwen 9B")
+    write_keys({"e4.items": (first, "id", f"rule: the first scene of the routes test's 'another item moved' "
+                                         f"condition in {rel(ROUTES)}/outcomes.jsonl, Qwen 9B")})  # fmt: skip
     return sp.Figure("e4_routes", vocab(), direct_labels=True).add(card)
 
 
