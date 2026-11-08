@@ -248,7 +248,10 @@ def ordered_rows(m: dict) -> list[tuple[str | None, dict]]:
 DISPLAY = (("Zach's passages", "the fact passages"), ("Zach's Z2", "the fact passages' Z2"),
            ("on his passages", "on the fact passages"), ("his passages", "the fact passages"), ("J++ part", "lens part"),
            ("Zach's L", "the breadth track's L"),
-           ("(queued or running; no ledger entry here yet)", "(not completed in the sprint; no ledger entry here)"))  # fmt: skip
+           ("(queued or running; no ledger entry here yet)", "(not completed in the sprint; no ledger entry here)"),
+           # decision stamps in the matrix's notes: moved to docs/review/ledger_ops_2026-10.md#decision-stamps (8 Nov)
+           ("cancelled by Dan mid-run", "cancelled mid-run"),
+           ("(conservative, Dan 01:10)", "(conservative; decided during the run)"))  # fmt: skip
 
 
 def display(label: str) -> str:
