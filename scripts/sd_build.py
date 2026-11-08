@@ -15,7 +15,8 @@ check   (tokenizer only, BJ_TARGET picks it; no model, no GPU) a seeded sample o
         else after the worked examples (n56_check).
 
 python scripts/sd_build.py facts --csv /workspace/data_sd/TwoHopFact.csv --handmade /workspace/data_sd/entity_facts_fe78a9f.py
-       --categories landmark-cntry-capital person-birthcity-cntry person-uguniv-hqcity --out data/sd_v1/facts.jsonl
+       --categories landmark-cntry-capital person-birthcity-cntry person-uguniv-hqcity univ-hqcity-cntry
+       --out data/sd_v1/facts.jsonl
 BJ_TARGET=qwen3.6-27b python scripts/sd_build.py check --facts data/sd_v1/facts.jsonl [--show 2]
 """
 
