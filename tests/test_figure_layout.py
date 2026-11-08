@@ -42,7 +42,7 @@ def test_a_set_holds_only_its_figures_its_index_meta_and_sheets(group):
     assert pngs == {f"{stem}.png" for stem in L.names(group).values()}
     meta = {p.name for p in (folder / "_meta").iterdir()}
     # problems.json: each figure's last problems per target, written by styles-plot's save (0.2, C5)
-    assert meta - {"captions.toml"} == ({f"{stem}.styles.json" for stem in L.names(group).values()}
+    assert meta - {"captions.toml", "captions_short.toml"} == ({f"{stem}.styles.json" for stem in L.names(group).values()}
                                         | {"order.txt", "problems.json"})  # fmt: skip
     assert (folder / "_meta" / "order.txt").read_text().split() == [f"{s}.png" for s in L.names(group).values()]
     assert {p.name for p in (folder / "_sheets").iterdir()} == {"contact_sheet.png", "contact_sheet_gray.png"}
@@ -59,6 +59,17 @@ def test_every_set_has_one_caption_per_figure(group):
     captions = tomllib.loads(store.read_text())
     assert set(captions) == set(L.names(group).values()), set(captions) ^ set(L.names(group).values())
     assert all(isinstance(c, str) and c.strip() for c in captions.values())
+
+
+@pytest.mark.parametrize("group", list(L.ORDER))
+def test_short_captions_name_real_figures_and_stay_short(group):
+    """The root README's short captions (readability brief, 8 Nov): only for figures of the set, at most 60 words."""
+    import tomllib
+
+    store = REPO / "figures" / group / "_meta" / "captions_short.toml"
+    short = tomllib.loads(store.read_text()) if store.exists() else {}
+    assert set(short) <= set(L.names(group).values()), set(short) - set(L.names(group).values())
+    assert not (long := {k: n for k, c in short.items() if (n := len(re.findall(r"\w[\w'’.-]*", c))) > 60}), long
 
 
 @pytest.mark.parametrize("group", list(L.ORDER))

@@ -189,7 +189,8 @@ def test_alt_texts_are_unique():
 
 def test_every_figure_takes_its_caption_from_the_store():
     """In the template, each figure of a set (but the key, which the paragraph above it explains) is followed by its
-    {{caption|set/stem}}: one caption per PNG, the same on every page."""
+    {{caption|set/stem}}, or by its {{caption_short|set/stem}} (readability brief, 8 Nov): one caption per PNG and
+    length, the same on every page."""
     from bridge_jspace.figkit import layout as L
 
     lines = [ln for ln in TEMPLATE.read_text(encoding="utf-8").splitlines() if ln.strip()]
@@ -204,6 +205,6 @@ def test_every_figure_takes_its_caption_from_the_store():
         else:
             continue
         nxt = lines[i + 1].strip() if i + 1 < len(lines) else ""  # a figure inside a list item is indented
-        if not nxt.startswith("{{caption|" + want + "}}"):
+        if not nxt.startswith(("{{caption|" + want + "}}", "{{caption_short|" + want + "}}")):
             bad.append(want)
     assert not bad, bad

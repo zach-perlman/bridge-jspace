@@ -13,6 +13,7 @@ Placeholders in docs/readme/README.template.md:
   {{e|key}}            data/figures/examples/data.csv's count for key (scripts/examples.py), with its source comment
   {{cred|key}}         the authors' credence for a claim, quoted from docs/plans/credences.md (linked)
   {{fig|id}}           the README set's figure (figures/readme/NN_<name>.png, figkit/layout.py) under its claim as alt text
+  {{caption_short|set/stem}}  the figure's short caption (figkit/captions.py), expanded before the markers above
 
 uv run python scripts/readme_root.py      # README.md from the template (run `make readme` for figures + both)
 """
@@ -158,6 +159,9 @@ def build() -> str:
     from bridge_jspace.figkit.captions import expand
 
     text = render(expand(TEMPLATE.read_text()))
+    # in a table row a bare pipe would split the cell: the markers' src comments take the escaped separator there
+    text = "\n".join(re.sub(r"(<!-- src: [^|\\]*?) \| ", r"\1 \\| ", ln) if ln.startswith("|") else ln
+                     for ln in text.split("\n"))  # fmt: skip
     assert "{{" not in text, "an unknown placeholder is left"
     README.write_text(HEADER + text)
     return text
