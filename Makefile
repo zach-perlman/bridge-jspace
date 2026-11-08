@@ -1,4 +1,4 @@
-.PHONY: readme figures-writeup writeup-examples install fmt lint typecheck test test-all test-model check run data-report review-serve review-export review-summary review-verified verify-checks verify-independent verify-pack examples-render examples-serve enqueue queue-status queue-pull queue-worker queue-cancel queue-stats autonomy autonomy-status autonomy-off
+.PHONY: readme check-numbers figures-writeup writeup-examples install fmt lint typecheck test test-all test-model check run data-report review-serve review-export review-summary review-verified verify-checks verify-independent verify-pack examples-render examples-serve enqueue queue-status queue-pull queue-worker queue-cancel queue-stats autonomy autonomy-status autonomy-off
 
 # make run CONFIG=scripts/exp10_lens_sanity/config.yaml ARGS="model=configs/models/qwen3.6-27b.yaml"
 run:                ## experiment in a detached tmux session, log in log/
@@ -29,6 +29,10 @@ test-model:         ## integration tests on Qwen3.5-0.8B + its lenses (CPU ok, a
 	uv run pytest -m model
 
 check: lint typecheck test
+
+# The README's Reproduce tier two (DEVELOPER.md#reproduce; its sparse set: scripts/measure_reproduce.py paths tier2).
+check-numbers:      ## every src comment of the three READMEs resolves in a git-tracked file, every run file behind them is tracked
+	uv run pytest -q tests/test_readme_sources.py tests/test_numbers_match_data.py -k "resolves or tracked or lens or catch or data_csv"
 
 data-report:        ## what data we work with: counts, categories, labels, overlaps (add ARGS=--json)
 	uv run python -m scripts.data_report $(ARGS)

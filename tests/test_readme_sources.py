@@ -1,24 +1,63 @@
-"""README.md (the joint story, 27 Oct): every number is traceable. Each number or number group carries an HTML comment
-`<!-- src: <repo path> | <key>; <key> ... -->`; this test checks that the path exists, that each key resolves in it, that
-every image and link path exists, and (loosely) that no digit-bearing line of prose lacks a source comment.
+"""README.md, docs/depth/README.md and docs/breadth/README.md: every number is traceable. Each number or number group
+carries an HTML comment `<!-- src: <repo path> | <key>; <key> ... -->`; these tests check, on all three pages, that the
+path is a file tracked by git, that each key resolves in it, and that every run file behind a cited key (a data row's
+source column) is tracked by git; on the root README also that every image and link path exists and (loosely) that no
+digit-bearing line of prose lacks a source comment. The source tests are the Reproduce section's second tier (DEVELOPER.md).
 
 Key resolution by source type:
-- csv (data/figures/depth/data.csv, docs/breadth/data.csv, docs/shared/grid.csv): the key equals some cell of the file;
-- json: the key is a top-level key;
+- csv (CSV_SOURCES): the key equals some cell of the file; a key that itself contains ";" is tried whole first;
+- json: the key is a key of the file at any depth (the depth README cites nested keys of its run tables);
 - "l.N" or "l.N-M": the file has at least that many lines;
+- "a :: b": all parts stand on one line of the file (scripts/check_ledger.py's form, for table rows);
 - anything else (Markdown, scripts): the key is a substring of the file, whitespace collapsed (hard-wrapped pages).
 """
 
 import csv
+import fnmatch
+import functools
 import json
 import re
+import subprocess
 from pathlib import Path
 
 import pytest
 
 REPO = Path(__file__).resolve().parents[1]
 README = REPO / "README.md"
-CSV_SOURCES = {"data/figures/depth/data.csv", "docs/breadth/data.csv", "docs/shared/grid.csv", "data/figures/writeup/data.csv", "data/figures/lenses.csv"}
+PAGES = ["README.md", "docs/depth/README.md", "docs/breadth/README.md"]
+CSV_SOURCES = {"data/figures/depth/data.csv", "docs/breadth/data.csv", "docs/shared/grid.csv", "data/figures/writeup/data.csv",
+               "data/figures/lenses.csv", "data/figures/examples/data.csv", "data/figures/reproduce.csv",
+               "data/figures/provenance.csv"}  # fmt: skip
+# The data files whose source column names run files (results/…, runs/…); reproduce.csv and provenance.csv name scripts.
+RUN_SOURCES = (CSV_SOURCES - {"data/figures/reproduce.csv", "data/figures/provenance.csv"}) | {
+    "docs/depth/x0_numbers.json"
+}
+RUNPATH = re.compile(r"\b(?:results|runs)/[^\s|,;\"'()\[\]]+")
+
+
+@functools.cache
+def tracked() -> frozenset[str]:
+    """Every file git tracks (in a sparse clone too: `git ls-files` lists the files outside the sparse set)."""
+    out = subprocess.run(["git", "ls-files", "-z"], cwd=REPO, capture_output=True, text=True, check=True).stdout
+    return frozenset(out.split("\0")) - {""}
+
+
+@functools.cache
+def tracked_dirs() -> frozenset[str]:
+    return frozenset(str(p) for f in tracked() for p in Path(f).parents if str(p) != ".")
+
+
+@functools.cache
+def csv_cells(path: str) -> frozenset[str]:
+    with (REPO / path).open(newline="", encoding="utf-8") as f:
+        return frozenset(c.strip() for row in csv.reader(f) for c in row)
+
+
+def json_keys(d) -> set[str]:
+    if isinstance(d, dict):
+        return set(d) | {k for v in d.values() for k in json_keys(v)}
+    return {k for v in d for k in json_keys(v)} if isinstance(d, list) else set()
+
 
 # In a table row the separator is written "\|" (a bare pipe would split the cell in GitHub's table syntax).
 SRC = re.compile(r"<!--\s*src:\s*([^|\\]*?)\s*\\?\|\s*(.*?)\s*-->", re.S)
@@ -52,30 +91,82 @@ def sources(text: str) -> list[tuple[str, list[str]]]:
 def resolve(path: str, key: str) -> str | None:
     """None if the key resolves in the file, else the reason."""
     p = REPO / path
+    if path not in tracked():
+        return "not tracked by git"
     if not p.is_file():
-        return "no such file"
+        return "no such file in the checkout"
     if m := LINE_REF.match(key):
         need = int(m.group(2) or m.group(1))
         n = sum(1 for _ in p.open(encoding="utf-8"))
         return None if n >= need else f"file has {n} lines, needs {need}"
     if path in CSV_SOURCES:
-        with p.open(newline="", encoding="utf-8") as f:
-            cells = {c.strip() for row in csv.reader(f) for c in row}
-        return None if key in cells else "key is no cell of the csv"
+        return None if key in csv_cells(path) else "key is no cell of the csv"
     if p.suffix == ".json":
-        return None if key in json.loads(p.read_text(encoding="utf-8")) else "key is no top-level json key"
+        return None if key in json_keys(json.loads(p.read_text(encoding="utf-8"))) else "key is no json key"
+    if " :: " in key:
+        parts = [s.strip() for s in key.split(" :: ")]
+        lines = p.read_text(encoding="utf-8").splitlines()
+        return None if any(all(s in ln for s in parts) for ln in lines) else "parts not on one line"
     page = COMMENT.sub("", p.read_text(encoding="utf-8"))  # the depth README carries its own source comments
     return None if collapse(key) in collapse(page) else "key text not found"
 
 
+def cited(text: str) -> list[tuple[str, list[str]]]:
+    """Each src comment's path and keys, a key list that resolves whole (a csv cell containing ';') kept as one key."""
+    out = []
+    for m in SRC.finditer(text):
+        path, raw = m.group(1).strip(), m.group(2).strip()
+        keys = [k.strip() for k in raw.split(";") if k.strip()]
+        out.append((path, [raw] if len(keys) > 1 and resolve(path, raw) is None else keys))
+    return out
+
+
 def unresolved(text: str) -> list[str]:
     bad = []
-    for path, keys in sources(text):
+    for path, keys in cited(text):
         if not keys:
             bad.append(f"{path}: no key")
         for key in keys:
             if (why := resolve(path, key)) is not None:
                 bad.append(f"{path} | {key}: {why}")
+    return bad
+
+
+@functools.cache
+def source_column(path: str) -> list[tuple[set[str], str]]:
+    """(cells, source text) per row of a data file whose source column names run files; x0_numbers.json's entries."""
+    p = REPO / path
+    if p.suffix == ".json":
+        return [({k}, str(v.get("source", ""))) for k, v in json.loads(p.read_text(encoding="utf-8")).items()]
+    with p.open(newline="", encoding="utf-8") as f:
+        return [({c.strip() for c in r.values() if c}, f"{r.get('source', '')} {r.get('source row', '')}")
+                for r in csv.DictReader(f)]  # fmt: skip
+
+
+def run_files(text: str) -> set[str]:
+    """The run files and folders (results/…, runs/…) a page's numbers come from: cited directly, or named in the
+    source column of each data row (x0_numbers.json entry) that has a cited key as a cell."""
+    out = set()
+    for path, keys in cited(text):
+        if path.startswith(("results/", "runs/")):
+            out.add(path)
+        elif path in RUN_SOURCES:
+            for cells, source in source_column(path):
+                if cells & set(keys):
+                    out.update(m.rstrip(":.") for m in RUNPATH.findall(source))
+    return out
+
+
+def untracked_runs(paths: set[str]) -> list[str]:
+    """Of the run paths, those git does not track: no tracked file or folder of that name (a glob: no tracked file
+    matches it)."""
+    files, dirs = tracked(), tracked_dirs()
+    bad = []
+    for r in sorted(paths):
+        r = r.rstrip("/")
+        hit = any(fnmatch.fnmatchcase(f, r) for f in files) if "*" in r else r in files or r in dirs
+        if not hit:
+            bad.append(r)
     return bad
 
 
@@ -107,10 +198,19 @@ def unsourced_lines(text: str) -> list[str]:
     return bad
 
 
-def test_every_source_path_and_key_resolves():
-    text = README.read_text(encoding="utf-8")
-    assert sources(text), "README.md has no src comments"
+@pytest.mark.parametrize("page", PAGES)
+def test_every_source_path_and_key_resolves(page):
+    text = (REPO / page).read_text(encoding="utf-8")
+    assert sources(text), f"{page} has no src comments"
     assert not (bad := unresolved(text)), bad
+
+
+@pytest.mark.parametrize("page", PAGES)
+def test_every_run_file_behind_a_number_is_tracked(page):
+    """A number whose data row names a run file that no commit holds cannot be recounted from a clone."""
+    runs = run_files((REPO / page).read_text(encoding="utf-8"))
+    assert runs, f"{page}: no run file behind its numbers"
+    assert not (bad := untracked_runs(runs)), bad
 
 
 def test_every_image_and_link_path_exists():
@@ -131,6 +231,22 @@ def test_checks_catch_failures():
         ("docs/breadth/data.csv", ["ko.q27.mk"])
     ]
     assert unresolved("| a <!-- src: docs/breadth/data.csv \\| ko.q27.nosuchkey --> | 1 |")
+    rebuilt = "x <!-- src: data/figures/depth/data.csv | 47.0 (b) share rebuilt by 25 lens directions: "
+    assert unresolved(rebuilt + "no; such -->")
+    assert not unresolved(rebuilt + "random draws (mean; mean, 95th pct) -->")  # a cell with ';' in it
+    order = "x <!-- src: results/x0_order_2x2/20261030T224216Z/tables.json | "
+    assert not unresolved(order + "original_order_effect -->")  # a nested json key
+    assert unresolved(order + "no_such_key -->")
+    verbal = "x <!-- src: results/x47_verbal/summary-20261028T033646Z/verbal.md | reading :: "
+    assert not unresolved(verbal + "not verbalizable -->")
+    assert unresolved(verbal + "Over the models -->")  # both parts in the file, not on one line
+    assert unresolved("x <!-- src: cache/anything.json | k -->")  # a file git does not track
+    # a source column's run file, its trailing colon dropped
+    runs = {"results/ablate_v2/jsuite_v2_test_chat_ko_cand2_v1/rows.jsonl"}
+    assert run_files("x <!-- src: data/figures/examples/data.csv | e2.pairs_flip -->") == runs
+    assert untracked_runs({"results/exp02_swaps/main_v4b200_jpp_chat64/outcomes.jsonl", "results/no/*/cells.json"})
+    assert not untracked_runs({"results/x0_order_2x2/20261030T224216Z/tables.json", "results/x0_order_2x2",
+                               "results/x0_necessity/x0_necessity_27b_chat/descriptive-*/cells.json"})  # fmt: skip
     assert missing_paths("![a](figures/nope.png)")
     assert unsourced_lines("- the gap is 0.53 on the 27B")
     assert not unsourced_lines("- the 27B at L32 (45r, Q46.1, 27 Oct; Finding 2)")
@@ -159,6 +275,7 @@ def test_readme_meets_every_readability_target():
     import importlib.util
 
     spec = importlib.util.spec_from_file_location("readme_lint", REPO / "scripts" / "readme_lint.py")
+    assert spec and spec.loader
     lint = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(lint)
     m = lint.measure(README)
