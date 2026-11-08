@@ -304,7 +304,7 @@ CLAIM_CELLS = {
     12: claim_cells("holds", "holds", "holds", "holds", "holds", hollow_122b=True),
 }
 # cell footnotes, {(claim, model): (mark, note)}; Lightning's claim 10: Dan 18:10 (jobs/c3/batch53.yaml decisions_1810 item 3)
-F11_NOTES = {(10, "lightning"): ("¹", "Lightning, claim 10: the order split is descriptive; the copy test only below "
+F11_NOTES = {(10, "lightning"): ("¹", "Lightning, row 10: the order split is descriptive; the copy test only below "
                                       "gate (0.751).")}  # fmt: skip
 
 
