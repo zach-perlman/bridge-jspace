@@ -187,9 +187,11 @@ def test_ledger_visible_text_within_its_budget():
 
 
 def test_breadth_figures_take_their_captions_from_the_store():
-    """Every figure on the breadth page is followed by its {{caption|set/stem}} in the template (no bare "Fig. N.")."""
+    """Every figure on the breadth page is followed by its {{caption|set/stem}} or {{caption_short|set/stem}} in the
+    template (no bare "Fig. N.")."""
     tpl = (REPO / "docs" / "breadth" / "README.template.md").read_text(encoding="utf-8")
-    figs = re.findall(r"!\[[^\]]*\]\(\.\./\.\./figures/([\w-]+)/([\w-]+)\.png\)\n\n\{\{caption\|([\w-]+)/([\w-]+)\}\}", tpl)
+    figs = re.findall(r"!\[[^\]]*\]\(\.\./\.\./figures/([\w-]+)/([\w-]+)\.png\)\n\n\{\{caption(?:_short)?\|([\w-]+)/([\w-]+)\}\}",
+                      tpl)
     assert len(figs) == len(re.findall(r"!\[[^\]]*\]\(\.\./\.\./figures/", tpl))
     assert all(a == c and b == d for a, b, c, d in figs)
     assert "*Fig. " not in tpl

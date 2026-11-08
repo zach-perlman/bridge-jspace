@@ -3,8 +3,9 @@ keyed by the figure's file stem. A document template writes `{{caption|<set>/<st
 builders (scripts/readme_root.py, scripts/readme_build.py) expand it before their own placeholders, so the same PNG
 has the same caption on every page. A caption may hold the builders' own placeholders and src comments.
 
-The root README takes short captions (readability brief, 8 Nov: at most 60 words, takeaway first) from
-figures/<set>/_meta/captions_short.toml through `{{caption_short|<set>/<stem>}}`; only the figures it shows have one."""
+The README pages (root, depth, breadth) take short captions (readability brief, 8 Nov: at most 60 words, takeaway
+first) from figures/<set>/_meta/captions_short.toml through `{{caption_short|<set>/<stem>}}`; only the figures they
+show have one."""
 
 from __future__ import annotations
 

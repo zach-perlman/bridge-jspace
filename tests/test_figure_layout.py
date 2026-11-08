@@ -63,7 +63,7 @@ def test_every_set_has_one_caption_per_figure(group):
 
 @pytest.mark.parametrize("group", list(L.ORDER))
 def test_short_captions_name_real_figures_and_stay_short(group):
-    """The root README's short captions (readability brief, 8 Nov): only for figures of the set, at most 60 words."""
+    """The README pages' short captions (readability brief, 8 Nov): only for figures of the set, at most 60 words."""
     import tomllib
 
     store = REPO / "figures" / group / "_meta" / "captions_short.toml"

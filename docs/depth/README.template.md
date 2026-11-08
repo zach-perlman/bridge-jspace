@@ -72,7 +72,7 @@ Every hypothesis this track tested is in the [hypotheses ledger](docs/plans/hypo
 ## The question and the setup
 
 ![One prompt, two questions about the same bridge word](figures/depth/01_setup.png)
-{{caption|depth/01_setup}}
+{{caption_short|depth/01_setup}}
 
 - **The prompt** (a main-test scene): "The locker of carbon is 3. The locker of helium is 5. The locker of oxygen is 7. Hugo picked oxygen. Eric picked carbon. Eva picked helium."
 - **The lookup** asks "Which locker belongs to Eric's pick?" (3, found in the prompt). **The recall** asks "What is the atomic number of Eric's pick?" (6, from memory).
@@ -244,7 +244,7 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 
 
 ![The recall follows the lens part of the bridge word; the lookup mostly does not](figures/depth/02_one_layer_split.png)
-{{caption|depth/02_one_layer_split}}
+{{caption_short|depth/02_one_layer_split}}
 
 <details><summary>More figures for this question</summary>
 
@@ -252,12 +252,12 @@ Both readers: The country of Eli Thornton's childhood is on which continent?   E
 Following is not needing (claim 2): removed from the changed prompt's own state at one layer, the lens part leaves nearly all of the recall's answers unchanged; the recall has other copies.
 
 ![At one layer the recall keeps its answers without the lens part: it has other copies](figures/depth/15_zeroing.png)
-{{caption|depth/15_zeroing}}
+{{caption_short|depth/15_zeroing}}
 
 The recall also reads the item's earlier mention (claim 3): taking the lens part out there too blocks more of its switches than a random part of the same share, and taking out another item's lens part blocks none.
 
 ![The recall also reads the lens part at the item's earlier mention](figures/depth/36_earlier_mention.png)
-{{caption|depth/36_earlier_mention}}
+{{caption_short|depth/36_earlier_mention}}
 
 </details>
 
@@ -307,7 +307,7 @@ The recall also reads the item's earlier mention (claim 3): taking the lens part
 
 
 ![The lens part's directions: the bridge words, almost never the answer](figures/readme/05_atoms.png)
-{{caption|readme/05_atoms}}
+{{caption_short|readme/05_atoms}}
 
 **Takeaway.** The two bridge words carry about a tenth to a fifth of the rebuilt energy each, with the expected signs: the old word taken away, the new one added.
 
@@ -349,7 +349,7 @@ The recall also reads the item's earlier mention (claim 3): taking the lens part
 
 
 ![Question first, one model's lookup leans more on the lens part](figures/readme/16_order.png)
-{{caption|readme/16_order}}
+{{caption_short|readme/16_order}}
 
 **Takeaway.** With the question first, the 27B's lookup has a little more of its switches blocked without the lens part. The order effect is small, with its interval's lower end close to zero.
 
@@ -411,7 +411,7 @@ The recall also reads the item's earlier mention (claim 3): taking the lens part
 
 
 ![Every model's lookup takes identity or position, never the value](figures/readme/08_routes.png)
-{{caption|readme/08_routes}}
+{{caption_short|readme/08_routes}}
 
 <details><summary>More figures for this question</summary>
 
@@ -419,7 +419,7 @@ The recall also reads the item's earlier mention (claim 3): taking the lens part
 The lookup's "which item" lives outside the lens (claim 5): taking out the lens's next directions blocks little of the lookup's switches beyond a random part, while the lens part blocks the recall's.
 
 ![The lookup's identity survives taking out the lens's next directions](figures/depth/18_identity_outside.png)
-{{caption|depth/18_identity_outside}}
+{{caption_short|depth/18_identity_outside}}
 
 </details>
 
@@ -467,7 +467,7 @@ The lookup's "which item" lives outside the lens (claim 5): taking out the lens'
 
 
 ![A probe reads the address, and removing it takes the position route away](figures/readme/06_address_read_remove.png)
-{{caption|readme/06_address_read_remove}}
+{{caption_short|readme/06_address_read_remove}}
 
 <details><summary>More figures for this question</summary>
 
@@ -475,12 +475,12 @@ The lookup's "which item" lives outside the lens (claim 5): taking out the lens'
 Added by itself, the address brings position answers back on the 9B, Muse, Lightning and the 122B, not on the 27B (claim 7).
 
 ![Added by itself, the address brings position answers back, except on the 27B](figures/depth/37_address_added_alone.png)
-{{caption|depth/37_address_added_alone}}
+{{caption_short|depth/37_address_added_alone}}
 
 With six lockers, swaps between given lockers pass the bar on most pairs on every model but the 27B, and no single shift moves the lookup one locker on (claim 8).
 
 ![With six lockers, swaps between given lockers work on most pairs; no shift moves the lookup one locker on](figures/depth/03_six_lockers.png)
-{{caption|depth/03_six_lockers}}
+{{caption_short|depth/03_six_lockers}}
 
 </details>
 
@@ -545,7 +545,7 @@ With six lockers, swaps between given lockers pass the bar on most pairs on ever
 A swapped-in address moves the lookup, yet reads through the lens like a random vector of its size. A change of item of the same size stands far outside the random range.
 
 ![An address swap moves the lookup, but the lens reads it like a random vector](figures/readme/07_address_swap_lens.png)
-{{caption|readme/07_address_swap_lens}}
+{{caption_short|readme/07_address_swap_lens}}
 
 **Takeaway.** On all five models the address swap reads through the lens like a random vector of its size: no position word, no more rebuilt, little change in the readout.
 
@@ -595,7 +595,7 @@ A swapped-in address moves the lookup, yet reads through the lens like a random 
 
 
 ![The lens part holds less of the address than random parts of its energy](figures/readme/11_monitor.png)
-{{caption|readme/11_monitor}}
+{{caption_short|readme/11_monitor}}
 
 **Takeaway.** Neither monitor finds the address in the lens part. The lens readout does not show it. A probe on the lens part reads it less well than a probe on random parts of the same energy, on all five models (the 122B: coverage †). By the energy rule the address is under-represented in the lens directions.
 
@@ -662,7 +662,7 @@ A swapped-in address moves the lookup, yet reads through the lens like a random 
 
 
 ![The recall's entity at the last token: readable through the lens, not used](figures/readme/12_last_token.png)
-{{caption|readme/12_last_token}}
+{{caption_short|readme/12_last_token}}
 
 **Takeaway.** At the last token the recall's bridge entity is readable through the lens on all five models (the 122B reads "(b) readable, not used" too: coverage †). But writing it through the lens does not switch it to the swapped-in entity's answer at a real change's size. The whole-state patch switches nearly every recall, the lens swap almost none; the 122B's whole-state patch switches less (the Result's table).
 
@@ -710,7 +710,7 @@ A swapped-in address moves the lookup, yet reads through the lens like a random 
 
 
 ![With the locker sentence first, the bridge word switches the lookup; after the pick, far less](figures/depth/05_order.png)
-{{caption|depth/05_order}}
+{{caption_short|depth/05_order}}
 
 <details><summary>More figures for this question</summary>
 
@@ -718,12 +718,12 @@ A swapped-in address moves the lookup, yet reads through the lens like a random 
 With the locker sentence after the pick, the link is made in the locker sentences: the change copied there switches the lookups the bridge word no longer does.
 
 ![After the pick, the change copied into the locker sentences switches the lookup, layer by layer](figures/depth/06_link_layers.png)
-{{caption|depth/06_link_layers}}
+{{caption_short|depth/06_link_layers}}
 
 Where the switches are carried, on the main test: for the lookup almost all at the bridge word at L. The figure does not split them by sentence order, so it supports claim 11 only indirectly; the direct evidence, that the lookups the change at L misses with the locker after the pick were read from the bridge word before L, is claim 11's row of the key numbers ("carried before L", In one minute) and [the ledger card](docs/depth/EXPERIMENTS.md#t47-4).
 
 ![Where each reader's switches are carried: the bridge word at L, before L, after L, elsewhere](figures/depth/s07_cumulative.png)
-{{caption|depth/s07_cumulative}}
+{{caption_short|depth/s07_cumulative}}
 
 </details>
 
@@ -760,7 +760,7 @@ Where the switches are carried, on the main test: for the lookup almost all at t
 
 
 ![On the 9B, 27B and Muse the address is readable before the lookup uses it](figures/depth/07_depth.png)
-{{caption|depth/07_depth}}
+{{caption_short|depth/07_depth}}
 
 <details><summary>More figures for this question</summary>
 
@@ -768,7 +768,7 @@ Where the switches are carried, on the main test: for the lookup almost all at t
 On Lightning and the 122B, whose gates were chosen after the data, the address is readable early too.
 
 ![On Lightning and the 122B too, the address is readable before the lookup uses it](figures/depth/08_depth_more.png)
-{{caption|depth/08_depth_more}}
+{{caption_short|depth/08_depth_more}}
 
 </details>
 
@@ -833,7 +833,7 @@ On Lightning and the 122B, whose gates were chosen after the data, the address i
 
 
 ![Both operations, both datasets, one direction](figures/depth/09_two_by_two.png)
-{{caption|depth/09_two_by_two}}
+{{caption_short|depth/09_two_by_two}}
 
 **Takeaway.** On the true-fact passages the lookup follows the lens part too on the 9B and 27B: there the lookup can answer from memory, as the recall does.
 
@@ -1017,7 +1017,7 @@ Every number on this page carries a source comment into data/figures/depth/data.
 *Another item moved, lookup, 300 scenes per model; the route of each scene under the whole change against under the arm. Left: of the scenes on the position route under the whole change, those that leave it without the address, against without a random part of the same size. Right: of the scenes on the identity route, those that go to the position route without the lens part, against without a random part. Differences with {{q|95%}} intervals (bootstrap over the bridge entity, paired).*
 
 ![Position scenes leave position without the address; identity scenes go to position without the lens part (post hoc)](figures/depth/35_two_codes.png)
-{{caption|depth/35_two_codes}}
+{{caption_short|depth/35_two_codes}}
 
 | | whole = position: n | leave position, without the address | leave position, random part | difference | whole = identity: n | go to position, without the lens part | go to position, random part | difference |
 |---|---|---|---|---|---|---|---|---|

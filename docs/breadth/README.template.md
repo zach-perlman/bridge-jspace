@@ -65,7 +65,7 @@ One real fact passage, as the model reads it:
 
 ![One real fact passage, Qwen 27B: without the lens part the recalled answer turns wrong and the looked-up one holds](../../figures/examples/02_fact_passage.png)
 
-{{caption|examples/02_fact_passage}}
+{{caption_short|examples/02_fact_passage}}
 
 Every removal is compared with removals of the same size: random, the logit lens's own and the residual's top directions.
 
@@ -78,7 +78,7 @@ One entity's three-hop chains (each hop P read or M recalled):
 
 ![One real entity, Qwen 27B: only the chain that ends in two recalls turns wrong, and only without the lens part](../../figures/examples/04_chains.png)
 
-{{caption|examples/04_chains}}
+{{caption_short|examples/04_chains}}
 
 One passage, five finals: the same question with the bridge's fact stated or left to memory.
 
@@ -105,7 +105,7 @@ The test split and, per model, the items it answers right unedited (the items ev
 
 ![Removing the lens part (its 10 directions) breaks recalled facts, not looked-up ones, in three models from two families, far beyond the largest same-size control](../../figures/breadth/01_needed.png)
 
-{{caption|breadth/01_needed}}
+{{caption_short|breadth/01_needed}}
 
 **Takeaway.** The recall − lookup gap is {{vci|ko.q27.mk}} (27B), {{vci|ko.q9.mk}} (9B) and {{vci|ko.nl.mk}}
 (Lightning). The drop tracks where the answer is, growing from the fact stated to nothing stated to recall.
@@ -153,7 +153,7 @@ more than any removal of the same size.
 
 ![The Qwens' split on every dataset we built, with the logit lens near zero](../../figures/breadth/02_datasets.png)
 
-{{caption|breadth/02_datasets}}
+{{caption_short|breadth/02_datasets}}
 
 **Takeaway.** The split is a property of the models, not of one set. The logit lens stays near zero wherever it was
 run. Keeping the bridge's own word restores only a part of it (the plan's kill test).
@@ -191,7 +191,7 @@ The other models on the datasets they ran:
 
 ![The other models on the datasets they ran: Muse and the 122B above the bar on the later sets, the Olmos and Qwen3-32B below it](../../figures/breadth/02b_datasets.png)
 
-{{caption|breadth/02b_datasets}}
+{{caption_short|breadth/02b_datasets}}
 
 - **Every relation.**
   - On the 27B, the gap runs from {{v|ko.q27.rel.languages}} (languages) to {{v|ko.q27.rel.dishes}} (dishes).
@@ -199,7 +199,7 @@ The other models on the datasets they ran:
 
 ![The split holds on every relation, far above the rotated control](../../figures/breadth/03a_robust.png)
 
-{{caption|breadth/03a_robust}}
+{{caption_short|breadth/03a_robust}}
 
 - **Every start, both test halves, three renderings.**
   - Renderings: 27B {{v|ko.q27.r2}} and {{v|ko.q27.r3}}; 9B {{v|ko.q9.r2}} and {{v|ko.q9.r3}}; Lightning
@@ -208,7 +208,7 @@ The other models on the datasets they ran:
 
 ![The split holds on every start, both test halves, three renderings and by probability; a bridge never named adds to the recall's drop](../../figures/breadth/03b_robust.png)
 
-{{caption|breadth/03b_robust}}
+{{caption_short|breadth/03b_robust}}
 
 - **A clean checkout reproduces it.** Rerun from a fresh worktree:
   - the 27B's and 9B's removals match row for row ({{v|clean.q27.diff}} of {{v|clean.q27.rows}} and
@@ -249,7 +249,7 @@ The other models on the datasets they ran:
 
 ![Depth and position: the mention at mid depth in the Qwens, mention and question in Lightning, the question late](../../figures/breadth/04_where.png)
 
-{{caption|breadth/04_where}}
+{{caption_short|breadth/04_where}}
 
 **Takeaway.** Where the removal must act depends on the model and on the depth: a monitor reading one position at one
 layer sees only part of what the recall uses.
@@ -295,7 +295,7 @@ bands in amendment 57.*
 
 ![A swapped lens part moves the answer to the other entity; it is not the answer token](../../figures/breadth/05_carries.png)
 
-{{caption|breadth/05_carries}}
+{{caption_short|breadth/05_carries}}
 
 **Takeaway.** At the mention the lens part is a reference to the entity, whatever context it came from; the fact is
 looked up later. Decodable, carried and needed come apart.
@@ -332,7 +332,7 @@ from one neutral sentence about it alike; a probe's subspace that reads the fact
 
 ![A lens part from one neutral sentence carries as much as one from the passage; a probe's subspace carries almost nothing](../../figures/readme/04_pointer.png)
 
-{{caption|readme/04_pointer}}
+{{caption_short|readme/04_pointer}}
 
 - **The fact is looked up later.** At the answer position, the lens first reads X's fact on half the items at:
   - layer {{v|ptr.q27.lookup}} on the 27B (band ends at L40);
@@ -342,7 +342,7 @@ from one neutral sentence about it alike; a probe's subspace that reads the fact
 
 ![The fact appears at the answer position only after the band, for a swapped entity as for the original](../../figures/breadth/07_lookup.png)
 
-{{caption|breadth/07_lookup}}
+{{caption_short|breadth/07_lookup}}
 
 - **Readable, carried and needed come apart.**
   - OLMo carries the entity (swap {{v|swap.ol.swap}}), but the removal costs only {{v|ko.ol.mk}}.
@@ -351,7 +351,7 @@ from one neutral sentence about it alike; a probe's subspace that reads the fact
 
 ![The lens reads the fact at the mention in every model; readable is not the same as needed](../../figures/breadth/08_readable.png)
 
-{{caption|breadth/08_readable}}
+{{caption_short|breadth/08_readable}}
 
 </details>
 
@@ -359,7 +359,7 @@ from one neutral sentence about it alike; a probe's subspace that reads the fact
 
 ![The lens-specific part sits in the first 1-30 directions; in Bolt and DeepSeek a same-size removal costs about as much](../../figures/breadth/09_dose.png)
 
-{{caption|breadth/09_dose}}
+{{caption_short|breadth/09_dose}}
 
 **Takeaway.** A fixed number of directions is not a fixed dose, and more directions add damage that is not specific;
 Bolt and DeepSeek are weak, not spread out.
@@ -434,7 +434,7 @@ In the 9B, Lightning and Ministral most of the lens-specific part sits in the fi
 
 ![Chains whose last hop recalls: the removal turns more answers wrong than in the all-passage chain, beyond its largest same-size control, on every chain but the 27B's P → P → M](../../figures/breadth/10a1_beyond.png)
 
-{{caption|breadth/10a1_beyond}}
+{{caption_short|breadth/10a1_beyond}}
 
 **Takeaway.** One model meets the chain rule cleanly; that is not enough for a general rule. What the data support:
 the lens part is needed where the last step recalls a fact about an entity in Lightning, and mostly so in the 27B.
@@ -488,7 +488,7 @@ Chains whose last hop reads the passage, the same way:
 
 ![Chains whose last hop reads the passage: no extra cost beyond the controls on Lightning; on the 27B only when the first two hops recall](../../figures/breadth/10a2_beyond.png)
 
-{{caption|breadth/10a2_beyond}}
+{{caption_short|breadth/10a2_beyond}}
 
 - **A number computed from the passage does not need the lens part to be reported.** Accuracy drop (points) reporting
   the number, minus a number read from the passage (digit tokens included in the removal):
@@ -537,7 +537,7 @@ Numbers counted, computed or recalled from the passage, then reported or used to
 
 ![A number made from the passage and then used: the extra cost under the removal, per model](../../figures/breadth/10b_beyond.png)
 
-{{caption|breadth/10b_beyond}}
+{{caption_short|breadth/10b_beyond}}
 
 - **What this says about H0.**
   - The lens part is needed where the last step recalls a fact about an entity, whatever the earlier steps were. It is
@@ -551,7 +551,7 @@ What the model says instead under the removal, in five classes of reply:
 
 ![Generated replies under the removal, sorted into five classes, per model](../../figures/breadth/10c_beyond.png)
 
-{{caption|breadth/10c_beyond}}
+{{caption_short|breadth/10c_beyond}}
 
 </details>
 
@@ -559,7 +559,7 @@ What the model says instead under the removal, in five classes of reply:
 
 ![Keeping only the answer span's directions undoes nearly all of the recall's damage; removing only them does all of it](../../figures/writeup/10_answer_span.png)
 
-{{caption|writeup/10_answer_span}}
+{{caption_short|writeup/10_answer_span}}
 
 **Takeaway.** The gap of Section 1 measures how much recall needs the directions that produce its
 answer word, not whether the bridge entity itself is used as a step.
@@ -590,7 +590,7 @@ and removing only them does all of it.
 
 ![Removing the city's directions made orthogonal to the answers costs nothing, even for a one-hop question about the city](../../figures/writeup/11_orthogonal.png)
 
-{{caption|writeup/11_orthogonal}}
+{{caption_short|writeup/11_orthogonal}}
 
 **Takeaway.** A removal that leaves the answer's directions intact cannot show that an intermediate step is used: it
 does not even touch a one-hop answer about the subject. Methods that remove only what is orthogonal to the answer
@@ -620,7 +620,7 @@ own directions costs more, and removing its directions made orthogonal to the an
 
 ![Agents: removing the lens part costs producing an answer far more than picking or verifying one](../../figures/writeup/a01_agents.png)
 
-{{caption|writeup/a01_agents}}
+{{caption_short|writeup/a01_agents}}
 
 **Takeaway.** The recall's need for the lens part is a need to produce the remembered word; tasks that only check or
 choose among given words need it much less.
