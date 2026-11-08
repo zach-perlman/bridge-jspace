@@ -1014,7 +1014,7 @@ Every number on this page carries a source comment into data/figures/depth/data.
 
 <details><summary>Appendix B. Following the same scenes: the position route</summary>
 
-*Another item moved, lookup, 300 scenes per model; the route of each scene under the whole change against under the arm. Left: of the scenes on the position route under the whole change, those that leave it without the address, against without a random part of the same size. Right: of the scenes on the identity route, those that go to the position route without the lens part, against without a random part. Differences with {{q|95%}} intervals (bootstrap over the bridge entity, paired).*
+*Another item moved, lookup, 300 scenes per model; the route of each scene under the whole change against under the arm. Top: of the scenes on the position route under the whole change, those that leave it without the address, against without a random part of the same size. Bottom: of the scenes on the identity route, those that go to the position route without the lens part, against without a random part. At right, the differences with {{q|95%}} intervals (bootstrap over the bridge entity, paired).*
 
 ![Position scenes leave position without the address; identity scenes go to position without the lens part (post hoc)](figures/depth/readme/35_two_codes.png)
 {{caption_short|depth/readme/35_two_codes}}

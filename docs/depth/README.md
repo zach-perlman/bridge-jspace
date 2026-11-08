@@ -67,7 +67,7 @@ Weaker results are in Part VI, dropped readings under "Tested and dropped"; † 
 **Status.**
 
 - **Models.** Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B, Nemotron 3.5 Lightning 30B-A3B and Qwen3.5-122B-A10B (FP8), where it ran. Three families. Nemotron 3.5 Bolt is out of scope, because no J++ lens exists for it.
-- **Runs.** As of 29 Oct 2026. Built at b58da137 from the run files.
+- **Runs.** As of 29 Oct 2026. Built at b300851f from the run files.
 - **Hand-check.** Hand-checked on a sample of 46 items across seven views, all consistent ([findings](../review/handcheck_findings.md)). None of its 6 issues changes a headline claim.<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g --> VERIFIED.md (human recomputation) is not yet filled.
 
 <details><summary>Lightning's and the 122B's caveats</summary>
@@ -1030,7 +1030,7 @@ Every number on this page carries a source comment into data/figures/depth/data.
 
 <details><summary>Appendix B. Following the same scenes: the position route</summary>
 
-*Another item moved, lookup, 300 scenes per model; the route of each scene under the whole change against under the arm. Left: of the scenes on the position route under the whole change, those that leave it without the address, against without a random part of the same size. Right: of the scenes on the identity route, those that go to the position route without the lens part, against without a random part. Differences with 95% intervals (bootstrap over the bridge entity, paired).*
+*Another item moved, lookup, 300 scenes per model; the route of each scene under the whole change against under the arm. Top: of the scenes on the position route under the whole change, those that leave it without the address, against without a random part of the same size. Bottom: of the scenes on the identity route, those that go to the position route without the lens part, against without a random part. At right, the differences with 95% intervals (bootstrap over the bridge entity, paired).*
 
 ![Position scenes leave position without the address; identity scenes go to position without the lens part (post hoc)](../../figures/depth/readme/35_two_codes.png)
 *Post hoc: position scenes leave position without the address; identity scenes go to position without the lens part. Another item moved, lookup. Top: position-route scenes without the address; bottom: identity-route scenes without the lens part; each against a random part of the same size (grey), with the paired differences at right. Not among the hand-checked views.*

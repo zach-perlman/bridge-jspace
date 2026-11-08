@@ -4,7 +4,7 @@
 *When a model answers a two-step question about an entity, does it need the directions the J++ lens reads at that
 entity? Does that depend on whether the final fact is recalled or stated, and in which models?*
 
-**Status.** Every number is sourced from the run files, and tests check it. A 46-item hand-check changed no headline claim ([findings](../review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->. Human recomputation (VERIFIED.md) is not yet done. Built at b58da137 from the run files.
+**Status.** Every number is sourced from the run files, and tests check it. A 46-item hand-check changed no headline claim ([findings](../review/handcheck_findings.md))<!-- src: docs/review/handcheck_findings.md | 46 items across views a-g -->. Human recomputation (VERIFIED.md) is not yet done. Built at b300851f from the run files.
 
 ## In one minute
 
