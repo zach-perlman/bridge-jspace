@@ -4,5 +4,5 @@ Built by `make readme` with [styles-plot](https://github.com/danorel/styles-plot
 
 | № | figure | what it shows | status |
 |---|---|---|---|
-| 01 | <a href="01_fact_passage.png"><img src="01_fact_passage.png" width="260" alt="01_fact_passage"></a> | One real fact passage, Qwen 27B: without the lens part the recalled answer turns wrong and the looked-up one holds | UNVERIFIED |
-| 02 | <a href="02_chains.png"><img src="02_chains.png" width="260" alt="02_chains"></a> | One real entity, Qwen 27B: only the chain that ends in two recalls turns wrong, and only without the lens part | UNVERIFIED |
+| 01 | <a href="01_fact_passage.png"><img src="01_fact_passage.png" width="260" alt="01_fact_passage"></a> | One fact passage, Qwen 27B, jsuite v2 test: both passages name the bridge (bold); the lookup's passage also states the bridge's fact (the sentence in the lookup's colour), the recall's passage replaces it and its like with sentences that do not, so the recall's answer must come from memory; the bridge in bold. | UNVERIFIED |
+| 02 | <a href="02_chains.png"><img src="02_chains.png" width="260" alt="02_chains"></a> | Three three-hop chains about one entity, Qwen 27B, jsuite v2 test: each hop is P (read in the passage) or M (recalled), the bridge in bold; answers before and with the lens part removed at every token over a band of middle layers, or a rotated part of the same size. | UNVERIFIED |

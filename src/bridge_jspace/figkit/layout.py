@@ -129,29 +129,11 @@ def write_order(group: str) -> Path:
     return p
 
 
-DOCS = {"common/readme": REPO / "README.md", "depth/readme": REPO / "docs/depth/README.md",
-        "depth/ledger": REPO / "docs/depth/EXPERIMENTS.md", "breadth/readme": REPO / "docs/breadth/README.md",
-        "depth/examples": REPO / "README.md", "breadth/examples": REPO / "README.md",
-        "common/examples": REPO / "README.md"}  # fmt: skip
 TITLES = {"common/writeup": "the LessWrong write-up", "common/readme": "the root README",
           "depth/readme": "the depth README", "depth/ledger": "the depth ledger (docs/depth/EXPERIMENTS.md)",
           "depth/examples": "the depth track's real examples", "breadth/examples": "the breadth track's real examples",
           "common/examples": "real examples that span both tracks",
           "breadth/readme": "the breadth README"}  # fmt: skip
-_LINK = re.compile(r"!?\[([^\]]*)\]\(([^)\s]+?\.png)\)")
-
-
-def shown_in_doc(group: str) -> dict[str, str]:
-    """File stem → the words its document gives it (an image's alt text, else a link's text), first use."""
-    out: dict[str, str] = {}
-    doc = DOCS.get(group)
-    if doc is None:
-        return out
-    for text, target in _LINK.findall(doc.read_text()):
-        stem = Path(target).stem
-        if f"figures/{group}/" in target and text and text not in ("Figure",) and stem not in out:
-            out[stem] = text
-    return out
 
 
 def status(group: str, stem: str) -> str:
@@ -175,8 +157,11 @@ def status(group: str, stem: str) -> str:
 
 
 def write_index(group: str, shows: dict[str, str] | None = None) -> Path:
-    """figures/<set>/README.md: every figure in reading order with a thumbnail, what it shows and its status."""
-    words = {**shown_in_doc(group), **(shows or {})}
+    """figures/<set>/README.md: every figure in reading order with a thumbnail, what it shows and its status. What it
+    shows: `shows[fid]` if given, else the first sentence of the figure's caption in _meta/captions.toml (a figure
+    without one raises KeyError: every figure has a caption, tests/test_figure_layout.py)."""
+    from bridge_jspace.figkit import captions  # captions imports this module
+
     up = "../" * (len(Path(group).parts) + 1)  # from figures/<track>/<set>/ back to the repo root
     lines = [f"# Figures for {TITLES[group]}", "",
              f"Built by `make {'figures-writeup' if group == 'common/writeup' else 'readme'}` with "
@@ -191,7 +176,8 @@ def write_index(group: str, shows: dict[str, str] | None = None) -> Path:
                  "[breadth](../../breadth/examples/README.md) (a fact passage, three-hop chains)."]
     for fid, stem in names(group).items():
         num = stem.split("_", 1)[0]
-        what = words.get(stem) or words.get(fid, "")
+        what = (shows or {}).get(fid) or captions.first_sentence(captions.caption(group, stem))
+        what = what.replace("|", "\\|")  # a bare pipe would split the table cell
         lines.append(f'| {num} | <a href="{stem}.png"><img src="{stem}.png" width="260" alt="{stem}"></a> | '
                      f"{what} | {status(group, stem)} |")  # fmt: skip
     p = folder(group) / "README.md"

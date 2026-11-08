@@ -4,54 +4,24 @@ Built by `make readme` with [styles-plot](https://github.com/danorel/styles-plot
 
 | № | figure | what it shows | status |
 |---|---|---|---|
-| 01 | <a href="01_item_not_answer.png"><img src="01_item_not_answer.png" width="260" alt="01_item_not_answer"></a> | The recall's drop without the lens part is the item, not its answer | 2 of 5 cells post hoc · UNVERIFIED |
-| 02 | <a href="02_lightning_layers.png"><img src="02_lightning_layers.png" width="260" alt="02_lightning_layers"></a> | Lightning's layer sweep and the conflict test by layer | all post hoc · UNVERIFIED |
-| 03 | <a href="03_ladder.png"><img src="03_ladder.png" width="260" alt="03_ladder"></a> | The recall needs the lens part once its other copies go; the lookup never | 2 of 5 cells post hoc · UNVERIFIED |
-| 04 | <a href="04_follows_both.png"><img src="04_follows_both.png" width="260" alt="04_follows_both"></a> | Every recall follows both; on the 27B and Muse it mostly stays put | 1 of 4 cells post hoc · UNVERIFIED |
-| 05 | <a href="05_number_answer.png"><img src="05_number_answer.png" width="260" alt="05_number_answer"></a> | With a number answer the recall follows the entity | 2 of 5 cells post hoc · UNVERIFIED |
-| 06 | <a href="06_answer_map.png"><img src="06_answer_map.png" width="260" alt="06_answer_map"></a> | 0.651<!-- src: results/x52_atoms/report-20261030T094628Z/verdict.md \| 122B e1 (recall's view :: 0.688 [0.651 --> |
-
-- **Read.**
-  - On the main test the two bridge words carry about a fifth (9B, 27B, Lightning) to two fifths (Muse) of the rebuilt energy, the answer words almost none (none at all on Lightning).
-
-<details><summary>The result in full, more reading and caveats</summary>
-
-- **Caveats.**
-  - The classifier was hand-checked on 5 items per model (blind on Muse's main test only) and misses non-English answer words.
-  - On the fact passages the bridge names carry 0.02-0.03 and the descriptions' words dominate (see the report).
-
-</details>
-
-### Where is the answer readable through the lens, and can it be written there? <a id="b52-b"></a>
-
-`ledger only` *Used in: not in the README (its rebuild).*
-
-Test batch 52 B · opened 29 Oct · status: rule fixed in advance · hand-check: not in sample · files: `results/x52_answer_map/x52_write2x-20261029T074907Z/write2x.md` · recompute: `scripts/x52_answer_map.py` (the command in its docstring) · also: Lightning's main set 29 Oct
-
-<details><summary>Question, data, method, rule and figure</summary>
-
-- **Question.** For each reader, on our scenes and on the fact passages, is the answer word readable through the lens before the answer is computed, and does writing its lens directions change the answer?
-- **Why we asked.** The answer control found the answer word not read at our bridge word but read at the fact passages' description; where else is it readable, and is it used there?
-- **Data.** Our main test, 200 per model (Lightning at L14, a coverage run, no prediction); the fact passages, 158 / 166 / 157 (Lightning's read pending).
-- **Method.** Read: the answer word's rank in the lens readout at the bridge word, its earlier mention, the question and the last token, every second layer before the answer layer. Write: at the most readable cell, the answer word's lens directions at one and two times a real change's size, against a random part and a frequency-matched part of the same size; the whole change at that cell as the reference.
-
-- **Rule, fixed in advance.** "“Readable”: the answer word in the lens top-5 on ≥ 0.5 of items at some layer before the answer layer. “Usable”: writing its directions changes the answer on ≥ 0.3 of items with the random control ≤ 0.10. Report the four combinations per reader, per dataset." No prediction.
-
-Readable and usable, per reader and data set:
-
-![On the fact passages the answer is readable and usable; on ours rarely | 2 of 5 cells post hoc · UNVERIFIED |
-| 07 | <a href="07_value_formats.png"><img src="07_value_formats.png" width="260" alt="07_value_formats"></a> | In prose, JSON and tables the lookup never takes the value | 1 of 4 cells post hoc · UNVERIFIED |
-| 08 | <a href="08_identity_code.png"><img src="08_identity_code.png" width="260" alt="08_identity_code"></a> | Centered, the code moves lookups beyond random; raw, little or none | UNVERIFIED |
-| 09 | <a href="09_subset27b.png"><img src="09_subset27b.png" width="260" alt="09_subset27b"></a> | On its position scenes the 27B's address brings fewer answers back | UNVERIFIED |
-| 10 | <a href="10_report_first_position.png"><img src="10_report_first_position.png" width="260" alt="10_report_first_position"></a> | Reworded, the report reads slot 1 on every model tested | 1 of 3 cells post hoc · UNVERIFIED |
-| 11 | <a href="11_last_token_swap.png"><img src="11_last_token_swap.png" width="260" alt="11_last_token_swap"></a> | The bridge word's code works at the last token only on Muse | 1 of 4 cells post hoc · UNVERIFIED |
-| 12 | <a href="12_last_conflict.png"><img src="12_last_conflict.png" width="260" alt="12_last_conflict"></a> | At the read peak no lookup goes through the lens part | 2 of 5 cells post hoc · UNVERIFIED |
-| 13 | <a href="13_last_conflict_words.png"><img src="13_last_conflict_words.png" width="260" alt="13_last_conflict_words"></a> | Near the output the test is uninformative; read peaks differ | 1 of 4 cells post hoc · UNVERIFIED |
-| 14 | <a href="14_attention_blocks.png"><img src="14_attention_blocks.png" width="260" alt="14_attention_blocks"></a> | Two attention blocks carry a third of Lightning's lookup switch | all post hoc · UNVERIFIED |
-| 15 | <a href="15_fact_answer_control.png"><img src="15_fact_answer_control.png" width="260" alt="15_fact_answer_control"></a> | Named: both recalls mixed; described: the 27B's reads as the answer | UNVERIFIED |
-| 16 | <a href="16_every_layer.png"><img src="16_every_layer.png" width="260" alt="16_every_layer"></a> | Over every layer up to L, fact-after lookups follow the lens part | 1 of 3 cells post hoc · UNVERIFIED |
-| 17 | <a href="17_fact_routes.png"><img src="17_fact_routes.png" width="260" alt="17_fact_routes"></a> | On the fact passages the lookup rarely takes the position route | 3 of 5 cells post hoc · UNVERIFIED |
-| 18 | <a href="18_read_window.png"><img src="18_read_window.png" width="260" alt="18_read_window"></a> | On the 9B the fact passages are read over our layers; on the 27B not | 1 of 3 cells post hoc · UNVERIFIED |
-| 19 | <a href="19_person_probe.png"><img src="19_person_probe.png" width="260" alt="19_person_probe"></a> | No probe reads who picked an item at its locker sentence | 2 of 4 cells post hoc · UNVERIFIED |
-| 20 | <a href="20_any_item.png"><img src="20_any_item.png" width="260" alt="20_any_item"></a> | The animal-fit address does not carry over to other items as ruled | 1 of 4 cells post hoc · UNVERIFIED |
-| 21 | <a href="21_described_gap.png"><img src="21_described_gap.png" width="260" alt="21_described_gap"></a> | The breadth track's removal everywhere hits the recall more; the depth track's gap is unclear | 2 of 5 cells post hoc · UNVERIFIED |
+| 01 | <a href="01_item_not_answer.png"><img src="01_item_not_answer.png" width="260" alt="01_item_not_answer"></a> | The answer control, main test: the recall's switches blocked beyond a random part of the same size without the lens part, with the lens part removed but the answer word's directions kept, and with only the answer word's directions removed, one lane each per model. | 2 of 5 cells post hoc · UNVERIFIED |
+| 02 | <a href="02_lightning_layers.png"><img src="02_lightning_layers.png" width="260" alt="02_lightning_layers"></a> | Lightning's layer sweep on the pre-check scenes: the share of each reader's answers switched by the whole change at the bridge word, lookup (violet) and recall (black), at every swept layer; dashed: the bar both readers must reach. | all post hoc · UNVERIFIED |
+| 03 | <a href="03_ladder.png"><img src="03_ladder.png" width="260" alt="03_ladder"></a> | The ladder at the two rungs its rule compares: the answers turned wrong beyond a random part of the same share when the lens part is removed step by step, the recall in locker-first and in locker-after scenes and the lookup over every scene. | 2 of 5 cells post hoc · UNVERIFIED |
+| 04 | <a href="04_follows_both.png"><img src="04_follows_both.png" width="260" alt="04_follows_both"></a> | The lens part from one scene (item B) and the address from another (item C) swapped in together (left) or alone (right): the share of the recall's answers that are B's (the lens part's item, teal) and C's (the address's item, orange), per model. | 1 of 4 cells post hoc · UNVERIFIED |
+| 05 | <a href="05_number_answer.png"><img src="05_number_answer.png" width="260" alt="05_number_answer"></a> | A number as the answer: the switches blocked without the lens part beyond a random part, the recall (left) and the lookup (right), with the question after the scene and, on the 27B and the 122B, before it. | 2 of 5 cells post hoc · UNVERIFIED |
+| 06 | <a href="06_answer_map.png"><img src="06_answer_map.png" width="260" alt="06_answer_map"></a> | Where the answer word is readable through the lens (left: the share of items with it in the lens top 5 at the best layer before the answer; one value, no interval) and whether adding its lens directions there changes the answer (right; at the size the run chose), lookup (violet) and recall (black), on our scenes and on the fact passages. | 2 of 5 cells post hoc · UNVERIFIED |
+| 07 | <a href="07_value_formats.png"><img src="07_value_formats.png" width="260" alt="07_value_formats"></a> | The routes test in prose, JSON and a table: the share of the lookup's answers that follow the moved item's position (orange) and its new value (slate), per model and format run. | 1 of 4 cells post hoc · UNVERIFIED |
+| 08 | <a href="08_identity_code.png"><img src="08_identity_code.png" width="260" alt="08_identity_code"></a> | The item's identity code from its locker sentence added at the bridge word: the share of lookups moved by the item's own code (blue), by another item's version of it (slate) and by a random vector (grey), with the code as fit in advance and centered. | UNVERIFIED |
+| 09 | <a href="09_subset27b.png"><img src="09_subset27b.png" width="260" alt="09_subset27b"></a> | The 27B's scenes where its lookup goes by position, beside the 9B: the position answers left without the address and without a random part (grey), and brought back by the address alone and by a random part alone (grey). | UNVERIFIED |
+| 10 | <a href="10_report_first_position.png"><img src="10_report_first_position.png" width="260" alt="10_report_first_position"></a> | The model's report of where the item sits, reworded: the share of reports naming the first position under the earlier wording, when a digit is asked for and when a word is asked for, per model. | 1 of 3 cells post hoc · UNVERIFIED |
+| 11 | <a href="11_last_token_swap.png"><img src="11_last_token_swap.png" width="260" alt="11_last_token_swap"></a> | The address fit at the bridge word swapped in at the last token, a few layers after L at twice a real change's size: the share of lookups sent to the target item, per model. | 1 of 4 cells post hoc · UNVERIFIED |
+| 12 | <a href="12_last_conflict.png"><img src="12_last_conflict.png" width="260" alt="12_last_conflict"></a> | The conflict test at the last token: the switches blocked without the lens part beyond a random part, lookup (left) and recall (right), at the two layers tested for each reader (its own layers, earlier first; the 122B at one). | 2 of 5 cells post hoc · UNVERIFIED |
+| 13 | <a href="13_last_conflict_words.png"><img src="13_last_conflict_words.png" width="260" alt="13_last_conflict_words"></a> | As the figure above with words as the answers: per model, three, two and one layers before the answer and at the read peak (the rule counts the two layers nearest the answer as uninformative). | 1 of 4 cells post hoc · UNVERIFIED |
+| 14 | <a href="14_attention_blocks.png"><img src="14_attention_blocks.png" width="260" alt="14_attention_blocks"></a> | Lightning: the switches blocked when attention blocks are cut, lookup (left) and recall (right), per block or span cut (rows), with a control block and a control span. | all post hoc · UNVERIFIED |
+| 15 | <a href="15_fact_answer_control.png"><img src="15_fact_answer_control.png" width="260" alt="15_fact_answer_control"></a> | The answer control on the fact passages with the bridge named, per chain (P: read in the passage, M: recalled; the last letter is the hop the reader answers): the switches blocked without the lens part and with only the answer word's directions removed, lookup (violet) and recall (black). | UNVERIFIED |
+| 16 | <a href="16_every_layer.png"><img src="16_every_layer.png" width="260" alt="16_every_layer"></a> | The change at the bridge word at one layer (left) and at every layer up to L (right): the switches blocked without the lens part beyond a random part, lookup (violet) and recall (black), with the fact sentence before the pick and after it. | 1 of 3 cells post hoc · UNVERIFIED |
+| 17 | <a href="17_fact_routes.png"><img src="17_fact_routes.png" width="260" alt="17_fact_routes"></a> | The routes test on the fact passages: the share of the lookup's answers by identity (blue), by position (orange) and by value (slate), at each model's layer tested and, where run, a later one. | 3 of 5 cells post hoc · UNVERIFIED |
+| 18 | <a href="18_read_window.png"><img src="18_read_window.png" width="260" alt="18_read_window"></a> | The fact passages' read window: the share of each reader's answers switched by the whole change at the bridge name, one layer at a time, lookup (violet) and recall (black); dashed: the bar fixed in advance. | 1 of 3 cells post hoc · UNVERIFIED |
+| 19 | <a href="19_person_probe.png"><img src="19_person_probe.png" width="260" alt="19_person_probe"></a> | Who picked the item, read by a probe at its locker sentence: the accuracy pooled over the sentence (with its 95% interval) and at the best single token, at half the test layer and at it. | 2 of 4 cells post hoc · UNVERIFIED |
+| 20 | <a href="20_any_item.png"><img src="20_any_item.png" width="260" alt="20_any_item"></a> | The address on other kinds of item: the position answers cut beyond random without the address fit on animals (left) and refit on each kind (right), per model and kind. | 1 of 4 cells post hoc · UNVERIFIED |
+| 21 | <a href="21_described_gap.png"><img src="21_described_gap.png" width="260" alt="21_described_gap"></a> | The fact passages with the bridge described: the gap, recall minus lookup, under the change at one layer (left, a share of switches) and under removal everywhere (right, a share of answers); the 122B not run at one layer. | 2 of 5 cells post hoc · UNVERIFIED |

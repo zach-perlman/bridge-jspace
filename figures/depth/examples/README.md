@@ -4,5 +4,5 @@ Built by `make readme` with [styles-plot](https://github.com/danorel/styles-plot
 
 | № | figure | what it shows | status |
 |---|---|---|---|
-| 01 | <a href="01_locker_scene.png"><img src="01_locker_scene.png" width="260" alt="01_locker_scene"></a> | One real locker scene, Qwen 27B: the whole change switches both readers; without the lens part the lookup still switches and the recall does not | UNVERIFIED |
-| 02 | <a href="02_routes.png"><img src="02_routes.png" width="260" alt="02_routes"></a> | One real routes scene, Qwen 9B: the three routes predict three lockers; the lookup takes the identity route's | UNVERIFIED |
+| 01 | <a href="01_locker_scene.png"><img src="01_locker_scene.png" width="260" alt="01_locker_scene"></a> | One locker scene from the main test, Qwen 27B, as the model reads it (the bridge word in bold), with each reader's answer before the change and under each operation at layer `{{x\|layer_27b}}`. | UNVERIFIED |
+| 02 | <a href="02_routes.png"><img src="02_routes.png" width="260" alt="02_routes"></a> | One routes scene, Qwen 9B: the bridge word's state comes from a scene in which another item moved, and the three routes predict three different lockers (identity blue, position amber, the value in black). | UNVERIFIED |

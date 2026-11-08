@@ -93,6 +93,26 @@ def test_the_index_lists_every_figure_in_order(group):
     assert shown == list(L.names(group).values())
 
 
+def test_first_sentence_drops_src_comments_and_keeps_placeholders_visible():
+    from bridge_jspace.figkit.captions import first_sentence
+
+    assert first_sentence("Rows are 3<!-- src: a | b --> models; {{q|95%}} intervals. Left: x.") == (
+        "Rows are 3 models; 95% intervals."
+    )
+    assert first_sentence("At layer {{x|layer_27b}}. Next.") == "At layer `{{x|layer_27b}}`."
+    assert first_sentence("Fig. 5a, e.g. here, has 0.10 of it. Next.") == "Fig. 5a, e.g. here, has 0.10 of it."
+
+
+@pytest.mark.parametrize("group", [g for g in L.ORDER if g != "common/writeup"])  # the write-up passes its own lines
+def test_the_index_shows_each_captions_first_sentence(group):
+    from bridge_jspace.figkit import captions as C
+
+    rows = {m[0]: m[1] for m in re.findall(r'<img src="([^"]+)\.png"[^|]*\| (.*) \| [^|]*\|$', (
+        REPO / "figures" / group / "README.md").read_text(), flags=re.M)}  # fmt: skip
+    for stem in L.names(group).values():
+        assert rows[stem] == C.first_sentence(C.caption(group, stem)).replace("|", "\\|"), stem
+
+
 def test_every_figure_outside_the_write_up_is_embedded_by_a_doc():
     used = {p for md in docs() if not md.startswith("figures/") for p in links(md)}
     for group in L.ORDER:

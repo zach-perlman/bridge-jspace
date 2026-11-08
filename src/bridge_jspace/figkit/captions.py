@@ -40,6 +40,18 @@ def caption(group: str, stem: str, short: bool = False) -> str:
         raise KeyError(f"no caption for figures/{group}/{stem}.png in {path(group, store)}") from None
 
 
+_Q = re.compile(r"\{\{q\|([^}]*)\}\}")
+_BUILDER = re.compile(r"\{\{[^}]*\}\}")
+
+
+def first_sentence(text: str) -> str:
+    """A caption's first sentence as plain text for a figure index: src comments dropped, {{q|…}} as is (a number
+    quoted as written); any other builder placeholder stays, in code, since only the README builders can fill it."""
+    text = " ".join(re.sub(r"<!--.*?-->", " ", text, flags=re.S).split())
+    text = _BUILDER.sub(lambda m: f"`{m.group(0)}`", _Q.sub(r"\1", text))
+    return re.split(r"(?<=[.!?])\s+(?=[A-Z(\"“*`])", text, maxsplit=1)[0]
+
+
 def expand(text: str) -> str:
     """Every {{caption|set/stem}} and {{caption_short|set/stem}} as the italic caption line."""
     return PH.sub(lambda m: f"*{caption(m.group(2), m.group(3), bool(m.group(1)))}*", text)

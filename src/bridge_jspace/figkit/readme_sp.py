@@ -365,9 +365,7 @@ BLOCKED = {"f6_address": f6_address}
 def build(ids=None) -> list[str]:
     """Save the README set strict into figures/common/readme/ (numbered files, figkit/layout.py); r1_dan_split and
     t12_two_by_two belong to the depth set (depth_sp builds them). Returns the failures."""
-    # the README links f9_where as "Figure": its claim for the index
-    return L.build(GROUP, FIGS, TARGET, ids, {"f9_where": "Middle layers need the bridge's mention; deeper layers, "
-                                                              "the question"})  # fmt: skip
+    return L.build(GROUP, FIGS, TARGET, ids)
 
 
 if __name__ == "__main__":
