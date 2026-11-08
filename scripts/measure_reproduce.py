@@ -7,15 +7,21 @@ machine. The sparse sets are TIERS below (`paths <tier>` prints one, for `git sp
   read   git clone --filter=blob:none --sparse, then sparse-checkout set docs figures data/figures; every local link of
          README.md checked for existence.
   tier1  the tier1 set, uv sync, make readme; then which tracked files differ from the commit, and how many changed
-         words are not a commit hash (a rebuild stamps its own commit, "Built at <hash>"). The .git of this clone is
-         large: provenance_counts.py's `git archive <rev> scripts src ...` makes a blob:none clone fetch nearly every
-         blob of that commit, results/ included (seen with GIT_TRACE, 8 Nov).
-  tier2  the tier2 set, uv sync, scripts/verify_headlines.py as is (exit code); then each of its checks on its own
-         (`each` below), so a missing run file fails one check instead of the whole script.
+         words are not a commit hash (a rebuild stamps its own commit, "Built at <hash>"). Until 8 Nov this clone's
+         .git was 2.3 GB: provenance_counts.py's `git archive <rev> scripts src ...` made a blob:none clone fetch nearly
+         every blob of that commit (seen with GIT_TRACE); in a partial clone it now keeps its g1 rows as committed.
+  tier2  the tier2 set, uv sync, `make check-numbers` (TIER2 below): every src comment of the three READMEs resolves in
+         a git-tracked file and every run file behind a cited key is tracked (tests/test_readme_sources.py), every
+         number of the depth README is a value of its data file (tests/test_numbers_match_data.py); exit code and the
+         passed / failed counts.
+  sprint scripts/verify_headlines.py, the 30 Oct sprint's headline check (part A and part B, exp02-exp23, against
+         values typed into the script, not the current READMEs): the sprint set, uv sync, the script as is (exit
+         code); then each of its checks on its own (`each` below), so a missing run file fails one check, not all.
   tier3  `make run` on a GPU box: not re-run; the memory needs are quoted from DEVELOPER.md.
 
   uv run python scripts/measure_reproduce.py                 # all tiers, uv's package cache as it is
   uv run python scripts/measure_reproduce.py --cold-uv-cache  # uv sync into an empty package cache (downloads)
+  uv run python scripts/measure_reproduce.py --url file://$PWD --branch <branch>   # a local commit not yet pushed
   uv run --project <clone> python scripts/measure_reproduce.py each <clone>   # verify_headlines check by check
   python3 scripts/measure_reproduce.py paths tier1                # a tier's sparse set (stdlib only)
 """
@@ -45,10 +51,15 @@ SELF = "scripts/measure_reproduce.py"
 
 # The sparse-checkout set of each tier. read: the README with its figures and docs. tier1: what `make readme` reads,
 # found by tracing every file the recipe's Python processes open (an audit hook), widening the set until the recipe ran,
-# then adding the run folders scripts/provenance_counts.py resolves (it checks manifests with exists(), which a trace
-# misses) until its counts and every output equalled the committed ones. tier2: what scripts/verify_headlines.py reads,
-# traced the same way; 13 run folders it also reads are in no commit and are left out. In tier2, data/figures brings
-# data/'s top-level files (a cone's parent level), which verify_headlines.py reads.
+# then adding the run folders scripts/provenance_counts.py resolves (it reads their manifests only when all are present)
+# until its counts and every output equalled the committed ones. tier2: what `make check-numbers` reads: docs,
+# data/figures, tests and src (uv sync builds the package), and the folder of every results/ or runs/ file the tests
+# open (the depth README's src comments that name a run file; data/figures/lenses.csv's sources; the files
+# test_checks_catch_failures reads); the run files behind the data rows are checked with `git ls-files` only. A cone
+# brings its parents' top-level files, so results/lens_fit's own files come with its subfolders. sprint: what
+# scripts/verify_headlines.py reads, traced like tier1; 13 run folders it also reads are in no commit and are left out.
+# In sprint, data/figures brings data/'s top-level files (a cone's parent level), which verify_headlines.py reads.
+TIER2 = ["make", "check-numbers"]
 TIERS: dict[str, list[str]] = {
     "read": [
         "docs",
@@ -89,6 +100,7 @@ TIERS: dict[str, list[str]] = {
         "results/ablate_v2/natural_v2_chat_ko_v1",
         "results/ablate_v2/natural_v3_chat_ko_v1",
         "results/ablate_v2/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1",
+        "results/ablate_v2/nem35b_jsuite_v2_test_chat_ko_cand2_v1",
         "results/ablate_v2/nem35l_jsuite_v2_test_chat_ko_cand2_v1",
         "results/ablate_v2/nem35l_natplus_v1_chat_ko_cand2_v1",
         "results/ablate_v2/nn_ko_read",
@@ -111,6 +123,9 @@ TIERS: dict[str, list[str]] = {
         "results/removal_textloss/gemma4itf_sink_textloss_v1",
         "results/removal_textloss/gptoss20_textloss_top_v1",
         "results/removal_textloss/kol1_textloss_top_l15_35_v1",
+        "results/removal_textloss/nem35l_textloss_top_v2gate_v1",
+        "results/removal_textloss/qwen35_9b_textloss_top_l12_16_v1",
+        "results/removal_textloss/textloss_top_l32_40_v1",
         "results/sd_necessity/nem35l_sd59_ko_test_v1",
         "results/sd_necessity/nem35l_sd65_ko_test_v1",
         "results/sd_necessity/nn_sd_read",
@@ -127,6 +142,7 @@ TIERS: dict[str, list[str]] = {
         "results/x0_probe/x0_probe_v4_27b",
         "results/x47_six/x52_six-20261029T004919Z",
         "results/x47_six/x52_six-20261029T231821Z",
+        "results/x47_report/x47_10-20261028T113109Z",
         "results/x47_verbal/summary-20261028T033646Z",
         "results/x47_verbal/summary-20261029T005548Z",
         "results/x47_verbal/summary-20261029T180530Z",
@@ -161,6 +177,60 @@ TIERS: dict[str, list[str]] = {
         "results/z1p_checks/20261030T222158Z",
     ],
     "tier2": [
+        "configs/models",
+        "data/figures",
+        "docs",
+        "src",
+        "tests",
+        "results/ablate_v2/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1",
+        "results/ablate_v2/jsuite_v2_test_chat_ko_cand2_v1",
+        "results/ablate_v2/min14_jsuite_v2_test_chat_ko_cand2_v1",
+        "results/ablate_v2/muse30_jsuite_v2_test_chat_ko_cand2_v1",
+        "results/ablate_v2/nem35b_jsuite_v2_test_chat_ko_cand2_v1",
+        "results/ablate_v2/nem35l_jsuite_v2_test_chat_ko_cand2_v1",
+        "results/ablate_v2/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1",
+        "results/ablate_v2/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1",
+        "results/ablate_v2/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1",
+        "results/ablate_v2/qwen35_9bb_jsuite_v2_test_qa_ko_cand2_v1",
+        "results/ablate_v2/qwen35_9boj_jsuite_v2_test_chat_ko_cand2_v1",
+        "results/address_verbalizable/20261030T214526Z",
+        "results/atoms_multilingual/20261030T204008Z",
+        "results/c2_route_collision/20261030T210732Z",
+        "results/c2_route_crosstab/20261030T212820Z",
+        "results/lens_check/gemma-4-31b-it-full",
+        "results/lens_check/qwen3-32b",
+        "results/lens_check/qwen3.5-9b",
+        "results/lens_check/qwen3.6-27b",
+        "results/lens_eval/gemma4it_lens_eval",
+        "results/lens_fit/gemma_it_full",
+        "results/lens_fit/gpt-oss-20b",
+        "results/lens_fit/kolibri-1",
+        "results/lens_fit/ministral-3-14b",
+        "results/lens_fit/muse30",
+        "results/lens_fit/nemotron-3.5-bolt",
+        "results/lens_fit/nemotron-3.5-lightning",
+        "results/lens_fit/olmo-3-7b",
+        "results/lens_fit/olmo-hybrid-7b",
+        "results/lens_fit/qwen3_32b",
+        "results/lens_fit/qwen3.5-9b-base",
+        "results/lens_fit/qwen3.5-9b-ourjpp",
+        "results/removal_textloss/gemma4itf_sink_textloss_v1",
+        "results/removal_textloss/gptoss20_textloss_top_v1",
+        "results/removal_textloss/kol1_textloss_top_l15_35_v1",
+        "results/removal_textloss/olmo3d7_textloss_top_l10_14_v1",
+        "results/removal_textloss/olmoh7_textloss_top_l4_8_v1",
+        "results/removal_textloss/qwen3_32b_textloss_top_l44_52_v1",
+        "results/x0_order_2x2/20261030T224216Z",
+        "results/x47_verbal/summary-20261028T033646Z",
+        "results/x8_target_legs_check/20261030T214423Z",
+        "results/z1p_checks/20261030T222158Z",
+        "runs/answer_arms_krand/muse-glimmer-30b/krand",
+        "runs/answer_arms_krand/qwen3.6-27b/krand",
+        "runs/answer_arms_translated/muse-glimmer-30b/run2",
+        "runs/answer_arms_translated/qwen3.6-27b/run_qwen3.6-27b",
+        "runs/answer_translation_check/muse-glimmer-30b/full",
+    ],
+    "sprint": [
         "data/figures",
         "scripts",
         "src",
@@ -203,6 +273,8 @@ TIERS: dict[str, list[str]] = {
         "results/exp20_competence/v1",
     ],
 }
+# make readme ends with tests/test_readme_sources.py, which reads everything tier2 reads
+TIERS["tier1"] = sorted(set(TIERS["tier1"]) | set(TIERS["tier2"]))
 
 
 def https(url: str) -> str:
@@ -225,8 +297,10 @@ def du_mb(path: Path, *exclude: str) -> float:
 
 
 def clone(url: str, branch: str, dest: Path, paths: list[str], env: dict[str, str]) -> float:
+    # a local repo serves --filter only when its upload-pack allows it (GitHub does by default)
+    local = ["-u", "git -c uploadpack.allowFilter=true upload-pack"] if url.startswith("file://") else []
     t1, p = run(
-        ["git", "clone", "-q", "--filter=blob:none", "--sparse", "-b", branch, url, str(dest)], dest.parent, env
+        ["git", "clone", "-q", *local, "--filter=blob:none", "--sparse", "-b", branch, url, str(dest)], dest.parent, env
     )
     assert p.returncode == 0, p.stderr
     t2, p = run(["git", "sparse-checkout", "set", *paths], dest, env)
@@ -382,9 +456,30 @@ def main() -> None:
     if not a.keep:
         shutil.rmtree(d)  # tier1's checkout is the largest; free it before tier2
 
-    # tier2: verify_headlines.py
+    # tier2: the three READMEs' numbers against tracked files (make check-numbers)
     d = work / "tier2"
     t = clone(url, a.branch, d, sets["tier2"], env)
+    ts, p = run(["uv", "sync", "-q"], d, env)
+    assert p.returncode == 0, p.stderr
+    tt, p = run(TIER2, d, env)
+    last = (p.stdout.strip().splitlines() or [""])[-1]  # pytest's summary: "N passed, M deselected in Xs"
+    counts = {w: int(n) for n, w in re.findall(r"(\d+) (passed|failed|error|errors|skipped)", last)}
+    runs = [x for x in sets["tier2"] if x.startswith(("results/", "runs/"))]
+    row("repro.t2.clone_s", round(t), "s", "git clone + sparse-checkout set (tier2 set)")
+    row("repro.t2.sync_s", round(ts), "s", f"uv sync, {sync_how}")
+    row("repro.t2.test_s", round(tt, 1), "s", f"{' '.join(TIER2)} (wall time, uv run and pytest start-up included)")
+    row("repro.t2.exit", p.returncode, "count", f"{' '.join(TIER2)}'s exit code; pytest: {last[:200]}")
+    row("repro.t2.passed", counts.get("passed", 0), "count", f"tests passed in {' '.join(TIER2)}")
+    row("repro.t2.failed", counts.get("failed", 0) + counts.get("error", 0) + counts.get("errors", 0), "count", f"tests failed or in error in {' '.join(TIER2)}")  # fmt: skip
+    disk("t2", d)
+    row("repro.t2.run_folders", len(runs), "count", "results/ and runs/ folders in the tier2 set (TIERS in scripts/measure_reproduce.py)")  # fmt: skip
+    row("repro.t2.run_mb", round(sum(du_mb(d / x) for x in ("results", "runs") if (d / x).exists())), "MB", "du -sk of results/ and runs/ in the tier2 checkout")  # fmt: skip
+    if not a.keep:
+        shutil.rmtree(d)
+
+    # sprint: verify_headlines.py, the 30 Oct sprint's headline check
+    d = work / "sprint"
+    t = clone(url, a.branch, d, sets["sprint"], env)
     ts, p = run(["uv", "sync", "-q"], d, env)
     assert p.returncode == 0, p.stderr
     tv, p = run(["uv", "run", "python", "scripts/verify_headlines.py"], d, env)
@@ -393,21 +488,16 @@ def main() -> None:
     summ = dict(
         kv.split("=") for kv in next(ln for ln in q.stdout.splitlines() if ln.startswith("SUMMARY")).split()[1:]
     )
-    nres = sum(1 for x in sets["tier2"] if x.startswith("results/"))
-    row("repro.t2.clone_s", round(t), "s", "git clone + sparse-checkout set (tier2 set)")
-    row("repro.t2.sync_s", round(ts), "s", f"uv sync, {sync_how}")
-    row("repro.t2.verify_s", round(tv, 1), "s", "uv run python scripts/verify_headlines.py")
-    row("repro.t2.exit", p.returncode, "count", "verify_headlines.py's exit code; last stderr line: " + err[:200])
+    nres = sum(1 for x in sets["sprint"] if x.startswith("results/"))
+    row("repro.sprint.clone_s", round(t), "s", "git clone + sparse-checkout set (sprint set)")
+    row("repro.sprint.sync_s", round(ts), "s", f"uv sync, {sync_how}")
+    row("repro.sprint.verify_s", round(tv, 1), "s", "uv run python scripts/verify_headlines.py")
+    row("repro.sprint.exit", p.returncode, "count", "verify_headlines.py's exit code; last stderr line: " + err[:200])
     for k in ("checks", "ok", "diff", "missing", "missing_files"):
-        row(f"repro.t2.{k}", summ[k], "count", f"{SELF} each: verify_headlines.py's checks one by one ({k})")
-    disk("t2", d)
-    row(
-        "repro.t2.results_folders",
-        nres,
-        "count",
-        "results/ folders in the tier2 set (TIERS in scripts/measure_reproduce.py)",
-    )
-    row("repro.t2.results_mb", round(du_mb(d / "results")), "MB", "du -sk of results/ in the tier2 checkout")
+        row(f"repro.sprint.{k}", summ[k], "count", f"{SELF} each: verify_headlines.py's checks one by one ({k})")
+    disk("sprint", d)
+    row("repro.sprint.results_folders", nres, "count", "results/ folders in the sprint set (TIERS in scripts/measure_reproduce.py)")  # fmt: skip
+    row("repro.sprint.results_mb", round(du_mb(d / "results")), "MB", "du -sk of results/ in the sprint checkout")
 
     # the whole results/ tree at that commit, for scale (sizes from this checkout's objects: no download)
     sizes = subprocess.run(["git", "ls-tree", "-r", "-l", commit, "results"], cwd=REPO, capture_output=True, text=True,

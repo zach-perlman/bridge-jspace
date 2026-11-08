@@ -21,7 +21,7 @@ src/bridge_jspace/        shared library
 scripts/
   exp10_lens_sanity/ ... exp13_greedy_answers/   part A: config.yaml + experiment.py (+ plot.py, examples.yaml)
   exp01_probes.py, exp02_*.py, exp03_*.py, exp04_*.py   part B
-  verify_headlines.py     recomputes every README headline from the raw run files, independently of the code
+  verify_headlines.py     the 30 Oct sprint's headlines (exp02-exp23) from the raw run files; not the current READMEs
   data_report.py          the counts data/README.md quotes (`make data-report`)
   prefetch.py             download a model YAML's snapshot + lenses, retrying on HF rate limits
   run.sh                  an experiment in a detached tmux session, log in log/
@@ -39,24 +39,30 @@ cache/, log/              not committed: smoke runs and intermediates, run logs
 ```
 
 ## Reproduce
-The README's three tiers in detail. Each tier was timed in its own fresh sparse clone of commit 42698e30 on 8 Nov 2026, on an Apple M5 laptop (10 cores, 24 GB, macOS 26.5.1), uv's package cache empty; the values below are the keys of [data/figures/reproduce.csv](data/figures/reproduce.csv), written by `uv run python scripts/measure_reproduce.py --cold-uv-cache`, and the sparse sets are `TIERS` in that script (`python3 scripts/measure_reproduce.py paths <tier>` prints one). The whole tracked `results/` is 14.9 GB in 18,841 files; no tier needs all of it.
+The README's tiers in detail. Each tier is measured in its own fresh blob-less sparse clone by `uv run python scripts/measure_reproduce.py --cold-uv-cache` (uv sync into an empty package cache); the measured values are not typed here: they are the `repro.*` keys of [data/figures/reproduce.csv](data/figures/reproduce.csv), named below, and each row's source says how it was measured. `repro.commit` is the commit measured (its source names the URL: `--url file://$PWD --branch <branch>` measures a local commit not yet pushed), `repro.hw.*` the machine. The sparse sets are `TIERS` in that script (`python3 scripts/measure_reproduce.py paths <tier>` prints one). The whole tracked `results/` is `repro.results_all_gb` GB in `repro.results_all_files` files; no tier needs all of it.
 
-**Read only (no Python).** About 5 s and 125 MB (71 MB of files, 54 MB of `.git`). 45 of the README's 46 local links resolve; the one that does not is `predictions/README.md` (add `predictions` to the sparse set for it).
+**Read only (no Python).** The READMEs, docs, figures and the figures' data files. Time `repro.read.time_s`; disk `repro.read.files_mb` of files and `repro.read.git_mb` of `.git`. Of the README's `repro.read.links` local links, `repro.read.links_dead` fall outside this set (the row names them; add their folders to the sparse set).
 ```bash
 git clone --filter=blob:none --sparse https://github.com/zach-perlman/bridge-jspace
 cd bridge-jspace && git sparse-checkout set docs figures data/figures
 ```
 
-**Tier one: the figures and READMEs from tracked numbers (CPU).** `make readme` reads 91 run folders of `results/` (328 MB), found by tracing every file its scripts open: the numbers the READMEs cite, the run folders behind them (`scripts/provenance_counts.py` reads their manifests) and one figure the depth ledger links. Clone 18 s, `uv sync` 5 s, `make readme` 157 s. On disk: 460 MB of files, a 868 MB uv env, and a 2.3 GB `.git`: `provenance_counts.py` runs `git archive bd43870f^ scripts src …`, which in a blob-less clone fetches almost every blob of that commit, `results/` included. The run reproduces the committed outputs: the only change is the build stamp ("Built at <commit>") in docs/depth/README.md and docs/breadth/README.md.
+**Tier one: the figures and READMEs from tracked numbers (CPU).** `make readme` rebuilds the three READMEs and their figures from the tracked data files and the run folders behind them (`repro.t1.results_folders` folders, `repro.t1.results_mb` MB), found by tracing every file its scripts open; the set includes tier two's, since `make readme` ends with the same tests. Its first step, `scripts/provenance_counts.py`, counts only run folders whose `manifest.json` git tracks; in a checkout that lacks their files (a sparse clone such as the read-only set) it prints that it skipped and keeps the committed data/figures/provenance.csv, and in a blob-less clone it keeps the committed `g1.*` rows (counts of two fixed commits) instead of running `git archive` on those commits, which fetched nearly every blob of a commit. Clone `repro.t1.clone_s` s, `uv sync` `repro.t1.sync_s` s, `make readme` `repro.t1.readme_s` s (exit `repro.t1.exit`); disk `repro.t1.files_mb` MB of files, `repro.t1.venv_mb` MB of uv env, `repro.t1.git_mb` MB of `.git`. `repro.t1.changed` names the tracked files the rebuild changed, and `repro.t1.changed_other` counts the changed words other than the build stamp ("Built at <commit>").
 ```bash
 git clone --filter=blob:none --sparse https://github.com/zach-perlman/bridge-jspace && cd bridge-jspace
 git sparse-checkout set scripts && git sparse-checkout set $(python3 scripts/measure_reproduce.py paths tier1)
 uv sync && make readme
 ```
 
-**Tier two: the headline numbers from the run files (CPU).** `scripts/verify_headlines.py` recomputes the part A and part B headlines (exp02-exp23) against values typed into the script, not the current README's numbers. It reads 37 run folders (111 MB). Clone 4 s, `uv sync` 1 s, the script 5.7 s; 140 MB of files, 30 MB of `.git`. It stops with exit code 1: `results/exp02_swaps/main_v4b200_jpp_chat64/outcomes.jsonl` is in no commit (nor in the local results/ of the main checkout). Run check by check (`uv run python scripts/measure_reproduce.py each .`), 282 of its 311 checks match, 1 differs (exp03, "fresh items: random direction 3%, answer changed, J++": 0.006 against 0.0) and 28 need one of 13 run files that are in no commit.
+**Tier two: the READMEs' numbers checked against the repo (CPU).** `make check-numbers` runs the tests that check where each number on README.md, docs/depth/README.md and docs/breadth/README.md comes from (tests/test_readme_sources.py, tests/test_numbers_match_data.py): every `<!-- src: file | key -->` comment names a file git tracks and its key resolves there (a csv key is a cell, a json key a key at any depth, `l.N` a line count, `a :: b` parts on one line of the file, anything else the text); every run file named in the source column of a cited data row (or docs/depth/x0_numbers.json entry) is tracked by git; the lens table's pass@10 values are the cells their sources name; every number of the depth README is a value of data/figures/depth/data.csv. It does not recompute the numbers from the raw run files: tier one rebuilds them from the tracked data files and tier three reruns the experiments. It reads `repro.t2.run_folders` run folders (`repro.t2.run_mb` MB). Clone `repro.t2.clone_s` s, `uv sync` `repro.t2.sync_s` s, the tests `repro.t2.test_s` s (`repro.t2.passed` passed, `repro.t2.failed` failed, exit `repro.t2.exit`); disk `repro.t2.files_mb` MB of files, `repro.t2.venv_mb` MB of uv env, `repro.t2.git_mb` MB of `.git`.
 ```bash
 git sparse-checkout set scripts && git sparse-checkout set $(python3 scripts/measure_reproduce.py paths tier2)
+uv sync && make check-numbers
+```
+
+**The sprint's headline check (30 Oct, not this page's numbers).** `scripts/verify_headlines.py` recomputes the 30 Oct sprint's part A and part B headlines (exp02-exp23) from the raw run files, against values typed into the script; it does not check the current READMEs. Some of the run files it reads are in no commit, so it stops at the first one (exit `repro.sprint.exit`). Check by check (`uv run python scripts/measure_reproduce.py each .`): `repro.sprint.ok` of `repro.sprint.checks` checks match, `repro.sprint.diff` differ and `repro.sprint.missing` need one of `repro.sprint.missing_files` run files in no commit. No number on the three READMEs depends on those files (tier two checks that every run file behind them is tracked).
+```bash
+git sparse-checkout set scripts && git sparse-checkout set $(python3 scripts/measure_reproduce.py paths sprint)
 uv sync && uv run python scripts/verify_headlines.py
 ```
 
@@ -67,7 +73,8 @@ uv sync && uv run python scripts/verify_headlines.py
 make install       # uv sync + pre-commit hooks
 make check         # ruff format + lint, pyright, unit tests (no download)
 make test-model    # integration on Qwen3.5-0.8B + its lenses (CPU ok, a few minutes); after readout/sanity changes
-uv run python scripts/verify_headlines.py   # every README headline, recomputed from the raw files
+make check-numbers # every number on the three READMEs traced to a tracked file and key (Reproduce, tier two)
+uv run python scripts/verify_headlines.py   # the 30 Oct sprint's headlines from the raw files, not the current READMEs
 ```
 
 ## Hand check (review dashboard, docs/review/review_views.yaml; CPU only)
@@ -87,7 +94,7 @@ The shared documentation standard is [docs/STANDARD.md](docs/STANDARD.md). This 
 
 - The three READMEs are generated. Edit their templates, [docs/readme/README.template.md](docs/readme/README.template.md) (the root README), [docs/depth/README.template.md](docs/depth/README.template.md) and [docs/breadth/README.template.md](docs/breadth/README.template.md), then run `make readme`. Never edit README.md, docs/depth/README.md or docs/breadth/README.md by hand: the next build overwrites them.
 - Never type a number. Every number comes from a data file by key, through a template marker that prints the value with its source comment. Each builder's docstring lists its markers: `scripts/readme_root.py` (root), `scripts/readme_build.py` (depth), `scripts/report_breadth.py` (breadth). A new number goes into its data file first, with its source, and the template cites its key.
-- Keep every `<!-- src: ... -->` comment: it names the file and key a number came from, and `tests/test_readme_sources.py` resolves each one in the root README.
+- Keep every `<!-- src: ... -->` comment: it names the file and key a number came from, and `tests/test_readme_sources.py` resolves each one in the three READMEs (`make check-numbers`).
 
 ## Running an experiment
 Every run goes through one config and a detached tmux session; the manifest is written before the run and the run
