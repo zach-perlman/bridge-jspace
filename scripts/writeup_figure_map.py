@@ -33,13 +33,24 @@ ROWS = [
      "Whiskers span the full interval (the deck's were one-sided); the gap is slate, not black; the one-layer header "
      "reads \"switches blocked beyond random\"; the largest control is a grey tick, not a number in brackets (the old "
      "caption's \"in brackets\" no longer applies); not-claimed tags under the band panels"),
+    ("setup", "Setup: fact passages, after the bullets", [("common/writeup", "e01_setup_twins")],
+     "New: a pair of twins (the Rovio pair the post quotes), every sentence verbatim from items.jsonl"),
+    ("setup", "Setup: locker scenes, after the bullets", [("common/writeup", "e02_setup_locker")],
+     "New: the carbon scene and its two questions (illustrative)"),
+    ("setup", "Setup: three interventions, after the Patch bullet, before the tools figure",
+     [("common/writeup", "e03_setup_patch")],
+     "The depth report's patch picture moved to the post: +Δ on the bridge word, − and + into Δ, the changed words marked"),
     ("2", "Setup: the two datasets",
      [("common/writeup", "02_datasets"), ("depth/examples", "01_locker_scene"), ("breadth/examples", "01_fact_passage")],
      "The prompt table is unchanged in content; the example cards E1 and E2 are new: real items picked by a stated "
      "rule, each reader's answer under each operation"),
     ("3", "Setup: the three tools", [("common/writeup", "03_tools")],
      "Grids over a real scene's last words (bridge word in bold) instead of blank cells; one teal box per test; the "
-     "swap is teal (a lens part), not blue"),
+     "swap is teal (a lens part), not blue; panel titles Knock-out, Patch and Swap, as in the post's table"),
+    ("setup", "Setup: controls, after the bullets", [("common/writeup", "e04_setup_knockout")],
+     "New: the knock-out and its rotated control on the Rovio pair (Qwen 27B), with the known-fact set's rates"),
+    ("setup", "Setup: known-fact set and made-up-fact set, after the table", [("common/writeup", "e05_setup_datasets")],
+     "New: both sets as illustrations in each set's format (the made-up-fact example is the documented one)"),
     ("4", F1, [("common/writeup", "04_twin_set")],
      "Three labelled lanes per model (knock-out, rotated, answer span kept) instead of colour words; the answer-span "
      "lanes are tagged descriptive; the gap is slate with full whiskers"),

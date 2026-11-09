@@ -23,7 +23,7 @@ META, SHEETS = "_meta", "_sheets"
 ORDER: dict[str, list[tuple[str, str]]] = {
     "common/writeup": [("key", "key"),
                 # the setup section's examples (figkit/writeup_sp_d.py), in the post's order, before the results
-                *(("setup", i) for i in ("setup_locker", "setup_patch")),
+                *(("setup", i) for i in ("setup_twins", "setup_locker", "setup_patch", "setup_knockout", "setup_datasets")),
                 *(("main", i) for i in (
                     "fig00_schematic", "fig01_main_split", "fig02_datasets", "fig03_tools", "fig04_twin_set",
                     "fig05a_controls_band", "fig05b_controls_layer", "fig06_nine_models", "fig07_routes",

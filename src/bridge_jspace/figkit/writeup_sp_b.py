@@ -626,10 +626,10 @@ def fig03_tools(width: float | None = None) -> sp.Figure:
     words = D.e1_words(5)
     nl, nt = 4, len(words)
     bridge = nt - 1  # the bridge word: the last word shown
-    panels = (("remove everywhere", "a band of layers, every token", (2, 4, 0, nt), "lens", "lens part removed"),
-              ("removed from the patch", "one layer, the bridge word", (3, 4, bridge, bridge + 1), "lens",
+    panels = (("Knock-out", "a band of layers, every token", (2, 4, 0, nt), "lens", "lens part removed"),
+              ("Patch", "one layer, the bridge word", (3, 4, bridge, bridge + 1), "lens",
                "lens part removed"),
-              ("swap", "the bridge word, over the band", (2, 4, bridge, bridge + 1), "lens",
+              ("Swap", "the bridge word, over the band", (2, 4, bridge, bridge + 1), "lens",
                ("another entity's", "lens part swapped in")))  # fmt: skip
     panel_w, label_w = (width - 0.24) / 3, 0.62
     cell = min((panel_w - label_w - 0.12) / nt, 0.5)

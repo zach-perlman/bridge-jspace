@@ -73,3 +73,54 @@ def test_one_data_key_prints_one_string_across_figures(saved):
         for key, s in json.loads(report.sidecar.read_text())["numbers"].items():
             seen[key].add(s)
     assert {k: v for k, v in seen.items() if len(v) > 1} == {}
+
+
+# ---- the setup figures (figkit/writeup_sp_d.py): the post's words only, and every quote from its source ------------------
+from bridge_jspace.figkit import writeup_sp_d as SD  # noqa: E402
+
+SETUP = list(SD.FIGS)
+# the brief's rule 6 (9 Nov) and Dan's set names (9 Nov): words that never appear on a setup figure
+BANNED = ("stated", "write in", "written into", "edit", "scrub", "redirect", "twin set", "main set",
+          "described-bridge", "jsuite", "amendment", "note 62", "x47")  # fmt: skip
+
+
+def figure_texts(fig) -> list[str]:
+    """Every string a setup figure prints: words, boxes, arrow labels, a card's prompt, columns, answers and note."""
+    out: list[str] = []
+    for b in fig.blocks:
+        if isinstance(b, sp.Schematic):
+            for e in b.elements:
+                if isinstance(e, sp.Words):
+                    out.append("".join(p[0] for p in e.parts))  # one line, its bold parts joined
+                elif isinstance(e, sp.Box):
+                    out.append(e.text)
+                elif isinstance(e, sp.Arrow):
+                    out.append(e.label)
+        elif isinstance(b, sp.Card):
+            paras = b.prompt if b.prompt and isinstance(b.prompt[0], list) else [b.prompt]
+            out += ["".join(p[0] for p in para) for para in paras] + list(b.columns) + [b.note]
+            out += [a for r in b.rows for a in r.answers.values()]
+    return [t for t in out if t]
+
+
+@pytest.mark.parametrize("fid", SETUP)
+def test_setup_figures_use_the_posts_words_only(fid):
+    text = " ".join(figure_texts(SD.FIGS[fid]())).lower()
+    assert not [w for w in BANNED if w in text], fid
+
+
+def test_setup_quotes_come_from_their_sources():
+    """E1 and E4 quote the Rovio pair verbatim (items.jsonl); E5 quotes the documented made-up-fact example."""
+    pair = SD._pair()
+    contexts = pair["lookup"]["context"] + " " + pair["recall"]["context"]
+    for fid in ("setup_twins", "setup_knockout"):
+        for t in figure_texts(SD.FIGS[fid]()):
+            for piece in (x.strip() for x in t.replace("…", "\n").split("\n")):
+                if piece.endswith((".", "?")) and len(piece.split()) >= 4 and not piece.startswith(("Qwen", "Lens", "Rotated", "Over")):
+                    assert piece in contexts or piece == pair["lookup"]["question"], (fid, piece)
+    doc = (REPO / "scripts/jsuite_v4.py").read_text()
+    for key in ("question", "sentence"):
+        assert SD.MADE_UP[key] in doc, key
+    scene = "The locker of carbon is 3. The locker of helium is 5. The locker of oxygen is 7. Hugo picked oxygen. Eric picked carbon. Eva picked helium."
+    assert " ".join("".join(p[0] for p in ln) for ln in SD.CARBON.lines()) == scene
+
