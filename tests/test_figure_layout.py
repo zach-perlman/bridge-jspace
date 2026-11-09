@@ -16,7 +16,7 @@ import pytest
 from bridge_jspace.figkit import layout as L
 
 REPO = Path(__file__).resolve().parents[1]
-NAME = re.compile(r"^(?:00_key|(?:\d{2}[a-z]?\d?|a\d{2}|s\d{2}|e\d{2})_[a-z0-9_]+)\.png$")  # e: the post's setup figures
+NAME = re.compile(r"^(?:00_key|(?:\d{2}[a-z]?\d?|a\d{2}|s\d{2}|e\d{2}|r\d{2})_[a-z0-9_]+)\.png$")  # e: the post's setup figures; r: its results figures
 LINK = re.compile(r"\]\(([^)\s]+?\.png)\)")
 ARCHIVES = ("docs/archive/", "data/figures/archive/", "results/")
 # templates whose links are written from the repo root (their builder rewrites them for the rendered page)

@@ -24,8 +24,11 @@ ORDER: dict[str, list[tuple[str, str]]] = {
     "common/writeup": [("key", "key"),
                 # the setup section's examples (figkit/writeup_sp_d.py), in the post's order, before the results
                 *(("setup", i) for i in ("setup_twins", "setup_locker", "setup_patch", "setup_knockout", "setup_datasets")),
+                ("main", "fig00_schematic"),
+                # Result 1's first section ends on one figure of its claims (figkit/writeup_sp_c.py), before Figure 3
+                ("result", "patch_split"),
                 *(("main", i) for i in (
-                    "fig00_schematic", "fig01_main_split", "fig02_datasets", "fig03_tools", "fig04_twin_set",
+                    "fig01_main_split", "fig02_datasets", "fig03_tools", "fig04_twin_set",
                     "fig05a_controls_band", "fig05b_controls_layer", "fig06_nine_models", "fig07_routes",
                     "fig08a_address_read_remove", "fig08b_address_swap_lens", "fig09_order", "fig10_answer_span",
                     "fig11_orthogonal", "fig12_pointer", "fig13_last_token")),
@@ -86,7 +89,7 @@ def short(fid: str) -> str:
 
 def names(group: str) -> dict[str, str]:
     """Figure id → file stem for a set, in reading order."""
-    out, counts = {}, {"main": 0, "appendix": 0, "supp": 0, "setup": 0}
+    out, counts = {}, {"main": 0, "appendix": 0, "supp": 0, "setup": 0, "result": 0}
     prev, sub = "", 0
     for kind, fid in ORDER[group]:
         if kind == "key":
@@ -102,7 +105,7 @@ def names(group: str) -> dict[str, str]:
         if kind == "main" and group in NUMBERED and m and m.group("n") is not None:
             num = f"{int(m.group('n')):02d}{m.group('x') or ''}"
         else:
-            num = {"main": "", "appendix": "a", "supp": "s", "setup": "e"}[kind] + f"{counts[kind]:02d}"
+            num = {"main": "", "appendix": "a", "supp": "s", "setup": "e", "result": "r"}[kind] + f"{counts[kind]:02d}"
         out[fid] = f"{num}_{short(fid)}"
         prev = num
     if len(set(out.values())) != len(out):

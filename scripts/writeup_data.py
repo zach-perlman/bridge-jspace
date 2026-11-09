@@ -253,7 +253,48 @@ def fig12_rows() -> list[dict]:
     return out
 
 
-BUILDERS = (fig04_rows, fig05_rows, fig10_rows, fig11_rows, figA1_rows, fig12_rows)
+# ---- patch_split, panel 3: one layer against every token over four layers (no patch: the prompt's own state) ----------
+# the files the ledger cards cite: zeroing at one layer (t47-5) and the removal ladder (49.2), each model's run
+ZERO = {"q9": ("results/x47_zero/x47_5-20261028T113106Z/x47_5.json", "qwen35_9b_x47_5"),
+        "q27": ("results/x47_zero/x47_5-20261028T113106Z/x47_5.json", "x47_5_27b"),
+        "mu": ("results/x47_zero/x47_5-20261028T113106Z/x47_5.json", "muse30_x47_5"),
+        "nl": ("results/x47_zero/x52_zero-20261029T032056Z/x47_5.json", "nem35l_x52_zero"),
+        "q122": ("results/x47_zero/x52_zero-20261029T183120Z/x47_5.json", "qwen35_122b_x47_5")}  # fmt: skip
+LADDER = {"q9": ("results/x49_ladder/x49_2-20261028T161612Z/x49_2.json", "qwen35_9b_x49_2"),
+          "q27": ("results/x49_ladder/x52_ladder-20261029T012701Z/x49_2.json", "x52_ladder_27b_a"),
+          "mu": ("results/x49_ladder/x49_2-20261028T161612Z/x49_2.json", "muse30_x49_2_r5"),
+          "nl": ("results/x49_ladder/x52_ladder_below-20261029T091146Z/x49_2.json", "nem35l_x52_ladder_below"),
+          "q122": ("results/x49_ladder/x52_ladder-20261029T192919Z/x49_2.json", "qwen35_122b_x49_2")}  # fmt: skip
+
+
+def _run(path: str, run: str) -> dict:
+    return next(m for m in json.loads((REPO / path).read_text())["models"] if m["run"] == run)
+
+
+def patch_rows() -> list[dict]:
+    out = []
+    for k, (path, run) in ZERO.items():
+        m = _run(path, run)
+        for reader in ("recall", "lookup"):
+            c = m["readers"][reader]
+            v, lo, hi = c["kept"]["zero_L"]
+            out.append(_row(f"patch.zero.{reader}.{k}", "patch_split", ZK_MODEL[k],
+                            f"{reader}: answers kept, the lens part removed at the bridge word at L (no patch)", v, lo, hi,
+                            c["n"], "share", f"{path} | {run} :: readers.{reader}.kept.zero_L (scripts/x47_zero.py)"))
+    for k, (path, run) in LADDER.items():
+        m = _run(path, run)
+        for reader in ("recall", "lookup"):
+            c = m["cells"][reader]["all"]
+            for arm, what in (("zero5", "the lens part"), ("rand5", "a random part of the same share")):
+                v, lo, hi = c["kept"][arm]
+                out.append(_row(f"patch.every4.{arm[:4]}.{reader}.{k}", "patch_split", ZK_MODEL[k],
+                                f"{reader}: answers kept, {what} removed at every token over L..L+3 (ladder rung 5, "
+                                f"no patch)", v, lo, hi, c["n"], "share",
+                                f"{path} | {run} :: cells.{reader}.all.kept.{arm} (scripts/x49_ladder.py)"))
+    return out
+
+
+BUILDERS = (fig04_rows, fig05_rows, fig10_rows, fig11_rows, figA1_rows, fig12_rows, patch_rows)
 
 
 def rows() -> list[dict]:

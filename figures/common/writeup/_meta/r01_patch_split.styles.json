@@ -1,0 +1,317 @@
+{
+ "styles_plot": "0.2.2",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "a9bf1f98c035b8cd0ae7ab9d5568c7b66779b69f130907eca973ff6efb630557",
+  "hash": "meaning"
+ },
+ "registry": {
+  "path": "data/figures/status.csv",
+  "sha256": "ca482f54cf8a6ad846f5e8e7a499ca4874e63b945804c87e6454c6cf1825981f"
+ },
+ "figure": "patch_split",
+ "target": "post",
+ "mode": "strict",
+ "publishable": true,
+ "text_only": false,
+ "png": {
+  "pixels_sha256": "6ed51512edbc95b445ce9e3f437df216cbf0ba7fb8016b12e0a040e1cb4bdd37",
+  "dpi": 200
+ },
+ "roles": [
+  "lookup",
+  "recall"
+ ],
+ "controls": [],
+ "cells": {
+  "answer.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "answer.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "answer.q122": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "answer.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "answer.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "every4.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "every4.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "every4.q122": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "every4.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "every4.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "layer.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "layer.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "layer.q122": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "layer.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "layer.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "layer.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "layer.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "layer.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "layer.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "layer.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "layer.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "layer.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "layer.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "layer.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "layer.q122",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "answer.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "answer.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "answer.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "answer.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "answer.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "every4.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "every4.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "every4.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "every4.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "every4.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "every4.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "every4.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "every4.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lookup",
+   "cell": "every4.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "recall",
+   "cell": "every4.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  }
+ ],
+ "key": [
+  "grey tick: the largest same-size control",
+  "whiskers: 95% interval",
+  "○ post hoc"
+ ],
+ "numbers": {
+  "patch.zero.recall.q9": "0.97",
+  "patch.zero.recall.q27": "0.97",
+  "patch.zero.recall.mu": "0.94",
+  "patch.zero.recall.nl": "0.97",
+  "patch.zero.recall.q122": "0.95",
+  "patch.rule.lookup": "0.10",
+  "patch.rule.recall": "0.30",
+  "patch.rule.answer": "0.70",
+  "patch.energy.q27": "0.00",
+  "patch.layer.recall.q9": "0.50",
+  "patch.layer.recall.q27": "0.74",
+  "patch.layer.recall.mu": "0.75",
+  "patch.layer.recall.nl": "0.34",
+  "patch.layer.recall.q122": "0.32",
+  "patch.answer_kept.q9": "0.95",
+  "patch.answer_kept.q27": "0.93",
+  "patch.answer_kept.mu": "0.93",
+  "patch.answer_kept.nl": "0.92",
+  "patch.answer_kept.q122": "0.98"
+ },
+ "problems": []
+}

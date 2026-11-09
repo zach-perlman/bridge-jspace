@@ -81,7 +81,7 @@ from bridge_jspace.figkit import writeup_sp_d as SD  # noqa: E402
 SETUP = list(SD.FIGS)
 # the brief's rule 6 (9 Nov) and Dan's set names (9 Nov): words that never appear on a setup figure
 BANNED = ("stated", "write in", "written into", "edit", "scrub", "redirect", "twin set", "main set",
-          "described-bridge", "jsuite", "amendment", "note 62", "x47")  # fmt: skip
+          "described-bridge", "jsuite", "amendment", "note 62", "x47", "excess", "x49", "x0")  # fmt: skip
 
 
 def figure_texts(fig) -> list[str]:
@@ -96,6 +96,13 @@ def figure_texts(fig) -> list[str]:
                     out.append(e.text)
                 elif isinstance(e, sp.Arrow):
                     out.append(e.label)
+        elif isinstance(b, sp.DotTable):
+            out.append(b.note)
+            out += list(b.row_sub.values())
+            for col, group in b.flat_columns():
+                out += [getattr(col, "header", ""), group.header if group else ""]
+                out += [s.word or "" for s in getattr(col, "series", ())]
+                out += [r.label for r in getattr(col, "rules", ())]
         elif isinstance(b, sp.Card):
             paras = b.prompt if b.prompt and isinstance(b.prompt[0], list) else [b.prompt]
             out += ["".join(p[0] for p in para) for para in paras] + list(b.columns) + [b.note]
@@ -103,9 +110,10 @@ def figure_texts(fig) -> list[str]:
     return [t for t in out if t]
 
 
-@pytest.mark.parametrize("fid", SETUP)
+@pytest.mark.parametrize("fid", [*SETUP, "patch_split"])
 def test_setup_figures_use_the_posts_words_only(fid):
-    text = " ".join(figure_texts(SD.FIGS[fid]())).lower()
+    fig = SD.FIGS[fid]() if fid in SD.FIGS else SP.FIGS[fid]()
+    text = " ".join([*figure_texts(fig), fig.read or ""]).lower()
     assert not [w for w in BANNED if w in text], fid
 
 

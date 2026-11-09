@@ -134,5 +134,61 @@ def appB_f18_code_tool() -> sp.Figure:
     return fig
 
 
-FIGS = {"fig06_nine_models": fig06_nine_models, "fig07_routes": fig07_routes,
+# ---- Result 1: one patch at the bridge, two answers ----------------------------------------------------------------------
+ANSWER_KEPT = "main test, recall: share of its loss kept when the lens part keeps the answer words' directions"
+ANSWER_ONLY = "main test, recall: switches lost beyond random without the answer words' directions only"
+ANSWER_ENERGY = "52 A: share of the rebuilt energy in the reader's answer word"
+# the rules fixed in advance: the conflict test's (scripts/x0_necessity.py docstring: lookup excess <= 0.10,
+# recall >= 0.30) and the answer-word check's (docs/depth/EXPERIMENTS.md t51-12: arm 2 keeps >= 0.7)
+LOOKUP_AT_MOST, RECALL_AT_LEAST, ANSWER_BAR = 0.10, 0.30, 0.7
+
+
+def patch_split() -> sp.Figure:
+    """One patch at the bridge, two answers (locker scenes). Left: the patch's switches the lens part's removal blocks
+    beyond a random part of the same size, lookup and recall, against the pass rule fixed in advance (grey). Middle:
+    the recall's drop kept when the lens part spares the answer words' directions, against its bar fixed in advance.
+    Right, no patch: the answers kept when the lens part is removed from a prompt's own bridge state at one layer and
+    at every token over four layers (grey tick: a random part of the same share there). The read line: the answer
+    word's largest share of the lens part's energy over the five models."""
+    rows = DAN
+
+    def layer(m, reader):
+        # the recall printed; the lookup's dots sit at the rule's line, which says where each one falls
+        return est(S.conflict(m, reader), f"layer.{ZK[m]}", key=f"patch.layer.{reader}.{ZK[m]}",
+                   label=reader == "recall")
+
+    remove = sp.DotColumn(
+        "Lens part removed from the patch", "switches", (-0.2, 1.2), (0, 0.5, 1),
+        series=[sp.Series("lookup", {m: layer(m, "lookup") for m in rows}),
+                sp.Series("recall", {m: layer(m, "recall") for m in rows})],
+        rules=[sp.Rule(LOOKUP_AT_MOST, "lookup: at most {}", unit="switches", key="patch.rule.lookup"),
+               sp.Rule(RECALL_AT_LEAST, "recall: at least {}", unit="switches", key="patch.rule.recall")],
+        weight=1.8)  # fmt: skip  (the axis runs past 1 only to hold the printed values)
+    answer = sp.DotColumn(
+        "Not the answer word", "drop_kept", (0, 1.2), (0, 0.5, 1), weight=1.4,
+        series=[sp.Series("recall", {m: est(need(D.s(m, ANSWER_KEPT, "conflict_answer"), f"kept {m}"), f"answer.{ZK[m]}",
+                                            key=f"patch.answer_kept.{ZK[m]}", label=True) for m in rows},
+                          word="drop kept")],
+        rules=[sp.Rule(ANSWER_BAR, "bar fixed in advance: {}", unit="drop_kept", key="patch.rule.answer")])  # fmt: skip
+
+    def kept(key, cell, label=False, interval=True):
+        return {m: est(need(CV.w(key.format(k=ZK[m])), key.format(k=ZK[m])), f"{cell}.{ZK[m]}", key=key.format(k=ZK[m]),
+                       label=label, interval=interval) for m in rows}
+
+    # one layer as numbers (the recall's answers kept), four layers as dots: one line of colour words per dot panel
+    one = sp.TextColumn("one layer", "kept", kept("patch.zero.recall.{k}", "zero", interval=False), role="recall")
+    four = sp.DotColumn("every token, four layers", "kept", (0, 1.15), (0, 0.5, 1), weight=1.4,
+                        series=[sp.Series("lookup", kept("patch.every4.zero.lookup.{k}", "every4")),
+                                sp.Series("recall", kept("patch.every4.zero.recall.{k}", "every4"))],
+                        ticks={m: need(CV.w(f"patch.every4.rand.recall.{ZK[m]}"), m)[0] for m in rows})  # fmt: skip
+    table = sp.DotTable(rows, [remove, sp.Gutter(), answer, sp.Gutter(),
+                               sp.ColumnGroup("One layer is not essential", [one, four])])  # fmt: skip
+    energy = {m: need(D.s(m, ANSWER_ENERGY, "cards"), f"energy {m}") for m in rows}
+    most = max(rows, key=lambda m: energy[m][0])
+    numbers = {"energy": (energy[most][0], "share", f"patch.energy.{ZK[most]}")}
+    read = "read: the answer word holds at most {energy} of the lens part's energy on every model"
+    return sp.Figure("patch_split", vocab(), read=read, numbers=numbers).add(table)
+
+
+FIGS = {"patch_split": patch_split, "fig06_nine_models": fig06_nine_models, "fig07_routes": fig07_routes,
         "appB_f15_link_crossover": appB_f15_link_crossover, "appB_f18_code_tool": appB_f18_code_tool}  # fmt: skip

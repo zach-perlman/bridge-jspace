@@ -665,13 +665,31 @@ def unblocked_016(fig01_rows: list[dict], depth: list[dict]) -> list[dict]:
     return out
 
 
+# patch_split (Result 1): each panel's cells take the status of the figure that already draws the same numbers
+PATCH_FROM = (("layer", "fig01_main_split", "layer"), ("answer", "fig40_item_not_answer", "c"),
+              ("energy", "fig40_item_not_answer", "c"), ("zero", "fig01c_zeroing", "zero"),
+              ("every4", "fig42_ladder", "c"))  # fmt: skip
+
+
+def patch_split(rows_: list[dict]) -> list[dict]:
+    by = {(r["figure"], r["cell"]): r for r in rows_}
+    out = []
+    for cell, fig, src in PATCH_FROM:
+        for k in ("q9", "q27", "mu", "nl", "q122"):
+            r = by[(fig, f"{src}.{k}")]
+            out.append({**r, "figure": "patch_split", "cell": f"{cell}.{k}",
+                        "reason": f"{r['reason']} (as {fig}'s {src}.{k}, the same numbers)"})
+    return out
+
+
 def rows() -> list[dict]:
     writeup = [*key(), *fig01(), *fig04(), *fig09(), *fig12(), *appB_f17(), *styles_plot_port()]
     writeup += unblocked_016(fig01(), depth_set(writeup) + depth_set_b())
     writeup += fig05_split(writeup) + f14_split(writeup)
     readme = readme_set(writeup)
-    return lightning([*writeup, *readme, *depth_set(writeup), *depth_set_b(), *depth_set_c(),
-                      *depth_set_d(), *depth_set_e(), *depth_set_f(), *breadth_set(readme)])
+    out = lightning([*writeup, *readme, *depth_set(writeup), *depth_set_b(), *depth_set_c(),
+                     *depth_set_d(), *depth_set_e(), *depth_set_f(), *breadth_set(readme)])
+    return out + patch_split(out)
 
 
 COLUMNS = ("figure", "cell", "timing", "claim", "claim_reason", "reason", "source")  # styles-plot's registry schema
