@@ -37,7 +37,7 @@ ROWS = [
      "New: a pair of twins (the Rovio pair the post quotes), every sentence verbatim from items.jsonl"),
     ("setup", "Setup: locker scenes, after the bullets", [("common/writeup", "e02_setup_locker")],
      "New: the carbon scene and its two questions (illustrative)"),
-    ("setup", "Setup: three interventions, after the Patch bullet, before the tools figure",
+    ("setup", "Setup: the Patch subsection, after its first paragraph",
      [("common/writeup", "e03_setup_patch")],
      "The depth report's patch picture moved to the post: +Δ on the bridge word, − and + into Δ, the changed words marked"),
     ("2", "Setup: the two datasets",
@@ -47,9 +47,9 @@ ROWS = [
     ("3", "Setup: the three tools", [("common/writeup", "03_tools")],
      "Grids over a real scene's last words (bridge word in bold) instead of blank cells; one teal box per test; the "
      "swap is teal (a lens part), not blue; panel titles Knock-out, Patch and Swap, as in the post's table"),
-    ("setup", "Setup: controls, after the bullets", [("common/writeup", "e04_setup_knockout")],
-     "New: the knock-out and its rotated control on the Rovio pair (Qwen 27B), with the known-fact set's rates"),
-    ("setup", "Setup: known-fact set and made-up-fact set, after the table", [("common/writeup", "e05_setup_datasets")],
+    ("setup", "Setup: the Knock-out subsection, after the controls", [("common/writeup", "e04_setup_knockout")],
+     "New: the knock-out and its rotated control on the Rovio pair (Qwen 27B), with the known-fact set's rates; the pair is the one the post quotes, the second item of its section (the first names Russian figures), not picked by outcome"),
+    ("setup", "Setup: known-fact set and made-up-fact set, after the table and the note under it", [("common/writeup", "e05_setup_datasets")],
      "New: both sets as illustrations in each set's format (the made-up-fact example is the documented one)"),
     ("4", F1, [("common/writeup", "04_made_up_fact_set")],
      "Three labelled lanes per model (knock-out, rotated, answer span kept) instead of colour words; the answer-span "

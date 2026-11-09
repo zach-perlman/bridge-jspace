@@ -628,7 +628,7 @@ def fig03_tools(width: float | None = None) -> sp.Figure:
     bridge = nt - 1  # the bridge word: the last word shown
     panels = (("Knock-out", "a band of layers, every token", (2, 4, 0, nt), "lens", "lens part removed"),
               ("Patch", "one layer, the bridge word", (3, 4, bridge, bridge + 1), "lens",
-               "lens part removed"),
+               ("lens part removed", "from the patch")),
               ("Swap", "the bridge word, over the band", (2, 4, bridge, bridge + 1), "lens",
                ("another entity's", "lens part swapped in")))  # fmt: skip
     panel_w, label_w = (width - 0.24) / 3, 0.62

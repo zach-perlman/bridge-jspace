@@ -231,14 +231,14 @@ def setup_twins() -> sp.Figure:
                         [(tail, None, False)]],
              "recall": [[("… " + lure + " …", None, False)], [((mention or lure) + " …", None, False)], bridge_bold(hop1),
                         [(tail, None, False)]]}  # fmt: skip
-    x_card, line_h = 1.25, 0.3
-    card_w = max(_span(ln) for c in cards.values() for ln in c) + 0.3
-    x_ans = x_card + card_w + 0.3
+    x_card, line_h = 0.3 + max(_w(f"{r} twin", True) for r in cards), 0.3
+    card_w = max(_span(ln) for c in cards.values() for ln in c) + 0.25
+    x_ans = x_card + card_w + 0.2
     el: list = [sp.Words(x_card, 0.25, [("the bridge in bold", None)])]
     y = 0.5
     for reader, lines in cards.items():
         h = 0.25 + len(lines) * line_h
-        el += [sp.Words(0.15, y + h / 2, [(reader, reader)], bold=True), sp.Box(x_card, y, card_w, h)]
+        el += [sp.Words(0.15, y + h / 2, [(f"{reader} twin", reader)], bold=True), sp.Box(x_card, y, card_w, h)]
         ys = [y + 0.27 + j * line_h for j in range(len(lines))]
         for yy, ln in zip(ys, lines, strict=True):
             el.append(sp.Words(x_card + 0.15, yy, _merge(ln), verbatim=True))
@@ -288,11 +288,11 @@ def setup_knockout() -> sp.Figure:
 
     answers = {reader: {col: f"{_first_token(rows[(PAIR[reader], c)], repo)} {'✓' if rows[(PAIR[reader], c)]['correct'] else '✗'}"
                         for c, col in ARMS} for reader in PAIR}  # fmt: skip
-    note = (f"Qwen 27B; the pair the post quotes (the second item of its section; the first names Russian figures); "
-            f"Fin is the start of Finland. Lens part removed: at every token over a band of middle layers. Rotated "
-            f"part removed: a part of the same size, turned at random, removed instead. Over the known-fact set, the lens "
-            f"part removed turns {_breadth('ko.q27.lostK')} points of lookups and {_breadth('ko.q27.lostM')} of "
-            f"recalls wrong; with a rotated part, the recall − lookup gap is {_breadth('ko.q27.rot')} points.")
+    note = (f"Qwen 27B. Fin is the start of Finland. Lens part removed: at every token over a band of middle layers. "
+            f"Rotated part removed: a part of the same size, turned at random, removed instead. Over the known-fact set, "
+            f"removing the lens part turns {_breadth('ko.q27.lostK')} of every 100 lookups and "
+            f"{_breadth('ko.q27.lostM')} of every 100 recalls wrong; a rotated part leaves a gap of "
+            f"{_breadth('ko.q27.rot')} points.")
     card = sp.Card(prompt=[prompt("lookup"), prompt("recall")], columns=[c for _, c in ARMS],
                    rows=[sp.CardRow("lookup", "lookup", answers["lookup"]), sp.CardRow("recall", "recall", answers["recall"])],
                    note=note)  # fmt: skip
@@ -358,8 +358,8 @@ def setup_datasets() -> sp.Figure:
         y_last = ya + 0.32 + len(notes) * line_h + 0.12
         el.append(sp.Words(x0, y_last, [(last[0], None)], verbatim=last[1]))
         bottoms.append(y_last)
-    y_ft = max(bottoms) + 0.25
-    el.append(sp.Words(0.15, y_ft, [("illustration in the set's format", None)]))
+    y_ft = bottoms[1] + 0.4  # under the made-up-fact column only: the known-fact column is a real item
+    el.append(sp.Words(0.15 + cw + 0.1, y_ft, [("illustration in the set's format", None)]))
     return sp.Figure("setup_datasets", vocab(), direct_labels=True).add(sp.Schematic(y_ft + 0.3, el))
 
 
