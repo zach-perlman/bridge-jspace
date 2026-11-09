@@ -77,7 +77,7 @@ Quality: the share of held-out items whose middle entity is in the lens's top te
 
 ![Three tools, one target: the lens part at the bridge.](figures/common/readme/01_tools.png)
 
-*Three tests of the lens part at the bridge, drawn over the first example's last words (rows are layers, columns tokens; teal marks the cells changed). The knock-out removes it at every token over a band of layers. Removal from the patch adds the patch back without it. The swap writes in another entity's.*
+*Three tests of the lens part at the bridge, drawn over the first example's last words (rows are layers, columns tokens; teal marks the cells changed). The knock-out removes it at every token over a band of layers. The patch puts the change in without it. The swap replaces it with another entity's.*
 
 </details>
 

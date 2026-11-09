@@ -76,7 +76,7 @@ _PREFIX = re.compile(r"^(?:fig(?P<n>\d+)(?P<x>[a-z]\d?)?|figA\d+|appB_f\d+[a-z]?
 # numbers stay
 SUB = {"r1_c1_gaps", "f2_controls_layer", "f2_controls_more"}
 # short names the id would give badly (a person's name, an old claim code)
-STEM = {"r1_c1_split": "main_split", "r1_c1_gaps": "main_split_gaps", "r1_dan_split": "one_layer_split"}
+STEM = {"fig04_twin_set": "made_up_fact_set", "r1_c1_split": "main_split", "r1_c1_gaps": "main_split_gaps", "r1_dan_split": "one_layer_split"}
 
 
 def short(fid: str) -> str:

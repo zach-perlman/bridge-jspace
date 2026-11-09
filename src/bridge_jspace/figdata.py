@@ -31,7 +31,7 @@ NOT_CLAIMED = {"mu": "not claimed: shared with the logit lens", "q122": "not cla
 
 def hollow(model: str, lowered_test: bool = False) -> bool:
     """After the data, for the depth tests only (one layer, routes, address, last token): Lightning; the 122B where its
-    gate was lowered (routes, address, swap). Lightning's breadth tests (band test, twin set, pointer, Fig. 10, 11,
+    gate was lowered (routes, address, swap). Lightning's breadth tests (band test, made-up-fact set, pointer, Fig. 10, 11,
     5a) were registered before their data (docs/breadth/prereg_replication_1022.md; Dan, 7 Nov): their status is in
     data/figures/status.csv, not here."""
     return model == "nemotron-3.5-lightning" or (lowered_test and model == "qwen3.5-122b-a10b")

@@ -77,7 +77,7 @@ def fig01_main_split() -> sp.Figure:
     return sp.Figure("fig01_main_split", vocab()).add(table)
 
 
-# ---- Fig. 4: the twin set ----------------------------------------------------------------------------------------------
+# ---- Fig. 4: the made-up-fact set ----------------------------------------------------------------------------------------------
 LANES = (("paper10", None), ("paper10_rot", "control"), ("paper10_keepA", "answer"))
 # the conditions named in grey under each model; the colours stay roles (Dan, 7 Nov: labelled lanes)
 LANE_WORD = {"paper10": "knock-out", "paper10_rot": "rotated", "paper10_keepA": "answer span kept"}

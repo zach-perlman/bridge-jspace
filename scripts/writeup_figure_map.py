@@ -51,7 +51,7 @@ ROWS = [
      "New: the knock-out and its rotated control on the Rovio pair (Qwen 27B), with the known-fact set's rates"),
     ("setup", "Setup: known-fact set and made-up-fact set, after the table", [("common/writeup", "e05_setup_datasets")],
      "New: both sets as illustrations in each set's format (the made-up-fact example is the documented one)"),
-    ("4", F1, [("common/writeup", "04_twin_set")],
+    ("4", F1, [("common/writeup", "04_made_up_fact_set")],
      "Three labelled lanes per model (knock-out, rotated, answer span kept) instead of colour words; the answer-span "
      "lanes are tagged descriptive; the gap is slate with full whiskers"),
     ("5", F1, [("common/writeup", "05a_controls_band"), ("common/writeup", "05b_controls_layer")],

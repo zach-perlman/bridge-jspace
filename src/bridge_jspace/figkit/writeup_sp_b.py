@@ -167,7 +167,7 @@ ALL_OF_IT = 1.0  # "all of it": the full damage (× the full damage = 1), the ax
 def fig10_answer_span() -> sp.Figure:
     """Keep answer span: the share of the recall's damage undone by keeping only the answer span (brick) against a random
     keep orthogonal to the answers with at least as much energy (grey). Remove answer span, beyond energy-matched random,
-    as a multiple of the full damage, on the main set and on the codename set."""
+    as a multiple of the full damage, on the made-up-fact set and on the codename set."""
     v = vocab()
     keep_span, keep_ctrl = {}, {}
     for m in TWIN:
