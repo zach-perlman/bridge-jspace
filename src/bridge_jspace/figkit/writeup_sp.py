@@ -19,7 +19,7 @@ from bridge_jspace import figdata as S
 from bridge_jspace import figdata as TM
 from bridge_jspace import figdata as W
 from bridge_jspace.figkit import layout as L
-from bridge_jspace.figkit import writeup_sp_b, writeup_sp_c
+from bridge_jspace.figkit import writeup_sp_b, writeup_sp_c, writeup_sp_d
 from bridge_jspace.figkit.writeup_sp_base import MODEL, ZK, est, need, vocab
 
 GROUP = "common/writeup"
@@ -276,6 +276,7 @@ FIGS = {"key": key, "fig01_main_split": fig01_main_split, "fig04_twin_set": fig0
         "appB_f17b_heads": appB_f17b_heads}  # fmt: skip
 FIGS.update(writeup_sp_b.FIGS)
 FIGS.update(writeup_sp_c.FIGS)
+FIGS.update(writeup_sp_d.FIGS)
 
 
 # the post's sentence for each figure (the index's "what it shows"); the appendix: its builder's first sentence
