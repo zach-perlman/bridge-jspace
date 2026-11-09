@@ -38,15 +38,21 @@ class Scene:
     def questions(self) -> tuple[str, str]:
         return f"Which locker belongs to {self.asker}'s pick?", f"What is the {self.attribute} of {self.asker}'s pick?"
 
-    def lines(self, swapped: bool = False, lookup_sentence: bool = False) -> list[list[tuple]]:
-        """The scene in three lines as Words parts; the bridge word bold; the lookup's sentence in its colour."""
+    def lines(self, swapped: bool = False, lookup_sentence: bool = False, mark_changed: bool = False,
+              delta: bool = False) -> list[list[tuple]]:
+        """The scene in three lines as Words parts; the bridge word bold; the lookup's sentence in its colour; the
+        words a swap changed in the slate of a difference (mark_changed); "+Δ" after the bridge word (delta)."""
         bridge = self.pick(self.asker, swapped)
         locker = [(f"The locker of {i} is {n}.", "lookup" if lookup_sentence and i == bridge else None, False)
                   for i, n in self.lockers]  # fmt: skip
         pick = []
-        for person, _ in self.picks:
+        for person, original in self.picks:
             item = self.pick(person, swapped)
-            pick.append([(f"{person} picked ", None, False), (item, None, person == self.asker), (".", None, False)])
+            role = "neutral" if mark_changed and item != original else None
+            words = [(f"{person} picked ", None, False), (item, role, person == self.asker)]
+            if delta and person == self.asker:
+                words.append((" +Δ", "neutral", True))
+            pick.append([*words, (".", None, False)])
         sp_ = (" ", None, False)
         return [_merge(ln) for ln in ([locker[0], sp_, locker[1]], [locker[2], sp_, *pick[0]], [*pick[1], sp_, *pick[2]])]
 
@@ -95,7 +101,7 @@ def setup_locker(scene: Scene = CARBON) -> sp.Figure:
     # the lookup, above the scene, its leader down to the sentence it reads
     y_lk = 0.3
     el += [sp.Words(0.15, y_lk, [("lookup", "lookup")], bold=True), sp.Words(x_q, y_lk, [(q_lookup, None)], verbatim=True),
-           sp.Words(xa, y_lk, [(a_lookup, "lookup", True), ("   read from the scene", "lookup", False)], verbatim=True)]  # fmt: skip
+           sp.Words(xa, y_lk, [(a_lookup, "lookup", True), ("   from the scene", "lookup", False)], verbatim=True)]  # fmt: skip
     # the scene
     y_box, box_h = 0.75, 0.3 + 3 * line_h
     el += [sp.Words(0.15, y_box + 0.3, [("locker scene", None)]), sp.Box(x_box, y_box, box_w, box_h)]
@@ -106,22 +112,24 @@ def setup_locker(scene: Scene = CARBON) -> sp.Figure:
     k_sent = next(k for k, p in enumerate(lines[i_sent]) if p[1] == "lookup")
     sent_mid = x_box + 0.15 + _until(lines[i_sent], k_sent) + _w(lines[i_sent][k_sent][0]) / 2
     el.append(sp.Arrow((xa - 0.1, y_lk + 0.08), (sent_mid, ys[i_sent] - 0.17)))
-    # the bridge word: the model has not seen the question here
+    # what the model knows about the bridge, under the bridge word and tied to it: the recall's step
     i_br = next(i for i, ln in enumerate(lines) if any(len(p) > 2 and p[2] for p in ln))
     k_br = next(k for k, p in enumerate(lines[i_br]) if len(p) > 2 and p[2])
     bx = x_box + 0.15 + _until(lines[i_br], k_br) + _w(bridge, True) / 2
-    y_note = y_box + box_h + 0.45
-    el += [sp.Arrow((bx, y_note - 0.2), (bx, ys[i_br] + 0.12)),
-           sp.Words(x_box, y_note, [("here the model has not seen the question yet: its state is the same for both", None)])]  # fmt: skip
-    # the recall, below, its leader to memory
-    y_rc = y_note + 0.6
-    tag = "   from memory"
-    a_end = xa + _w(a_recall, True) + _w(tag)
+    known = f"what the model knows about {bridge}"
+    mw, mh = _w(known) + 0.4, 0.42
+    y_mem = y_box + box_h + 0.35
+    el += [sp.Arrow((bx, ys[i_br] + 0.13), (bx, y_mem)), sp.Box(bx - mw / 2, y_mem, mw, mh, known, verbatim=True)]
+    # the recall, below, its leader to that box
+    y_rc = y_mem + mh + 0.45
     el += [sp.Words(0.15, y_rc, [("recall", "recall")], bold=True), sp.Words(x_q, y_rc, [(q_recall, None)], verbatim=True),
-           sp.Words(xa, y_rc, [(a_recall, "recall", True), (tag, "recall", False)], verbatim=True),
-           sp.Box(a_end + 0.35, y_rc - 0.22, 0.95, 0.42, "memory"),
-           sp.Arrow((a_end + 0.08, y_rc - 0.01), (a_end + 0.35, y_rc - 0.01))]  # fmt: skip
-    return sp.Figure("setup_locker", vocab(), direct_labels=True).add(sp.Schematic(y_rc + 0.35, el))
+           sp.Words(xa, y_rc, [(a_recall, "recall", True), ("   from memory", "recall", False)], verbatim=True),
+           sp.Arrow((xa - 0.08, y_rc - 0.12), (bx + mw / 2 + 0.05, y_mem + mh / 2))]  # fmt: skip
+    # the bridge word is shared by both questions
+    y_ft = y_rc + 0.55
+    el.append(sp.Words(0.15, y_ft, [("bridge word: ", None, False), (bridge, None, True),
+                                    (" — shared by both questions", None, False)], verbatim=True))  # fmt: skip
+    return sp.Figure("setup_locker", vocab(), direct_labels=True).add(sp.Schematic(y_ft + 0.3, el))
 
 
 SCENES = (("original prompt", None, False), ("changed prompt", "the two picks swap", True), ("original prompt + Δ", None, False))
@@ -132,7 +140,7 @@ def setup_patch(scene: Scene = CARBON) -> sp.Figure:
     Δ, is added to the original at one layer; both questions read the patched state, and both answers change."""
     W = vocab().target("post").width_in
     x_box, line_h, box_h, gap = 2.05, 0.32, 1.12, 0.3
-    box_w = max(_span(ln) for s in (False, True) for ln in scene.lines(swapped=s)) + 0.3
+    box_w = max(_span(ln) for kw in ({}, {"swapped": True}, {"delta": True}) for ln in scene.lines(**kw)) + 0.3
     dx = x_box + box_w + 0.7  # the Δ box
     el: list = []
     ends = []
@@ -141,12 +149,16 @@ def setup_patch(scene: Scene = CARBON) -> sp.Figure:
         el += [sp.Words(0.15, y + 0.3, [(label, None)], bold=True), sp.Box(x_box, y, box_w, box_h)]
         if sub:
             el.append(sp.Words(0.15, y + 0.62, [(sub, None)]))
-        for j, ln in enumerate(scene.lines(swapped=swapped)):
+        kw = {"swapped": True, "mark_changed": True} if swapped else {"delta": i == 2}
+        for j, ln in enumerate(scene.lines(**kw)):
             el += _words(x_box + 0.15, y + 0.25 + j * line_h, ln)
         ends.append((x_box + box_w, y + 0.25 + line_h))
     dy = (ends[0][1] + ends[1][1]) / 2
     el += [sp.Box(dx, dy - 0.25, 0.5, 0.5, "Δ", verbatim=True),
-           sp.Arrow((ends[0][0] + 0.1, ends[0][1]), (dx, dy - 0.1)), sp.Arrow((ends[1][0] + 0.1, ends[1][1]), (dx, dy + 0.1)),
+           sp.Arrow((ends[0][0] + 0.1, ends[0][1]), (dx, dy - 0.1)),
+           sp.Arrow((ends[1][0] + 0.1, ends[1][1]), (dx, dy + 0.1)),
+           sp.Words((ends[0][0] + dx) / 2 + 0.15, (ends[0][1] + dy) / 2 - 0.2, [("−", "neutral")], bold=True),
+           sp.Words((ends[1][0] + dx) / 2 + 0.15, (ends[1][1] + dy) / 2 + 0.25, [("+", "neutral")], bold=True),
            sp.Arrow((dx + 0.25, dy + 0.25), (dx + 0.25, ends[2][1])),
            sp.Arrow((dx + 0.25, ends[2][1]), (ends[2][0] + 0.1, ends[2][1])),
            sp.Words(W - 0.2 - _w("added at one layer"), ends[2][1] + 0.3, [("added at one layer", None)])]  # fmt: skip
@@ -154,7 +166,7 @@ def setup_patch(scene: Scene = CARBON) -> sp.Figure:
     xa = W - 2.45  # the answers' column
     before, after = scene.pick(scene.asker), scene.pick(scene.asker, swapped=True)
     q_lookup, q_recall = scene.questions()
-    rows = (("lookup", q_lookup, f"{scene.locker(before)} → {scene.locker(after)}", "in the prompt"),
+    rows = (("lookup", q_lookup, f"{scene.locker(before)} → {scene.locker(after)}", "from the scene"),
             ("recall", q_recall, f"{scene.known[before]} → {scene.known[after]}", "from memory"))  # fmt: skip
     el += [sp.Words(0.15, y, [("both questions read this same patched state", None)]),
            sp.Words(xa, y, [("original → after the patch", None)])]  # fmt: skip
