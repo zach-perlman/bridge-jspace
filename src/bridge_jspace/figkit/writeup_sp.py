@@ -58,22 +58,11 @@ def _band_columns(models, label_gap=True) -> list:
 
 
 def fig01_main_split() -> sp.Figure:
-    """Left, band of layers (fact passages): each reader's accuracy drop under the knock-out; the gap with its 95%
-    whisker and the largest same-size control as a grey tick. Right, one layer (locker scenes): each reader's switches
-    blocked beyond random on the grey band, and the gap. Hollow, tags and "no interval" come from the registry and
-    the data."""
+    """Band of layers (fact passages): each reader's accuracy drop under the knock-out; the gap with its 95% whisker
+    and the largest same-size control as a grey tick. The one-layer half is the post's Figure 3A (patch_split, the same
+    cells), so this figure leaves it out; the README's r1_c1_split / r1_c1_gaps keep both halves."""
     models = [m for m, _ in D.DAN]
-    shares = sp.DotColumn(
-        "switches blocked beyond random", "switches", (-0.25, 1.0), (0, 0.5, 1),
-        series=[sp.Series("lookup", {m: est(S.conflict(m, "lookup"), f"layer.{ZK[m]}") for m in models}),
-                sp.Series("recall", {m: est(S.conflict(m, "recall"), f"layer.{ZK[m]}") for m in models})],
-        connect=("lookup", "recall"), band=(-0.1, 0.1),
-        weight=1.28,  # the header on two lines (SP613): 1.27-1.29 per styles-plot 0.2.1, the neighbours' headers allow
-    )  # fmt: skip
-    layer_gap = sp.DotColumn("gap: recall − lookup", "gap_share", (-0.1, 1.1), (0, 0.5, 1),
-                             series=[sp.Series("neutral", {m: _layer_gap(m) for m in models}, word=GAP)])  # fmt: skip
-    table = sp.DotTable(models, [sp.ColumnGroup(BAND, _band_columns(models)), sp.Gutter(),
-                                 sp.ColumnGroup(LAYER, [shares, layer_gap])])  # fmt: skip
+    table = sp.DotTable(models, [sp.ColumnGroup(BAND, _band_columns(models))])
     return sp.Figure("fig01_main_split", vocab()).add(table)
 
 

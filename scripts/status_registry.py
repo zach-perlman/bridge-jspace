@@ -721,9 +721,11 @@ def rows() -> list[dict]:
                      *depth_set_d(), *depth_set_e(), *depth_set_f(), *breadth_set(readme)])
     out = out + patch_split(out) + nine_models(out)
     out = [r for r in out if r["figure"] != "fig06_nine_models" or r["cell"].startswith(NINE_DRAWN)]
-    # the post's reader meets fig01 before the nine-model figure, which carries Muse's and the 122B's verdict (Dan,
-    # 10 Nov): no "not claimed" notes on fig01 itself; the README's copies keep theirs
-    return [{**r, "tag": ""} if r["figure"] == "fig01_main_split" else r for r in out]
+    # fig01 draws the band half only (its one-layer cells are patch_split's; they stay registered for patch_split and
+    # the README's copies, which read them above). The post's reader meets fig01 before the nine-model figure, which
+    # carries Muse's and the 122B's verdict (Dan, 10 Nov): no "not claimed" notes on fig01; the README's copies keep theirs
+    return [{**r, "tag": ""} if r["figure"] == "fig01_main_split" else r for r in out
+            if r["figure"] != "fig01_main_split" or r["cell"].startswith("band.")]
 
 
 COLUMNS = ("figure", "cell", "timing", "claim", "claim_reason", "reason", "source")  # styles-plot's registry schema

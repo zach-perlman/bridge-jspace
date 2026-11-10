@@ -166,7 +166,7 @@ KEEP_CONTROL = "random directions of the same energy kept"
 # the three tests as lanes of each model's row (one axis: both readings divide by the full knock-out's recall drop net of
 # its rotated control; the keep is not net of a random keep, its grey dot beside it; the removals are net of an
 # energy-matched random removal)
-SPAN_LANES = (("keep", "span kept: undone"), ("v4", "span removed: done"), ("codename", "removed, codenames: done"))
+SPAN_LANES = (("keep", "damage undone"), ("v4", "damage done"), ("codename", "damage done, codenames"))
 
 
 def fig10_answer_span() -> sp.Figure:
