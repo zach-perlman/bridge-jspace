@@ -140,6 +140,11 @@ title = "share of the damage undone"
 quantity = "of the damage undone"
 format = "share"
 
+[units.kept_bridge]
+title = "answers kept, bridge word only"
+quantity = "answers kept"
+format = "share"
+
 [units.drop_kept]
 title = "share of the recall's drop kept"
 quantity = "of the drop kept"
@@ -520,8 +525,9 @@ canonical = [
     "from the patch",
     "Known-fact set", "Made-up-fact set", "read", "one of six people in the passage",
     # patch_split (figkit/writeup_sp_c.py)
-    "Lens part removed from the patch", "Not the answer word", "One layer is not essential",
-    "answer word's share of the lens part's energy", "one layer", "every token, four layers", "lookup: at most",
+    "Patch without the lens part", "Not the answer word", "One layer is not essential",
+    "answer word's share of the lens part's energy", "one layer", "four layers",
+    "every token, four layers", "lookup: at most",
     "recall: at least", "drop kept", "answer words only", "bar fixed in advance", "lookup fails the rule",
     "in the passage, and known to the model", "illustration in the set's format",
     "here the model has not seen the question yet: its state is the same for both",
@@ -813,7 +819,7 @@ templates = [
     "bar fixed in advance: {num}",
     "lookup: at most {num}",
     "recall: at least {num}",
-    "read: the answer word holds at most {num} of the lens part's energy on every model",
+    "read: the answer word holds under {num} of the lens part's energy on every model",
     "48.4's bar fixed in advance: {num} of {num}",
     "unedited: {num}\u2013{num}% right on every model",
     "unedited: {num}% right on every model",
