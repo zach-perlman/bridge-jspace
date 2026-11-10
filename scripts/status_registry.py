@@ -666,18 +666,18 @@ def unblocked_016(fig01_rows: list[dict], depth: list[dict]) -> list[dict]:
 
 
 # patch_split (Result 1): each panel's cells take the status of the figure that already draws the same numbers
-PATCH_FROM = (("layer", "fig01_main_split", "layer"), ("answer", "fig40_item_not_answer", "c"),
-              ("energy", "fig40_item_not_answer", "c"), ("rung1", "fig42_ladder", "c"),
-              ("rung2", "fig42_ladder", "c"), ("rung5", "fig42_ladder", "c"))  # fmt: skip
+PATCH_FROM = (("patch_split", "layer", "fig01_main_split", "layer"), ("patch_split", "answer", "fig40_item_not_answer", "c"),
+              ("patch_split", "energy", "fig40_item_not_answer", "c"), ("patch_layers", "rung1", "fig42_ladder", "c"),
+              ("patch_layers", "rung2", "fig42_ladder", "c"), ("patch_layers", "rung5", "fig42_ladder", "c"))  # fmt: skip
 
 
 def patch_split(rows_: list[dict]) -> list[dict]:
     by = {(r["figure"], r["cell"]): r for r in rows_}
     out = []
-    for cell, fig, src in PATCH_FROM:
+    for target, cell, fig, src in PATCH_FROM:
         for k in ("q9", "q27", "mu", "nl", "q122"):
             r = by[(fig, f"{src}.{k}")]
-            out.append({**r, "figure": "patch_split", "cell": f"{cell}.{k}",
+            out.append({**r, "figure": target, "cell": f"{cell}.{k}",
                         "reason": f"{r['reason']} (as {fig}'s {src}.{k}, the same numbers)"})
     return out
 

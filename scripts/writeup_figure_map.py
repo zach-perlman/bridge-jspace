@@ -30,10 +30,8 @@ ROWS = [
      "as a difference); every control named; one example row (Qwen 27B's band test) read aloud, \"removing the lens "
      "part everywhere\""),
     ("result", "Result 1, end of its first section, after \"For the lookup, the same four-layer removal costs nothing.\"",
-     [("common/writeup", "r01_patch_split")],
-     "New: the section's three claims in one figure (the patch at one layer, the answer word, one layer against four, "
-     "all three right-hand columns on the ladder's one-pick scenes); "
-     "its left panel draws the same keys as Figure 3's right panel"),
+     [("common/writeup", "r01_patch_split"), ("common/writeup", "r02_patch_layers")],
+     "New: the section's claims in two figures, panels (A) the patch at one layer and (B) the answer word in r01, (C) one layer against four on the ladder's one-pick scenes in r02; (A) draws the same keys as Figure 3's right panel"),
     ("1", F1, [("common/writeup", "01_main_split")],
      "Whiskers span the full interval (the deck's were one-sided); the gap is slate, not black; the one-layer header "
      "reads \"switches blocked beyond random\"; the largest control is a grey tick, not a number in brackets (the old "

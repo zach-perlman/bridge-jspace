@@ -110,7 +110,7 @@ def figure_texts(fig) -> list[str]:
     return [t for t in out if t]
 
 
-@pytest.mark.parametrize("fid", [*SETUP, "patch_split"])
+@pytest.mark.parametrize("fid", [*SETUP, "patch_split", "patch_layers"])
 def test_setup_figures_use_the_posts_words_only(fid):
     fig = SD.FIGS[fid]() if fid in SD.FIGS else SP.FIGS[fid]()
     text = " ".join([*figure_texts(fig), fig.read or ""]).lower()

@@ -2,12 +2,12 @@
  "styles_plot": "0.2.2",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "bb666569cd2691b59486ba6cdfd34fbef1620e56e187e8c8fa0f0bf94e843387",
+  "sha256": "922c1f6c70fb9917233c3fa3fd9cde87131c29ecadee0ed6b763060f6c746609",
   "hash": "meaning"
  },
  "registry": {
   "path": "data/figures/status.csv",
-  "sha256": "b5b2b5e93401bbd3158e28680662033f2fc80dcdea02a3c45f5a26154fd54442"
+  "sha256": "f87203b81d5ced330be7fea9708ef25c2c6f6da2a8e3f8e9af5e0804155438d1"
  },
  "figure": "patch_split",
  "target": "post",
@@ -15,7 +15,7 @@
  "publishable": true,
  "text_only": false,
  "png": {
-  "pixels_sha256": "139ec700ee86641deac61e1d9dac89d36db8eb241dfa2307869cac3ae997e3c9",
+  "pixels_sha256": "87a5f82ff9ac60aec9d77e95575317a856984e7ae1d693c10f900ef9dbf30513",
   "dpi": 200
  },
  "roles": [
@@ -61,26 +61,6 @@
    "claim": "claimed"
   },
   "layer.q9": {
-   "timing": "fixed_in_advance",
-   "claim": "claimed"
-  },
-  "rung5.mu": {
-   "timing": "fixed_in_advance",
-   "claim": "claimed"
-  },
-  "rung5.nl": {
-   "timing": "post_hoc",
-   "claim": "claimed"
-  },
-  "rung5.q122": {
-   "timing": "post_hoc",
-   "claim": "claimed"
-  },
-  "rung5.q27": {
-   "timing": "fixed_in_advance",
-   "claim": "claimed"
-  },
-  "rung5.q9": {
    "timing": "fixed_in_advance",
    "claim": "claimed"
   }
@@ -205,104 +185,13 @@
    "timing": "post_hoc",
    "claim": "claimed",
    "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "lookup",
-   "cell": "rung5.q9",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "recall",
-   "cell": "rung5.q9",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "lookup",
-   "cell": "rung5.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "recall",
-   "cell": "rung5.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "lookup",
-   "cell": "rung5.mu",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "recall",
-   "cell": "rung5.mu",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "lookup",
-   "cell": "rung5.nl",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "recall",
-   "cell": "rung5.nl",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "lookup",
-   "cell": "rung5.q122",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
-   "role": "recall",
-   "cell": "rung5.q122",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
   }
  ],
  "key": [
-  "grey tick: the largest same-size control",
   "whiskers: 95% interval",
   "○ post hoc"
  ],
  "numbers": {
-  "patch.rung1.zero.recall.q9": "0.97",
-  "patch.rung1.zero.recall.q27": "0.97",
-  "patch.rung1.zero.recall.mu": "0.95",
-  "patch.rung1.zero.recall.nl": "0.96",
-  "patch.rung1.zero.recall.q122": "0.92",
-  "patch.rung2.zero.recall.q9": "0.75",
-  "patch.rung2.zero.recall.q27": "0.85",
-  "patch.rung2.zero.recall.mu": "0.89",
-  "patch.rung2.zero.recall.nl": "0.73",
-  "patch.rung2.zero.recall.q122": "0.88",
   "patch.rule.lookup": "0.10",
   "patch.rule.recall": "0.30",
   "patch.rule.answer": "0.70",

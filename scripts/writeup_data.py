@@ -279,7 +279,7 @@ def patch_rows() -> list[dict]:
             for rung, where in what.items():
                 for arm, part in (("zero", "the lens part"), ("rand", "a random part of the same share")):
                     v, lo, hi = c["kept"][f"{arm}{rung}"]
-                    out.append(_row(f"patch.rung{rung}.{arm}.{reader}.{k}", "patch_split", ZK_MODEL[k],
+                    out.append(_row(f"patch.rung{rung}.{arm}.{reader}.{k}", "patch_layers", ZK_MODEL[k],
                                     f"{reader}: answers kept, {part} removed {where} (ladder rung {rung}, no patch)",
                                     v, lo, hi, c["n"], "share",
                                     f"{path} | {run} :: cells.{reader}.all.kept.{arm}{rung} (scripts/x49_ladder.py)"))

@@ -145,14 +145,16 @@ ANSWER_ENERGY = "52 A: share of the rebuilt energy in the reader's answer word"
 LOOKUP_AT_MOST, RECALL_AT_LEAST, ANSWER_BAR = 0.10, 0.30, 0.7
 
 
+def _kept(key, cell, label=False):
+    return {m: est(need(CV.w(key.format(k=ZK[m])), key.format(k=ZK[m])), f"{cell}.{ZK[m]}", key=key.format(k=ZK[m]),
+                   label=label) for m in DAN}
+
+
 def patch_split() -> sp.Figure:
-    """One patch at the bridge, two answers (locker scenes). Left: the patch's switches the lens part's removal blocks
-    beyond a random part of the same size, lookup and recall, against the pass rule fixed in advance (grey). Middle:
-    the recall's drop kept when the lens part spares the answer words' directions, against its bar fixed in advance.
-    Right, no patch, on the ladder's own scenes: the answers kept when the lens part is removed from a prompt's own
-    state at the bridge word at one layer, at the bridge word over four layers, and at every token over four layers
-    (grey tick: a random part of the same share there). The read line: a bound on the answer word's share of the lens
-    part's energy that every model's interval stays under."""
+    """One patch at the bridge, two answers (locker scenes). (A) the patch's switches the lens part's removal blocks
+    beyond a random part of the same size, lookup and recall, against the pass rule fixed in advance (grey). (B) the
+    recall's drop kept when the lens part spares the answer words' directions, against its bar fixed in advance. The
+    read line: a bound on the answer word's share of the lens part's energy that every model's interval stays under."""
     rows = DAN
 
     def layer(m, reader):
@@ -161,34 +163,18 @@ def patch_split() -> sp.Figure:
                    label=reader == "recall")
 
     remove = sp.DotColumn(
-        "Patch without the lens part", "switches", (-0.2, 1.2), (0, 0.5, 1),
+        "(A) Patch without the lens part", "switches", (-0.2, 1.2), (0, 0.5, 1),
         series=[sp.Series("lookup", {m: layer(m, "lookup") for m in rows}),
                 sp.Series("recall", {m: layer(m, "recall") for m in rows})],
         rules=[sp.Rule(LOOKUP_AT_MOST, "lookup: at most {}", unit="switches", key="patch.rule.lookup"),
-               sp.Rule(RECALL_AT_LEAST, "recall: at least {}", unit="switches", key="patch.rule.recall")],
-        weight=1.6)  # fmt: skip  (the axis runs past 1 only to hold the printed values)
+               sp.Rule(RECALL_AT_LEAST, "recall: at least {}", unit="switches", key="patch.rule.recall")])  # fmt: skip
     answer = sp.DotColumn(
-        "Not the answer word", "drop_kept", (0, 1.2), (0, 0.5, 1), weight=1.7,
+        "(B) Not the answer word", "drop_kept", (0, 1.2), (0, 0.5, 1),
         series=[sp.Series("recall", {m: est(need(D.s(m, ANSWER_KEPT, "conflict_answer"), f"kept {m}"), f"answer.{ZK[m]}",
                                             key=f"patch.answer_kept.{ZK[m]}", label=True) for m in rows},
                           word="drop kept")],
         rules=[sp.Rule(ANSWER_BAR, "bar fixed in advance: {}", unit="drop_kept", key="patch.rule.answer")])  # fmt: skip
-
-    def kept(key, cell, label=False, interval=True):
-        return {m: est(need(CV.w(key.format(k=ZK[m])), key.format(k=ZK[m])), f"{cell}.{ZK[m]}", key=key.format(k=ZK[m]),
-                       label=label, interval=interval) for m in rows}
-
-    # the ladder's own scenes in all three: layers and token scope grow one at a time; the first two as the recall's
-    # numbers, the last as dots (one line of colour words per dot panel at 8 in)
-    one = sp.TextColumn("one layer", "kept_bridge", kept("patch.rung1.zero.recall.{k}", "rung1", interval=False),
-                        role="recall")  # fmt: skip
-    two = sp.TextColumn("four layers", "kept_bridge", kept("patch.rung2.zero.recall.{k}", "rung2", interval=False),
-                        role="recall")  # fmt: skip
-    five = sp.DotColumn("every token, four layers", "kept", (0, 1.15), (0, 0.5, 1), weight=1.8,
-                        series=[sp.Series("lookup", kept("patch.rung5.zero.lookup.{k}", "rung5")),
-                                sp.Series("recall", kept("patch.rung5.zero.recall.{k}", "rung5"))],
-                        ticks={m: need(CV.w(f"patch.rung5.rand.recall.{ZK[m]}"), m)[0] for m in rows})  # fmt: skip
-    table = sp.DotTable(rows, [remove, answer, sp.ColumnGroup("One layer is not essential", [one, two, five])])
+    table = sp.DotTable(rows, [remove, sp.Gutter(), answer])
     energy = {m: need(D.s(m, ANSWER_ENERGY, "cards"), f"energy {m}") for m in rows}
     # a bound the data give: every model's 95% interval ends under it (the largest upper end, rounded up to 0.01)
     most = max(rows, key=lambda m: energy[m][2])
@@ -197,5 +183,20 @@ def patch_split() -> sp.Figure:
     return sp.Figure("patch_split", vocab(), read=read, numbers=numbers).add(table)
 
 
-FIGS = {"patch_split": patch_split, "fig06_nine_models": fig06_nine_models, "fig07_routes": fig07_routes,
+def patch_layers() -> sp.Figure:
+    """(C) One layer is not essential (locker scenes, no patch, the ladder's own scenes in every column): the answers
+    kept when the lens part is removed from a prompt's own state at the bridge word at one layer, at the bridge word
+    over four layers, and at every token over four layers; lookup and recall dots, grey tick: the recall's answers kept
+    with a random part of the same share removed instead."""
+    cols = []
+    for rung, header, unit in ((1, "one layer", "kept_bridge"), (2, "four layers", "kept_bridge"),
+                               (5, "every token, four layers", "kept")):
+        cols.append(sp.DotColumn(header, unit, (0, 1.15), (0, 0.5, 1),
+                                 series=[sp.Series("lookup", _kept(f"patch.rung{rung}.zero.lookup.{{k}}", f"rung{rung}")),
+                                         sp.Series("recall", _kept(f"patch.rung{rung}.zero.recall.{{k}}", f"rung{rung}"))],
+                                 ticks={m: need(CV.w(f"patch.rung{rung}.rand.recall.{ZK[m]}"), m)[0] for m in DAN}))
+    table = sp.DotTable(DAN, [sp.ColumnGroup("(C) One layer is not essential", cols)])
+    return sp.Figure("patch_layers", vocab()).add(table)
+
+FIGS = {"patch_split": patch_split, "patch_layers": patch_layers, "fig06_nine_models": fig06_nine_models, "fig07_routes": fig07_routes,
         "appB_f15_link_crossover": appB_f15_link_crossover, "appB_f18_code_tool": appB_f18_code_tool}  # fmt: skip
