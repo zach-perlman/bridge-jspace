@@ -996,7 +996,7 @@ See the [root README's Reproduce](../../README.md#reproduce).
 
 ## Repository guide
 
-Built at 1f0f59e2 from the run files by `scripts/readme_build.py` from its template. Everything else is in the [root README's guide](../../README.md#repository-guide); this page's figures are in [Appendix A](#appendix-a-links).
+Built at 24f6d9f3 from the run files by `scripts/readme_build.py` from its template. Everything else is in the [root README's guide](../../README.md#repository-guide); this page's figures are in [Appendix A](#appendix-a-links).
 
 ### Appendix A. Links
 

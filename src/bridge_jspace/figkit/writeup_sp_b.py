@@ -166,14 +166,14 @@ KEEP_CONTROL = "random directions of the same energy kept"
 # the three tests as lanes of each model's row (one axis: both readings divide by the full knock-out's recall drop net of
 # its rotated control; the keep is not net of a random keep, its grey dot beside it; the removals are net of an
 # energy-matched random removal)
-SPAN_LANES = (("keep", "damage undone"), ("v4", "damage done"), ("codename", "damage done, codenames"))
+SPAN_LANES = (("keep", "damage undone"), ("v4", "damage done"), ("codename", "damage done, codename set"))
 
 
 def fig10_answer_span() -> sp.Figure:
     """The answer span's share of the knock-out's damage, one axis, 1 = all of it. Per model three lanes: the share
     undone by keeping only the answer span (brick) against random directions of the same energy kept (grey); the share
-    done by removing only the answer span, beyond an energy-matched random removal, on the made-up-fact set and on the
-    same format with each person named by a codename the passage defines (jsuite_v5al, note 31)."""
+    done by removing only the answer span, beyond an energy-matched random removal, on the made-up-fact set (jsuite_v4)
+    and on the codename set, where each person is named only by a codename the passage defines (jsuite_v5al, note 31)."""
     span, ctrl = {}, {}
     for m in TWIN:
         k = ZK[m]
