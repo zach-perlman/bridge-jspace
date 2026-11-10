@@ -524,6 +524,9 @@ canonical = [
     "the bridge in bold", "in the passage", "question", "Knock-out", "Patch", "Swap", "lookup twin", "recall twin",
     "from the patch",
     "Known-fact set", "Made-up-fact set", "read", "one of six people in the passage",
+    # fig06_nine_models (figkit/writeup_sp_c.py, 10 Nov)
+    "Passes the bar", "Fails: control", "Fails: gap", "Gap at 100 directions", "Swap at 100 directions",
+    "Gap under the knock-out", "Larger control", "Gap scored by probability", "Swap", "recall − lookup", "answers moved",
     # patch_split (figkit/writeup_sp_c.py)
     "(A) Patch without the lens part", "(B) Not the answer word", "(C) One layer is not essential",
     "answer word's share of the lens part's energy", "one layer", "four layers",
@@ -817,6 +820,7 @@ templates = [
     "{num} / {num} items",
     "{entity} \u00b7 {num} / {num} items",
     "bar fixed in advance: {num}",
+    "bar: {num}",
     "lookup: at most {num}",
     "recall: at least {num}",
     "read: the answer word holds under {num} of the lens part's energy on every model",
@@ -825,7 +829,7 @@ templates = [
     "unedited: {num}% right on every model",
     "read: on {entity}, removing the lens part everywhere drops recall {num} points and lookup {num}; the gap is {num}, the largest same-size control's {num}",
 ]
-missing = ["no run", "no comparable run", "below gate", "too few switches", "no interval", "source missing", "no control run", "no energy-matched control", "can't tell", "not tested"]
+missing = ["no run", "not run", "no comparable run", "below gate", "too few switches", "no interval", "source missing", "no control run", "no energy-matched control", "can't tell", "not tested"]
 not_claimed = ["shared with the logit lens", "gone when scored by probability"]
 
 [[terms.banned]]
@@ -998,3 +1002,50 @@ sidecar_dir = "_meta"
 
 [registry]
 path = "data/figures/status.csv"
+
+# the nine-model figure (fig06_nine_models): the same models, ordered by the bar fixed before the main runs
+
+[[entities.nine]]
+key = "qwen3.5-9b"
+name = "Qwen 9B"
+id = "q9"
+
+[[entities.nine]]
+key = "qwen3.6-27b"
+name = "Qwen 27B"
+id = "q27"
+
+[[entities.nine]]
+key = "nemotron-3.5-lightning"
+name = "Lightning"
+id = "nl"
+
+[[entities.nine]]
+key = "muse-glimmer-30b"
+name = "Muse 30B"
+id = "mu"
+
+[[entities.nine]]
+key = "qwen3.5-122b-a10b"
+name = "Qwen 122B"
+id = "q122"
+
+[[entities.nine]]
+key = "ministral"
+name = "Ministral"
+id = "mi"
+
+[[entities.nine]]
+key = "deepseek"
+name = "DeepSeek"
+id = "ds"
+
+[[entities.nine]]
+key = "bolt"
+name = "Bolt"
+id = "nb"
+
+[[entities.nine]]
+key = "olmo"
+name = "OLMo"
+id = "ol"

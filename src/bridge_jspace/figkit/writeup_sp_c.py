@@ -28,38 +28,71 @@ NINE = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b", "nemotron-3.5-lightning
 SWAPKEY = {"ds": "swap.ds.mid.swap", "mi": "swap.mi.mid.swap"}  # (deck_figs.f_nine)
 
 
-def fig06_nine_models() -> sp.Figure:
-    """Per model: the answers moved by another entity's lens part swapped in (Bolt's run at 100 directions in its own
-    column), and the recall − lookup gap with the lens part knocked out against the largest same-size control (the
-    122B scored by probability in its own column). The models' grades are verdicts: they stay in the text."""
-    swap, swap100, gap, soft = {}, {}, {}, {}
-    for m in NINE:
-        k = _id(m)
-        c = D.b(SWAPKEY.get(k, f"swap.{k}.swap"))
-        # Muse and the 122B were swapped only in an earlier protocol, not in this set
-        swap[m] = (
-            est(c, f"swap.{k}", key=SWAPKEY.get(k, f"swap.{k}.swap"), label=True)
-            if c
-            else sp.Missing("no comparable run")
-        )
-        gap[m] = est(need(D.b(f"ko.{k}.mk"), f"ko.{k}.mk"), f"gap.{k}", key=f"ko.{k}.mk", label=True)
-    swap100["bolt"] = est(need(D.b("swap.nb.k100.swap"), "swap.nb.k100.swap"), "swap100.nb", key="swap.nb.k100.swap",
-                          label=True)  # fmt: skip
-    soft["qwen3.5-122b-a10b"] = est(need(D.b("ko.q122.soft"), "ko.q122.soft"), "soft.q122", key="ko.q122.soft",
-                                    label=True)  # fmt: skip
-    ticks = {m: t for m in NINE if (t := S.ctrl(_id(m))) is not None}
-    # the first panel wide enough for "no comparable run" clear of its zero line; the one-model columns narrow
-    cols = [
-        sp.DotColumn("lens part swapped in", "moved", (-8, 84), (0, 40, 80), width=2.0,
-                     series=[sp.Series("lens", swap, word="lens part swapped in")]),
-        sp.DotColumn("at 100 directions", "moved", (-8, 84), (0, 40, 80), width=1.1,
-                     series=[sp.Series("lens", swap100, word="at 100 directions")]),
-        sp.DotColumn(GAP, "gap", (-3, 72), (0, 30, 60), series=[sp.Series("neutral", gap, word=GAP)], ticks=ticks),
-        sp.DotColumn("scored by probability", "gap", (-3, 72), (0, 30, 60), width=1.1,
-                     series=[sp.Series("neutral", soft, word="scored by probability")]),
-    ]  # fmt: skip
-    return sp.Figure("fig06_nine_models", vocab()).add(sp.DotTable(list(NINE), cols))
+# rows by the bar fixed before the main runs (amendment 33: gap >= 30, rotated and logit-lens controls < 10)
+BANDS = (("Passes the bar", ("qwen3.5-9b", "qwen3.6-27b", "nemotron-3.5-lightning")),
+         ("Fails: control", ("muse-glimmer-30b", "qwen3.5-122b-a10b")),
+         ("Fails: gap", ("ministral", "deepseek", "bolt", "olmo")))  # fmt: skip
+NINE_ROWS = tuple(m for _, ms in BANDS for m in ms)
+# docs/breadth/prereg_replication_1022.md, amendment 33: "M - K >= 30 with the logit-lens and rotated controls < 10"
+GAP_BAR, CONTROL_BAR = 30, 10
 
+
+# each lane's data keys: the knock-out gap, the two same-size controls, the gap scored by probability, the swap
+NINE_KEYS = {"k10": ("ko.{k}.mk", "ko.{k}.rot", "ko.{k}.u", "ko.{k}.soft", None),
+             "k100": ("dose.{k}.k100", "dose.{k}.k100.rot", "dose.{k}.k100.u", "dose.{k}.k100.smk", "swapk.{k}.k100")}
+
+
+def _nine(fid: str, lane: str) -> sp.Figure:
+    """Nine models in three bands by the bar fixed before the main runs, at one lens-part size. Columns in the bar's
+    order: the recall − lookup gap under the knock-out, the larger of the rotated and logit-lens controls, the gap
+    scored by the answer's probability, and the answers moved by another entity's lens part swapped in. Every value
+    printed; "not run" where no comparable run exists."""
+    kg, kr, ku, ks, kw = NINE_KEYS[lane]
+    swap_key = (lambda k: kw.format(k=k)) if kw else (lambda k: SWAPKEY.get(k, f"swap.{k}.swap"))
+
+    def cells(key_of, cell):
+        out = {}
+        for m in NINE_ROWS:
+            k = _id(m)
+            c = D.b(key_of(k))
+            out[m] = sp.Missing("not run") if c is None else est(c, f"{cell}.{k}", key=key_of(k), label=True)
+        return out
+
+    rot, logit = {}, {}
+    for m in NINE_ROWS:
+        k = _id(m)
+        r_, u_ = D.b(kr.format(k=k)), D.b(ku.format(k=k))
+        if r_ is None or u_ is None:
+            rot[m] = sp.Missing("not run")
+            continue
+        code, c, key = ("rot", r_, kr) if r_[0] >= u_[0] else ("u", u_, ku)
+        (rot if code == "rot" else logit)[m] = est(c, f"ctrl.{k}", key=key.format(k=k), label=True)
+
+    gap_rule = [sp.Rule(GAP_BAR, "bar: {}", unit="points", key="nine.bar.gap")]
+    cols = [
+        sp.DotColumn("Gap under the knock-out", "points", (-5, 80), (0, 30, 60), weight=1.15, rules=gap_rule,
+                     series=[sp.Series("neutral", cells(lambda k: kg.format(k=k), "gap"), word="Gap under the knock-out")]),
+        sp.DotColumn("Larger control", "points", (-5, 50), (0, 20, 40), weight=1.2,
+                     series=[sp.Series("control", rot, control="rotated", word="rotated"),
+                             sp.Series("control", logit, control="logit lens", word="logit lens")],
+                     rules=[sp.Rule(CONTROL_BAR, "bar: {}", unit="points", key="nine.bar.control")]),
+        sp.DotColumn("Gap scored by probability", "points", (-5, 80), (0, 30, 60), weight=1.15,
+                     series=[sp.Series("neutral", cells(lambda k: ks.format(k=k), "soft"), word="Gap scored by probability")]),
+        sp.DotColumn("Swap", "moved", (-5, 100), (0, 40, 80), series=[sp.Series("lens", cells(swap_key, "swap"), word="Swap")]),
+    ]  # fmt: skip
+    row_sub = {ms[0]: band for band, ms in BANDS}
+    return sp.Figure(fid, vocab()).add(sp.DotTable(list(NINE_ROWS), cols, kind="nine", row_sub=row_sub))
+
+
+def fig06_nine_models() -> sp.Figure:
+    """The nine models at the main runs' size, 10 lens-part directions (see _nine)."""
+    return _nine("fig06_nine_models", "k10")
+
+
+def fig06b_nine_models_100() -> sp.Figure:
+    """The same nine models and columns at 100 lens-part directions: the dose runs (the gap with its interval, the
+    controls and the probability gap without) and the swap dose (see _nine)."""
+    return _nine("fig06b_nine_models_100", "k100")
 
 # ---- Fig. 7: the two routes ----------------------------------------------------------------------------------------------
 ROUTE_Q = "another item moved, whole: {} share"
@@ -198,5 +231,6 @@ def patch_layers() -> sp.Figure:
     table = sp.DotTable(DAN, [sp.ColumnGroup("(C) One layer is not essential", cols)])
     return sp.Figure("patch_layers", vocab()).add(table)
 
-FIGS = {"patch_split": patch_split, "patch_layers": patch_layers, "fig06_nine_models": fig06_nine_models, "fig07_routes": fig07_routes,
+FIGS = {"patch_split": patch_split, "patch_layers": patch_layers, "fig06_nine_models": fig06_nine_models,
+        "fig06b_nine_models_100": fig06b_nine_models_100, "fig07_routes": fig07_routes,
         "appB_f15_link_crossover": appB_f15_link_crossover, "appB_f18_code_tool": appB_f18_code_tool}  # fmt: skip
