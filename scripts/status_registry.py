@@ -718,7 +718,10 @@ def rows() -> list[dict]:
     out = lightning([*writeup, *readme, *depth_set(writeup), *depth_set_b(), *depth_set_c(),
                      *depth_set_d(), *depth_set_e(), *depth_set_f(), *breadth_set(readme)])
     out = out + patch_split(out) + nine_models(out)
-    return [r for r in out if r["figure"] != "fig06_nine_models" or r["cell"].startswith(NINE_DRAWN)]
+    out = [r for r in out if r["figure"] != "fig06_nine_models" or r["cell"].startswith(NINE_DRAWN)]
+    # the post's reader meets fig01 before the nine-model figure, which carries Muse's and the 122B's verdict (Dan,
+    # 10 Nov): no "not claimed" notes on fig01 itself; the README's copies keep theirs
+    return [{**r, "tag": ""} if r["figure"] == "fig01_main_split" else r for r in out]
 
 
 COLUMNS = ("figure", "cell", "timing", "claim", "claim_reason", "reason", "source")  # styles-plot's registry schema

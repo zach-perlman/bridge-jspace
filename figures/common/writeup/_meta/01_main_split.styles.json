@@ -2,12 +2,12 @@
  "styles_plot": "0.2.2",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "ab90db2b81ff16b0d494f4a187d589eeed871125d45d2019a344867446e8091f",
+  "sha256": "9b0dfee8361af062fec58b6e0f0b9b1afc79025182e47ef3bba0fbd224da2dcd",
   "hash": "meaning"
  },
  "registry": {
   "path": "data/figures/status.csv",
-  "sha256": "4e1a16029420bf2e5fa4d26eb99d7ef0fc75348e201010aea85008c2a0830021"
+  "sha256": "83b969d753879e778a912a6cdb8a6f2639807f23755a16b771275a731bac6076"
  },
  "figure": "fig01_main_split",
  "target": "post",
@@ -15,7 +15,7 @@
  "publishable": true,
  "text_only": false,
  "png": {
-  "pixels_sha256": "596218a47afc935dd263fd12d3a7f9d553f1aa8ebf6dd77384f82198ad4195bd",
+  "pixels_sha256": "4bc805e2a621296566f52e40755ee1f840d33fbdbf7fc58b9994101cb3723e08",
   "dpi": 200
  },
  "roles": [
@@ -27,7 +27,7 @@
  "cells": {
   "band.mu": {
    "timing": "post_hoc",
-   "claim": "not_claimed"
+   "claim": "claimed"
   },
   "band.nl": {
    "timing": "fixed_in_advance",
@@ -35,7 +35,7 @@
   },
   "band.q122": {
    "timing": "post_hoc",
-   "claim": "not_claimed"
+   "claim": "claimed"
   },
   "band.q27": {
    "timing": "fixed_in_advance",
@@ -104,7 +104,7 @@
    "role": "lookup",
    "cell": "band.mu",
    "timing": "post_hoc",
-   "claim": "not_claimed",
+   "claim": "claimed",
    "hollow": true
   },
   {
@@ -112,7 +112,7 @@
    "role": "recall",
    "cell": "band.mu",
    "timing": "post_hoc",
-   "claim": "not_claimed",
+   "claim": "claimed",
    "hollow": true
   },
   {
@@ -136,7 +136,7 @@
    "role": "lookup",
    "cell": "band.q122",
    "timing": "post_hoc",
-   "claim": "not_claimed",
+   "claim": "claimed",
    "hollow": true
   },
   {
@@ -144,7 +144,7 @@
    "role": "recall",
    "cell": "band.q122",
    "timing": "post_hoc",
-   "claim": "not_claimed",
+   "claim": "claimed",
    "hollow": true
   },
   {
@@ -168,7 +168,7 @@
    "role": "neutral",
    "cell": "band.mu",
    "timing": "post_hoc",
-   "claim": "not_claimed",
+   "claim": "claimed",
    "hollow": true
   },
   {
@@ -184,7 +184,7 @@
    "role": "neutral",
    "cell": "band.q122",
    "timing": "post_hoc",
-   "claim": "not_claimed",
+   "claim": "claimed",
    "hollow": true
   },
   {

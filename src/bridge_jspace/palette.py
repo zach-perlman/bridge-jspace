@@ -39,7 +39,7 @@ HOLLOW_WORD = "post hoc"  # a hollow marker (○) means this and nothing else; e
 MODELS = (  # one model order everywhere; then the breadth-only models
     ("qwen3.5-9b", "Qwen 9B"),
     ("qwen3.6-27b", "Qwen 27B"),
-    ("muse-glimmer-30b", "Muse 30B"),
+    ("muse-glimmer-30b", "Muse"),
     ("nemotron-3.5-lightning", "Lightning"),
     ("qwen3.5-122b-a10b", "Qwen 122B"),
 )

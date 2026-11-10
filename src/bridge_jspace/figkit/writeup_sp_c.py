@@ -216,7 +216,7 @@ def patch_split() -> sp.Figure:
     # a bound the data give: every model's 95% interval ends under it (the largest upper end, rounded up to 0.01)
     most = max(rows, key=lambda m: energy[m][2])
     numbers = {"energy": (math.ceil(energy[most][2] * 100) / 100, "share", f"patch.energy.{ZK[most]}")}
-    read = "read: the answer word holds under {energy} of the lens part's energy on every model"
+    read = "read (B): the answer word holds under {energy} of the lens part's energy on every model"
     return sp.Figure("patch_split", vocab(), read=read, numbers=numbers).add(table)
 
 
@@ -226,9 +226,8 @@ def patch_layers() -> sp.Figure:
     over four layers, and at every token over four layers; lookup and recall dots, grey tick: the recall's answers kept
     with a random part of the same share removed instead."""
     cols = []
-    for rung, header, unit in ((1, "one layer", "kept_bridge"), (2, "four layers", "kept_bridge"),
-                               (5, "every token, four layers", "kept")):
-        cols.append(sp.DotColumn(header, unit, (0, 1.15), (0, 0.5, 1),
+    for rung, header in ((1, "bridge word, one layer"), (2, "bridge word, four layers"), (5, "every token, four layers")):
+        cols.append(sp.DotColumn(header, "kept_bridge", (0, 1.15), (0, 0.5, 1),
                                  series=[sp.Series("lookup", _kept(f"patch.rung{rung}.zero.lookup.{{k}}", f"rung{rung}")),
                                          sp.Series("recall", _kept(f"patch.rung{rung}.zero.recall.{{k}}", f"rung{rung}"))],
                                  ticks={m: need(CV.w(f"patch.rung{rung}.rand.recall.{ZK[m]}"), m)[0] for m in DAN}))
@@ -237,7 +236,7 @@ def patch_layers() -> sp.Figure:
     return sp.Figure("patch_layers", dataclasses.replace(vocab(), key_tick=RANDOM_TICK)).add(table)
 
 
-RANDOM_TICK = "the recall with a random part of the same share removed"
+RANDOM_TICK = "a random part of the same size"
 
 FIGS = {"patch_split": patch_split, "patch_layers": patch_layers, "fig06_nine_models": fig06_nine_models,
         "fig07_routes": fig07_routes,

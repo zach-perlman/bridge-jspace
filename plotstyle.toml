@@ -41,7 +41,7 @@ word = "neutral"
 meaning = "a quantity of no role, such as a difference"
 
 [controls]
-names = ["rotated", "logit lens", "PCA", "a random part", "energy-matched random", "a random vector", "layout-only probe", "10 random heads", "no change", "random lens directions", "the whole state swapped in", "the full state", "most common locker", "shuffled pairs", "a random subspace", "the rest swapped in", "a control block", "2 × a random direction", "2 × the lens part", "the null's cut", "the null's median"]
+names = ["rotated", "logit lens", "PCA", "a random part", "energy-matched random", "random directions of the same energy kept", "a random vector", "layout-only probe", "10 random heads", "no change", "random lens directions", "the whole state swapped in", "the full state", "most common locker", "shuffled pairs", "a random subspace", "the rest swapped in", "a control block", "2 × a random direction", "2 × the lens part", "the null's cut", "the null's median"]
 
 [key]
 tick = "the largest same-size control"
@@ -144,7 +144,7 @@ quantity = "of the damage undone"
 format = "share"
 
 [units.kept_bridge]
-title = "answers kept, bridge word only"
+title = "answers kept"
 quantity = "answers kept"
 format = "share"
 
@@ -550,11 +550,11 @@ canonical = [
     "Passes the bar", "Fails on a control", "Fails on the gap",
     "Gap under the knock-out", "Larger control", "Gap scored by probability", "Swap",
     "Recall minus lookup gap", "Cost of same-size controls", "rotated part", "logit-lens directions", "limit",
-    "the recall with a random part of the same share removed",
+    "a random part of the same size",
     # patch_split (figkit/writeup_sp_c.py)
     "(A) Patch without the lens part", "(B) Not the answer word",
     "answer word's share of the lens part's energy", "one layer", "four layers",
-    "every token, four layers", "lookup: at most",
+    "every token, four layers", "bridge word, one layer", "bridge word, four layers", "lookup: at most",
     "recall: at least", "drop kept", "answer words only", "bar fixed in advance", "lookup fails the rule",
     "in the passage, and known to the model", "illustration in the set's format",
     "here the model has not seen the question yet: its state is the same for both",
@@ -741,8 +741,9 @@ canonical = [
     "without another item's lens part there",
     "keep the answer span",
     "remove the answer span",
-    "remove it, codename set",
-    "all of it",
+    "remove it, people named by codenames",
+    "same as the full knock-out", "answer span kept",
+    "no rule fixed in advance",
     "one-hop question",
     "data-built city subspace",
     "one-hop question: “{city} is in the country of”",
@@ -839,7 +840,7 @@ templates = [
     "{num} items",
     "{num} lens directions",
     "layer {num}",
-    "matched on {num}%",
+    "energy matched on {num}% of items",
     "below gate ({num})",
     "{num} / {num} items",
     "{entity} \u00b7 {num} / {num} items",
@@ -847,7 +848,7 @@ templates = [
     "bar: {num}", "limit: {num}",
     "lookup: at most {num}",
     "recall: at least {num}",
-    "read: the answer word holds under {num} of the lens part's energy on every model",
+    "read (B): the answer word holds under {num} of the lens part's energy on every model",
     "48.4's bar fixed in advance: {num} of {num}",
     "unedited: {num}\u2013{num}% right on every model",
     "unedited: {num}% right on every model",
@@ -966,7 +967,7 @@ id = "q27"
 
 [[entities.models]]
 key = "muse-glimmer-30b"
-name = "Muse 30B"
+name = "Muse"
 id = "mu"
 
 [[entities.models]]

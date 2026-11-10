@@ -2,12 +2,12 @@
  "styles_plot": "0.2.2",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "ab90db2b81ff16b0d494f4a187d589eeed871125d45d2019a344867446e8091f",
+  "sha256": "9b0dfee8361af062fec58b6e0f0b9b1afc79025182e47ef3bba0fbd224da2dcd",
   "hash": "meaning"
  },
  "registry": {
   "path": "data/figures/status.csv",
-  "sha256": "4e1a16029420bf2e5fa4d26eb99d7ef0fc75348e201010aea85008c2a0830021"
+  "sha256": "83b969d753879e778a912a6cdb8a6f2639807f23755a16b771275a731bac6076"
  },
  "figure": "fig10_answer_span",
  "target": "post",
@@ -15,14 +15,14 @@
  "publishable": true,
  "text_only": false,
  "png": {
-  "pixels_sha256": "0877971192ecb1a5b0013a2b037f062dfd3b5dc814e74380c03d566f80ad8324",
+  "pixels_sha256": "b9e00f876fec75e93d3ffa898175a72fc5602c2c392800dfbb11078750ab5653",
   "dpi": 200
  },
  "roles": [
   "answer"
  ],
  "controls": [
-  "energy-matched random"
+  "random directions of the same energy kept"
  ],
  "cells": {
   "keep.nl": {
@@ -161,7 +161,7 @@
   }
  ],
  "key": [
-  "grey: energy-matched random",
+  "grey: random directions of the same energy kept",
   "whiskers: 95% interval"
  ],
  "numbers": {
