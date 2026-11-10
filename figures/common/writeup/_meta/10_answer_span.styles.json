@@ -2,12 +2,12 @@
  "styles_plot": "0.2.2",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "9b0dfee8361af062fec58b6e0f0b9b1afc79025182e47ef3bba0fbd224da2dcd",
+  "sha256": "bc982b569fa5bde5aa0b6ca91b1891bc552682c3a890988faa0f7f67f739174c",
   "hash": "meaning"
  },
  "registry": {
   "path": "data/figures/status.csv",
-  "sha256": "83b969d753879e778a912a6cdb8a6f2639807f23755a16b771275a731bac6076"
+  "sha256": "1dd286431788e9e50969ae4f4b7b40c6bef8fc47f06c9d5ed1a8df3679f11b86"
  },
  "figure": "fig10_answer_span",
  "target": "post",
@@ -15,7 +15,7 @@
  "publishable": true,
  "text_only": false,
  "png": {
-  "pixels_sha256": "b9e00f876fec75e93d3ffa898175a72fc5602c2c392800dfbb11078750ab5653",
+  "pixels_sha256": "cb21fb7b47a1b64f2b3b310449f071e154f3dcbcb0d1aa0941aacfb068afd1d9",
   "dpi": 200
  },
  "roles": [
@@ -27,15 +27,15 @@
  "cells": {
   "keep.nl": {
    "timing": "fixed_in_advance",
-   "claim": "descriptive"
+   "claim": "claimed"
   },
   "keep.q27": {
    "timing": "fixed_in_advance",
-   "claim": "descriptive"
+   "claim": "claimed"
   },
   "keep.q9": {
    "timing": "fixed_in_advance",
-   "claim": "descriptive"
+   "claim": "claimed"
   },
   "keep_ctrl.q27": {
    "timing": "fixed_in_advance",
@@ -84,7 +84,23 @@
    "role": "answer",
    "cell": "keep.q9",
    "timing": "fixed_in_advance",
-   "claim": "descriptive",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "answer",
+   "cell": "remove.v4.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "answer",
+   "cell": "remove.codename.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
    "hollow": false
   },
   {
@@ -100,22 +116,6 @@
    "role": "answer",
    "cell": "keep.q27",
    "timing": "fixed_in_advance",
-   "claim": "descriptive",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "answer",
-   "cell": "keep.nl",
-   "timing": "fixed_in_advance",
-   "claim": "descriptive",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "answer",
-   "cell": "remove.v4.q9",
-   "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
   },
@@ -130,23 +130,23 @@
   {
    "kind": "dot",
    "role": "answer",
-   "cell": "remove.v4.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "answer",
-   "cell": "remove.codename.q9",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "answer",
    "cell": "remove.codename.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "answer",
+   "cell": "keep.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "answer",
+   "cell": "remove.v4.nl",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -167,14 +167,14 @@
  "numbers": {
   "fig10.keep_span.q9": "0.93",
   "fig10.keep_ctrl.q9": "−0.11",
+  "fig10.span_only.v4.q9": "1.04",
+  "fig10.span_only.codename.q9": "1.32",
   "fig10.keep_span.q27": "0.95",
   "fig10.keep_ctrl.q27": "0.02",
-  "fig10.keep_span.nl": "0.91",
-  "fig10.span_only.v4.q9": "1.04",
   "fig10.span_only.v4.q27": "1.02",
-  "fig10.span_only.v4.nl": "0.98",
-  "fig10.span_only.codename.q9": "1.32",
   "fig10.span_only.codename.q27": "1.18",
+  "fig10.keep_span.nl": "0.91",
+  "fig10.span_only.v4.nl": "0.98",
   "fig10.span_only.codename.nl": "1.05"
  },
  "problems": []

@@ -155,7 +155,9 @@ def styles_plot_port() -> list[dict]:
                 out.append(fixed("appB_f9_where", f"{band_}.{j}.{k}", "where in the prompt", f"{src}writeup_appendix.py"))
     for m in TWIN:
         k = SHORT[m]
-        out.append(row("fig10_answer_span", f"keep.{k}", "descriptive", ANSWER_SPAN, DAN_7NOV))
+        # descriptive (no rule fixed in advance), said once in the caption instead of a tag on every row (Dan, 10 Nov)
+        out.append(row("fig10_answer_span", f"keep.{k}", "fixed_in_advance", f"{ANSWER_SPAN}; descriptive, said in the "
+                       "caption, not tagged on the figure", f"{DAN_7NOV}; Dan 10 Nov"))  # fmt: skip
         out.append(row("fig10_answer_span", f"keep_ctrl.{k}", "fixed_in_advance", "the answer span's random keep, "
                        "fixed in advance (note 50 P1)", DAN_7NOV))  # fmt: skip
         for panel in ("v4", "codename"):

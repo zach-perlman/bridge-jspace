@@ -690,7 +690,7 @@ See the root README's [Reproduce](../../README.md#reproduce).
 ## Repository guide
 
 - **This report doubles as the breadth track's ledger.** Every number is in [data.csv](data.csv) with its source file; the run log is [docs/archive/EXPERIMENTS.md](../archive/EXPERIMENTS.md).
-- **Builders.** scripts/report_breadth.py builds data.csv and this page, last at 226e8dde; src/bridge_jspace/figkit/breadth_sp.py draws [the figures](../../figures/breadth/).
+- **Builders.** scripts/report_breadth.py builds data.csv and this page, last at c8adb53c; src/bridge_jspace/figkit/breadth_sp.py draws [the figures](../../figures/breadth/).
 - **Licences and citing.** Code is [MIT](../../LICENSE); each data file keeps its source's terms ([data/SOURCES.md](../../data/SOURCES.md)). Cite with [CITATION.cff](../../CITATION.cff).
 
 <details><summary>Sources, builders and figures</summary>

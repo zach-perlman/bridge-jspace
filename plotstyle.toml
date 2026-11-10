@@ -143,6 +143,11 @@ title = "share of the damage undone"
 quantity = "of the damage undone"
 format = "share"
 
+[units.damage_share]
+title = "share of the knock-out's damage"
+quantity = "of the damage"
+format = "share"
+
 [units.kept_bridge]
 title = "answers kept"
 quantity = "answers kept"
@@ -739,11 +744,8 @@ canonical = [
     "position answers with only the address",
     "without the lens part at the item's earlier mention",
     "without another item's lens part there",
-    "keep the answer span",
-    "remove the answer span",
-    "remove it, people named by codenames",
-    "same as the full knock-out", "answer span kept",
-    "no rule fixed in advance",
+    "the answer span's share of the knock-out's damage", "all of it",
+    "span kept: undone", "span removed: done", "removed, codenames: done",
     "one-hop question",
     "data-built city subspace",
     "one-hop question: “{city} is in the country of”",
@@ -840,7 +842,6 @@ templates = [
     "{num} items",
     "{num} lens directions",
     "layer {num}",
-    "energy matched on {num}% of items",
     "below gate ({num})",
     "{num} / {num} items",
     "{entity} \u00b7 {num} / {num} items",
