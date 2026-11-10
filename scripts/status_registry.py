@@ -687,39 +687,27 @@ def patch_split(rows_: list[dict]) -> list[dict]:
 A48 = ("docs/breadth/prereg_replication_1022.md Amendment 48 A (2026-10-25 20:40 UTC): probability scoring 'post hoc, on "
        "existing rows, already run, all numbers seen'")
 SOFT_POST_HOC = {"q9", "q27", "mu", "mi", "ds", "q122", "ol"}  # scored after their runs (OLMo's ran 25 Oct 07:26 UTC)
-SWAP100 = {"q9": "Amendment 55 (2026-10-27 01:11 UTC, before any run below): the swap dose on v2",
-           "q27": "Amendment 55 (2026-10-27 01:11 UTC, before any run below): the swap dose on v2",
-           "nl": "Amendment 55 (2026-10-27 01:11 UTC, before any run below): the swap dose on v2, Lightning on GPU 1",
-           "mi": "Amendment 53 (2026-10-26 22:10 UTC, before any run below): Ministral's swap at K = 30 and 100"}  # fmt: skip
 
 
 def nine_models(rows_: list[dict]) -> list[dict]:
     by = {(r["figure"], r["cell"]): r for r in rows_}
     have = {(r["figure"], r["cell"]) for r in rows_}
     out = []
-    pre = "docs/breadth/prereg_replication_1022.md "
     for k in ("q9", "q27", "mu", "nl", "q122", "ds", "mi", "nb", "ol"):
         g = by[("fig06_nine_models", f"gap.{k}")]
-        out.append({**g, "cell": f"ctrl.{k}", "reason": f"{g['reason']} (the same run as the gap)"})
-        if ("fig06_nine_models", f"soft.{k}") not in have:
-            out.append(post_hoc("fig06_nine_models", f"soft.{k}", "scored by probability after the data", A48)
+        same = f"{g['reason']} (the same run as the gap)"
+        # fig06 draws each control in its own panel; the README's four-test figure the larger one
+        out += [{**g, "cell": f"{c}.{k}", "reason": same} for c in ("rot", "logit")]
+        out.append({**g, "figure": "f3_nine_models", "cell": f"ctrl.{k}", "reason": same})
+        if ("f3_nine_models", f"soft.{k}") not in have:
+            out.append(post_hoc("f3_nine_models", f"soft.{k}", "scored by probability after the data", A48)
                        if k in SOFT_POST_HOC else
-                       fixed("fig06_nine_models", f"soft.{k}", "probability scoring defined before this model's run", A48))
-        # fig06b_nine_models_100: the dose run's gap, controls and probability gap; the swap dose
-        dose = by.get(("breadth_fig09_dose", f"dose.{k}"))
-        if dose:
-            for c in ("gap", "ctrl", "soft"):
-                out.append({**dose, "figure": "fig06b_nine_models_100", "cell": f"{c}.{k}",
-                            "reason": f"{dose['reason']} (as breadth_fig09_dose's dose.{k}, the same run)"})
-        if k in SWAP100:
-            out.append(fixed("fig06b_nine_models_100", f"swap.{k}", "the swap at 100 directions", pre + SWAP100[k]))
-        elif k == "nb":
-            b = by[("fig06_nine_models", "swap100.nb")]
-            out.append({**b, "figure": "fig06b_nine_models_100", "cell": "swap.nb"})
-    # the README draws the same figure (readme_sp: f3_nine_models): its new cells, as the write-up's
-    out += [{**r, "figure": "f3_nine_models"} for r in out
-            if r["figure"] == "fig06_nine_models" and ("f3_nine_models", r["cell"]) not in have]
+                       fixed("f3_nine_models", f"soft.{k}", "probability scoring defined before this model's run", A48))
     return out
+
+
+# the cells fig06_nine_models draws; the probability gap, larger control and swap stay registered under f3_nine_models
+NINE_DRAWN = ("gap.", "rot.", "logit.")
 
 
 def rows() -> list[dict]:
@@ -729,7 +717,8 @@ def rows() -> list[dict]:
     readme = readme_set(writeup)
     out = lightning([*writeup, *readme, *depth_set(writeup), *depth_set_b(), *depth_set_c(),
                      *depth_set_d(), *depth_set_e(), *depth_set_f(), *breadth_set(readme)])
-    return out + patch_split(out) + nine_models(out)
+    out = out + patch_split(out) + nine_models(out)
+    return [r for r in out if r["figure"] != "fig06_nine_models" or r["cell"].startswith(NINE_DRAWN)]
 
 
 COLUMNS = ("figure", "cell", "timing", "claim", "claim_reason", "reason", "source")  # styles-plot's registry schema

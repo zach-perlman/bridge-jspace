@@ -19,6 +19,7 @@ from bridge_jspace import figdata as S
 from bridge_jspace.figkit import layout as L
 from bridge_jspace.figkit import writeup_sp as WS
 from bridge_jspace.figkit import writeup_sp_b as WB
+from bridge_jspace.figkit import writeup_sp_c
 from bridge_jspace.figkit.writeup_sp_base import ZK, est, need, vocab
 
 GROUP = "common/readme"
@@ -31,14 +32,15 @@ TWIN = WB.TWIN
 ALIAS = {"r3_last_token": "fig13_last_token", "f9_where": "appB_f9_where",
          "f8_facts": "appB_f8_facts", "f8_directions": "appB_f8_directions", "f12_order": "appB_f12_order",
          "f14_two_codes": "appB_f14_two_codes", "p0b_tools": "fig03_tools",
-         "f3_nine_models": "fig06_nine_models", "r5_routes": "fig07_routes",
+         "r5_routes": "fig07_routes",
          # f6_address drawn as two figures: one table of four columns needs 2.99 in of colour words over a 2.19 in panel
          # (SP609; Dan, 7 Nov: lanes or split); the README embeds both where it embedded f6_address.png
          "f6a_address_read_remove": "fig08a_address_read_remove", "f6b_address_swap_lens": "fig08b_address_swap_lens"}  # fmt: skip
 WRITEUP = {**WS.FIGS, **WB.BLOCKED}
 # README figures drawn here from a write-up figure's cells (the registry copies that figure's rows under these ids)
 COPIES = {"r1_c1_split": "fig01_main_split", "r1_c1_gaps": "fig01_main_split", "f2_controls": "fig05_controls",
-          "f2_controls_layer": "fig05_controls", "f2_controls_more": "fig05_controls"}
+          "f2_controls_layer": "fig05_controls", "f2_controls_more": "fig05_controls",
+          "f3_nine_models": "fig06_nine_models"}  # f3: nine_tests, the four-test layout on fig06's runs
 
 
 # laid out in inches: drawn for the README's width, not the post's (p0a_datasets is a markdown table in the README)
@@ -353,11 +355,16 @@ def t12_two_by_two() -> sp.Figure:
     return sp.Figure("t12_two_by_two", vocab()).add(t)
 
 
+def f3_nine_models() -> sp.Figure:
+    """Nine models, four tests (the README's text cites the swap from it); the write-up's fig06 has two panels."""
+    return writeup_sp_c.nine_tests("f3_nine_models")
+
+
 FIGS = {**{fid: _alias(fid) for fid in ALIAS}, "r1_c1_split": r1_c1_split, "r1_c1_gaps": r1_c1_gaps,
         "f2_controls": f2_controls, "f2_controls_layer": f2_controls_layer, "f2_controls_more": f2_controls_more,
         "r1_dan_split": r1_dan_split, "r4_pointer": r4_pointer,
         "f5_atoms": f5_atoms, "f11_monitor": f11_monitor, "f10_sentence_order": f10_sentence_order,
-        "t12_two_by_two": t12_two_by_two}  # fmt: skip
+        "t12_two_by_two": t12_two_by_two, "f3_nine_models": f3_nine_models}  # fmt: skip
 # Declared but refused strict (SP609, see ALIAS): f6_address, drawn as f6a + f6b.
 BLOCKED = {"f6_address": f6_address}
 

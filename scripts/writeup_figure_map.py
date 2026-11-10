@@ -60,10 +60,10 @@ ROWS = [
     ("5", F1, [("common/writeup", "05a_controls_band"), ("common/writeup", "05b_controls_layer")],
      "Split into two figures (band of layers, one layer); one column per control on the same scale; the post embeds "
      "both where it embedded fig05_controls"),
-    ("6", F1, [("common/writeup", "06_nine_models"), ("common/writeup", "06b_nine_models_100")],
-     "Redrawn 10 Nov: rows in three bands by the bar fixed before the main runs, four columns in the bar's order (gap, "
-     "larger control, gap by probability, swap), every value printed, 'not run' where absent; the same at 100 "
-     "directions in 06b"),
+    ("6", F1, [("common/writeup", "06_nine_models")],
+     "Rows in three bands by the bar fixed before the main runs; the gap against the bar of 30, "
+     "and each same-size control in its own panel against the limit of 10; the probability gap, the swap and the "
+     "100-direction runs move to the Appendix E3 table (data/figures/writeup/appendix_e3.csv)"),
     ("7", F2, [("depth/examples", "02_routes"), ("common/writeup", "07_routes")],
      "The stack has no whiskers and no numbers in the bars; the position share's interval and the number's share sit "
      "in columns beside it; the E4 card shows the lockers each route predicts on a real scene"),

@@ -29,8 +29,7 @@ ORDER: dict[str, list[tuple[str, str]]] = {
                 ("result", "patch_split"), ("result", "patch_layers"),
                 *(("main", i) for i in (
                     "fig01_main_split", "fig02_datasets", "fig03_tools", "fig04_twin_set",
-                    "fig05a_controls_band", "fig05b_controls_layer", "fig06_nine_models", "fig06b_nine_models_100",
-                    "fig07_routes",
+                    "fig05a_controls_band", "fig05b_controls_layer", "fig06_nine_models", "fig07_routes",
                     "fig08a_address_read_remove", "fig08b_address_swap_lens", "fig09_order", "fig10_answer_span",
                     "fig11_orthogonal", "fig12_pointer", "fig13_last_token")),
                 *(("appendix", i) for i in (

@@ -288,6 +288,42 @@ def patch_rows() -> list[dict]:
 BUILDERS = (fig04_rows, fig05_rows, fig10_rows, fig11_rows, figA1_rows, fig12_rows, patch_rows)
 
 
+# ---- Appendix E3: the nine models' other tests, a table for the post (Dan's brief, 10 Nov 20:05) -----------------------
+E3_OUT = REPO / "data" / "figures" / "writeup" / "appendix_e3.csv"
+NOT_RUN = "not run"
+# column -> docs/breadth/data.csv key ({k}: the model's id); the swap reads the mid-layer runs for DeepSeek and Ministral
+# as fig06 always did (figkit/writeup_sp_c.SWAPKEY); the largest control at 100 is the larger of the two below
+E3_KEYS = {"gap at 10 directions": "ko.{k}.mk", "rotated": "ko.{k}.rot", "logit lens": "ko.{k}.u",
+           "gap scored by the answer's probability": "ko.{k}.soft",
+           "swap (answers moved to the other entity's fact, points)": "swap.{k}.swap",
+           "gap at 100 directions": "dose.{k}.k100"}  # fmt: skip
+E3_CONTROLS_100 = ("dose.{k}.k100.rot", "dose.{k}.k100.u")
+E3_FIELDS = ("model", *E3_KEYS, "largest control at 100 directions")
+
+
+def appendix_e3() -> list[dict]:
+    """One row per model in fig06's order: the values at one decimal from docs/breadth/data.csv (figdata.b), "not run"
+    where the key is absent. No intervals: the 100-direction controls and the probability gap have none for some
+    models; the data file has them where they exist."""
+    import styles_plot as sp
+
+    from bridge_jspace.figkit.writeup_sp_c import NINE_ROWS, SWAPKEY
+
+    v = sp.load(REPO / "plotstyle.toml")
+    fmt = lambda c: NOT_RUN if c is None else f"{c[0]:.1f}"  # noqa: E731
+    out = []
+    for m in NINE_ROWS:
+        k = v.entity("models", m).id
+        row = {"model": v.entity("nine", m).name}
+        for col, key in E3_KEYS.items():
+            key = SWAPKEY.get(k, key) if key == "swap.{k}.swap" else key
+            row[col] = fmt(S.b(key.format(k=k)))
+        ctl = [S.b(c.format(k=k)) for c in E3_CONTROLS_100]
+        row["largest control at 100 directions"] = NOT_RUN if None in ctl else fmt(max(ctl, key=lambda c: c[0]))
+        out.append(row)
+    return out
+
+
 def rows() -> list[dict]:
     return [r for b in BUILDERS for r in b()]
 
@@ -301,17 +337,26 @@ def main(argv: list[str]) -> int:
     new = rows()
     for r in new:
         print(f"{r['key']:34s} {r['value']:>10} [{r['lo']}, {r['hi']}]  n={r['n']}")
+    e3 = appendix_e3()
     if "--check" in argv:
         old = {r["key"]: r for r in stored()}
         bad = [r["key"] for r in new if {k: str(v) for k, v in r.items()} != old.get(r["key"])]
         print(f"writeup_data --check: {len(bad)} row(s) differ from {OUT.relative_to(REPO)}: {bad}")
-        return 1 if bad or len(old) != len(new) else 0
+        with E3_OUT.open() as f:
+            e3_bad = list(csv.DictReader(f)) != e3
+        print(f"writeup_data --check: {E3_OUT.relative_to(REPO)} {'differs' if e3_bad else 'matches'}")
+        return 1 if bad or e3_bad or len(old) != len(new) else 0
     OUT.parent.mkdir(parents=True, exist_ok=True)
     with OUT.open("w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=FIELDS)
         w.writeheader()
         w.writerows(new)
     print(f"wrote {len(new)} rows to {OUT.relative_to(REPO)}")
+    with E3_OUT.open("w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=E3_FIELDS)
+        w.writeheader()
+        w.writerows(e3)
+    print(f"wrote {len(e3)} rows to {E3_OUT.relative_to(REPO)}")
     return 0
 
 

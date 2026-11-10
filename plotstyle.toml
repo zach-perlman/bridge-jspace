@@ -61,6 +61,9 @@ wilson95 = "95% Wilson interval"
 decimals = 1
 sign = true
 
+[formats.points_whole]
+decimals = 0
+
 [formats.share_signed]
 decimals = 2
 sign = true
@@ -180,6 +183,25 @@ title = "difference (share of the scenes)"
 quantity = "difference"
 format = "share_signed"
 cue_word = "larger"
+
+# fig06_nine_models: the gap against the bar, each control's cost against the limit
+[units.nine_gap]
+title = "points of answers turned wrong"
+quantity = "gap, a cleaner split"
+format = "points"
+cue_word = "larger"
+
+[units.nine_control]
+title = "points of answers turned wrong by removing something else"
+quantity = "cost"
+format = "points"
+cue_word = "larger"
+
+# the bar and the limit as fixed in advance (whole points)
+[units.nine_bar]
+title = "points"
+format = "points_whole"
+cue = false
 
 # Fig. 5's narrow panels: the group header and the note name the quantity
 [units.points]
@@ -525,10 +547,12 @@ canonical = [
     "from the patch",
     "Known-fact set", "Made-up-fact set", "read", "one of six people in the passage",
     # fig06_nine_models (figkit/writeup_sp_c.py, 10 Nov)
-    "Passes the bar", "Fails: control", "Fails: gap", "Gap at 100 directions", "Swap at 100 directions",
-    "Gap under the knock-out", "Larger control", "Gap scored by probability", "Swap", "recall − lookup", "answers moved",
+    "Passes the bar", "Fails on a control", "Fails on the gap",
+    "Gap under the knock-out", "Larger control", "Gap scored by probability", "Swap",
+    "Recall minus lookup gap", "Cost of same-size controls", "rotated part", "logit-lens directions", "limit",
+    "the recall with a random part of the same share removed",
     # patch_split (figkit/writeup_sp_c.py)
-    "(A) Patch without the lens part", "(B) Not the answer word", "(C) One layer is not essential",
+    "(A) Patch without the lens part", "(B) Not the answer word",
     "answer word's share of the lens part's energy", "one layer", "four layers",
     "every token, four layers", "lookup: at most",
     "recall: at least", "drop kept", "answer words only", "bar fixed in advance", "lookup fails the rule",
@@ -820,7 +844,7 @@ templates = [
     "{num} / {num} items",
     "{entity} \u00b7 {num} / {num} items",
     "bar fixed in advance: {num}",
-    "bar: {num}",
+    "bar: {num}", "limit: {num}",
     "lookup: at most {num}",
     "recall: at least {num}",
     "read: the answer word holds under {num} of the lens part's energy on every model",
@@ -1022,7 +1046,7 @@ id = "nl"
 
 [[entities.nine]]
 key = "muse-glimmer-30b"
-name = "Muse 30B"
+name = "Muse"
 id = "mu"
 
 [[entities.nine]]

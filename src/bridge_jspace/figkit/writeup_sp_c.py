@@ -5,6 +5,7 @@ the depth README's fig21 (the same cells). Same data accessors as the figkit bui
 
 from __future__ import annotations
 
+import dataclasses
 import math
 
 import styles_plot as sp
@@ -30,69 +31,72 @@ SWAPKEY = {"ds": "swap.ds.mid.swap", "mi": "swap.mi.mid.swap"}  # (deck_figs.f_n
 
 # rows by the bar fixed before the main runs (amendment 33: gap >= 30, rotated and logit-lens controls < 10)
 BANDS = (("Passes the bar", ("qwen3.5-9b", "qwen3.6-27b", "nemotron-3.5-lightning")),
-         ("Fails: control", ("muse-glimmer-30b", "qwen3.5-122b-a10b")),
-         ("Fails: gap", ("ministral", "deepseek", "bolt", "olmo")))  # fmt: skip
+         ("Fails on a control", ("muse-glimmer-30b", "qwen3.5-122b-a10b")),
+         ("Fails on the gap", ("ministral", "deepseek", "bolt", "olmo")))  # fmt: skip
 NINE_ROWS = tuple(m for _, ms in BANDS for m in ms)
 # docs/breadth/prereg_replication_1022.md, amendment 33: "M - K >= 30 with the logit-lens and rotated controls < 10"
 GAP_BAR, CONTROL_BAR = 30, 10
 
 
-# each lane's data keys: the knock-out gap, the two same-size controls, the gap scored by probability, the swap
-NINE_KEYS = {"k10": ("ko.{k}.mk", "ko.{k}.rot", "ko.{k}.u", "ko.{k}.soft", None),
-             "k100": ("dose.{k}.k100", "dose.{k}.k100.rot", "dose.{k}.k100.u", "dose.{k}.k100.smk", "swapk.{k}.k100")}
+def _nine_cells(key: str, cell: str, label: bool = True) -> dict:
+    """One estimate per model from docs/breadth/data.csv (`key` with {k}); "not run" where no run exists."""
+    out = {}
+    for m in NINE_ROWS:
+        k = _id(m)
+        c = D.b(key.format(k=k))
+        out[m] = sp.Missing("not run") if c is None else est(c, f"{cell}.{k}", key=key.format(k=k), label=label)
+    return out
 
 
-def _nine(fid: str, lane: str) -> sp.Figure:
-    """Nine models in three bands by the bar fixed before the main runs, at one lens-part size. Columns in the bar's
-    order: the recall − lookup gap under the knock-out, the larger of the rotated and logit-lens controls, the gap
-    scored by the answer's probability, and the answers moved by another entity's lens part swapped in. Every value
-    printed; "not run" where no comparable run exists."""
-    kg, kr, ku, ks, kw = NINE_KEYS[lane]
-    swap_key = (lambda k: kw.format(k=k)) if kw else (lambda k: SWAPKEY.get(k, f"swap.{k}.swap"))
+def fig06_nine_models() -> sp.Figure:
+    """Nine models in three bands by the bar fixed before the main runs: the recall − lookup gap
+    under the knock-out against the bar of 30, and what each same-size control costs against the limit of 10, one
+    panel per control (one grey dot per line: the grammar gives a second control its own panel)."""
+    gap = sp.DotColumn("Recall minus lookup gap", "nine_gap", (0, 70), (0, 30, 60), weight=1.3,
+                       series=[sp.Series("neutral", _nine_cells("ko.{k}.mk", "gap"), word="Recall minus lookup gap")],
+                       rules=[sp.Rule(GAP_BAR, "bar: {}", unit="nine_bar", key="nine.bar.gap")])  # fmt: skip
+    limit = [sp.Rule(CONTROL_BAR, "limit: {}", unit="nine_bar", key="nine.bar.control")]
+    rot = sp.DotColumn("rotated part", "nine_control", (0, 40), (0, 20, 40), rules=limit,
+                       series=[sp.Series("control", _nine_cells("ko.{k}.rot", "rot"), control="rotated")])
+    logit = sp.DotColumn("logit-lens directions", "nine_control", (0, 40), (0, 20, 40), rules=limit,
+                         series=[sp.Series("control", _nine_cells("ko.{k}.u", "logit"), control="logit lens")])
+    row_sub = {ms[0]: band for band, ms in BANDS}
+    table = sp.DotTable(list(NINE_ROWS), [gap, sp.Gutter(), sp.ColumnGroup("Cost of same-size controls", [rot, logit])],
+                        kind="nine", row_sub=row_sub)  # fmt: skip
+    return sp.Figure("fig06_nine_models", vocab()).add(table)
 
-    def cells(key_of, cell):
-        out = {}
-        for m in NINE_ROWS:
-            k = _id(m)
-            c = D.b(key_of(k))
-            out[m] = sp.Missing("not run") if c is None else est(c, f"{cell}.{k}", key=key_of(k), label=True)
-        return out
 
+def nine_tests(fid: str) -> sp.Figure:
+    """The README's nine-model figure (f3_nine_models; its text cites the swap): four columns in the bar's order, the
+    gap under the knock-out, the larger of the rotated and logit-lens controls, the gap scored by the answer's
+    probability, and the answers moved by another entity's lens part swapped in. The write-up draws
+    fig06_nine_models instead."""
     rot, logit = {}, {}
     for m in NINE_ROWS:
         k = _id(m)
-        r_, u_ = D.b(kr.format(k=k)), D.b(ku.format(k=k))
-        if r_ is None or u_ is None:
-            rot[m] = sp.Missing("not run")
-            continue
-        code, c, key = ("rot", r_, kr) if r_[0] >= u_[0] else ("u", u_, ku)
-        (rot if code == "rot" else logit)[m] = est(c, f"ctrl.{k}", key=key.format(k=k), label=True)
-
-    gap_rule = [sp.Rule(GAP_BAR, "bar: {}", unit="points", key="nine.bar.gap")]
+        r_, u_ = need(D.b(f"ko.{k}.rot"), f"rot {k}"), need(D.b(f"ko.{k}.u"), f"u {k}")
+        code, c = ("rot", r_) if r_[0] >= u_[0] else ("u", u_)
+        (rot if code == "rot" else logit)[m] = est(c, f"ctrl.{k}", key=f"ko.{k}.{code}", label=True)
+    swap = {}
+    for m in NINE_ROWS:
+        k = _id(m)
+        key = SWAPKEY.get(k, f"swap.{k}.swap")
+        c = D.b(key)
+        swap[m] = sp.Missing("not run") if c is None else est(c, f"swap.{k}", key=key, label=True)
     cols = [
-        sp.DotColumn("Gap under the knock-out", "points", (-5, 80), (0, 30, 60), weight=1.15, rules=gap_rule,
-                     series=[sp.Series("neutral", cells(lambda k: kg.format(k=k), "gap"), word="Gap under the knock-out")]),
+        sp.DotColumn("Gap under the knock-out", "points", (-5, 80), (0, 30, 60), weight=1.15,
+                     rules=[sp.Rule(GAP_BAR, "bar: {}", unit="points", key="nine.bar.gap")],
+                     series=[sp.Series("neutral", _nine_cells("ko.{k}.mk", "gap"), word="Gap under the knock-out")]),
         sp.DotColumn("Larger control", "points", (-5, 50), (0, 20, 40), weight=1.2,
                      series=[sp.Series("control", rot, control="rotated", word="rotated"),
                              sp.Series("control", logit, control="logit lens", word="logit lens")],
                      rules=[sp.Rule(CONTROL_BAR, "bar: {}", unit="points", key="nine.bar.control")]),
         sp.DotColumn("Gap scored by probability", "points", (-5, 80), (0, 30, 60), weight=1.15,
-                     series=[sp.Series("neutral", cells(lambda k: ks.format(k=k), "soft"), word="Gap scored by probability")]),
-        sp.DotColumn("Swap", "moved", (-5, 100), (0, 40, 80), series=[sp.Series("lens", cells(swap_key, "swap"), word="Swap")]),
+                     series=[sp.Series("neutral", _nine_cells("ko.{k}.soft", "soft"), word="Gap scored by probability")]),
+        sp.DotColumn("Swap", "moved", (-5, 100), (0, 40, 80), series=[sp.Series("lens", swap, word="Swap")]),
     ]  # fmt: skip
     row_sub = {ms[0]: band for band, ms in BANDS}
     return sp.Figure(fid, vocab()).add(sp.DotTable(list(NINE_ROWS), cols, kind="nine", row_sub=row_sub))
-
-
-def fig06_nine_models() -> sp.Figure:
-    """The nine models at the main runs' size, 10 lens-part directions (see _nine)."""
-    return _nine("fig06_nine_models", "k10")
-
-
-def fig06b_nine_models_100() -> sp.Figure:
-    """The same nine models and columns at 100 lens-part directions: the dose runs (the gap with its interval, the
-    controls and the probability gap without) and the swap dose (see _nine)."""
-    return _nine("fig06b_nine_models_100", "k100")
 
 # ---- Fig. 7: the two routes ----------------------------------------------------------------------------------------------
 ROUTE_Q = "another item moved, whole: {} share"
@@ -217,7 +221,7 @@ def patch_split() -> sp.Figure:
 
 
 def patch_layers() -> sp.Figure:
-    """(C) One layer is not essential (locker scenes, no patch, the ladder's own scenes in every column): the answers
+    """One layer is not essential (locker scenes, no patch, the ladder's own scenes in every column): the answers
     kept when the lens part is removed from a prompt's own state at the bridge word at one layer, at the bridge word
     over four layers, and at every token over four layers; lookup and recall dots, grey tick: the recall's answers kept
     with a random part of the same share removed instead."""
@@ -228,9 +232,13 @@ def patch_layers() -> sp.Figure:
                                  series=[sp.Series("lookup", _kept(f"patch.rung{rung}.zero.lookup.{{k}}", f"rung{rung}")),
                                          sp.Series("recall", _kept(f"patch.rung{rung}.zero.recall.{{k}}", f"rung{rung}"))],
                                  ticks={m: need(CV.w(f"patch.rung{rung}.rand.recall.{ZK[m]}"), m)[0] for m in DAN}))
-    table = sp.DotTable(DAN, [sp.ColumnGroup("(C) One layer is not essential", cols)])
-    return sp.Figure("patch_layers", vocab()).add(table)
+    table = sp.DotTable(DAN, cols)  # the caption names the claim; a group title over three panels read as two
+    # this figure's grey tick is the recall's random part, not the largest same-size control ([key].tick)
+    return sp.Figure("patch_layers", dataclasses.replace(vocab(), key_tick=RANDOM_TICK)).add(table)
+
+
+RANDOM_TICK = "the recall with a random part of the same share removed"
 
 FIGS = {"patch_split": patch_split, "patch_layers": patch_layers, "fig06_nine_models": fig06_nine_models,
-        "fig06b_nine_models_100": fig06b_nine_models_100, "fig07_routes": fig07_routes,
+        "fig07_routes": fig07_routes,
         "appB_f15_link_crossover": appB_f15_link_crossover, "appB_f18_code_tool": appB_f18_code_tool}  # fmt: skip
