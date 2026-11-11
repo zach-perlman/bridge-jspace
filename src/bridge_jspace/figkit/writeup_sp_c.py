@@ -76,7 +76,7 @@ def fig06_nine_models() -> sp.Figure:
     row_sub = {ms[0]: band for band, ms in BANDS}
     table = sp.DotTable(list(NINE_ROWS), [gap, sp.Gutter(), sp.ColumnGroup("Cost of same-size controls", [rot, logit])],
                         kind="nine", row_sub=row_sub)  # fmt: skip
-    return sp.Figure("fig06_nine_models", vocab(), subtitle="known-fact set").add(table)
+    return sp.Figure("fig06_nine_models", vocab(), subtitle="method: knock-out, band of middle layers · data: known-fact set").add(table)
 
 
 def nine_tests(fid: str) -> sp.Figure:
@@ -227,7 +227,7 @@ def patch_split() -> sp.Figure:
                           word=header_b)],  # one series: the header names it, no colour word
         rules=[sp.Rule(ANSWER_BAR, "bar {}", unit="drop_kept", key="patch.rule.answer")])  # fmt: skip
     table = sp.DotTable(rows, [remove, sp.Gutter(), answer])
-    return sp.Figure("patch_split", vocab(), subtitle="locker scenes · patch").add(table)
+    return sp.Figure("patch_split", vocab(), subtitle="method: patch at the bridge word · data: locker scenes").add(table)
 
 
 def patch_layers() -> sp.Figure:
@@ -244,7 +244,7 @@ def patch_layers() -> sp.Figure:
     table = sp.DotTable(DAN, cols)  # the claim is in the caption
     # this figure's grey tick is the recall's random part, not the largest same-size control ([key].tick)
     return sp.Figure("patch_layers", dataclasses.replace(vocab(), key_tick=RANDOM_TICK),
-                     subtitle="locker scenes · no patch").add(table)
+                     subtitle="method: lens part removed, no patch · data: locker scenes").add(table)
 
 
 RANDOM_TICK = "random part, same size"

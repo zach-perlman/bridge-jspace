@@ -96,7 +96,7 @@ def fig01_main_split() -> sp.Figure:
     lanes = [sp.Lane("known", "known-fact set"), sp.Lane("made", "made-up-fact set")]
     table = sp.DotTable(models, [drop_col, gap_col], lanes=lanes)
     v = dataclasses.replace(vocab(), key_tick=RUN_TICK)
-    return sp.Figure("fig01_main_split", v, subtitle="knock-out · band of middle layers").add(table)
+    return sp.Figure("fig01_main_split", v, subtitle="method: knock-out, band of middle layers · data: fact passages").add(table)
 
 
 # fig01's tick: the known-fact set ran three same-size controls, the made-up-fact set one (the rotated part)

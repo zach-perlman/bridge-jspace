@@ -128,7 +128,7 @@ def fig08a_address_read_remove() -> sp.Figure:
     remove = sp.DotColumn("position answers without the address", "lookups", (-0.12, 0.74), (0, 0.25, 0.5),
                           series=[sp.Series("control", rand, control="a random part"), sp.Series("address", addr)],
                           connect=("control", "address"))  # fmt: skip
-    return sp.Figure("fig08a_address_read_remove", vocab()).add(sp.DotTable(DAN, [read, remove]))
+    return sp.Figure("fig08a_address_read_remove", vocab(), subtitle="method: probe; the address removed from the patch · data: locker scenes").add(sp.DotTable(DAN, [read, remove]))
 
 
 def fig08b_address_swap_lens() -> sp.Figure:
@@ -157,7 +157,7 @@ def fig08b_address_swap_lens() -> sp.Figure:
                         series=[sp.Series("address", ptr, word="address swap"),
                                 sp.Series("identity", item, word="a change of item")],
                         connect=("address", "identity"), band=(-1, 1), band_name="random_vectors")  # fmt: skip
-    return sp.Figure("fig08b_address_swap_lens", vocab()).add(sp.DotTable(DAN, [swap, lens]))
+    return sp.Figure("fig08b_address_swap_lens", vocab(), subtitle="method: address swapped in; lens rebuild · data: locker scenes").add(sp.DotTable(DAN, [swap, lens]))
 
 
 # ---- Fig. 10: the answer span --------------------------------------------------------------------------------------------
@@ -194,7 +194,7 @@ def fig10_answer_span() -> sp.Figure:
                                sp.Series("answer", span, word=header)],
                        rules=[sp.Rule(ALL_OF_IT, "all of it")])  # fmt: skip
     lanes = [sp.Lane(key, label) for key, label in SPAN_LANES]
-    return sp.Figure("fig10_answer_span", vocab()).add(sp.DotTable(TWIN, [col], lanes=lanes))
+    return sp.Figure("fig10_answer_span", vocab(), subtitle="method: knock-out, band of middle layers · data: made-up-fact and codename sets").add(sp.DotTable(TWIN, [col], lanes=lanes))
 
 
 # ---- Fig. 11: removals orthogonal to the answers -------------------------------------------------------------------------
@@ -258,7 +258,7 @@ def fig13_last_token() -> sp.Figure:
                         connect=("lens", "control"))  # fmt: skip
     # the lens part's values in their own column, as the figkit figure printed them apart from the dots
     values = sp.TextColumn("lens part", "recalls", lens, role="lens", unit_title=False)
-    return sp.Figure("fig13_last_token", v).add(sp.DotTable(models, [probe, used, values], row_sub=sub))
+    return sp.Figure("fig13_last_token", v, subtitle="method: probe and swap at the last token · data: locker scenes").add(sp.DotTable(models, [probe, used, values], row_sub=sub))
 
 
 # ---- Fig. A1: inside agent transcripts -----------------------------------------------------------------------------------
