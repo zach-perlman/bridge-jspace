@@ -76,7 +76,7 @@ def fig06_nine_models() -> sp.Figure:
     assert all(_verdict(m) for m in NINE_ROWS)  # the bands agree with the data
     row_sub = {ms[0]: band for band, ms in BANDS}
     table = sp.DotTable(list(NINE_ROWS), [gap, sp.Gutter(), sp.ColumnGroup("Cost of same-size controls", [rot, logit])],
-                        kind="nine", row_sub=row_sub)  # fmt: skip
+                        kind="nine", row_sub=row_sub, note="known-fact set")  # fmt: skip
     return sp.Figure("fig06_nine_models", vocab()).add(table)
 
 
@@ -229,7 +229,7 @@ def patch_split() -> sp.Figure:
                                             key=f"patch.answer_kept.{ZK[m]}", label=True) for m in rows},
                           word="drop kept")],
         rules=[sp.Rule(ANSWER_BAR, "bar: {}", unit="drop_kept", key="patch.rule.answer")])  # fmt: skip
-    table = sp.DotTable(rows, [remove, sp.Gutter(), answer])
+    table = sp.DotTable(rows, [remove, sp.Gutter(), answer], note="locker scenes · patch")
     energy = {m: need(D.s(m, ANSWER_ENERGY, "cards"), f"energy {m}") for m in rows}
     # a bound the data give: every model's 95% interval ends under it (the largest upper end, rounded up to 0.01)
     most = max(rows, key=lambda m: energy[m][2])
@@ -249,7 +249,7 @@ def patch_layers() -> sp.Figure:
                                  series=[sp.Series("lookup", _kept(f"patch.rung{rung}.zero.lookup.{{k}}", f"rung{rung}")),
                                          sp.Series("recall", _kept(f"patch.rung{rung}.zero.recall.{{k}}", f"rung{rung}"))],
                                  ticks={m: need(CV.w(f"patch.rung{rung}.rand.recall.{ZK[m]}"), m)[0] for m in DAN}))
-    table = sp.DotTable(DAN, cols)  # the caption names the claim; a group title over three panels read as two
+    table = sp.DotTable(DAN, cols, note="locker scenes · no patch")  # the claim is in the caption
     # this figure's grey tick is the recall's random part, not the largest same-size control ([key].tick)
     return sp.Figure("patch_layers", dataclasses.replace(vocab(), key_tick=RANDOM_TICK)).add(table)
 

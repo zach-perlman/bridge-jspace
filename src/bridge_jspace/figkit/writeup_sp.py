@@ -58,12 +58,42 @@ def _band_columns(models, label_gap=True, gap_word=GAP) -> list:
     return [drop, gap]
 
 
+def _made_drop(k: str, reader: str) -> sp.Est:
+    """A reader's answers turned wrong on the made-up-fact set: unedited minus knock-out accuracy (points)."""
+    u, ko = (need(W.w(f"fig04.{reader}.{c}.{k}"), f"{reader} {c} {k}")[0] for c in ("unedited", "paper10"))
+    return sp.Est(u - ko, cell=f"made.{k}")
+
+
 def fig01_main_split() -> sp.Figure:
-    """Band of layers (fact passages): each reader's accuracy drop under the knock-out; the gap with its 95% whisker
-    and the largest same-size control as a grey tick. The one-layer half is the post's Figure 3A (patch_split, the same
-    cells), so this figure leaves it out; the README's r1_c1_split / r1_c1_gaps keep both halves."""
+    """Band of layers, both fact sets as lanes of each model's row: each reader's answers turned wrong under the
+    knock-out (lookup joined to recall) and the gap with its 95% whisker. The known-fact set (docs/breadth/data.csv
+    ko.*) has the largest same-size control as a grey tick; the made-up-fact set (fig04_twin_set's rows: unedited minus
+    knock-out accuracy, the registered gap) has only the rotated part, drawn as a named grey dot so the two controls
+    are never one mark. Muse and the 122B have no made-up-fact run. The one-layer half is the post's Figure 3A
+    (patch_split); the README's r1_c1_split / r1_c1_gaps keep both halves."""
     models = [m for m, _ in D.DAN]
-    table = sp.DotTable(models, [sp.ColumnGroup(BAND, _band_columns(models, gap_word="gap"))])
+    lk, rc, gap, rot, tick = {}, {}, {}, {}, {}
+    for m in models:
+        k = ZK[m]
+        known, made = (m, "known"), (m, "made")
+        lk[known] = est(need(D.b(f"ko.{k}.lostK"), f"lostK {k}"), f"band.{k}", interval=False)
+        rc[known] = est(need(D.b(f"ko.{k}.lostM"), f"lostM {k}"), f"band.{k}", interval=False)
+        gap[known] = est(need(D.b(f"ko.{k}.mk"), f"mk {k}"), f"band.{k}", key=f"ko.{k}.mk", label=True)
+        tick[known] = need(S.ctrl(k), f"ctrl {m}")
+        g = W.w(f"fig04.gap.paper10.{k}")
+        if g is None:  # no run on the made-up-fact set
+            rc[made], gap[made] = sp.Missing("not run"), sp.Missing("not run")
+            continue
+        lk[made], rc[made] = _made_drop(k, "lookup"), _made_drop(k, "recall")
+        gap[made] = est(g, f"made_gap.{k}", key=f"fig04.gap.paper10.{k}", label=True)
+        rot[made] = est(need(W.w(f"fig04.gap.paper10_rot.{k}"), f"rot {k}"), f"made_rot.{k}")
+    drop_col = sp.DotColumn("answers turned wrong", "drop", (-4, 82), (0, 30, 60), connect=("lookup", "recall"),
+                            series=[sp.Series("lookup", lk), sp.Series("recall", rc)])  # fmt: skip
+    gap_col = sp.DotColumn("gap", "gap", (-6, 98), (0, 30, 60), ticks=tick,
+                           series=[sp.Series("control", rot, control="rotated"),
+                                   sp.Series("neutral", gap, word="gap")])  # fmt: skip
+    lanes = [sp.Lane("known", "known-fact set"), sp.Lane("made", "made-up-fact set")]
+    table = sp.DotTable(models, [sp.ColumnGroup("Band of layers", [drop_col, gap_col])], lanes=lanes)
     return sp.Figure("fig01_main_split", vocab()).add(table)
 
 

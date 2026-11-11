@@ -719,13 +719,28 @@ def rows() -> list[dict]:
     readme = readme_set(writeup)
     out = lightning([*writeup, *readme, *depth_set(writeup), *depth_set_b(), *depth_set_c(),
                      *depth_set_d(), *depth_set_e(), *depth_set_f(), *breadth_set(readme)])
-    out = out + patch_split(out) + nine_models(out)
+    out = out + patch_split(out) + nine_models(out) + fig01_made_up(out)
     out = [r for r in out if r["figure"] != "fig06_nine_models" or r["cell"].startswith(NINE_DRAWN)]
     # fig01 draws the band half only (its one-layer cells are patch_split's; they stay registered for patch_split and
     # the README's copies, which read them above). The post's reader meets fig01 before the nine-model figure, which
     # carries Muse's and the 122B's verdict (Dan, 10 Nov): no "not claimed" notes on fig01; the README's copies keep theirs
     return [{**r, "tag": ""} if r["figure"] == "fig01_main_split" else r for r in out
-            if r["figure"] != "fig01_main_split" or r["cell"].startswith("band.")]
+            if r["figure"] != "fig01_main_split" or r["cell"].startswith(("band.", "made"))]
+
+
+# fig01's made-up-fact lane (11 Nov): the cells fig04_twin_set draws from the same runs, with their statuses
+MADE_FROM = (("made", "recall.paper10"), ("made_gap", "gap.paper10"), ("made_rot", "gap.paper10_rot"))
+
+
+def fig01_made_up(rows_: list[dict]) -> list[dict]:
+    by = {(r["figure"], r["cell"]): r for r in rows_}
+    out = []
+    for k in ("q9", "q27", "nl"):
+        for cell, src in MADE_FROM:
+            r = by[("fig04_twin_set", f"{src}.{k}")]
+            out.append({**r, "figure": "fig01_main_split", "cell": f"{cell}.{k}",
+                        "reason": f"{r['reason']} (as fig04_twin_set's {src}.{k}, the same run)"})
+    return out
 
 
 COLUMNS = ("figure", "cell", "timing", "claim", "claim_reason", "reason", "source")  # styles-plot's registry schema
