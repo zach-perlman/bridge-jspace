@@ -67,9 +67,10 @@ def _made_drop(k: str, reader: str) -> sp.Est:
 def fig01_main_split() -> sp.Figure:
     """Band of layers, both fact sets as lanes of each model's row: each reader's answers turned wrong under the
     knock-out (lookup joined to recall) and the gap with its 95% whisker. The known-fact set (docs/breadth/data.csv
-    ko.*) has the largest same-size control as a grey tick; the made-up-fact set (fig04_twin_set's rows: unedited minus
-    knock-out accuracy, the registered gap) has only the rotated part, drawn as a named grey dot so the two controls
-    are never one mark. Muse and the 122B have no made-up-fact run. The one-layer half is the post's Figure 3A
+    ko.*) has the largest same-size control (rotated, logit lens or PCA) as a grey tick; the made-up-fact set
+    (fig04_twin_set's rows: unedited minus knock-out accuracy, the registered gap) ran only the rotated part. Both
+    lanes draw the rotated part as a named grey dot (Dan, 11 Nov), so it compares across sets and the tick keeps one
+    meaning. Muse and the 122B have no made-up-fact run. The one-layer half is the post's Figure 3A
     (patch_split); the README's r1_c1_split / r1_c1_gaps keep both halves."""
     models = [m for m, _ in D.DAN]
     lk, rc, gap, rot, tick = {}, {}, {}, {}, {}
@@ -80,6 +81,7 @@ def fig01_main_split() -> sp.Figure:
         rc[known] = est(need(D.b(f"ko.{k}.lostM"), f"lostM {k}"), f"band.{k}", interval=False)
         gap[known] = est(need(D.b(f"ko.{k}.mk"), f"mk {k}"), f"band.{k}", key=f"ko.{k}.mk", label=True)
         tick[known] = need(S.ctrl(k), f"ctrl {m}")
+        rot[known] = est(need(D.b(f"ko.{k}.rot"), f"rot {k}"), f"band.{k}")  # the same run as the band test
         g = W.w(f"fig04.gap.paper10.{k}")
         if g is None:  # no run on the made-up-fact set
             rc[made], gap[made] = sp.Missing("not run"), sp.Missing("not run")

@@ -15,7 +15,7 @@
  "publishable": true,
  "text_only": false,
  "png": {
-  "pixels_sha256": "ed52fbe11ed0c121873f090792a15621f785d0004534e3cef3a4ff0248966af8",
+  "pixels_sha256": "d23f33e7dacad0e93b210d468e276e20ce70298df9f7d40cd23c4b0f765f3a4d",
   "dpi": 200
  },
  "roles": [
@@ -215,6 +215,14 @@
   },
   {
    "kind": "dot",
+   "role": "control",
+   "cell": "band.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
    "role": "neutral",
    "cell": "band.q9",
    "timing": "fixed_in_advance",
@@ -233,6 +241,14 @@
    "kind": "dot",
    "role": "neutral",
    "cell": "made_gap.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "band.q27",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -263,11 +279,27 @@
   },
   {
    "kind": "dot",
+   "role": "control",
+   "cell": "band.mu",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
    "role": "neutral",
    "cell": "band.mu",
    "timing": "post_hoc",
    "claim": "claimed",
    "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "band.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
   },
   {
    "kind": "dot",
@@ -292,6 +324,14 @@
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "band.q122",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
   },
   {
    "kind": "dot",
