@@ -221,7 +221,7 @@ def patch_split() -> sp.Figure:
                sp.Rule(RECALL_AT_LEAST, "rule ≥ {}", unit="switches", key="patch.rule.recall")])  # fmt: skip
     header_b = "(B) Patch, lens part removed, answer words kept"
     answer = sp.DotColumn(
-        header_b, "drop_kept", (0, 1.45), (0, 0.5, 1),  # room right of the 122B's whisker (1.18) for its value
+        header_b, "drop_kept", (0, 1.3), (0, 0.5, 1),  # room right of the 122B's whisker (1.18) for its value
         series=[sp.Series("recall", {m: est(need(D.s(m, ANSWER_KEPT, "conflict_answer"), f"kept {m}"), f"answer.{ZK[m]}",
                                             key=f"patch.answer_kept.{ZK[m]}", label=True) for m in rows},
                           word=header_b)],  # one series: the header names it, no colour word
