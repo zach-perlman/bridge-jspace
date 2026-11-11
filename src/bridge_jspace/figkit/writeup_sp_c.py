@@ -6,7 +6,6 @@ the depth README's fig21 (the same cells). Same data accessors as the figkit bui
 from __future__ import annotations
 
 import dataclasses
-import math
 
 import styles_plot as sp
 
@@ -189,8 +188,6 @@ def appB_f18_code_tool() -> sp.Figure:
 
 # ---- Result 1: one patch at the bridge, two answers ----------------------------------------------------------------------
 ANSWER_KEPT = "main test, recall: share of its loss kept when the lens part keeps the answer words' directions"
-ANSWER_ONLY = "main test, recall: switches lost beyond random without the answer words' directions only"
-ANSWER_ENERGY = "52 A: share of the rebuilt energy in the reader's answer word"
 # the rules fixed in advance: the conflict test's (scripts/x0_necessity.py docstring: lookup excess <= 0.10,
 # recall >= 0.30) and the answer-word check's (docs/depth/EXPERIMENTS.md t51-12: arm 2 keeps >= 0.7)
 LOOKUP_AT_MOST, RECALL_AT_LEAST, ANSWER_BAR = 0.10, 0.30, 0.7
@@ -204,38 +201,33 @@ def _kept(key, cell, label=False):
 def patch_split() -> sp.Figure:
     """One patch at the bridge, two answers (locker scenes). (A) the patch's switches the lens part's removal blocks
     beyond a random part of the same size, lookup and recall, against the pass rule fixed in advance (grey). (B) the
-    recall's drop kept when the lens part spares the answer words' directions, against its bar fixed in advance. The
-    read line: a bound on the answer word's share of the lens part's energy that every model's interval stays under."""
+    share of the recall's drop that remains when the removal keeps the answer words' directions, against its bar fixed
+    in advance. The answer word's share of the lens part's energy is in the post's text, not on the figure."""
     rows = DAN
 
     def layer(m, reader):
         # the recall printed; a lookup printed only where it misses the rule (the others sit inside the rule's line)
         c = need(S.conflict(m, reader), f"{reader} {m}")
         miss = reader == "lookup" and c[0] > LOOKUP_AT_MOST
-        return est(c, f"layer.{ZK[m]}", key=f"patch.layer.{reader}.{ZK[m]}", label=reader == "recall" or miss,
-                   note="misses the rule" if miss else None)
+        return est(c, f"layer.{ZK[m]}", key=f"patch.layer.{reader}.{ZK[m]}", label=reader == "recall" or miss)
 
     remove = sp.DotColumn(
-        "(A) Patch without the lens part", "switches_share", (-0.2, 1.2), (0, 0.5, 1),
+        "(A) Patch, lens part removed", "switches_share", (-0.2, 1.2), (0, 0.5, 1),
         series=[sp.Series("lookup", {m: layer(m, "lookup") for m in rows}),
                 sp.Series("recall", {m: layer(m, "recall") for m in rows})],
-        # the recall's rule is on its switches before the random part is subtracted (scripts/x0_necessity.py)
-        rules=[sp.Rule(LOOKUP_AT_MOST, "pass rule: lookup ≤ {}", unit="switches", key="patch.rule.lookup"),
-               sp.Rule(RECALL_AT_LEAST, "pass rule: recall ≥ {}, before the random part", unit="switches",
-                       key="patch.rule.recall")])  # fmt: skip
+        # the recall's rule is on its switches before the random part is subtracted (scripts/x0_necessity.py); the
+        # post's text says so
+        rules=[sp.Rule(LOOKUP_AT_MOST, "rule ≤ {}", unit="switches", key="patch.rule.lookup"),
+               sp.Rule(RECALL_AT_LEAST, "rule ≥ {}", unit="switches", key="patch.rule.recall")])  # fmt: skip
+    header_b = "(B) Patch, lens part removed, answer words kept"
     answer = sp.DotColumn(
-        "(B) Not the answer word", "drop_kept", (0, 1.2), (0, 0.5, 1),
+        header_b, "drop_kept", (0, 1.45), (0, 0.5, 1),  # room right of the 122B's whisker (1.18) for its value
         series=[sp.Series("recall", {m: est(need(D.s(m, ANSWER_KEPT, "conflict_answer"), f"kept {m}"), f"answer.{ZK[m]}",
                                             key=f"patch.answer_kept.{ZK[m]}", label=True) for m in rows},
-                          word="drop kept")],
-        rules=[sp.Rule(ANSWER_BAR, "bar: {}", unit="drop_kept", key="patch.rule.answer")])  # fmt: skip
+                          word=header_b)],  # one series: the header names it, no colour word
+        rules=[sp.Rule(ANSWER_BAR, "bar {}", unit="drop_kept", key="patch.rule.answer")])  # fmt: skip
     table = sp.DotTable(rows, [remove, sp.Gutter(), answer], note="locker scenes · patch")
-    energy = {m: need(D.s(m, ANSWER_ENERGY, "cards"), f"energy {m}") for m in rows}
-    # a bound the data give: every model's 95% interval ends under it (the largest upper end, rounded up to 0.01)
-    most = max(rows, key=lambda m: energy[m][2])
-    numbers = {"energy": (math.ceil(energy[most][2] * 100) / 100, "share", f"patch.energy.{ZK[most]}")}
-    read = "read (B): the answer word holds under {energy} of the lens part's energy on every model"
-    return sp.Figure("patch_split", vocab(), read=read, numbers=numbers).add(table)
+    return sp.Figure("patch_split", vocab()).add(table)
 
 
 def patch_layers() -> sp.Figure:

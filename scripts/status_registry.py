@@ -670,7 +670,7 @@ def unblocked_016(fig01_rows: list[dict], depth: list[dict]) -> list[dict]:
 
 # patch_split (Result 1): each panel's cells take the status of the figure that already draws the same numbers
 PATCH_FROM = (("patch_split", "layer", "fig01_main_split", "layer"), ("patch_split", "answer", "fig40_item_not_answer", "c"),
-              ("patch_split", "energy", "fig40_item_not_answer", "c"), ("patch_layers", "rung1", "fig42_ladder", "c"),
+              ("patch_layers", "rung1", "fig42_ladder", "c"),
               ("patch_layers", "rung2", "fig42_ladder", "c"), ("patch_layers", "rung5", "fig42_ladder", "c"))  # fmt: skip
 
 
