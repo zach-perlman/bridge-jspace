@@ -729,7 +729,7 @@ def rows() -> list[dict]:
 
 
 # fig01's made-up-fact lane (11 Nov): the cells fig04_twin_set draws from the same runs, with their statuses
-MADE_FROM = (("made", "recall.paper10"), ("made_gap", "gap.paper10"), ("made_rot", "gap.paper10_rot"))
+MADE_FROM = (("made", "recall.paper10"), ("made_gap", "gap.paper10"))
 
 
 def fig01_made_up(rows_: list[dict]) -> list[dict]:

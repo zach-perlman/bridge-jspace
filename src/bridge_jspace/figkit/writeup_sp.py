@@ -9,6 +9,7 @@ uv run python -m bridge_jspace.figkit.writeup_sp [ids...]
 from __future__ import annotations
 
 import csv
+import dataclasses
 import sys
 from functools import cache
 
@@ -67,13 +68,13 @@ def _made_drop(k: str, reader: str) -> sp.Est:
 def fig01_main_split() -> sp.Figure:
     """Band of layers, both fact sets as lanes of each model's row: each reader's answers turned wrong under the
     knock-out (lookup joined to recall) and the gap with its 95% whisker. The known-fact set (docs/breadth/data.csv
-    ko.*) has the largest same-size control (rotated, logit lens or PCA) as a grey tick; the made-up-fact set
-    (fig04_twin_set's rows: unedited minus knock-out accuracy, the registered gap) ran only the rotated part. Both
-    lanes draw the rotated part as a named grey dot (Dan, 11 Nov), so it compares across sets and the tick keeps one
-    meaning. Muse and the 122B have no made-up-fact run. The one-layer half is the post's Figure 3A
-    (patch_split); the README's r1_c1_split / r1_c1_gaps keep both halves."""
+    ko.*) has three same-size controls (rotated, logit lens, PCA); the made-up-fact set (fig04_twin_set's rows:
+    unedited minus knock-out accuracy, the registered gap) ran only the rotated part. One grey tick per lane: the
+    largest same-size control run on that set (Dan, 11 Nov), said so in this figure's key. Muse and the 122B have no
+    made-up-fact run. The one-layer half is the post's Figure 3A (patch_split); the README's r1_c1_split /
+    r1_c1_gaps keep both halves."""
     models = [m for m, _ in D.DAN]
-    lk, rc, gap, rot, tick = {}, {}, {}, {}, {}
+    lk, rc, gap, tick = {}, {}, {}, {}
     for m in models:
         k = ZK[m]
         known, made = (m, "known"), (m, "made")
@@ -81,22 +82,25 @@ def fig01_main_split() -> sp.Figure:
         rc[known] = est(need(D.b(f"ko.{k}.lostM"), f"lostM {k}"), f"band.{k}", interval=False)
         gap[known] = est(need(D.b(f"ko.{k}.mk"), f"mk {k}"), f"band.{k}", key=f"ko.{k}.mk", label=True)
         tick[known] = need(S.ctrl(k), f"ctrl {m}")
-        rot[known] = est(need(D.b(f"ko.{k}.rot"), f"rot {k}"), f"band.{k}")  # the same run as the band test
         g = W.w(f"fig04.gap.paper10.{k}")
         if g is None:  # no run on the made-up-fact set
             rc[made], gap[made] = sp.Missing("not run"), sp.Missing("not run")
             continue
         lk[made], rc[made] = _made_drop(k, "lookup"), _made_drop(k, "recall")
         gap[made] = est(g, f"made_gap.{k}", key=f"fig04.gap.paper10.{k}", label=True)
-        rot[made] = est(need(W.w(f"fig04.gap.paper10_rot.{k}"), f"rot {k}"), f"made_rot.{k}")
+        tick[made] = need(W.w(f"fig04.gap.paper10_rot.{k}"), f"rot {k}")[0]  # its only same-size control
     drop_col = sp.DotColumn("answers turned wrong", "drop", (-4, 82), (0, 30, 60), connect=("lookup", "recall"),
                             series=[sp.Series("lookup", lk), sp.Series("recall", rc)])  # fmt: skip
     gap_col = sp.DotColumn("gap", "gap", (-6, 98), (0, 30, 60), ticks=tick,
-                           series=[sp.Series("control", rot, control="rotated"),
-                                   sp.Series("neutral", gap, word="gap")])  # fmt: skip
+                           series=[sp.Series("neutral", gap, word="gap")])
     lanes = [sp.Lane("known", "known-fact set"), sp.Lane("made", "made-up-fact set")]
     table = sp.DotTable(models, [drop_col, gap_col], lanes=lanes)
-    return sp.Figure("fig01_main_split", vocab(), subtitle="knock-out · band of middle layers").add(table)
+    v = dataclasses.replace(vocab(), key_tick=RUN_TICK)
+    return sp.Figure("fig01_main_split", v, subtitle="knock-out · band of middle layers").add(table)
+
+
+# fig01's tick: the known-fact set ran three same-size controls, the made-up-fact set one (the rotated part)
+RUN_TICK = "the largest same-size control run on that set"
 
 
 # ---- Fig. 4: the made-up-fact set ----------------------------------------------------------------------------------------------

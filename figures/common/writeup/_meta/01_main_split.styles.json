@@ -2,12 +2,12 @@
  "styles_plot": "0.2.2",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "cc9c6ed44269ff448f9e3e2551758fbb31d05d6cfad4cc68a058375a1856baaa",
+  "sha256": "1c0f24d7e97a0a6d5ec636526d6c0a47e3a65d1516bfcbadde04e8f3623f74ca",
   "hash": "meaning"
  },
  "registry": {
   "path": "data/figures/status.csv",
-  "sha256": "76cf59d47e8eb038e74108f711e0d1239746f00b7994a66f0a1571e4e2dc01f5"
+  "sha256": "0747c4750b27db9041a1371b9be30b4fdcd47087f4891d3fc2ae2f1f7ed460c7"
  },
  "figure": "fig01_main_split",
  "target": "post",
@@ -15,7 +15,7 @@
  "publishable": true,
  "text_only": false,
  "png": {
-  "pixels_sha256": "d23f33e7dacad0e93b210d468e276e20ce70298df9f7d40cd23c4b0f765f3a4d",
+  "pixels_sha256": "513721a8ab4d553216183f46285331883cfdaf0c43e7b623d018cfbd4c8ec68c",
   "dpi": 200
  },
  "roles": [
@@ -23,9 +23,7 @@
   "neutral",
   "recall"
  ],
- "controls": [
-  "rotated"
- ],
+ "controls": [],
  "cells": {
   "band.mu": {
    "timing": "post_hoc",
@@ -68,18 +66,6 @@
    "claim": "claimed"
   },
   "made_gap.q9": {
-   "timing": "fixed_in_advance",
-   "claim": "claimed"
-  },
-  "made_rot.nl": {
-   "timing": "fixed_in_advance",
-   "claim": "claimed"
-  },
-  "made_rot.q27": {
-   "timing": "fixed_in_advance",
-   "claim": "claimed"
-  },
-  "made_rot.q9": {
    "timing": "fixed_in_advance",
    "claim": "claimed"
   }
@@ -215,24 +201,8 @@
   },
   {
    "kind": "dot",
-   "role": "control",
-   "cell": "band.q9",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
    "role": "neutral",
    "cell": "band.q9",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "made_rot.q9",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -247,24 +217,8 @@
   },
   {
    "kind": "dot",
-   "role": "control",
-   "cell": "band.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
    "role": "neutral",
    "cell": "band.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "made_rot.q27",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -279,14 +233,6 @@
   },
   {
    "kind": "dot",
-   "role": "control",
-   "cell": "band.mu",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
    "role": "neutral",
    "cell": "band.mu",
    "timing": "post_hoc",
@@ -295,24 +241,8 @@
   },
   {
    "kind": "dot",
-   "role": "control",
-   "cell": "band.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
    "role": "neutral",
    "cell": "band.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "made_rot.nl",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -327,14 +257,6 @@
   },
   {
    "kind": "dot",
-   "role": "control",
-   "cell": "band.q122",
-   "timing": "post_hoc",
-   "claim": "claimed",
-   "hollow": true
-  },
-  {
-   "kind": "dot",
    "role": "neutral",
    "cell": "band.q122",
    "timing": "post_hoc",
@@ -343,8 +265,7 @@
   }
  ],
  "key": [
-  "grey tick: the largest same-size control",
-  "grey: rotated",
+  "grey tick: the largest same-size control run on that set",
   "whiskers: 95% interval",
   "○ post hoc"
  ],
