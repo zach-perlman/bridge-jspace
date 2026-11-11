@@ -84,7 +84,7 @@ def fig06_nine_models() -> sp.Figure:
     table = sp.DotTable(list(NINE_ROWS), [gap, sp.Gutter(), sp.ColumnGroup("Cost of same-size controls",
                                                                           [rot, sp.Gutter(0.22), logit])],
                         kind="nine", groups=groups)  # fmt: skip
-    return sp.Figure("fig06_nine_models", vocab(), key_layout="column",
+    return sp.Figure("fig06_nine_models", vocab(),
                      subtitle="method: knock-out, band of middle layers · data: known-fact set").add(table)
 
 
