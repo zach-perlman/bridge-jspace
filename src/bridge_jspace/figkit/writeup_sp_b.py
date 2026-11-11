@@ -163,25 +163,28 @@ def fig08b_address_swap_lens() -> sp.Figure:
 # ---- Fig. 10: the answer span --------------------------------------------------------------------------------------------
 ALL_OF_IT = 1.0  # the full knock-out's damage: every number here is a share of it
 KEEP_CONTROL = "random directions of the same energy kept"
-# the three tests as lanes of each model's row (one axis: both readings divide by the full knock-out's recall drop net of
-# its rotated control; the keep is not net of a random keep, its grey dot beside it; the removals are net of an
+# the four tests as lanes of each model's row, named on the plot (one axis: every reading divides by the full
+# knock-out's recall drop net of its rotated control; the keeps are not net of each other; the removals are net of an
 # energy-matched random removal)
-SPAN_LANES = (("keep", "damage undone"), ("v4", "damage done"), ("codename", "damage done, codename set"))
+SPAN_LANES = (("keep", "keep only the answer span"), ("random", "keep random, same energy"),
+              ("v4", "remove only the span, made-up-fact set"),
+              ("codename", "remove only the span, codename set"))  # fmt: skip
 
 
 def fig10_answer_span() -> sp.Figure:
-    """The answer span's share of the knock-out's damage, one axis, 1 = all of it. Per model three lanes: the share
-    undone by keeping only the answer span (brick) against random directions of the same energy kept (grey); the share
-    done by removing only the answer span, beyond an energy-matched random removal, on the made-up-fact set (jsuite_v4)
-    and on the codename set, where each person is named only by a codename the passage defines (jsuite_v5al, note 31)."""
+    """The answer span's share of the knock-out's damage, one axis, 1 = all of it. Per model four lanes: the share
+    undone by keeping only the answer span (brick); by keeping random directions of the same energy instead (grey;
+    "n/a" where no random keep holds as much energy, Lightning); the share done by removing only the answer span,
+    beyond an energy-matched random removal, on the made-up-fact set (jsuite_v4) and on the codename set, where each
+    person is named only by a codename the passage defines (jsuite_v5al, note 31)."""
     span, ctrl = {}, {}
     for m in TWIN:
         k = ZK[m]
         span[(m, "keep")] = est(need(W.w(f"fig10.keep_span.{k}"), f"keep {k}"), f"keep.{k}",
                                 key=f"fig10.keep_span.{k}", label=True)  # fmt: skip
         c = need(W.w(f"fig10.keep_ctrl.{k}"), f"keep_ctrl {k}")
-        if c[0] is not None:  # Lightning: neither random keep holds the kept span's energy (said in the caption)
-            ctrl[(m, "keep")] = est(c, f"keep_ctrl.{k}", key=f"fig10.keep_ctrl.{k}", label=True)
+        ctrl[(m, "random")] = (est(c, f"keep_ctrl.{k}", key=f"fig10.keep_ctrl.{k}", label=True) if c[0] is not None
+                               else sp.Missing("n/a"))  # fmt: skip
         for lane in ("v4", "codename"):
             key = f"fig10.span_only.{lane}.{k}"
             span[(m, lane)] = est(need(W.w(key), key), f"remove.{lane}.{k}", key=key, label=True)

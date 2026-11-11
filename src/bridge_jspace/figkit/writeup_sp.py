@@ -39,8 +39,9 @@ def _layer_gap(m: str) -> sp.Est:
     return est(g, f"layer.{k}", key=f"contrast.{k}", label=True)
 
 
-def _band_columns(models, label_gap=True) -> list:
-    """The band test's two panels: each reader's accuracy drop, and the gap with its whisker and the grey tick."""
+def _band_columns(models, label_gap=True, gap_word=GAP) -> list:
+    """The band test's two panels: each reader's accuracy drop, and the gap (headed `gap_word`) with its whisker and
+    the grey tick."""
     drop = sp.DotColumn(
         "answers turned wrong", "drop", (-4, 70), (0, 30, 60),
         series=[sp.Series("lookup", {m: est(D.b(f"ko.{ZK[m]}.lostK"), f"band.{ZK[m]}", interval=False) for m in models}),
@@ -49,9 +50,9 @@ def _band_columns(models, label_gap=True) -> list:
     )  # fmt: skip
     # a gap is a difference: the neutral role, never the recall's black (Dan, 7 Nov, decision 10)
     gap = sp.DotColumn(
-        "gap: recall − lookup", "gap", (-4, 98), (0, 30, 60),
+        gap_word, "gap", (-4, 98), (0, 30, 60),
         series=[sp.Series("neutral", {m: est(D.b(f"ko.{ZK[m]}.mk"), f"band.{ZK[m]}", key=f"ko.{ZK[m]}.mk",
-                                            label=label_gap) for m in models}, word=GAP)],
+                                            label=label_gap) for m in models}, word=gap_word)],
         ticks={m: need(S.ctrl(ZK[m]), f"ctrl {m}") for m in models},
     )  # fmt: skip
     return [drop, gap]
@@ -62,7 +63,7 @@ def fig01_main_split() -> sp.Figure:
     and the largest same-size control as a grey tick. The one-layer half is the post's Figure 3A (patch_split, the same
     cells), so this figure leaves it out; the README's r1_c1_split / r1_c1_gaps keep both halves."""
     models = [m for m, _ in D.DAN]
-    table = sp.DotTable(models, [sp.ColumnGroup(BAND, _band_columns(models))])
+    table = sp.DotTable(models, [sp.ColumnGroup(BAND, _band_columns(models, gap_word="gap"))])
     return sp.Figure("fig01_main_split", vocab()).add(table)
 
 

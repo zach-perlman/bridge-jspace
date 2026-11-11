@@ -83,6 +83,12 @@ title = "gap: recall \u2212 lookup (points)"
 quantity = "gap"
 format = "points"
 
+# patch_split (A): the axis says the quantity in words (critic's brief, 11 Nov)
+[units.switches_share]
+title = "share of switches blocked beyond a random part"
+quantity = "switches blocked"
+format = "share"
+
 [units.switches]
 title = "switches blocked beyond a random part (share)"
 quantity = "switches blocked"
@@ -555,11 +561,11 @@ canonical = [
     "Passes the bar", "Fails on a control", "Fails on the gap",
     "Gap under the knock-out", "Larger control", "Gap scored by probability", "Swap",
     "Recall minus lookup gap", "Cost of same-size controls", "rotated part", "logit-lens directions", "limit",
-    "a random part of the same size",
     # patch_split (figkit/writeup_sp_c.py)
     "(A) Patch without the lens part", "(B) Not the answer word",
     "answer word's share of the lens part's energy", "one layer", "four layers",
-    "every token, four layers", "bridge word, one layer", "bridge word, four layers", "lookup: at most",
+    "every token, four layers", "bridge word, 1 layer", "bridge word, 4 layers", "every token, 4 layers", "random part, same size",
+    "misses the rule", "gap", "lookup: at most",
     "recall: at least", "drop kept", "answer words only", "bar fixed in advance", "lookup fails the rule",
     "in the passage, and known to the model", "illustration in the set's format",
     "here the model has not seen the question yet: its state is the same for both",
@@ -745,7 +751,8 @@ canonical = [
     "without the lens part at the item's earlier mention",
     "without another item's lens part there",
     "the answer span's share of the knock-out's damage", "all of it",
-    "damage undone", "damage done", "damage done, codename set",
+    "keep only the answer span", "keep random, same energy", "remove only the span, made-up-fact set",
+    "remove only the span, codename set",
     "one-hop question",
     "data-built city subspace",
     "one-hop question: “{city} is in the country of”",
@@ -847,15 +854,16 @@ templates = [
     "{entity} \u00b7 {num} / {num} items",
     "bar fixed in advance: {num}",
     "bar: {num}", "limit: {num}",
-    "lookup: at most {num}",
-    "recall: at least {num}",
+    "pass rule: lookup ≤ {num}",
+    "pass rule: recall ≥ {num}, before the random part",
+    "bar: gap ≥ {num} points", "limit: {num} points",
     "read (B): the answer word holds under {num} of the lens part's energy on every model",
     "48.4's bar fixed in advance: {num} of {num}",
     "unedited: {num}\u2013{num}% right on every model",
     "unedited: {num}% right on every model",
     "read: on {entity}, removing the lens part everywhere drops recall {num} points and lookup {num}; the gap is {num}, the largest same-size control's {num}",
 ]
-missing = ["no run", "not run", "no comparable run", "below gate", "too few switches", "no interval", "source missing", "no control run", "no energy-matched control", "can't tell", "not tested"]
+missing = ["no run", "not run", "n/a", "no comparable run", "below gate", "too few switches", "no interval", "source missing", "no control run", "no energy-matched control", "can't tell", "not tested"]
 not_claimed = ["shared with the logit lens", "gone when scored by probability"]
 
 [[terms.banned]]

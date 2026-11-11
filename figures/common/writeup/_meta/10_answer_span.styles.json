@@ -2,7 +2,7 @@
  "styles_plot": "0.2.2",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "40b95d0a756b8676e76d20d7a5f6ad9a069bab9f910f09075236248da2232120",
+  "sha256": "1de628f24310ddd6c772df71996c6ce925f32f53d044e7e2171c2cb5cfc62d40",
   "hash": "meaning"
  },
  "registry": {
@@ -15,7 +15,7 @@
  "publishable": true,
  "text_only": false,
  "png": {
-  "pixels_sha256": "f9edbe92ae1ee90912e9630ad9c69bf3d53fabdaa638512bd9a2505619a817c2",
+  "pixels_sha256": "bd1dcfb652a57a01d017c4256cd7bf8d08f92ef1d80108053bbbf64fc3846738",
   "dpi": 200
  },
  "roles": [
@@ -73,16 +73,16 @@
  "marks": [
   {
    "kind": "dot",
-   "role": "control",
-   "cell": "keep_ctrl.q9",
+   "role": "answer",
+   "cell": "keep.q9",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
   },
   {
    "kind": "dot",
-   "role": "answer",
-   "cell": "keep.q9",
+   "role": "control",
+   "cell": "keep_ctrl.q9",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -105,16 +105,16 @@
   },
   {
    "kind": "dot",
-   "role": "control",
-   "cell": "keep_ctrl.q27",
+   "role": "answer",
+   "cell": "keep.q27",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
   },
   {
    "kind": "dot",
-   "role": "answer",
-   "cell": "keep.q27",
+   "role": "control",
+   "cell": "keep_ctrl.q27",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false

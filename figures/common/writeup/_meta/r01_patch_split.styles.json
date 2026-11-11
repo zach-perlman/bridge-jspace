@@ -2,7 +2,7 @@
  "styles_plot": "0.2.2",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "40b95d0a756b8676e76d20d7a5f6ad9a069bab9f910f09075236248da2232120",
+  "sha256": "1de628f24310ddd6c772df71996c6ce925f32f53d044e7e2171c2cb5cfc62d40",
   "hash": "meaning"
  },
  "registry": {
@@ -15,7 +15,7 @@
  "publishable": true,
  "text_only": false,
  "png": {
-  "pixels_sha256": "358bf69fa88adb27fbc84597a85622933d96d5201e6cf596138d27689b1a8447",
+  "pixels_sha256": "a4aa996d86f8a539bd3eeaf110629cf153f54c0a732b0da9d7e4e2cce5b1b067",
   "dpi": 200
  },
  "roles": [
@@ -198,6 +198,7 @@
   "patch.energy.mu": "0.01",
   "patch.layer.recall.q9": "0.50",
   "patch.layer.recall.q27": "0.74",
+  "patch.layer.lookup.q27": "0.14",
   "patch.layer.recall.mu": "0.75",
   "patch.layer.recall.nl": "0.34",
   "patch.layer.recall.q122": "0.32",

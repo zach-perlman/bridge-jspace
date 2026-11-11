@@ -48,18 +48,32 @@ def _nine_cells(key: str, cell: str, label: bool = True) -> dict:
     return out
 
 
+def _verdict(m: str) -> str:
+    """The bar's verdict on one model from its data (gap >= 30, both controls < 10), checked against its band."""
+    k = _id(m)
+    gap = need(D.b(f"ko.{k}.mk"), f"gap {k}")[0] >= GAP_BAR
+    ctrl = max(need(D.b(f"ko.{k}.{c}"), f"{c} {k}")[0] for c in ("rot", "u")) < CONTROL_BAR
+    word = {(True, True): "passes", (True, False): "fails: control", (False, True): "fails: gap"}.get(
+        (gap, ctrl), "fails: gap and control")
+    band = next(b for b, ms in BANDS if m in ms)
+    assert (word == "passes") == (band == "Passes the bar"), (m, word, band)
+    return word
+
+
 def fig06_nine_models() -> sp.Figure:
     """Nine models in three bands by the bar fixed before the main runs: the recall − lookup gap
     under the knock-out against the bar of 30, and what each same-size control costs against the limit of 10, one
     panel per control (one grey dot per line: the grammar gives a second control its own panel)."""
     gap = sp.DotColumn("Recall minus lookup gap", "nine_gap", (0, 70), (0, 30, 60), weight=1.3,
                        series=[sp.Series("neutral", _nine_cells("ko.{k}.mk", "gap"), word="Recall minus lookup gap")],
-                       rules=[sp.Rule(GAP_BAR, "bar: {}", unit="nine_bar", key="nine.bar.gap")])  # fmt: skip
-    limit = [sp.Rule(CONTROL_BAR, "limit: {}", unit="nine_bar", key="nine.bar.control")]
+                       rules=[sp.Rule(GAP_BAR, "bar: gap ≥ {} points", unit="nine_bar", key="nine.bar.gap")])  # fmt: skip
+    limit = [sp.Rule(CONTROL_BAR, "limit: {} points", unit="nine_bar", key="nine.bar.control")]
     rot = sp.DotColumn("rotated part", "nine_control", (0, 40), (0, 20, 40), rules=limit,
                        series=[sp.Series("control", _nine_cells("ko.{k}.rot", "rot"), control="rotated")])
     logit = sp.DotColumn("logit-lens directions", "nine_control", (0, 40), (0, 20, 40), rules=limit,
                          series=[sp.Series("control", _nine_cells("ko.{k}.u", "logit"), control="logit lens")])
+    # one verdict per band, under its first model: a verdict under all nine makes the figure taller than wide (SP604)
+    assert all(_verdict(m) for m in NINE_ROWS)  # the bands agree with the data
     row_sub = {ms[0]: band for band, ms in BANDS}
     table = sp.DotTable(list(NINE_ROWS), [gap, sp.Gutter(), sp.ColumnGroup("Cost of same-size controls", [rot, logit])],
                         kind="nine", row_sub=row_sub)  # fmt: skip
@@ -195,22 +209,26 @@ def patch_split() -> sp.Figure:
     rows = DAN
 
     def layer(m, reader):
-        # the recall printed; the lookup's dots sit at the rule's line, which says where each one falls
-        return est(S.conflict(m, reader), f"layer.{ZK[m]}", key=f"patch.layer.{reader}.{ZK[m]}",
-                   label=reader == "recall")
+        # the recall printed; a lookup printed only where it misses the rule (the others sit inside the rule's line)
+        c = need(S.conflict(m, reader), f"{reader} {m}")
+        miss = reader == "lookup" and c[0] > LOOKUP_AT_MOST
+        return est(c, f"layer.{ZK[m]}", key=f"patch.layer.{reader}.{ZK[m]}", label=reader == "recall" or miss,
+                   note="misses the rule" if miss else None)
 
     remove = sp.DotColumn(
-        "(A) Patch without the lens part", "switches", (-0.2, 1.2), (0, 0.5, 1),
+        "(A) Patch without the lens part", "switches_share", (-0.2, 1.2), (0, 0.5, 1),
         series=[sp.Series("lookup", {m: layer(m, "lookup") for m in rows}),
                 sp.Series("recall", {m: layer(m, "recall") for m in rows})],
-        rules=[sp.Rule(LOOKUP_AT_MOST, "lookup: at most {}", unit="switches", key="patch.rule.lookup"),
-               sp.Rule(RECALL_AT_LEAST, "recall: at least {}", unit="switches", key="patch.rule.recall")])  # fmt: skip
+        # the recall's rule is on its switches before the random part is subtracted (scripts/x0_necessity.py)
+        rules=[sp.Rule(LOOKUP_AT_MOST, "pass rule: lookup ≤ {}", unit="switches", key="patch.rule.lookup"),
+               sp.Rule(RECALL_AT_LEAST, "pass rule: recall ≥ {}, before the random part", unit="switches",
+                       key="patch.rule.recall")])  # fmt: skip
     answer = sp.DotColumn(
         "(B) Not the answer word", "drop_kept", (0, 1.2), (0, 0.5, 1),
         series=[sp.Series("recall", {m: est(need(D.s(m, ANSWER_KEPT, "conflict_answer"), f"kept {m}"), f"answer.{ZK[m]}",
                                             key=f"patch.answer_kept.{ZK[m]}", label=True) for m in rows},
                           word="drop kept")],
-        rules=[sp.Rule(ANSWER_BAR, "bar fixed in advance: {}", unit="drop_kept", key="patch.rule.answer")])  # fmt: skip
+        rules=[sp.Rule(ANSWER_BAR, "bar: {}", unit="drop_kept", key="patch.rule.answer")])  # fmt: skip
     table = sp.DotTable(rows, [remove, sp.Gutter(), answer])
     energy = {m: need(D.s(m, ANSWER_ENERGY, "cards"), f"energy {m}") for m in rows}
     # a bound the data give: every model's 95% interval ends under it (the largest upper end, rounded up to 0.01)
@@ -226,7 +244,7 @@ def patch_layers() -> sp.Figure:
     over four layers, and at every token over four layers; lookup and recall dots, grey tick: the recall's answers kept
     with a random part of the same share removed instead."""
     cols = []
-    for rung, header in ((1, "bridge word, one layer"), (2, "bridge word, four layers"), (5, "every token, four layers")):
+    for rung, header in ((1, "bridge word, 1 layer"), (2, "bridge word, 4 layers"), (5, "every token, 4 layers")):
         cols.append(sp.DotColumn(header, "kept_bridge", (0, 1.15), (0, 0.5, 1),
                                  series=[sp.Series("lookup", _kept(f"patch.rung{rung}.zero.lookup.{{k}}", f"rung{rung}")),
                                          sp.Series("recall", _kept(f"patch.rung{rung}.zero.recall.{{k}}", f"rung{rung}"))],
@@ -236,7 +254,7 @@ def patch_layers() -> sp.Figure:
     return sp.Figure("patch_layers", dataclasses.replace(vocab(), key_tick=RANDOM_TICK)).add(table)
 
 
-RANDOM_TICK = "a random part of the same size"
+RANDOM_TICK = "random part, same size"
 
 FIGS = {"patch_split": patch_split, "patch_layers": patch_layers, "fig06_nine_models": fig06_nine_models,
         "fig07_routes": fig07_routes,

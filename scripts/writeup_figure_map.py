@@ -23,19 +23,22 @@ F1, F2, F3, F4 = ("Finding 1: recall needs the lens part", "Finding 2: lookup ru
 
 # (number, section, [(set, file stem)], what changed against the deck figure)
 ROWS = [
-    ("top", "TL;DR, under the title", [("common/writeup", "00_schematic")],
+    ("1", "TL;DR, under the title", [("common/writeup", "00_schematic")],
      "Same scene and three parts, now coloured words with dots instead of squares; each arrow carries its label"),
     ("key", "How to read the numbers", [("common/writeup", "00_key")],
      "Roles in two columns with no \"mention\" or \"question\" colours (neutral is now a quantity of no role, such "
      "as a difference); every control named; one example row (Qwen 27B's band test) read aloud, \"removing the lens "
      "part everywhere\""),
-    ("result", "Result 1, end of its first section, after \"For the lookup, the same four-layer removal costs nothing.\"",
-     [("common/writeup", "r01_patch_split"), ("common/writeup", "r02_patch_layers")],
-     "New: the section's claims in two figures, panels (A) the patch at one layer and (B) the answer word in r01, (C) one layer against four on the ladder's one-pick scenes in r02; (A) draws the same keys as Figure 3's right panel"),
-    ("1", F1, [("common/writeup", "01_main_split")],
-     "Whiskers span the full interval (the deck's were one-sided); the gap is slate, not black; the one-layer header "
-     "reads \"switches blocked beyond random\"; the largest control is a grey tick, not a number in brackets (the old "
-     "caption's \"in brackets\" no longer applies); not-claimed tags under the band panels"),
+    ("3", "Result 1, its first section", [("common/writeup", "r01_patch_split")],
+     "New: (A) the patch at one layer against the pass rule, its lines named on the plot ('pass rule: lookup ≤ 0.10', "
+     "'pass rule: recall ≥ 0.30, before the random part'), the 27B's lookup printed and marked 'misses the rule'; "
+     "(B) the answer word against 'bar: 0.70'"),
+    ("4", "Result 1, its first section", [("common/writeup", "r02_patch_layers")],
+     "New: one layer against four and every token on the ladder's scenes; columns 'bridge word, 1 layer', 'bridge "
+     "word, 4 layers', 'every token, 4 layers'; the grey tick is the random part"),
+    ("5", F1, [("common/writeup", "01_main_split")],
+     "The band-of-layers half only (the one-layer half is Figure 3A); whiskers span the full interval; the gap is "
+     "slate, headed 'gap'; the largest control is a grey tick; no not-claimed tags"),
     ("setup", "Setup: fact passages, after the bullets", [("common/writeup", "e01_setup_twins")],
      "New: a pair of twins (the Rovio pair the post quotes), every sentence verbatim from items.jsonl"),
     ("setup", "Setup: locker scenes, after the bullets", [("common/writeup", "e02_setup_locker")],
@@ -43,44 +46,45 @@ ROWS = [
     ("setup", "Setup: the Patch subsection, after its first paragraph",
      [("common/writeup", "e03_setup_patch")],
      "The depth report's patch picture moved to the post: +Δ on the bridge word, − and + into Δ, the changed words marked"),
-    ("2", "Setup: the two datasets",
+    ("not in the post", "Setup: the two datasets",
      [("common/writeup", "02_datasets"), ("depth/examples", "01_locker_scene"), ("breadth/examples", "01_fact_passage")],
      "The prompt table is unchanged in content; the example cards E1 and E2 are new: real items picked by a stated "
      "rule, each reader's answer under each operation"),
-    ("3", "Setup: the three tools", [("common/writeup", "03_tools")],
+    ("not in the post", "Setup: the three tools", [("common/writeup", "03_tools")],
      "Grids over a real scene's last words (bridge word in bold) instead of blank cells; one teal box per test; the "
      "swap is teal (a lens part), not blue; panel titles Knock-out, Patch and Swap, as in the post's table"),
     ("setup", "Setup: the Knock-out subsection, after the controls", [("common/writeup", "e04_setup_knockout")],
      "New: the knock-out and its rotated control on the Rovio pair (Qwen 27B), with the known-fact set's rates; the pair is the one the post quotes, the second item of its section (the first names Russian figures), not picked by outcome"),
     ("setup", "Setup: known-fact set and made-up-fact set, after the table and the note under it", [("common/writeup", "e05_setup_datasets")],
      "New: both sets as illustrations in each set's format (the made-up-fact example is the documented one)"),
-    ("4", F1, [("common/writeup", "04_made_up_fact_set")],
+    ("not in the post", F1, [("common/writeup", "04_made_up_fact_set")],
      "Three labelled lanes per model (knock-out, rotated, answer span kept) instead of colour words; the answer-span "
      "lanes are tagged descriptive; the gap is slate with full whiskers"),
-    ("5", F1, [("common/writeup", "05a_controls_band"), ("common/writeup", "05b_controls_layer")],
+    ("not in the post", F1, [("common/writeup", "05a_controls_band"), ("common/writeup", "05b_controls_layer")],
      "Split into two figures (band of layers, one layer); one column per control on the same scale; the post embeds "
      "both where it embedded fig05_controls"),
-    ("6", F1, [("common/writeup", "06_nine_models")],
-     "Rows in three bands by the bar fixed before the main runs; the gap against the bar of 30, "
-     "and each same-size control in its own panel against the limit of 10; the probability gap, the swap and the "
+    ("7", F1, [("common/writeup", "06_nine_models")],
+     "Rows in three bands by the bar fixed before the main runs, each model's verdict under its name; the gap "
+     "against 'bar: gap ≥ 30 points', each same-size control in its own panel against 'limit: 10 points'; the probability gap, the swap and the "
      "100-direction runs move to the Appendix E3 table (data/figures/writeup/appendix_e3.csv)"),
-    ("7", F2, [("depth/examples", "02_routes"), ("common/writeup", "07_routes")],
+    ("not in the post", F2, [("depth/examples", "02_routes"), ("common/writeup", "07_routes")],
      "The stack has no whiskers and no numbers in the bars; the position share's interval and the number's share sit "
      "in columns beside it; the E4 card shows the lockers each route predicts on a real scene"),
     ("8", F2, [("common/writeup", "08a_address_read_remove"), ("common/writeup", "08b_address_swap_lens")],
      "The layout-only probe is a grey dot (was a tick); the removal is a dumbbell to its random control; \"item "
      "change\" reads \"a change of item\"; no left-pointing cue"),
-    ("9", F2, [("common/writeup", "09_order")],
+    ("not in the post", F2, [("common/writeup", "09_order")],
      "Two labelled lanes per model (sentence before, after the pick); full whiskers; no zero line"),
-    ("10", F3, [("common/writeup", "10_answer_span")],
-     "The random keep is a grey dot with its value; descriptive tags on the keep cells; the matched-share notes "
-     "under their cells"),
-    ("11", F3, [("common/writeup", "11_orthogonal")],
+    ("6", F3, [("common/writeup", "10_answer_span")],
+     "One axis, the answer span's share of the knock-out's damage (1 = all of it); four lanes per model named on the "
+     "plot: keep only the answer span, keep random (same energy; 'n/a' for Lightning), remove only the answer span on "
+     "the made-up-fact set and on the codename set"),
+    ("not in the post", F3, [("common/writeup", "11_orthogonal")],
      "Panels swapped (the data-built subspace first, with its bar fixed in advance); the orthogonal arm is a hollow "
      "slate dot (post hoc); colour words instead of legend lines"),
-    ("12", F4, [("common/writeup", "12_pointer")],
+    ("not in the post", F4, [("common/writeup", "12_pointer")],
      "Two tables in one figure (was two pasted images); full whiskers; the difference is signed, its interval not"),
-    ("13", F4, [("common/writeup", "13_last_token")],
+    ("9", F4, [("common/writeup", "13_last_token")],
      "A column with the lens part's value; the whole state swapped in is a named grey control"),
     ("A1", "Appendix A: agents", [("common/writeup", "a01_agents")],
      "Dots in the recall's colour throughout; descriptive cells tagged in grey words (no longer grey dots)"),
