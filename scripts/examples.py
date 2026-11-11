@@ -350,8 +350,9 @@ E5_SEED = 0  # the scene split (fit half / held-out half), fixed before looking 
 def _address_projection() -> tuple[list[int], list[np.ndarray], dict]:
     """The address as the routes test builds it (x0_massmean.subspaces: each locker-before state minus its layout
     group's mean, then the mean per place of the item's locker sentence; the span of the means' differences), refit on
-    one half of the scenes (a seeded shuffle of scene ids); the other half's states projected on it, each assigned to
-    the nearest place's average there. Returns the places, each place's held-out points, and the caption's numbers."""
+    one half of the scenes (a seeded shuffle of scene ids); the other half's states projected on it. Returns the
+    places, each place's held-out points on the averages' first two principal components, and the caption's numbers
+    (the nearest-average rate in the full span, not in the 2D view)."""
     import random
 
     from scripts import x0_massmean as MM
@@ -379,55 +380,68 @@ def _address_projection() -> tuple[list[int], list[np.ndarray], dict]:
     centred = means - means.mean(0)
     _u, sv, vt = np.linalg.svd(centred, full_matrices=False)
     span = vt[: int((sv > sv.max() * 1e-8).sum())]  # the address: the span of the averages' differences
-    xy = (rh - means.mean(0)) @ span.T  # each held-out state's part along the address
+    xy = (rh - means.mean(0)) @ span.T  # each held-out state's part along the address (rows: components by size)
     lab = np.array([it["locker_index"] for it in ith])
     nearest = np.array(places)[np.argmin(((xy[:, None, :] - (centred @ span.T)[None]) ** 2).sum(-1), 1)]
     nums = {"n_fit": len(itf), "n_held": len(ith), "places": len(places), "rank": len(span),
+            "var_pc12": float((sv[:2] ** 2).sum() / (sv**2).sum()),
             "acc": float((nearest == lab).mean()), "acc_majority": max(Counter(lab.tolist()).values()) / len(lab)}  # fmt: skip
-    return places, [xy[lab == q] for q in places], nums
+    return places, [xy[lab == q][:, :2] for q in places], nums
+
+
+def _scene(order: tuple[str, str, str]) -> list[list[tuple]]:
+    """A three-locker scene on two lines, the elephant's locker sentence bold, Ruby's pick last (verbatim words)."""
+    num = {"elephant": 3, "owl": 5, "turkey": 8}
+    sents = [(f"The locker of the {x} is {num[x]}.", None, x == "elephant") for x in order]
+    return [[sents[0], (" ", None), sents[1]], [sents[2], (" Ruby picked the elephant.", None)]]
 
 
 def e5_address() -> sp.Figure:
-    """How the address is found (brief 7, 11 Nov), a schematic. Top: the item's locker sentence at three places, the
-    bridge word's state minus its layout's average (x0_massmean.layout_free: the layout, which sentences before the
-    pick are locker sentences, hints where the answer usually sits, so its average is taken out first; Dan, 11 Nov),
-    the average per place over many scenes, the address as the differences between the averages. Bottom: one scene's
-    address, the state's part along those differences (the projection the routes test removes, x6_routes no_alf), on
-    two scenes with other items and numbers but the item's sentence at the same place: both near that place's average
-    (it follows the template, not the content; how often on held-out scenes: e5.acc). The swap (Figure 9) adds one
-    difference of averages. Nothing in it claims a shape for the code. The 9B's held-out projection is not drawn (a
-    scatter colours by role, so its places could not be told apart); its numbers go to data.csv."""
+    """How the address is found (critic's briefs 7 and 7b, 11 Nov). Top: one scene, Ruby's pick the elephant, with the
+    elephant's locker sentence at place 1, 2 and 3 (real sentences); the bridge word's state averaged over many scenes
+    per place; the three averages into the address, the differences between them. The note: the average for each
+    layout (which sentences before the pick are locker sentences) is subtracted first, before the averages per place
+    (x0_massmean.layout_free, then subspaces). The swap, as Figure 9 does it: add average, place 3 minus average,
+    place 1 at Ruby's bridge word; it reads as place 3; her lookup answers with the turkey's locker. Bottom: the 9B's
+    held-out states on the averages' first two principal components, one panel per place (a colour is a role, so each
+    place gets its own panel, the other places grey). Nothing claims a shape for the code."""
     layer = json.loads((PROBE / "manifest.json").read_text())["layer"]
-    tail = " Ruby picked the elephant."
-    scenes = ["The locker of the elephant is 3. … …" + tail, "… The locker of the elephant is 3. …" + tail,
-              "… … The locker of the elephant is 3." + tail]  # fmt: skip
-    base = ", minus its layout's average"
-    el: list = [sp.Words(0.2, 0.15, [("built once, over many scenes", None, True)]),
-                sp.Words(5.35, 0.45, [("the bridge word's state", None)]),
-                sp.Words(8.75, 0.45, [("average per place", None)])]  # fmt: skip
-    for i, text in enumerate(scenes):
-        y = 0.75 + 0.7 * i
-        el += [sp.Box(0.2, y, 4.85, 0.5, text, verbatim=True), sp.Arrow((5.1, y + 0.25), (5.3, y + 0.25)),
-               sp.Box(5.35, y, 3.05, 0.5, f"place {i + 1}{base}"), sp.Arrow((8.45, y + 0.25), (8.7, y + 0.25)),
-               sp.Box(8.75, y, 1.85, 0.5, f"average, place {i + 1}")]  # fmt: skip
-    # two other scenes, other items, numbers and people, with the item's locker sentence at the same place: the same
-    # address (Dan, 11 Nov: it follows the template, not the content)
-    others = ("The locker of the owl is 7. … … Tom picked the owl.", "The locker of the frog is 5. … … Ana picked the frog.")
-    el += [sp.Words(0.2, 2.95, [("layout: which sentences before the pick are locker sentences;", None)]),
-           sp.Words(0.2, 3.25, [("its average hints at the answer, so it is subtracted first", None)]),
-           sp.Arrow((9.67, 2.65), (9.67, 2.9)),
-           sp.Box(5.35, 2.95, 5.25, 0.5, "the address: differences between the averages", role="address"),
-           sp.Words(0.2, 3.95, [("one scene's address: other items and numbers, the same place", None, True)]),
-           sp.Words(8.4, 3.95, [("its part along the address", None)])]  # fmt: skip
-    for i, text in enumerate(others):
-        y = 4.3 + 0.7 * i
-        el += [sp.Box(0.2, y, 4.85, 0.5, text, verbatim=True), sp.Arrow((5.1, y + 0.25), (5.3, y + 0.25)),
-               sp.Box(5.35, y, 3.05, 0.5, f"its state{base}"), sp.Arrow((8.45, y + 0.25), (8.7, y + 0.25)),
-               sp.Box(8.75, y, 1.85, 0.5, "near average, place 1", role="address")]  # fmt: skip
-    el += [sp.Words(0.2, 5.85, [("swap", "address", True), (": add average, place 2 minus average, place 1 at the "
-                                                             "bridge word; the lookup goes to the locker whose sentence "
-                                                             "is at place 2", None)])]  # fmt: skip
-    _places, _clouds, nums = _address_projection()
+    orders = (("elephant", "owl", "turkey"), ("owl", "elephant", "turkey"), ("owl", "turkey", "elephant"))
+    el: list = [sp.Words(0.2, 0.15, [("for example, three places", None, True)]),
+                sp.Words(5.65, 0.15, [("averaged over many scenes", None)])]  # fmt: skip
+    mids = []
+    for i, order in enumerate(orders):
+        y = 0.45 + 0.9 * i
+        lines = _scene(order)
+        el += [sp.Box(0.2, y, 5.0, 0.75), sp.Words(0.32, y + 0.2, lines[0], verbatim=True),
+               sp.Words(0.32, y + 0.5, lines[1], verbatim=True), sp.Arrow((5.25, y + 0.375), (5.6, y + 0.375)),
+               sp.Box(5.65, y + 0.1, 2.0, 0.55, f"average, place {i + 1}")]  # fmt: skip
+        mids.append(y + 0.375)
+    el += [sp.Box(8.3, 1.2, 2.3, 1.05, role="address"),
+           sp.Words(8.45, 1.45, [("the address:", "address")]),
+           sp.Words(8.45, 1.72, [("differences between", "address")]),
+           sp.Words(8.45, 1.99, [("the averages", "address")])]  # fmt: skip
+    el += [sp.Arrow((7.7, m), (8.25, 1.725)) for m in mids]
+    el += [sp.Words(0.2, 3.3, [("we first subtract the average for each layout (which sentences before the pick are "
+                                "locker sentences),", None)]),
+           sp.Words(0.2, 3.57, [("because the layout alone hints at the answer", None)])]  # fmt: skip
+    # the swap, drawn: Ruby's bridge word at place 1, plus the difference of two averages, read as place 3
+    y = 4.25
+    el += [sp.Words(0.2, 4.0, [("swap", "address", True)]),
+           sp.Box(0.2, y, 2.55, 0.55, "Ruby's elephant at place 1"),
+           sp.Arrow((2.8, y + 0.275), (6.25, y + 0.275), role="address", label="+ (average, place 3 − average, place 1)"),
+           sp.Box(6.3, y, 1.65, 0.55, "reads as place 3"), sp.Arrow((8.0, y + 0.275), (8.25, y + 0.275)),
+           sp.Box(8.3, y, 2.3, 0.55, "lookup: the turkey's locker"),
+           sp.Words(0.2, 5.15, [("swap", "address", True), (": Ruby's elephant sits at place 1. We add (average, place 3 "
+                                                            "− average, place 1) to her bridge word.", None)]),
+           sp.Words(0.2, 5.42, [("Her lookup now answers with the locker sentence at place 3, the turkey's.", None)])]  # fmt: skip
+    places, clouds, nums = _address_projection()
+    panels = []
+    for q, xy in zip(places, clouds, strict=True):
+        rest = np.concatenate([c for p, c in zip(places, clouds, strict=True) if p != q])
+        panels.append(sp.ScatterPanel([sp.Cloud("the other places", "control", rest, cell=f"rest.{q}"),
+                                       sp.Cloud(f"place {q + 1}", "address", xy, cell=f"place.{q}")],
+                                      embedding="PCA", header=f"place {q + 1}"))  # fmt: skip
     src = f"{rel(PROBE)}/states.npz + items.jsonl (layer {layer})"
     write_keys({"e5.items": (f"seed {E5_SEED}", "id", f"rule (fixed before the projection was drawn): {src}, the "
                                                   "items whose locker sentence comes before the asked pick; scene ids "
@@ -438,12 +452,14 @@ def e5_address() -> sp.Figure:
                                                        "(sentence 1 to 5, before the asked pick)"),
                 "e5.n_fit": (nums["n_fit"], "count", f"{src}: items fitting the averages"),
                 "e5.n_held": (nums["n_held"], "count", f"{src}: held-out items projected"),
+                "e5.var_pc12": (round(nums["var_pc12"], 3), "share", f"{src}: the averages' variance on the two "
+                                                                    "principal components drawn"),
                 "e5.acc": (round(nums["acc"], 3), "share", f"{src}: held-out items whose part along the address "
                                                          f"(refit on the other half, rank {nums['rank']}) is nearest their "
                                                          "own place's average"),
                 "e5.acc_majority": (round(nums["acc_majority"], 3), "share", f"{src}: the same by always guessing the "
                                                                           "most common place")})  # fmt: skip
-    return sp.Figure("e5_address", vocab(), direct_labels=True).add(sp.Schematic(6.2, el))
+    return sp.Figure("e5_address", vocab()).add(sp.Schematic(5.65, el), sp.Scatter(panels, panel_h=2.4))
 
 
 FIGS = {"e1_locker_scene": e1_locker_scene, "e2_fact_passage": e2_fact_passage, "e3_chains": e3_chains,

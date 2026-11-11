@@ -15,3 +15,4 @@ e5.layer,12,count,results/x0_probe/qwen35_9b_x0_probe_v4/states.npz + items.json
 e5.n_fit,379,count,results/x0_probe/qwen35_9b_x0_probe_v4/states.npz + items.jsonl (layer 12): items fitting the averages
 e5.n_held,379,count,results/x0_probe/qwen35_9b_x0_probe_v4/states.npz + items.jsonl (layer 12): held-out items projected
 e5.places,5,count,"results/x0_probe/qwen35_9b_x0_probe_v4/states.npz + items.jsonl (layer 12): places of the item's locker sentence in the passage (sentence 1 to 5, before the asked pick)"
+e5.var_pc12,0.911,share,results/x0_probe/qwen35_9b_x0_probe_v4/states.npz + items.jsonl (layer 12): the averages' variance on the two principal components drawn

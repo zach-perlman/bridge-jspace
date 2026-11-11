@@ -717,6 +717,16 @@ def nine_models(rows_: list[dict]) -> list[dict]:
 NINE_DRAWN = ("gap.", "rot.", "logit.")
 
 
+def e5_address() -> list[dict]:
+    """Example 3's scatter (scripts/examples.py e5_address): held-out 9B states on the averages' first two principal
+    components, one panel per place; an illustration by a rule fixed before drawing (a seeded scene split), no claim."""
+    src = "scripts/examples.py e5_address; data/figures/examples/data.csv e5.items"
+    # descriptive, said once in the caption, not tagged on every panel (as fig10's keep cells, Dan 10 Nov)
+    return [row("e5_address", f"{part}.{q}", "fixed_in_advance", "an illustration of the address on held-out "
+                "scenes, its split fixed before drawing; descriptive, said in the caption", src)
+            for q in range(5) for part in ("place", "rest")]  # fmt: skip
+
+
 def rows() -> list[dict]:
     writeup = [*key(), *fig01(), *fig04(), *fig09(), *fig12(), *appB_f17(), *styles_plot_port()]
     writeup += unblocked_016(fig01(), depth_set(writeup) + depth_set_b())
@@ -724,7 +734,7 @@ def rows() -> list[dict]:
     readme = readme_set(writeup)
     out = lightning([*writeup, *readme, *depth_set(writeup), *depth_set_b(), *depth_set_c(),
                      *depth_set_d(), *depth_set_e(), *depth_set_f(), *breadth_set(readme)])
-    out = out + patch_split(out) + nine_models(out) + fig01_made_up(out)
+    out = out + patch_split(out) + nine_models(out) + fig01_made_up(out) + e5_address()
     out = [r for r in out if r["figure"] != "fig06_nine_models" or r["cell"].startswith(NINE_DRAWN)]
     # fig01 draws the band half only (its one-layer cells are patch_split's; they stay registered for patch_split and
     # the README's copies, which read them above). The post's reader meets fig01 before the nine-model figure, which

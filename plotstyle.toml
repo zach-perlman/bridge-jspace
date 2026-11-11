@@ -41,7 +41,7 @@ word = "neutral"
 meaning = "a quantity of no role, such as a difference"
 
 [controls]
-names = ["rotated", "logit lens", "PCA", "a random part", "energy-matched random", "random directions of the same energy kept", "a random vector", "layout-only probe", "10 random heads", "no change", "random lens directions", "the whole state swapped in", "the full state", "most common locker", "shuffled pairs", "a random subspace", "the rest swapped in", "a control block", "2 × a random direction", "2 × the lens part", "the null's cut", "the null's median"]
+names = ["the other places", "rotated", "logit lens", "PCA", "a random part", "energy-matched random", "random directions of the same energy kept", "a random vector", "layout-only probe", "10 random heads", "no change", "random lens directions", "the whole state swapped in", "the full state", "most common locker", "shuffled pairs", "a random subspace", "the rest swapped in", "a control block", "2 × a random direction", "2 × the lens part", "the null's cut", "the null's median"]
 
 [key]
 tick = "the largest same-size control"
@@ -562,20 +562,15 @@ canonical = [
     "Known-fact set", "Made-up-fact set", "read", "one of six people in the passage",
     # fig06_nine_models (figkit/writeup_sp_c.py, 10 Nov)
     "Passes the bar", "Fails on a control", "Fails on the gap",
-    # Example 3 (scripts/examples.py e5_address, brief 7)
-    "the bridge word's state",
-    "place 1, minus its layout's average", "place 2, minus its layout's average", "place 3, minus its layout's average",
-    "its state, minus its layout's average", "average per place",
-    "layout: which sentences before the pick are locker sentences;",
-    "its average hints at the answer, so it is subtracted first",
-    "average, place 1",
-    "average, place 2",
-    "average, place 3",
-    "the address: differences between the averages",
-    "swap", "built once, over many scenes", "one scene's address: other items and numbers, the same place",
-    "its part along the address",
-    "near average, place 1",
-    ": add average, place 2 minus average, place 1 at the bridge word; the lookup goes to the locker whose sentence is at place 2",
+    # Example 3 (scripts/examples.py e5_address, briefs 7 and 7b)
+    "for example, three places", "averaged over many scenes", "average, place 1", "average, place 2",
+    "average, place 3", "the address:", "differences between", "the averages",
+    "we first subtract the average for each layout (which sentences before the pick are locker sentences),",
+    "because the layout alone hints at the answer", "swap", "Ruby's elephant at place 1",
+    "+ (average, place 3 − average, place 1)", "reads as place 3", "lookup: the turkey's locker",
+    ": Ruby's elephant sits at place 1. We add (average, place 3 − average, place 1) to her bridge word.",
+    "Her lookup now answers with the locker sentence at place 3, the turkey's.",
+    "PCA", "place 1", "place 2", "place 3", "place 4", "place 5",
     "Gap under the knock-out", "Larger control", "Gap scored by probability", "Swap",
     "Recall minus lookup gap", "Cost of same-size controls", "rotated part", "logit-lens directions", "limit",
     # patch_split (figkit/writeup_sp_c.py)

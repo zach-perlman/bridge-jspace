@@ -1,13 +1,13 @@
 {
- "styles_plot": "0.2.3",
+ "styles_plot": "0.2.4",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "7516e53b6469db2d5885af24b8454ebc87d82146fd2293d8ed6e336f50c84863",
+  "sha256": "403eb2ed9a02dfb2d0a63dca1f439a8178c6984795352e8d3739f12f6993c94f",
   "hash": "meaning"
  },
  "registry": {
   "path": "data/figures/status.csv",
-  "sha256": "914545a84ea5ce2a1028d82a553e03939cfb964b3982483c283906c31f118b7e"
+  "sha256": "8cf50c2ac233c6e1ae6e389185dcde1d015617d1af1af67095d7397f11ab805f"
  },
  "figure": "key",
  "target": "post",
@@ -15,7 +15,7 @@
  "publishable": true,
  "text_only": false,
  "png": {
-  "pixels_sha256": "079d86a7990fc3c960ba3a55682c79b82c677ae6a8b5c9519f645c1c003b4c22",
+  "pixels_sha256": "e3516504aa754c485607a0ef55dfe6fcf80e3183bba8846d1dce0b0ea1d55b7b",
   "dpi": 200
  },
  "roles": [
@@ -57,13 +57,13 @@
   }
  ],
  "key": [
-  "change · random lens directions · the whole state swapped in · the full state · most common",
+  "control block · 2 × a random direction · 2 × the lens part · the null's cut · the null's median",
   "grey band: within 0.10 of a random part",
   "grey tick: the largest same-size control",
-  "grey: rotated · logit lens · PCA · a random part · energy-matched random · random directions",
-  "locker · shuffled pairs · a random subspace · the rest swapped in · a control block · 2 × a",
-  "of the same energy kept · a random vector · layout-only probe · 10 random heads · no",
-  "random direction · 2 × the lens part · the null's cut · the null's median",
+  "grey: the other places · rotated · logit lens · PCA · a random part · energy-matched random ·",
+  "random directions of the same energy kept · a random vector · layout-only probe · 10",
+  "random heads · no change · random lens directions · the whole state swapped in · the full",
+  "state · most common locker · shuffled pairs · a random subspace · the rest swapped in · a",
   "whiskers: 95% interval",
   "○ post hoc"
  ],
