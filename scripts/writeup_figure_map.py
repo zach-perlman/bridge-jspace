@@ -76,9 +76,9 @@ ROWS = [
     ("not in the post", F2, [("common/writeup", "09_order")],
      "Two labelled lanes per model (sentence before, after the pick); full whiskers; no zero line"),
     ("6", F3, [("common/writeup", "10_answer_span")],
-     "One axis, the answer span's share of the knock-out's damage (1 = all of it); four lanes per model named on the "
-     "plot: keep only the answer span, keep random (same energy; 'n/a' for Lightning), remove only the answer span on "
-     "the made-up-fact set and on the codename set"),
+     "One axis in points, recall answers turned wrong; four lanes per model named on the plot, each with a grey tick "
+     "at the full knock-out on its items (its value in a text column): knock out all but the answer span, all but "
+     "random (same energy; 'n/a' for Lightning), only the span on the made-up-fact set and on the codename set"),
     ("not in the post", F3, [("common/writeup", "11_orthogonal")],
      "Panels swapped (the data-built subspace first, with its bar fixed in advance); the orthogonal arm is a hollow "
      "slate dot (post hoc); colour words instead of legend lines"),

@@ -149,10 +149,6 @@ title = "share of the damage undone"
 quantity = "of the damage undone"
 format = "share"
 
-[units.damage_share]
-title = "share of the knock-out's damage"
-quantity = "of the damage"
-format = "share"
 
 [units.kept_bridge]
 title = "answers kept"
@@ -760,9 +756,9 @@ canonical = [
     "position answers with only the address",
     "without the lens part at the item's earlier mention",
     "without another item's lens part there",
-    "the answer span's share of the knock-out's damage", "all of it",
-    "keep only the answer span", "keep random, same energy", "remove only the span, made-up-fact set",
-    "remove only the span, codename set",
+    "recall answers turned wrong", "full knock-out", "knock out all but the answer span",
+    "knock out all but random, same energy", "knock out only the span, made-up-fact set",
+    "knock out only the span, codename set", "answer span",
     "one-hop question",
     "data-built city subspace",
     "one-hop question: “{city} is in the country of”",

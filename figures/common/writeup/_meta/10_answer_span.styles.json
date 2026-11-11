@@ -2,12 +2,12 @@
  "styles_plot": "0.2.2",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "b709484eb2a60626525ef28ad592993872d918ff22913a13503b799ec6552bc7",
+  "sha256": "840605621d2efddb1327b9ea332c00e2a3d2e1de9d543dab1908e78895c5edf1",
   "hash": "meaning"
  },
  "registry": {
   "path": "data/figures/status.csv",
-  "sha256": "0747c4750b27db9041a1371b9be30b4fdcd47087f4891d3fc2ae2f1f7ed460c7"
+  "sha256": "914545a84ea5ce2a1028d82a553e03939cfb964b3982483c283906c31f118b7e"
  },
  "figure": "fig10_answer_span",
  "target": "post",
@@ -15,7 +15,7 @@
  "publishable": true,
  "text_only": false,
  "png": {
-  "pixels_sha256": "325eed57c2c4ef69b527bd3d0ac6707daf98dea57a22d16b99f86b56b68edee5",
+  "pixels_sha256": "e728a51db7a699ef4a5e539d161c8c0b9bfa6541ca733459bc591d9eacf8b82a",
   "dpi": 200
  },
  "roles": [
@@ -161,21 +161,28 @@
   }
  ],
  "key": [
+  "grey tick: full knock-out",
   "grey: random directions of the same energy kept",
   "whiskers: 95% interval"
  ],
  "numbers": {
-  "fig10.keep_span.q9": "0.93",
-  "fig10.keep_ctrl.q9": "−0.11",
-  "fig10.span_only.v4.q9": "1.04",
-  "fig10.span_only.codename.q9": "1.32",
-  "fig10.keep_span.q27": "0.95",
-  "fig10.keep_ctrl.q27": "0.02",
-  "fig10.span_only.v4.q27": "1.02",
-  "fig10.span_only.codename.q27": "1.18",
-  "fig10.keep_span.nl": "0.91",
-  "fig10.span_only.v4.nl": "0.98",
-  "fig10.span_only.codename.nl": "1.05"
+  "fig10.full.v4.q9": "56.6",
+  "fig10.full.codename.q9": "54.2",
+  "fig10.full.v4.q27": "68.6",
+  "fig10.full.codename.q27": "65.9",
+  "fig10.full.v4.nl": "51.8",
+  "fig10.full.codename.nl": "70.4",
+  "fig10.keep_span_points.q9": "3.7",
+  "fig10.keep_ctrl_points.q9": "62.9",
+  "fig10.span_only_points.v4.q9": "58.8",
+  "fig10.span_only_points.codename.q9": "71.8",
+  "fig10.keep_span_points.q27": "3.3",
+  "fig10.keep_ctrl_points.q27": "67.2",
+  "fig10.span_only_points.v4.q27": "70.1",
+  "fig10.span_only_points.codename.q27": "77.7",
+  "fig10.keep_span_points.nl": "4.7",
+  "fig10.span_only_points.v4.nl": "50.7",
+  "fig10.span_only_points.codename.nl": "73.8"
  },
  "problems": []
 }

@@ -162,6 +162,10 @@ def styles_plot_port() -> list[dict]:
                        "fixed in advance (note 50 P1)", DAN_7NOV))  # fmt: skip
         for panel in ("v4", "codename"):
             out.append(fixed("fig10_answer_span", f"remove.{panel}.{k}", "remove the answer span", f"{src}writeup_figs.py"))
+            # the full knock-out the removal is read against (its registered reading's denominator), in points since
+            # brief 4 (11 Nov); the figkit figure drew it as the line at 1
+            out.append(row("fig10_answer_span", f"full.{panel}.{k}", "fixed_in_advance", "the full knock-out, the "
+                           "reference of the answer-span tests (note 57's S1 denominator)", f"{src}writeup_figs.py"))  # fmt: skip
         for key_ in ("city", "answers"):
             out.append(fixed("fig11_orthogonal", f"onehop.{key_}.{k}", "the one-hop question", f"{src}writeup_figs.py"))
         out.append(post_hoc("fig11_orthogonal", f"onehop.city_perp.{k}", "the city directions orthogonal to the "
@@ -272,7 +276,8 @@ Q2B = {  # (figure, cell prefix) -> the registration it rests on (every one comm
     ("fig04_twin_set", "recall.paper10"): _N41, ("fig04_twin_set", "lookup.paper10"): _N41,
     ("fig04_twin_set", "gap."): _N41, ("fig10_answer_span", "keep."): _N41,
     ("fig10_answer_span", "keep_ctrl."): _N50, ("fig10_answer_span", "remove.v4."): _N57,
-    ("fig10_answer_span", "remove.codename."): _N68,
+    ("fig10_answer_span", "remove.codename."): _N68, ("fig10_answer_span", "full.v4."): _N57,
+    ("fig10_answer_span", "full.codename."): _N68,
     ("fig11_orthogonal", "onehop.city."): _N62, ("fig11_orthogonal", "onehop.answers."): _N62,
     ("fig11_orthogonal", "subspace."): _N67,
     # figA1 (Q2c reversed, Dan 8 Nov): the agent arms follow the same rule; copy / pick / produce read note 59's run,

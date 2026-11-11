@@ -148,12 +148,21 @@ def fig10_rows() -> list[dict]:
     and its grey control, note 50's P1: a random keep orthogonal to the answers, the one whose energy is closest to and
     not below keepA's (its rescue, or the reading's label where neither holds enough energy). (b) note 57's S1 on v4
     draw 4001 and (c) on the codename set (jsuite_v5al): [net onlyA - net onlyRperp] / net paper10, with onlyRperp's
-    energy matching (matching.paper10.reached_share: the share of items whose random part reached its target energy)."""
+    energy matching (matching.paper10.reached_share: the share of items whose random part reached its target energy).
+    The same readings in points (answers turned wrong out of 100, recall, net of the rotated part of each edit), as the
+    readers stored them from the runs' rows: the full knock-out (S1's denominator), keepA, the random keep and S1's
+    numerator. Only S1's numerator has a stored interval in points; the runs' per-item rows are not in the repo, so the
+    other three are values without an interval (never a ratio's interval multiplied back)."""
     out = []
     for model, p in TWIN_PREFIX.items():
         k = SHORT[model]
         src41 = f"{KO_READ}/{p}note41.json"
         a = json.loads((REPO / src41).read_text())["keep"]["table"]["A"]
+        no_ci = "; no interval in points stored (the run's per-item rows are not in the repo)"
+        out.append(_row(f"fig10.keep_span_points.{k}", "fig10_answer_span", model,
+                        "recall answers turned wrong when everything but the answer span is knocked out, net of its "
+                        "rotated control (keepA)", a["net_keep"], n=a["n_MM"], unit="points",
+                        source=f"{src41} keep.table.A.net_keep (scripts/nn_ko41_read.py){no_ci}"))  # fmt: skip
         out.append(_row(f"fig10.keep_span.{k}", "fig10_answer_span", model,
                         "share of the recall's damage undone by keeping only the answer span (keepA rescue)",
                         a["rescue"], 1 - a["ratio_ci"][1], 1 - a["ratio_ci"][0], n=a["n_MM"], unit="share",
@@ -166,6 +175,13 @@ def fig10_rows() -> list[dict]:
                             f"rescue of a random keep orthogonal to the answers ({p1['perp']}, energy "
                             f"{p1['E_perps'][p1['perp']]}; {e})", p1["rescue"], *p1["rescue_ci"], n=p1["n_MM"],
                             unit="share", source=f'{src50} readings["50_P1"].rescue, rescue_ci (scripts/nn_ko49_read.py)'))  # fmt: skip
+            r = json.loads((REPO / src50).read_text())["ratio"][f"keep{p1['perp']}"]
+            assert r["net_paper10"] == a["net_paper10"], model  # one full knock-out under both keeps
+            out.append(_row(f"fig10.keep_ctrl_points.{k}", "fig10_answer_span", model,
+                            f"recall answers turned wrong when everything but random directions of the answer span's "
+                            f"energy ({p1['perp']}) is knocked out, net of its rotated control", r["net_X"],
+                            n=r["n_MM"], unit="points",
+                            source=f"{src50} ratio.keep{p1['perp']}.net_X (scripts/nn_ko49_read.py){no_ci}"))  # fmt: skip
         else:
             out.append(_row(f"fig10.keep_ctrl.{k}", "fig10_answer_span", model,
                             f"no control: {p1['label']} (energies {p1['E_perps']}; {e})", None, unit="share",
@@ -178,6 +194,17 @@ def fig10_rows() -> list[dict]:
                             "removing only the answer span, net of energy-matched random, as a multiple of the full "
                             f"damage (S1, {d['run'].split('/')[-1]})", s1["value"], *s1["ci"], n=s1["n_MM"],
                             unit="multiple", source=f"{src} readings.S1.value, ci (scripts/nn_ko57_read.py)"))  # fmt: skip
+            if panel == "v4":  # keepA divides by the same full knock-out (note 41's run, read again in note 57's)
+                assert s1["den_points"] == a["net_paper10"], model
+            out.append(_row(f"fig10.full.{panel}.{k}", "fig10_answer_span", model,
+                            "recall answers turned wrong by the full knock-out, net of its rotated control (S1's "
+                            f"denominator, {d['run'].split('/')[-1]})", s1["den_points"], n=s1["n_MM"], unit="points",
+                            source=f"{src} readings.S1.den_points (scripts/nn_ko57_read.py){no_ci}"))  # fmt: skip
+            out.append(_row(f"fig10.span_only_points.{panel}.{k}", "fig10_answer_span", model,
+                            "recall answers turned wrong when only the answer span is knocked out, net of an "
+                            "energy-matched random removal (each net of its rotated control; S1's numerator)",
+                            s1["points"], *s1["points_ci"], n=s1["n_MM"], unit="points",
+                            source=f"{src} readings.S1.points, points_ci (scripts/nn_ko57_read.py)"))  # fmt: skip
             out.append(_row(f"fig10.span_only_matched.{panel}.{k}", "fig10_answer_span", model,
                             "share of items whose random part reached its target energy (onlyRperp)",
                             mt["reached_share"], n=mt["n"], unit="share",
