@@ -1,5 +1,5 @@
 key,value,source
-prov.runs,67,scripts/provenance_counts.py: run folders (manifest.json) behind README.md's numbers
+prov.runs,62,scripts/provenance_counts.py: run folders (manifest.json) behind README.md's numbers
 prov.untraced,14,scripts/provenance_counts.py: cited result files with no manifest found beside or above them
 prov.no_commit,6,"scripts/provenance_counts.py: of the runs, manifests without a git commit"
 prov.no_lens_sha,9,"scripts/provenance_counts.py: of the runs, manifests without a lens sha256"

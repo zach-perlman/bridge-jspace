@@ -154,11 +154,11 @@ def fig08b_address_swap_lens() -> sp.Figure:
                         series=[sp.Series("control", rnd, control="a random vector"),
                                 sp.Series("address", two, word="address swap")],
                         connect=("control", "address"))  # fmt: skip
-    lens = sp.DotColumn("lens rebuild", "z", (-2.5, 31), (0, 10, 20, 30),
+    lens = sp.DotColumn("swap rebuilt by the lens's 25 directions", "z", (-2.5, 31), (0, 10, 20, 30),
                         series=[sp.Series("address", ptr, word="address swap"),
                                 sp.Series("identity", item, word="a change of item")],
                         connect=("address", "identity"), band=(-1, 1), band_name="random_vectors")  # fmt: skip
-    return sp.Figure("fig08b_address_swap_lens", vocab(), subtitle="method: address swapped in; lens rebuild · data: locker scenes").add(sp.DotTable(DAN, [swap, lens]))
+    return sp.Figure("fig08b_address_swap_lens", vocab(), subtitle="method: address swapped in; the swap rebuilt by the lens's 25 directions · data: locker scenes").add(sp.DotTable(DAN, [swap, lens]))
 
 
 # ---- Fig. 10: the answer span --------------------------------------------------------------------------------------------

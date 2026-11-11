@@ -1,17 +1,18 @@
-"""Real examples as images (README brief, 7 Nov, §2): one card per test, each an item picked by a stated rule (never by
-its outcome), with the prompt's real text, the bridge word in bold and each reader's answer before and under each
+"""Real examples as images (README brief, 7 Nov, §2): one card per test, each an item picked by a stated rule (E2 and E4 by
+their outcome, said on the card), with the prompt's real text, the bridge word in bold and each reader's answer before and under each
 operation, read from the per-item run files. The rule and the item id are printed on the card; the README gives each
 card's population rate beside it (by key, in the caption stores figures/{depth,breadth}/examples/_meta/captions.toml).
 The cards go by track (figkit/layout.py): E1, E4 to figures/depth/examples/, E2, E3 to figures/breadth/examples/;
 figures/common/examples/ (cards that span both tracks) is empty and gets its index only.
 
   E1 depth   the main test (two people swap picks), Qwen 27B: results/x0_necessity/x0_necessity_27b_chat/
-  E2 breadth a fact passage with the final fact stated (lookup) and without it (recall), Qwen 27B, jsuite v2 test; the
-             one card picked by its outcome (Dan, 8 Nov: show a flip), said on the card, its rate in the caption:
+  E2 breadth a fact passage with the final fact stated (lookup) and without it (recall), Qwen 27B, jsuite v2 test;
+             picked by its outcome (Dan, 8 Nov: show a flip), said on the card, its rate in the caption:
              data/tasks_v2/jsuite_v2_test_chat/items.jsonl + results/ablate_v2/jsuite_v2_test_chat_ko_cand2_v1/rows.jsonl
   E3 chains  three three-hop chains about one entity (P → P → P, P → M → M, M → P → M), Qwen 27B: the same items file +
              results/ablate_v2/jsuite_v2_test_chat_threehop_ko_cand2_v1/rows.jsonl
-  E4 routes  the routes test, another item moved (C2), Qwen 9B: results/x6_routes/qwen35_9b_x6_routes/
+  E4 routes  the routes test, another item moved (C2), Qwen 9B: results/x6_routes/qwen35_9b_x6_routes/; picked by its
+             outcome (brief 6, 11 Nov: the columns must differ), said on the card, its rate in the caption
 
 Nothing is rerun: an answer the files do not store as text (a knocked-out breadth answer) is its first token, decoded
 with the model's tokenizer from the local cache.
@@ -274,9 +275,21 @@ ROUTE_ARMS = (("none", "before"), ("whole", "the whole change"), ("no_jpp", "wit
               ("no_alf", "without the address"))  # fmt: skip
 
 
+def _route_shown(routes: dict) -> bool:
+    """The pattern the card shows (brief 6, 11 Nov: the columns must differ): the whole change sends the lookup to the
+    position route, it stays there without the lens part, and without the address it leaves it (back to the original
+    or to the identity route)."""
+    return (routes.get("whole") == "position" and routes.get("no_jpp") == "position"
+            and routes.get("no_alf") in ("original", "identity"))  # fmt: skip
+
+
 def e4_routes() -> sp.Figure:
     rows = jsonl(ROUTES / "outcomes.jsonl")
-    first = next(r for r in rows if r["condition"] == "C2")["scene"]
+    routes: OrderedDict[str, dict] = OrderedDict()
+    for r in rows:
+        if r["condition"] == "C2" and r["reader"] == "PP":
+            routes.setdefault(r["scene"], {})[r["arm"]] = r["route"]
+    first = next(sc for sc, rt in routes.items() if _route_shown(rt))
     case = next(c for c in jsonl(ROUTES / "cases.jsonl") if c["scene"] == first)
     rd = case["readers"]["PP"]
 
@@ -289,19 +302,41 @@ def e4_routes() -> sp.Figure:
 
     cols = dict(ROUTE_ARMS)
     ans = {cols[r["arm"]]: said(r) for r in rows if r["scene"] == first and r["reader"] == "PP" and r["arm"] in cols}
-    pred = [(f"{k} route: locker {case['expect'][k]}", ROUTE_ROLE[k]) for k in ("identity", "position", "value")]
-    predicted: list[tuple] = [("Predicted:", None, True), (" ", None)]
-    for i, (text, role) in enumerate(pred):
-        predicted.append((text + (" · " if i < len(pred) - 1 else "."), role, True))
+    # which sentence each route reads its locker from (brief 6): identity, the moved item's own sentence in this scene;
+    # position, the sentence in the slot the moved item's sentence holds in the changed scene; value, the moved item's
+    # new number, which only the changed scene has
+    ex, item = case["expect"], case["cf_bridge"]
+    here = [x for x in _sentences(case["context"]) if x.startswith("The locker of")]
+    there = [x for x in _sentences(case["cf_context"]) if x.startswith("The locker of")]
+    own = next(x for x in here if f"the {item} is " in x)
+    moved = next(x for x in there if f"the {item} is " in x)
+    slot = here[there.index(moved)]
+    assert own.endswith(f" {ex['identity']}."), (own, ex)
+    assert slot.endswith(f" {ex['position']}."), (slot, ex)
+    assert moved.endswith(f" {ex['value']}."), (moved, ex)
+    lines = [("identity", f"locker {ex['identity']}", f": the {item}'s own sentence here, “{own}”"),
+             ("position", f"locker {ex['position']}", f": the sentence in the slot the {item}'s holds in the changed "
+                                                       f"scene, “{slot}”"),
+             ("value", f"locker {ex['value']}", f": the {item}'s number in the changed scene only, “{moved}”")]  # fmt: skip
+    routes_lines = [[(f"{k} route → {where}", ROUTE_ROLE[k], True), (rest, None)] for k, where, rest in lines]
     prompt = [bold(case["context"], case["bridge"]),
               [("Lookup:", "lookup", True), (f" {rd['question']}", None)],
               [("The change:", None, True), (f" the bridge word's state comes from the scene with another item moved: "
                                              f"{case['cf_context']}", None)],
-              predicted]  # fmt: skip
+              *routes_lines]  # fmt: skip
     card = sp.Card(prompt=prompt, columns=[c for _, c in ROUTE_ARMS], rows=[sp.CardRow("lookup", "lookup", ans)],
-                   note="Qwen 9B")
-    write_keys({"e4.items": (first, "id", f"rule: the first scene of the routes test's 'another item moved' "
-                                         f"condition in {rel(ROUTES)}/outcomes.jsonl, Qwen 9B")})  # fmt: skip
+                   note="Qwen 9B · picked by its outcome, to show the typical case")
+    src = f"{rel(ROUTES)}/outcomes.jsonl"
+    write_keys({"e4.items": (first, "id", f"rule (picked by its outcome, to show the typical case): the first scene of "
+                                         f"the routes test's 'another item moved' condition in {src}, Qwen 9B, lookup, "
+                                         "whose whole change goes to the position route, stays there without the lens "
+                                         "part and leaves it without the address (original or identity)"),
+                "e4.pairs_all": (len(routes), "count", f"{src}: the 'another item moved' condition's scenes (lookup)"),
+                "e4.pairs_position": (sum(rt.get("whole") == "position" for rt in routes.values()), "count",
+                                      f"{src}: of those, the whole change sends the lookup to the position route"),
+                "e4.pairs_shown": (sum(_route_shown(rt) for rt in routes.values()), "count",
+                                   f"{src}: of those, the lookup also stays on the position route without the lens "
+                                   "part and leaves it without the address (back to the original or to identity)")})  # fmt: skip
     return sp.Figure("e4_routes", vocab(), direct_labels=True).add(card)
 
 
