@@ -93,8 +93,8 @@ def fig01_main_split() -> sp.Figure:
                            series=[sp.Series("control", rot, control="rotated"),
                                    sp.Series("neutral", gap, word="gap")])  # fmt: skip
     lanes = [sp.Lane("known", "known-fact set"), sp.Lane("made", "made-up-fact set")]
-    table = sp.DotTable(models, [drop_col, gap_col], lanes=lanes, note="knock-out · band of middle layers")
-    return sp.Figure("fig01_main_split", vocab()).add(table)
+    table = sp.DotTable(models, [drop_col, gap_col], lanes=lanes)
+    return sp.Figure("fig01_main_split", vocab(), subtitle="knock-out · band of middle layers").add(table)
 
 
 # ---- Fig. 4: the made-up-fact set ----------------------------------------------------------------------------------------------
