@@ -88,7 +88,7 @@ Weaker results and dropped readings are under [Where it does not hold](#where-it
 
 An illustrative scene of the main test's shape: "The locker of carbon is 3. The locker of helium is 5. The locker of oxygen is 7. Hugo picked oxygen. Eric picked carbon. Eva picked helium." **The lookup** asks "Which locker belongs to Eric's pick?" (3, found in the prompt). **The recall** asks "What is the atomic number of Eric's pick?" (6, from memory). **The bridge** is "carbon", the word both questions pass through. The changed prompt swaps Hugo's and Eric's picks, so Eric picks oxygen and the answers become 7 and 8.
 
-Real items, each picked by a fixed rule (`data/figures/examples/data.csv`), are [a locker scene](../../figures/depth/examples/01_locker_scene.png) and [a routes scene](../../figures/depth/examples/02_routes.png); the [examples page](../writeup/examples.md) draws more by a fixed seed.
+Real items, each picked by a fixed rule (`data/figures/examples/data.csv`), are [a locker scene](../../figures/depth/examples/01_locker_scene.png), [a routes scene](../../figures/depth/examples/02_routes.png) and [the address](../../figures/depth/examples/03_address.png); the [examples page](../writeup/examples.md) draws more by a fixed seed.
 
 ![One prompt, two questions about the same bridge word](../../figures/depth/readme/01_setup.png)
 *The worked example's prompt, its two questions and the changed prompt.*
@@ -109,7 +109,7 @@ Real items, each picked by a fixed rule (`data/figures/examples/data.csv`), are 
 - **Switches blocked beyond a random part.** Switches blocked without a part minus those blocked without a same-size random part, as a share of the whole change's switches. **The gap** is the recall's minus the lookup's.
 - **L.** The layer fixed in advance for each model.
 - **Routes.** The lookup names the item's own locker (**identity**), the one now at its old place (**position**), or the new number (**value**).
-- **The address.** Four directions at the bridge word that code where the item's locker sentence sits (Part III).
+- **The address.** A code at the bridge word for where the item's locker sentence sits (Part III).
 - **Swap.** One code at the bridge word replaced by another's.
 - **Marks.** ○ marks a gate or rule set after the results were seen; † a result outside the hand-checked sample.
 
@@ -996,7 +996,7 @@ See the [root README's Reproduce](../../README.md#reproduce).
 
 ## Repository guide
 
-Built at b04077a0 from the run files by `scripts/readme_build.py` from its template. Everything else is in the [root README's guide](../../README.md#repository-guide); this page's figures are in [Appendix A](#appendix-a-links).
+Built at 99b8dd92 from the run files by `scripts/readme_build.py` from its template. Everything else is in the [root README's guide](../../README.md#repository-guide); this page's figures are in [Appendix A](#appendix-a-links).
 
 ### Appendix A. Links
 

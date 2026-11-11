@@ -8,3 +8,10 @@ e4.items,C2-0002,id,"rule (picked by its outcome, to show the typical case): the
 e4.pairs_all,300,count,results/x6_routes/qwen35_9b_x6_routes/outcomes.jsonl: the 'another item moved' condition's scenes (lookup)
 e4.pairs_position,153,count,"results/x6_routes/qwen35_9b_x6_routes/outcomes.jsonl: of those, the whole change sends the lookup to the position route"
 e4.pairs_shown,126,count,"results/x6_routes/qwen35_9b_x6_routes/outcomes.jsonl: of those, the lookup also stays on the position route without the lens part and leaves it without the address (back to the original or to identity)"
+e5.acc,0.528,share,"results/x0_probe/qwen35_9b_x0_probe_v4/states.npz + items.jsonl (layer 12): held-out items whose part along the address (refit on the other half, rank 4) is nearest their own place's average"
+e5.acc_majority,0.314,share,results/x0_probe/qwen35_9b_x0_probe_v4/states.npz + items.jsonl (layer 12): the same by always guessing the most common place
+e5.items,seed 0,id,"rule (fixed before the projection was drawn): results/x0_probe/qwen35_9b_x0_probe_v4/states.npz + items.jsonl (layer 12), the items whose locker sentence comes before the asked pick; scene ids shuffled by random.Random(0), the first half fits the averages, the second half is projected"
+e5.layer,12,count,results/x0_probe/qwen35_9b_x0_probe_v4/states.npz + items.jsonl (layer 12): the 9B's layer fixed in advance (manifest.json layer)
+e5.n_fit,379,count,results/x0_probe/qwen35_9b_x0_probe_v4/states.npz + items.jsonl (layer 12): items fitting the averages
+e5.n_held,379,count,results/x0_probe/qwen35_9b_x0_probe_v4/states.npz + items.jsonl (layer 12): held-out items projected
+e5.places,5,count,"results/x0_probe/qwen35_9b_x0_probe_v4/states.npz + items.jsonl (layer 12): places of the item's locker sentence in the passage (sentence 1 to 5, before the asked pick)"

@@ -562,6 +562,20 @@ canonical = [
     "Known-fact set", "Made-up-fact set", "read", "one of six people in the passage",
     # fig06_nine_models (figkit/writeup_sp_c.py, 10 Nov)
     "Passes the bar", "Fails on a control", "Fails on the gap",
+    # Example 3 (scripts/examples.py e5_address, brief 7)
+    "the bridge word's state",
+    "place 1, minus its layout's average", "place 2, minus its layout's average", "place 3, minus its layout's average",
+    "its state, minus its layout's average", "average per place",
+    "layout: which sentences before the pick are locker sentences;",
+    "its average hints at the answer, so it is subtracted first",
+    "average, place 1",
+    "average, place 2",
+    "average, place 3",
+    "the address: differences between the averages",
+    "swap", "built once, over many scenes", "one scene's address: other items and numbers, the same place",
+    "its part along the address",
+    "near average, place 1",
+    ": add average, place 2 minus average, place 1 at the bridge word; the lookup goes to the locker whose sentence is at place 2",
     "Gap under the knock-out", "Larger control", "Gap scored by probability", "Swap",
     "Recall minus lookup gap", "Cost of same-size controls", "rotated part", "logit-lens directions", "limit",
     # patch_split (figkit/writeup_sp_c.py)

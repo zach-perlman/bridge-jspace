@@ -67,7 +67,7 @@ ORDER: dict[str, list[tuple[str, str]]] = {
         "fig04_where", "fig05_carries", "fig07_lookup", "fig08_readable", "fig09_dose",
         "fig10a1_beyond", "fig10a2_beyond", "fig10b_beyond", "fig10c_beyond")],
     # real items as images (scripts/examples.py), by track, in the root README's reading order
-    "depth/examples": [("main", i) for i in ("e1_locker_scene", "e4_routes")],
+    "depth/examples": [("main", i) for i in ("e1_locker_scene", "e4_routes", "e5_address")],
     "breadth/examples": [("main", i) for i in ("e2_fact_passage", "e3_chains")],
     "common/examples": [],
 }  # fmt: skip

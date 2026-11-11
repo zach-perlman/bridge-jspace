@@ -3,3 +3,4 @@
 
 01_locker_scene = "Without the lens part the lookup still switches and the recall does not. One locker scene, Qwen 27B (the bridge word in bold). Of the main test's {{x|n_27b}} scenes, the whole change switches the recall in {{x|rc_whole_27b}}, and without the lens part in only {{x|rc_noj_27b}}; the lookup still switches in {{x|lk_noj_27b}}."
 02_routes = "The whole change sends the lookup to the position route; it stays there without the lens part and leaves without the address. One scene, Qwen 9B, picked by its outcome: {{e|e4.pairs_shown}} of {{e|e4.pairs_all}} scenes show this."
+03_address = "The address is the difference between the bridge word's average states for each place of the locker sentence, the layout's own average subtracted first; one scene's address is its state's part along those differences, and a swap adds one difference."

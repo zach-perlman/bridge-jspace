@@ -25,14 +25,16 @@ from __future__ import annotations
 import json
 import re
 import sys
-from collections import OrderedDict
+from collections import Counter, OrderedDict
 from functools import cache
 from pathlib import Path
 
+import numpy as np
 import styles_plot as sp
 
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "src"))
+sys.path.insert(0, str(REPO))  # scripts.x0_massmean (E5)
 from bridge_jspace.figkit import layout as L  # noqa: E402
 from bridge_jspace.figkit.writeup_sp_base import vocab  # noqa: E402
 
@@ -340,8 +342,112 @@ def e4_routes() -> sp.Figure:
     return sp.Figure("e4_routes", vocab(), direct_labels=True).add(card)
 
 
+# ---- E5: how the address is found --------------------------------------------------------------------------------------
+PROBE = REPO / "results/x0_probe/qwen35_9b_x0_probe_v4"  # the 9B's address (x6_routes.STATES): x0_massmean.subspaces
+E5_SEED = 0  # the scene split (fit half / held-out half), fixed before looking at the projection
+
+
+def _address_projection() -> tuple[list[int], list[np.ndarray], dict]:
+    """The address as the routes test builds it (x0_massmean.subspaces: each locker-before state minus its layout
+    group's mean, then the mean per place of the item's locker sentence; the span of the means' differences), refit on
+    one half of the scenes (a seeded shuffle of scene ids); the other half's states projected on it, each assigned to
+    the nearest place's average there. Returns the places, each place's held-out points, and the caption's numbers."""
+    import random
+
+    from scripts import x0_massmean as MM
+    from scripts import x0_probe as P
+
+    kept, h, _res, _items, _size = MM.layout_free(PROBE.name)
+    scenes = sorted({it["scene"] for it in kept})
+    random.Random(E5_SEED).shuffle(scenes)
+    fit_sc = set(scenes[: len(scenes) // 2])
+
+    def free(idx: list[int]) -> tuple[np.ndarray, list[dict]]:  # layout-free within the half; singleton groups out
+        group = [P.layout(kept[i]["context"], kept[i]["pick_index"]) for i in idx]
+        size = Counter(group)
+        keep = [j for j, g in enumerate(group) if size[g] > 1]
+        res = h[[idx[j] for j in keep]].copy()
+        for g in {group[j] for j in keep}:
+            rows = [r for r, j in enumerate(keep) if group[j] == g]
+            res[rows] -= res[rows].mean(0)
+        return res, [kept[idx[j]] for j in keep]
+
+    rf, itf = free([i for i, it in enumerate(kept) if it["scene"] in fit_sc])
+    rh, ith = free([i for i, it in enumerate(kept) if it["scene"] not in fit_sc])
+    places = sorted({it["locker_index"] for it in itf})
+    means = np.stack([rf[[k for k, it in enumerate(itf) if it["locker_index"] == q]].mean(0) for q in places])
+    centred = means - means.mean(0)
+    _u, sv, vt = np.linalg.svd(centred, full_matrices=False)
+    span = vt[: int((sv > sv.max() * 1e-8).sum())]  # the address: the span of the averages' differences
+    xy = (rh - means.mean(0)) @ span.T  # each held-out state's part along the address
+    lab = np.array([it["locker_index"] for it in ith])
+    nearest = np.array(places)[np.argmin(((xy[:, None, :] - (centred @ span.T)[None]) ** 2).sum(-1), 1)]
+    nums = {"n_fit": len(itf), "n_held": len(ith), "places": len(places), "rank": len(span),
+            "acc": float((nearest == lab).mean()), "acc_majority": max(Counter(lab.tolist()).values()) / len(lab)}  # fmt: skip
+    return places, [xy[lab == q] for q in places], nums
+
+
+def e5_address() -> sp.Figure:
+    """How the address is found (brief 7, 11 Nov), a schematic. Top: the item's locker sentence at three places, the
+    bridge word's state minus its layout's average (x0_massmean.layout_free: the layout, which sentences before the
+    pick are locker sentences, hints where the answer usually sits, so its average is taken out first; Dan, 11 Nov),
+    the average per place over many scenes, the address as the differences between the averages. Bottom: one scene's
+    address, the state's part along those differences (the projection the routes test removes, x6_routes no_alf), on
+    two scenes with other items and numbers but the item's sentence at the same place: both near that place's average
+    (it follows the template, not the content; how often on held-out scenes: e5.acc). The swap (Figure 9) adds one
+    difference of averages. Nothing in it claims a shape for the code. The 9B's held-out projection is not drawn (a
+    scatter colours by role, so its places could not be told apart); its numbers go to data.csv."""
+    layer = json.loads((PROBE / "manifest.json").read_text())["layer"]
+    tail = " Ruby picked the elephant."
+    scenes = ["The locker of the elephant is 3. … …" + tail, "… The locker of the elephant is 3. …" + tail,
+              "… … The locker of the elephant is 3." + tail]  # fmt: skip
+    base = ", minus its layout's average"
+    el: list = [sp.Words(0.2, 0.15, [("built once, over many scenes", None, True)]),
+                sp.Words(5.35, 0.45, [("the bridge word's state", None)]),
+                sp.Words(8.75, 0.45, [("average per place", None)])]  # fmt: skip
+    for i, text in enumerate(scenes):
+        y = 0.75 + 0.7 * i
+        el += [sp.Box(0.2, y, 4.85, 0.5, text, verbatim=True), sp.Arrow((5.1, y + 0.25), (5.3, y + 0.25)),
+               sp.Box(5.35, y, 3.05, 0.5, f"place {i + 1}{base}"), sp.Arrow((8.45, y + 0.25), (8.7, y + 0.25)),
+               sp.Box(8.75, y, 1.85, 0.5, f"average, place {i + 1}")]  # fmt: skip
+    # two other scenes, other items, numbers and people, with the item's locker sentence at the same place: the same
+    # address (Dan, 11 Nov: it follows the template, not the content)
+    others = ("The locker of the owl is 7. … … Tom picked the owl.", "The locker of the frog is 5. … … Ana picked the frog.")
+    el += [sp.Words(0.2, 2.95, [("layout: which sentences before the pick are locker sentences;", None)]),
+           sp.Words(0.2, 3.25, [("its average hints at the answer, so it is subtracted first", None)]),
+           sp.Arrow((9.67, 2.65), (9.67, 2.9)),
+           sp.Box(5.35, 2.95, 5.25, 0.5, "the address: differences between the averages", role="address"),
+           sp.Words(0.2, 3.95, [("one scene's address: other items and numbers, the same place", None, True)]),
+           sp.Words(8.4, 3.95, [("its part along the address", None)])]  # fmt: skip
+    for i, text in enumerate(others):
+        y = 4.3 + 0.7 * i
+        el += [sp.Box(0.2, y, 4.85, 0.5, text, verbatim=True), sp.Arrow((5.1, y + 0.25), (5.3, y + 0.25)),
+               sp.Box(5.35, y, 3.05, 0.5, f"its state{base}"), sp.Arrow((8.45, y + 0.25), (8.7, y + 0.25)),
+               sp.Box(8.75, y, 1.85, 0.5, "near average, place 1", role="address")]  # fmt: skip
+    el += [sp.Words(0.2, 5.85, [("swap", "address", True), (": add average, place 2 minus average, place 1 at the "
+                                                             "bridge word; the lookup goes to the locker whose sentence "
+                                                             "is at place 2", None)])]  # fmt: skip
+    _places, _clouds, nums = _address_projection()
+    src = f"{rel(PROBE)}/states.npz + items.jsonl (layer {layer})"
+    write_keys({"e5.items": (f"seed {E5_SEED}", "id", f"rule (fixed before the projection was drawn): {src}, the "
+                                                  "items whose locker sentence comes before the asked pick; scene ids "
+                                                  f"shuffled by random.Random({E5_SEED}), the first half fits the "
+                                                  "averages, the second half is projected"),
+                "e5.layer": (layer, "count", f"{src}: the 9B's layer fixed in advance (manifest.json layer)"),
+                "e5.places": (nums["places"], "count", f"{src}: places of the item's locker sentence in the passage "
+                                                       "(sentence 1 to 5, before the asked pick)"),
+                "e5.n_fit": (nums["n_fit"], "count", f"{src}: items fitting the averages"),
+                "e5.n_held": (nums["n_held"], "count", f"{src}: held-out items projected"),
+                "e5.acc": (round(nums["acc"], 3), "share", f"{src}: held-out items whose part along the address "
+                                                         f"(refit on the other half, rank {nums['rank']}) is nearest their "
+                                                         "own place's average"),
+                "e5.acc_majority": (round(nums["acc_majority"], 3), "share", f"{src}: the same by always guessing the "
+                                                                          "most common place")})  # fmt: skip
+    return sp.Figure("e5_address", vocab(), direct_labels=True).add(sp.Schematic(6.2, el))
+
+
 FIGS = {"e1_locker_scene": e1_locker_scene, "e2_fact_passage": e2_fact_passage, "e3_chains": e3_chains,
-        "e4_routes": e4_routes}  # fmt: skip
+        "e4_routes": e4_routes, "e5_address": e5_address}  # fmt: skip
 
 
 if __name__ == "__main__":
