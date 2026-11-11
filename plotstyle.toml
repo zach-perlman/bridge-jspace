@@ -193,19 +193,26 @@ cue_word = "larger"
 
 # fig06_nine_models: the gap against the bar, each control's cost against the limit
 [units.nine_gap]
-title = "points of answers turned wrong"
-quantity = "gap, a cleaner split"
+title = "gap (points)"
+quantity = "gap"
 format = "points"
 cue_word = "larger"
 
 [units.nine_control]
-title = "points of answers turned wrong by removing something else"
+title = "answers turned wrong (points)"
 quantity = "cost"
 format = "points"
 cue_word = "larger"
 
 # the bar and the limit as fixed in advance (whole points)
 [units.nine_bar]
+title = "points"
+format = "points_whole"
+cue = false
+
+# the same limit over the second control panel: the library labels an identical rule (place, words, unit) over its
+# first panel only, and brief 5 (11 Nov) wants it over each
+[units.nine_limit]
 title = "points"
 format = "points_whole"
 cue = false
@@ -554,7 +561,7 @@ canonical = [
     "from the patch",
     "Known-fact set", "Made-up-fact set", "read", "one of six people in the passage",
     # fig06_nine_models (figkit/writeup_sp_c.py, 10 Nov)
-    "Passes the bar", "Fails on a control", "Fails on the gap",
+    "Passes the bar", "Fails on a control", "Fails on the gap", "verdict",
     "Gap under the knock-out", "Larger control", "Gap scored by probability", "Swap",
     "Recall minus lookup gap", "Cost of same-size controls", "rotated part", "logit-lens directions", "limit",
     # patch_split (figkit/writeup_sp_c.py)

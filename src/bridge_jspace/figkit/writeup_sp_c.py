@@ -63,20 +63,32 @@ def fig06_nine_models() -> sp.Figure:
     """Nine models in three bands by the bar fixed before the main runs: the recall − lookup gap
     under the knock-out against the bar of 30, and what each same-size control costs against the limit of 10, one
     panel per control (one grey dot per line: the grammar gives a second control its own panel)."""
-    gap = sp.DotColumn("Recall minus lookup gap", "nine_gap", (0, 70), (0, 30, 60), weight=1.3,
+    gap = sp.DotColumn("Recall minus lookup gap", "nine_gap", (0, 70), (0, 30, 60), weight=1.4,
                        series=[sp.Series("neutral", _nine_cells("ko.{k}.mk", "gap"), word="Recall minus lookup gap")],
                        rules=[sp.Rule(GAP_BAR, "bar: gap ≥ {} points", unit="nine_bar", key="nine.bar.gap")])  # fmt: skip
-    limit = [sp.Rule(CONTROL_BAR, "limit: {} points", unit="nine_bar", key="nine.bar.control")]
-    rot = sp.DotColumn("rotated part", "nine_control", (0, 40), (0, 20, 40), rules=limit,
-                       series=[sp.Series("control", _nine_cells("ko.{k}.rot", "rot"), control="rotated")])
-    logit = sp.DotColumn("logit-lens directions", "nine_control", (0, 40), (0, 20, 40), rules=limit,
-                         series=[sp.Series("control", _nine_cells("ko.{k}.u", "logit"), control="logit lens")])
-    # one verdict per band, under its first model: a verdict under all nine makes the figure taller than wide (SP604)
-    assert all(_verdict(m) for m in NINE_ROWS)  # the bands agree with the data
-    row_sub = {ms[0]: band for band, ms in BANDS}
-    table = sp.DotTable(list(NINE_ROWS), [gap, sp.Gutter(), sp.ColumnGroup("Cost of same-size controls", [rot, logit])],
-                        kind="nine", row_sub=row_sub)  # fmt: skip
-    return sp.Figure("fig06_nine_models", vocab(), subtitle="method: knock-out, band of middle layers · data: known-fact set").add(table)
+
+    def control(key, cell, header, name, unit):
+        """One control panel on the shared 0-45 scale (Muse's logit-lens whisker ends at 40), the limit labelled over
+        the panel. A cost over the limit stays grey: brick is the answer span's colour in the post (one meaning per
+        colour), so brief 5's brick failing control is not drawn; its dot past the dashed limit shows it."""
+        return sp.DotColumn(header, "nine_control", (0, 45), (0, 20, 40),
+                            series=[sp.Series("control", _nine_cells(key, cell), control=name)],
+                            rules=[sp.Rule(CONTROL_BAR, "limit: {} points", unit=unit, key="nine.bar.control")])
+
+    rot = control("ko.{k}.rot", "rot", "rotated part", "rotated", "nine_bar")
+    logit = control("ko.{k}.u", "logit", "logit-lens directions", "logit lens", "nine_limit")
+    # brief 5: every row the same height, so the verdict is a word beside the name (from the data, checked against the
+    # bands), not a sub-line under one row; the bands are contiguous rows, so each reads as a group. The library has
+    # no row groups or brackets (a sub-line under all nine rows makes the figure taller than wide, SP604).
+    # the verdicts are words in a text column (the library's Missing), added to this figure's vocabulary only, so the
+    # shared key never lists them as reasons for a missing cell
+    words = {m: _verdict(m) for m in NINE_ROWS}
+    v = dataclasses.replace(vocab(), missing=vocab().missing + tuple(dict.fromkeys(words.values())))
+    verdict = sp.TextColumn("verdict", "nine_gap", {m: sp.Missing(w) for m, w in words.items()}, unit_title=False)
+    table = sp.DotTable(list(NINE_ROWS), [verdict, gap, sp.Gutter(), sp.ColumnGroup("Cost of same-size controls",
+                                                                                   [rot, sp.Gutter(0.22), logit])],
+                        kind="nine")  # fmt: skip
+    return sp.Figure("fig06_nine_models", v, subtitle="method: knock-out, band of middle layers · data: known-fact set").add(table)
 
 
 def nine_tests(fid: str) -> sp.Figure:
