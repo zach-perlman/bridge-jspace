@@ -485,7 +485,7 @@ On the twin set, keeping only the answer span's directions inside the removal un
 
 ![Keeping only the answer span's directions undoes nearly all of the recall's damage; removing only them does all of it](../../figures/common/writeup/10_answer_span.png)
 
-*What the knock-out removes from the recall is its answer's own directions. Left: the share of the damage undone when the answer span is kept (brick), against an energy-matched random keep (grey); descriptive. Middle: the damage when only the answer span is removed, as a multiple of the full knock-out's. Right: the same on the codename set.*
+*What the knock-out removes from the recall is its answer's own directions. Recall answers turned wrong per model, beside the full knock-out (slate): knocking out all but the answer span leaves almost none; knocking out only the span reproduces it (brick), on the made-up-fact and the codename set; grey, all but random directions of the same energy.*
 
 <details><summary>Test, results, controls and limits</summary>
 
@@ -690,7 +690,7 @@ See the root README's [Reproduce](../../README.md#reproduce).
 ## Repository guide
 
 - **This report doubles as the breadth track's ledger.** Every number is in [data.csv](data.csv) with its source file; the run log is [docs/archive/EXPERIMENTS.md](../archive/EXPERIMENTS.md).
-- **Builders.** scripts/report_breadth.py builds data.csv and this page, last at 49f4dce2; src/bridge_jspace/figkit/breadth_sp.py draws [the figures](../../figures/breadth/).
+- **Builders.** scripts/report_breadth.py builds data.csv and this page, last at 0b2be47c; src/bridge_jspace/figkit/breadth_sp.py draws [the figures](../../figures/breadth/).
 - **Licences and citing.** Code is [MIT](../../LICENSE); each data file keeps its source's terms ([data/SOURCES.md](../../data/SOURCES.md)). Cite with [CITATION.cff](../../CITATION.cff).
 
 <details><summary>Sources, builders and figures</summary>

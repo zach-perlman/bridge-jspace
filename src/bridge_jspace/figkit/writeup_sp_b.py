@@ -4,7 +4,6 @@ names). writeup_sp.FIGS takes them in; the figures the library cannot draw yet s
 
 from __future__ import annotations
 
-import dataclasses
 import re
 
 import styles_plot as sp
@@ -162,33 +161,32 @@ def fig08b_address_swap_lens() -> sp.Figure:
 
 
 # ---- Fig. 10: the answer span --------------------------------------------------------------------------------------------
-FULL = "full knock-out"
 KEEP_CONTROL = "random directions of the same energy kept"
-# Brief 4 (11 Nov): in points, not ratios. Each lane's tick is the full knock-out on the same items (its value in the
-# text column), so how much of the damage a test leaves or does reads as the distance from the dot to the tick.
-SPAN_LANES = (("keep", "knock out all but the answer span"),
-              ("random", "knock out all but random, same energy"),
-              ("v4", "knock out only the span, made-up-fact set"),
-              ("codename", "knock out only the span, codename set"))  # fmt: skip
-SPAN_PANEL = {"keep": "v4", "random": "v4", "v4": "v4", "codename": "codename"}  # the set each lane ran on
+# Brief 9 (12 Nov, Zach's comments): the full knock-out is a slate dot on the same axis; one panel per set (the
+# made-up-fact set, the codename set), the lanes say what is knocked out without repeating "knock out"; a lane the
+# codename set never ran stays empty there
+SPAN_LANES = (("full", "everything (full knock-out)"), ("keep", "all but the answer span"),
+              ("random", "all but random directions, same energy"), ("only", "only the answer span"))  # fmt: skip
 
 
 def fig10_answer_span() -> sp.Figure:
-    """Recall answers turned wrong (points, each edit net of its rotated control). Per model four lanes, each with a
-    tick at the full knock-out on its items: knocking out everything but the answer span (brick) and everything but
-    random directions of the same energy (grey; "n/a" where no random keep holds as much energy, Lightning), on the
-    made-up-fact set (jsuite_v4); knocking out only the answer span, net of an energy-matched random removal, on the
-    made-up-fact set and on the codename set, where each person is named only by a codename the passage defines
-    (jsuite_v5al, note 31). Only the removals have a stored interval in points (writeup_data.fig10_rows). Lightning's
-    energy-matched random removal fell short of its energy on most items (fig10.span_only_matched.*): said in the
-    caption, not as a note row, which splits the lane grid (Dan, 11 Nov)."""
-    full, tick, span, ctrl = {}, {}, {}, {}
+    """Recall answers turned wrong (points, each edit net of its rotated control), one panel per set: the made-up-fact
+    set (jsuite_v4): the full knock-out (slate), everything but the answer span (brick), everything but random
+    directions of the same energy (grey; "n/a" where no random keep holds as much energy, Lightning), only the answer
+    span net of an energy-matched random removal (brick); the codename set (jsuite_v5al, note 31): the full knock-out
+    and only the answer span. Only the removals have a stored interval in points (writeup_data.fig10_rows).
+    Lightning's energy-matched random removal fell short of its energy on most items (fig10.span_only_matched.*): said
+    in the caption."""
+    cells = {panel: ({}, {}, {}) for panel in ("v4", "codename")}  # full, span, random keep
     for m in TWIN:
         k = ZK[m]
-        for lane, panel in SPAN_PANEL.items():
+        for panel in ("v4", "codename"):
+            full, span, _ctrl = cells[panel]
             key = f"fig10.full.{panel}.{k}"
-            full[(m, lane)] = est(need(W.w(key), key), f"full.{panel}.{k}", key=key)
-            tick[(m, lane)] = full[(m, lane)].value
+            full[(m, "full")] = est(need(W.w(key), key), f"full.{panel}.{k}", key=key, label=True)
+            key = f"fig10.span_only_points.{panel}.{k}"
+            span[(m, "only")] = est(need(W.w(key), key), f"remove.{panel}.{k}", key=key, label=True)
+        _full, span, ctrl = cells["v4"]
         key = f"fig10.keep_span_points.{k}"
         span[(m, "keep")] = est(need(W.w(key), key), f"keep.{k}", key=key, label=True)
         if need(W.w(f"fig10.keep_ctrl.{k}"), f"keep_ctrl {k}")[0] is None:
@@ -196,16 +194,20 @@ def fig10_answer_span() -> sp.Figure:
         else:
             key = f"fig10.keep_ctrl_points.{k}"
             ctrl[(m, "random")] = est(need(W.w(key), key), f"keep_ctrl.{k}", key=key, label=True)
-        for lane in ("v4", "codename"):
-            key = f"fig10.span_only_points.{lane}.{k}"
-            span[(m, lane)] = est(need(W.w(key), key), f"remove.{lane}.{k}", key=key, label=True)
-    col = sp.DotColumn("recall answers turned wrong", "drop", (-4, 90), (0, 20, 40, 60, 80), ticks=tick, width=2.7,
-                       series=[sp.Series("control", ctrl, control=KEEP_CONTROL),
-                               sp.Series("answer", span, word="answer span")])  # fmt: skip
-    ref = sp.TextColumn(FULL, "drop", full, unit_title=False)
+
+    def panel(header, panel_key):
+        full, span, ctrl = cells[panel_key]
+        series = [sp.Series("neutral", full, word="full")]
+        series += [sp.Series("control", ctrl, control=KEEP_CONTROL)] if ctrl else []
+        return sp.DotColumn(header, "drop", (-4, 90), (0, 40, 80),
+                            series=[*series, sp.Series("answer", span, word="span")])
+
     lanes = [sp.Lane(key, label) for key, label in SPAN_LANES]
-    v = dataclasses.replace(vocab(), key_tick=FULL)
-    return sp.Figure("fig10_answer_span", v, subtitle="method: knock-out, band of middle layers · data: made-up-fact and codename sets").add(sp.DotTable(TWIN, [col, ref], lanes=lanes))
+    return sp.Figure("fig10_answer_span", vocab(), subtitle="method: knock-out, band of middle layers · data: "
+                                                         "made-up-fact and codename sets").add(
+        sp.DotTable(TWIN, [sp.ColumnGroup("recall answers turned wrong", [panel("made-up-fact set", "v4"), sp.Gutter(0.2),
+                                                                            panel("codename set", "codename")])],
+                    lanes=lanes, note="what we knock out"))  # fmt: skip
 
 
 # ---- Fig. 11: removals orthogonal to the answers -------------------------------------------------------------------------

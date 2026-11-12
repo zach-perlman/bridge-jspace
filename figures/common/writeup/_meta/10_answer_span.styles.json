@@ -2,7 +2,7 @@
  "styles_plot": "0.2.6",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "0ec96c54ace457c26cc98a952bff2b3330877376c8d9c676337a7b236a9c72c0",
+  "sha256": "128d886c70ce290c907c9bf4362fbdd1131e70ab344966871e4064661e85fb1d",
   "hash": "meaning"
  },
  "registry": {
@@ -15,16 +15,41 @@
  "publishable": true,
  "text_only": false,
  "png": {
-  "pixels_sha256": "e728a51db7a699ef4a5e539d161c8c0b9bfa6541ca733459bc591d9eacf8b82a",
+  "pixels_sha256": "554bfaff32acf9abf976f5cbef8109c5d6aad7ab6771e79f3e6b318aba93568d",
   "dpi": 200
  },
  "roles": [
-  "answer"
+  "answer",
+  "neutral"
  ],
  "controls": [
   "random directions of the same energy kept"
  ],
  "cells": {
+  "full.codename.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "full.codename.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "full.codename.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "full.v4.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "full.v4.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "full.v4.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
   "keep.nl": {
    "timing": "fixed_in_advance",
    "claim": "claimed"
@@ -73,6 +98,14 @@
  "marks": [
   {
    "kind": "dot",
+   "role": "neutral",
+   "cell": "full.v4.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
    "role": "answer",
    "cell": "keep.q9",
    "timing": "fixed_in_advance",
@@ -97,8 +130,8 @@
   },
   {
    "kind": "dot",
-   "role": "answer",
-   "cell": "remove.codename.q9",
+   "role": "neutral",
+   "cell": "full.v4.q27",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -129,8 +162,8 @@
   },
   {
    "kind": "dot",
-   "role": "answer",
-   "cell": "remove.codename.q27",
+   "role": "neutral",
+   "cell": "full.v4.nl",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -153,6 +186,46 @@
   },
   {
    "kind": "dot",
+   "role": "neutral",
+   "cell": "full.codename.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "answer",
+   "cell": "remove.codename.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "full.codename.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "answer",
+   "cell": "remove.codename.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "full.codename.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
    "role": "answer",
    "cell": "remove.codename.nl",
    "timing": "fixed_in_advance",
@@ -161,27 +234,26 @@
   }
  ],
  "key": [
-  "grey tick: full knock-out",
   "grey: random directions of the same energy kept",
   "whiskers: 95% interval"
  ],
  "numbers": {
   "fig10.full.v4.q9": "56.6",
-  "fig10.full.codename.q9": "54.2",
-  "fig10.full.v4.q27": "68.6",
-  "fig10.full.codename.q27": "65.9",
-  "fig10.full.v4.nl": "51.8",
-  "fig10.full.codename.nl": "70.4",
   "fig10.keep_span_points.q9": "3.7",
   "fig10.keep_ctrl_points.q9": "62.9",
   "fig10.span_only_points.v4.q9": "58.8",
-  "fig10.span_only_points.codename.q9": "71.8",
+  "fig10.full.v4.q27": "68.6",
   "fig10.keep_span_points.q27": "3.3",
   "fig10.keep_ctrl_points.q27": "67.2",
   "fig10.span_only_points.v4.q27": "70.1",
-  "fig10.span_only_points.codename.q27": "77.7",
+  "fig10.full.v4.nl": "51.8",
   "fig10.keep_span_points.nl": "4.7",
   "fig10.span_only_points.v4.nl": "50.7",
+  "fig10.full.codename.q9": "54.2",
+  "fig10.span_only_points.codename.q9": "71.8",
+  "fig10.full.codename.q27": "65.9",
+  "fig10.span_only_points.codename.q27": "77.7",
+  "fig10.full.codename.nl": "70.4",
   "fig10.span_only_points.codename.nl": "73.8"
  },
  "problems": []
