@@ -1,8 +1,8 @@
 {
- "styles_plot": "0.2.4",
+ "styles_plot": "0.2.5",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "403eb2ed9a02dfb2d0a63dca1f439a8178c6984795352e8d3739f12f6993c94f",
+  "sha256": "430236d23a5d797a19ce714e1e41d8b2067777461e2c553b238a808e55ac0161",
   "hash": "meaning"
  },
  "registry": {
@@ -15,7 +15,7 @@
  "publishable": true,
  "text_only": false,
  "png": {
-  "pixels_sha256": "b760da82bb358a67747dcedfa5582f24027abf7f8af52b961c9d35d5ecc45eb0",
+  "pixels_sha256": "d9b5d0217cff183352102b789a2729d60de5d4ecccff8355413f7bfd1635e42d",
   "dpi": 200
  },
  "roles": [
@@ -185,7 +185,9 @@
   "routes.number.q27": "0.00",
   "routes.number.mu": "0.00",
   "routes.number.nl": "0.00",
-  "routes.number.q122": "0.00"
+  "routes.number.q122": "0.00",
+  "routes.rule.share": "0.20",
+  "routes.rule.lower": "0.10"
  },
  "problems": []
 }

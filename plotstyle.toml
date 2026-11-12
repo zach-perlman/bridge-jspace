@@ -562,6 +562,10 @@ canonical = [
     "Known-fact set", "Made-up-fact set", "read", "one of six people in the passage",
     # fig06_nine_models (figkit/writeup_sp_c.py, 10 Nov)
     "Passes the bar", "Fails on a control", "Fails on the gap",
+    # fig07_routes (brief 8)
+    "method: the whole change patched at the bridge word · data: locker scenes, another item's locker moved",
+    "the lookup's answers by route", "position share, 95% interval", "the new number",
+    "its own locker", "its old place", "neither",
     # Example 3 (scripts/examples.py e5_address, briefs 7 and 7b)
     "for example, three places", "averaged over many scenes", "average, place 1", "average, place 2",
     "average, place 3", "the address:", "differences between", "the averages",
@@ -881,6 +885,7 @@ templates = [
     "48.4's bar fixed in advance: {num} of {num}",
     "unedited: {num}\u2013{num}% right on every model",
     "unedited: {num}% right on every model",
+    "rule fixed in advance: a route is used if its share is at least {num} with a lower bound of at least {num}",
     "read: on {entity}, removing the lens part everywhere drops recall {num} points and lookup {num}; the gap is {num}, the largest same-size control's {num}",
 ]
 missing = ["no run", "not run", "n/a", "no comparable run", "below gate", "too few switches", "no interval", "source missing", "no control run", "no energy-matched control", "can't tell", "not tested"]

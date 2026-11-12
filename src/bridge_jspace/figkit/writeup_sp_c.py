@@ -125,8 +125,12 @@ ROUTE_Q = "another item moved, whole: {} share"
 
 
 def routes(fid: str) -> sp.Figure:
-    """The lookup's answers when another item's locker moved, a 100% bar per model: by identity, by position, other.
-    The position share's 95% interval (the segment the claim rests on) and the number itself in text columns beside."""
+    """The lookup's answers when another item's locker moved, a 100% bar per model: by identity, by position, other,
+    each part named and said in words under its name. The position share's 95% interval (the segment the claim rests on)
+    and the share answered by the new number in text columns beside; the rule fixed in advance (x6_routes: a route is
+    used if its share >= USED_SHARE with lower bound >= USED_LO) as the grey line under the figure (brief 8, 12 Nov)."""
+    from scripts.x6_routes import USED_LO, USED_SHARE
+
     models = [m for m in DAN if D.s(m, ROUTE_Q.format("identity"))]
     ids, pos, oth, pos_ci, num = {}, {}, {}, {}, {}
     for m in models:
@@ -138,12 +142,17 @@ def routes(fid: str) -> sp.Figure:
         oth[m] = sp.Est(1 - i_[0] - p_[0], cell=cell)
         pos_ci[m] = est(p_, cell, key=f"routes.position.{k}")
         num[m] = est(need(D.s(m, ROUTE_Q.format("value")), m), cell, key=f"routes.number.{k}", interval=False)
-    stack = sp.Stack(models, [sp.Segment("by identity", "identity", ids), sp.Segment("by position", "address", pos),
-                              sp.Segment("other", "other", oth)], unit="lookups",
-                     header="when another item's locker moved",
-                     columns=[sp.TextColumn("by position", "lookups", pos_ci, unit_title=False),
-                              sp.TextColumn("the number", "lookups", num, unit_title=False)])  # fmt: skip
-    return sp.Figure(fid, vocab()).add(stack)
+    stack = sp.Stack(models, [sp.Segment("by identity", "identity", ids, note="its own locker"),
+                              sp.Segment("by position", "address", pos, note="its old place"),
+                              sp.Segment("other", "other", oth, note="neither")], unit="lookups",
+                     header="the lookup's answers by route",
+                     columns=[sp.TextColumn("position share, 95% interval", "lookups", pos_ci, unit_title=False),
+                              sp.TextColumn("the new number", "lookups", num, unit_title=False)])  # fmt: skip
+    rule = {"share": (USED_SHARE, "lookups", "routes.rule.share"), "lo": (USED_LO, "lookups", "routes.rule.lower")}
+    return sp.Figure(fid, vocab(), subtitle="method: the whole change patched at the bridge word · data: locker scenes, "
+                                            "another item's locker moved",
+                     read="rule fixed in advance: a route is used if its share is at least {share} with a lower bound of "
+                          "at least {lo}", numbers=rule).add(stack)  # fmt: skip
 
 
 def fig07_routes() -> sp.Figure:
