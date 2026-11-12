@@ -143,7 +143,7 @@ Second, general damage: on these three models it costs plain text +0.30 nats<!--
 
 ![Keeping only the answer span's directions undoes nearly all of the recall's damage; removing only them does all of it](figures/common/writeup/10_answer_span.png)
 
-*What the knock-out removes from the recall is its answer's own directions. Recall answers turned wrong per model, beside the full knock-out (slate): knocking out all but the answer span leaves almost none; knocking out only the span reproduces it (brick), on the made-up-fact and the codename set; grey, all but random directions of the same energy.*
+*What the knock-out removes from the recall is its answer's own directions. Per model, the test (brick) beside the full knock-out (slate): left, keeping only the answer span leaves almost none of the damage; middle and right, removing only the span reproduces it on the made-up-fact and codename sets.*
 
 - **Test.** On the twin set, the knock-out keeping the answer span's directions, and the answer span removed alone, each net of a random part of the same energy. On a one-hop question about the subject (a city), removing its lens directions, the answer span, or its directions made orthogonal to the answers. A subspace built from the data and cleaned of the answers, against the rule fixed in advance: under 15 points beyond random means the subject is not seen<!-- src: data/figures/writeup/data.csv | fig11.clean_subspace.q27 -->.
 - **Result.**

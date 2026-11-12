@@ -162,52 +162,51 @@ def fig08b_address_swap_lens() -> sp.Figure:
 
 # ---- Fig. 10: the answer span --------------------------------------------------------------------------------------------
 KEEP_CONTROL = "random directions of the same energy kept"
-# Brief 9 (12 Nov, Zach's comments): the full knock-out is a slate dot on the same axis; one panel per set (the
-# made-up-fact set, the codename set), the lanes say what is knocked out without repeating "knock out"; a lane the
-# codename set never ran stays empty there
-SPAN_LANES = (("full", "everything (full knock-out)"), ("keep", "all but the answer span"),
-              ("random", "all but random directions, same energy"), ("only", "only the answer span"))  # fmt: skip
+# Brief 10 (12 Nov): one panel per test, the comparison along each row: the full knock-out on the same items (slate,
+# unlabelled) joined to the test (brick, labelled); Test 1 also the random keep (grey; "n/a" for Lightning)
+TESTS = (("keep", "v4", "Test 1: only the span kept"),
+         ("only", "v4", "Test 2: only the span removed"),
+         ("only", "codename", "Test 3: only the span removed"))  # fmt: skip
 
 
 def fig10_answer_span() -> sp.Figure:
-    """Recall answers turned wrong (points, each edit net of its rotated control), one panel per set: the made-up-fact
-    set (jsuite_v4): the full knock-out (slate), everything but the answer span (brick), everything but random
-    directions of the same energy (grey; "n/a" where no random keep holds as much energy, Lightning), only the answer
-    span net of an energy-matched random removal (brick); the codename set (jsuite_v5al, note 31): the full knock-out
-    and only the answer span. Only the removals have a stored interval in points (writeup_data.fig10_rows).
-    Lightning's energy-matched random removal fell short of its energy on most items (fig10.span_only_matched.*): said
-    in the caption."""
-    cells = {panel: ({}, {}, {}) for panel in ("v4", "codename")}  # full, span, random keep
-    for m in TWIN:
-        k = ZK[m]
-        for panel in ("v4", "codename"):
-            full, span, _ctrl = cells[panel]
-            key = f"fig10.full.{panel}.{k}"
-            full[(m, "full")] = est(need(W.w(key), key), f"full.{panel}.{k}", key=key, label=True)
-            key = f"fig10.span_only_points.{panel}.{k}"
-            span[(m, "only")] = est(need(W.w(key), key), f"remove.{panel}.{k}", key=key, label=True)
-        _full, span, ctrl = cells["v4"]
-        key = f"fig10.keep_span_points.{k}"
-        span[(m, "keep")] = est(need(W.w(key), key), f"keep.{k}", key=key, label=True)
-        if need(W.w(f"fig10.keep_ctrl.{k}"), f"keep_ctrl {k}")[0] is None:
-            ctrl[(m, "random")] = sp.Missing("n/a")
-        else:
-            key = f"fig10.keep_ctrl_points.{k}"
-            ctrl[(m, "random")] = est(need(W.w(key), key), f"keep_ctrl.{k}", key=key, label=True)
-
-    def panel(header, panel_key):
-        full, span, ctrl = cells[panel_key]
-        series = [sp.Series("neutral", full, word="full")]
+    """Recall answers turned wrong (points, each edit net of its rotated control), one panel per test, models as rows:
+    Test 1, everything but the answer span knocked out (made-up-fact set, jsuite_v4), beside everything but random
+    directions of the same energy (grey; "n/a" where no random keep holds as much energy, Lightning); Tests 2 and 3,
+    only the answer span knocked out, net of an energy-matched random removal, on the made-up-fact and the codename set
+    (jsuite_v5al, note 31). In each row the full knock-out on the same items (slate) is joined to the test (brick).
+    Only the span-only removals have a stored interval in points (writeup_data.fig10_rows)."""
+    panels = []
+    for test, panel_key, header in TESTS:
+        full, span, ctrl = {}, {}, {}
+        for m in TWIN:
+            k = ZK[m]
+            key = f"fig10.full.{panel_key}.{k}"
+            full[m] = est(need(W.w(key), key), f"full.{panel_key}.{k}", key=key)
+            if test == "keep":
+                key = f"fig10.keep_span_points.{k}"
+                span[m] = est(need(W.w(key), key), f"keep.{k}", key=key, label=True)
+                if need(W.w(f"fig10.keep_ctrl.{k}"), f"keep_ctrl {k}")[0] is None:
+                    ctrl[m] = sp.Missing("n/a")
+                else:
+                    key = f"fig10.keep_ctrl_points.{k}"
+                    ctrl[m] = est(need(W.w(key), key), f"keep_ctrl.{k}", key=key, label=True)
+            else:
+                key = f"fig10.span_only_points.{panel_key}.{k}"
+                span[m] = est(need(W.w(key), key), f"remove.{panel_key}.{k}", key=key, label=True)
+        # Tests 2 and 3: the full knock-out as a slate vertical mark the brick dot lands on (they coincide: the result)
+        series = [sp.Series("neutral", full, word="full", mark="dot" if test == "keep" else "tick")]
         series += [sp.Series("control", ctrl, control=KEEP_CONTROL)] if ctrl else []
-        return sp.DotColumn(header, "drop", (-4, 90), (0, 40, 80),
-                            series=[*series, sp.Series("answer", span, word="span")])
-
-    lanes = [sp.Lane(key, label) for key, label in SPAN_LANES]
+        # Tests 2 and 3 join the test to the full knock-out; Test 1 does not, so its values sit right of its brick dots
+        # (left of them they would cross the zero line); one scale for all three
+        panels.append(sp.DotColumn(header, "drop", (-4, 90), (0, 40, 80), word_order="series",
+                                   connect=None if test == "keep" else ("neutral", "answer"),
+                                   series=[*series, sp.Series("answer", span, word="span")]))  # fmt: skip
+    cols = [sp.ColumnGroup("made-up-fact set", [panels[0], sp.Gutter(0.2), panels[1]], rule=True), sp.Gutter(0.2),
+            sp.ColumnGroup("codename set", [panels[2]], rule=True)]  # fmt: skip
     return sp.Figure("fig10_answer_span", vocab(), subtitle="method: knock-out, band of middle layers · data: "
                                                          "made-up-fact and codename sets").add(
-        sp.DotTable(TWIN, [sp.ColumnGroup("recall answers turned wrong", [panel("made-up-fact set", "v4"), sp.Gutter(0.2),
-                                                                            panel("codename set", "codename")])],
-                    lanes=lanes, note="what we knock out"))  # fmt: skip
+        sp.DotTable(TWIN, cols, shared_title=True))  # fmt: skip
 
 
 # ---- Fig. 11: removals orthogonal to the answers -------------------------------------------------------------------------
