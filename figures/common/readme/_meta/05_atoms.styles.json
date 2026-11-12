@@ -1,8 +1,8 @@
 {
- "styles_plot": "0.2.4",
+ "styles_plot": "0.2.5",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "403eb2ed9a02dfb2d0a63dca1f439a8178c6984795352e8d3739f12f6993c94f",
+  "sha256": "0ec96c54ace457c26cc98a952bff2b3330877376c8d9c676337a7b236a9c72c0",
   "hash": "meaning"
  },
  "registry": {
@@ -15,12 +15,13 @@
  "publishable": true,
  "text_only": false,
  "png": {
-  "pixels_sha256": "bfe1548a3a41e301e5976c00450ccad5b484142b389046f4f8694f62052f0f40",
+  "pixels_sha256": "b088b5de00932569728227036d87a7facc047387bcc961f7161edf797efff478",
   "dpi": 160
  },
  "roles": [
   "answer",
-  "lens"
+  "lens",
+  "neutral"
  ],
  "controls": [],
  "cells": {
@@ -56,7 +57,7 @@
   },
   {
    "kind": "segment",
-   "role": "lens",
+   "role": "neutral",
    "cell": "atoms.q9",
    "timing": "fixed_in_advance",
    "claim": "claimed",
@@ -96,7 +97,7 @@
   },
   {
    "kind": "segment",
-   "role": "lens",
+   "role": "neutral",
    "cell": "atoms.q27",
    "timing": "fixed_in_advance",
    "claim": "claimed",
@@ -136,7 +137,7 @@
   },
   {
    "kind": "segment",
-   "role": "lens",
+   "role": "neutral",
    "cell": "atoms.mu",
    "timing": "fixed_in_advance",
    "claim": "claimed",
@@ -176,7 +177,7 @@
   },
   {
    "kind": "segment",
-   "role": "lens",
+   "role": "neutral",
    "cell": "atoms.nl",
    "timing": "post_hoc",
    "claim": "claimed",
@@ -216,7 +217,7 @@
   },
   {
    "kind": "segment",
-   "role": "lens",
+   "role": "neutral",
    "cell": "atoms.q122",
    "timing": "fixed_in_advance",
    "claim": "claimed",
@@ -250,12 +251,6 @@
  "key": [
   "○ post hoc"
  ],
- "numbers": {
-  "f5.answer.q9": "0.00",
-  "f5.answer.q27": "0.00",
-  "f5.answer.mu": "0.00",
-  "f5.answer.nl": "0.00",
-  "f5.answer.q122": "0.00"
- },
+ "numbers": {},
  "problems": []
 }

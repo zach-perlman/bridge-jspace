@@ -238,23 +238,30 @@ ATOMS = "52 A: share of the rebuilt energy, "
 
 
 ATOM_SEGMENTS = (("old bridge word", "lens", "the old bridge word", "old"),
-                 ("new bridge word", "lens", "the new bridge word", "new"),
+                 ("new bridge word", "neutral", "the new bridge word", "new"),
                  ("answer word", "answer", "an answer word", "answer"),
-                 ("another scene word", "other", "another scene word or its class", "other_scene"),
-                 ("no scene word", "other", "no scene word", "no_scene"))  # fmt: skip
+                 ("no scene word", "other", "no scene word", "no_scene"),
+                 ("another scene word", "other", "another scene word or its class", "other_scene"))  # fmt: skip
+# the two grey parts in this order (Dan, 12 Nov): the large "no scene word" right after the answer word, so its name sits
+# over its own part; the thin "another scene word" at the right end, its name over it
+
+
+# x52_atoms part A: the top-25 signed-OMP atoms of the main test's change at the bridge word, 50 items per model
+ATOMS_TAG = ("method: the lens part's 25 directions at the bridge word, each read by the word it decodes to · data: "
+             "locker scenes, two people swap picks")
 
 
 def f5_atoms() -> sp.Figure:
     """Of the lens part's 25 directions, the share of the rebuilt energy by the word each decodes to, one 100% bar per
-    model (README brief, 7 Nov, F5): the old and the new bridge word (both the lens part, told apart by their words),
-    an answer word (brick), another scene word and no scene word (grey). The answer word's share is about zero, so its
-    segment has no width: its number is printed beside the bar."""
+    model (README brief, 7 Nov, F5): the old bridge word (teal, the lens part) and the new bridge word (pink, its own
+    role: the item swapped in; Dan, 12 Nov: tell the two apart by colour; blue failed the tritan floor beside teal), an answer word (brick), another scene
+    word and no scene word (grey). The answer word's share is about zero: its segment has no width and its name stands
+    over the bars (no second column with its number; Dan, 12 Nov)."""
     models = [m for m in DAN if D.s(m, ATOMS + "the old bridge word")]
     shares = {key: {m: est(need(D.s(m, ATOMS + q), m), f"atoms.{ZK[m]}", key=f"f5.{key}.{ZK[m]}", interval=False)
                     for m in models} for _n, _r, q, key in ATOM_SEGMENTS}  # fmt: skip
     segments = [sp.Segment(name, role, shares[key]) for name, role, _q, key in ATOM_SEGMENTS]
-    answer = sp.TextColumn("answer word", "rebuilt", shares["answer"], role="answer", unit_title=False)
-    return sp.Figure("f5_atoms", vocab()).add(sp.Stack(models, segments, unit="rebuilt", columns=[answer]))
+    return sp.Figure("f5_atoms", vocab(), subtitle=ATOMS_TAG).add(sp.Stack(models, segments, unit="rebuilt"))
 
 
 # ---- f6_address: read, remove, swap, rebuild ---------------------------------------------------------------------------

@@ -327,7 +327,7 @@ The recall also reads the item's earlier mention (claim 3): taking the lens part
 
 
 ![The lens part's directions: the bridge words, almost never the answer](../../figures/common/readme/05_atoms.png)
-*The lens part's directions decode to the bridge words, almost never to the answer. Per model, shares of the rebuilt energy by the word each direction decodes to; teal, the old and the new bridge word; grey, another scene word or none. The answer word's share is printed at right.*
+*The lens part's directions decode to the bridge words, almost never to the answer. Per model, shares of the rebuilt energy by the word each direction decodes to: teal, the old bridge word; dark slate, the new bridge word; grey, another scene word or none.*
 
 <details><summary>Result, read and caveats</summary>
 
@@ -996,7 +996,7 @@ See the [root README's Reproduce](../../README.md#reproduce).
 
 ## Repository guide
 
-Built at 4ad0dcca from the run files by `scripts/readme_build.py` from its template. Everything else is in the [root README's guide](../../README.md#repository-guide); this page's figures are in [Appendix A](#appendix-a-links).
+Built at f24d8503 from the run files by `scripts/readme_build.py` from its template. Everything else is in the [root README's guide](../../README.md#repository-guide); this page's figures are in [Appendix A](#appendix-a-links).
 
 ### Appendix A. Links
 
