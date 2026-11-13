@@ -91,7 +91,10 @@ def fig09() -> list[dict]:
 def fig12() -> list[dict]:
     return [row("fig12_pointer", f"{cond}.{SHORT[m]}", "fixed_in_advance", "the pointer runs, fixed in advance",
                 f"{README} Fig. 12 row (no post hoc mark)")
-            for m in TWIN for cond in ("swap", "neutral", "noown", "rot")]  # fmt: skip
+            for m in TWIN for cond in ("swap", "neutral", "noown", "rot")] + [
+        # the probe ceiling beside the lens swap on the same relations (brief 9 B, 12 Nov): as r4_pointer's probe cells
+        row("fig12_pointer", f"probe.{key}.{SHORT[m]}", "fixed_in_advance", "the pointer runs and the probe's subspace",
+            "src/bridge_jspace/figkit/exemplars.py r4_pointer") for m in TWIN for key in ("probe_pts", "swap_pts")]  # fmt: skip
 
 
 def appB_f17() -> list[dict]:

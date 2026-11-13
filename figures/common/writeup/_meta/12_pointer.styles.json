@@ -1,13 +1,13 @@
 {
- "styles_plot": "0.2.7",
+ "styles_plot": "0.2.8",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "41809ac64f3f8e7a8a91bb7520cd5bd14f4df371c71dcbe6a690b549837d2641",
+  "sha256": "f5b1b664244a1a8362fb25ccdac282271cb9f23a7253b40a56c11087448f45c3",
   "hash": "meaning"
  },
  "registry": {
   "path": "data/figures/status.csv",
-  "sha256": "8cf50c2ac233c6e1ae6e389185dcde1d015617d1af1af67095d7397f11ab805f"
+  "sha256": "ce64269a808fdf6f36fa61473041126d6ff5f9b0278cfecf218697f3ca223bba"
  },
  "figure": "fig12_pointer",
  "target": "post",
@@ -15,11 +15,12 @@
  "publishable": true,
  "text_only": false,
  "png": {
-  "pixels_sha256": "60452ecc51cc69c9cfdaa6925717061b9fb2cc0cb7b38c1d0b62497a09279cf2",
+  "pixels_sha256": "c0586c4fa34bf982a3787dc19179521466c49a0aed0c7ef0e4cafc124730136c",
   "dpi": 200
  },
  "roles": [
-  "lens"
+  "lens",
+  "neutral"
  ],
  "controls": [
   "rotated"
@@ -46,6 +47,30 @@
    "claim": "claimed"
   },
   "noown.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "probe.probe_pts.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "probe.probe_pts.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "probe.probe_pts.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "probe.swap_pts.nl": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "probe.swap_pts.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "probe.swap_pts.q9": {
    "timing": "fixed_in_advance",
    "claim": "claimed"
   },
@@ -125,6 +150,54 @@
   },
   {
    "kind": "dot",
+   "role": "neutral",
+   "cell": "probe.probe_pts.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "probe.swap_pts.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "probe.probe_pts.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "probe.swap_pts.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "neutral",
+   "cell": "probe.probe_pts.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "probe.swap_pts.nl",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
    "role": "lens",
    "cell": "noown.q9",
    "timing": "fixed_in_advance",
@@ -189,6 +262,12 @@
   "ptr.q9.neutral_pts": "69.8",
   "ptr.q27.neutral_pts": "70.0",
   "ptr.nl.neutral_pts": "46.1",
+  "probe.q9.swap_pts": "79.5",
+  "probe.q9.probe_pts": "5.5",
+  "probe.q27.swap_pts": "74.8",
+  "probe.q27.probe_pts": "8.3",
+  "probe.nl.swap_pts": "62.4",
+  "probe.nl.probe_pts": "2.2",
   "ptr.q9.noown_pts": "52.5",
   "ptr.q27.noown_pts": "53.9",
   "ptr.nl.noown_pts": "28.5",

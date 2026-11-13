@@ -8,10 +8,8 @@ uv run python -m bridge_jspace.figkit.writeup_sp [ids...]
 
 from __future__ import annotations
 
-import csv
 import dataclasses
 import sys
-from functools import cache
 
 import styles_plot as sp
 
@@ -184,18 +182,12 @@ def fig09_order() -> sp.Figure:
 PTR_KEY = {"swap": "swap", "neutral": "neutral_pts", "noown": "noown_pts", "rot": "rot_pts"}
 
 
-@cache
-def _ptr_n(k: str) -> str:
-    with (D.REPO / "docs/breadth/data.csv").open() as f:
-        return next((r["n"] for r in csv.DictReader(f) if r["key"] == f"ptr.{k}.swap"), "")
-
-
 def fig12_pointer() -> sp.Figure:
-    """Models are rows (the pointer run's items on the row's second line); the conditions are columns, two per table:
+    """Models are rows; the conditions are columns:
     another entity's own passage and one neutral sentence about it on top; without its own-word directions and rotated
-    below, beside the paired difference neutral sentence − own passage."""
+    below, beside the paired difference neutral sentence − own passage; last, on the relations a supervised probe reads,
+    the probe's subspace swapped in (slate) beside the lens part (teal)."""
     models = [MODEL[k] for k, _ in W.TWIN_MODELS]
-    sub = {m: f"{_ptr_n(ZK[m])} items" for m in models if _ptr_n(ZK[m])}
 
     def cells(cond):
         out = {}
@@ -216,15 +208,28 @@ def fig12_pointer() -> sp.Figure:
         d = D.b(key)
         return sp.Est(d[0], d[1], d[2], key=key) if d else sp.Missing("no run")
 
+    def probe(key):  # the probe-ceiling runs (docs/breadth/data.csv probe.*): relations a supervised probe reads
+        out = {}
+        for m in models:
+            k = f"probe.{ZK[m]}.{key}"
+            c = D.b(k)
+            out[m] = est(c, f"probe.{key}.{ZK[m]}", key=k, label=True) if c else sp.Missing("no run")
+        return out
+
+    # brief 9 B / the critic, 12 Nov: the supervised probe beside the lens part on the same relations (its own runs)
+    probe_col = sp.DotColumn("relations a probe reads", "moved", (-8, 96), (0, 40, 80),
+                             series=[sp.Series("neutral", probe("probe_pts"), word="probe"),
+                                     sp.Series("lens", probe("swap_pts"), word="lens part")])  # fmt: skip
     top = sp.DotTable(models, [panel("swap", "another entity's own passage"),
-                               panel("neutral", "one neutral sentence about another entity")], row_sub=sub,
+                               panel("neutral", "one neutral sentence about it"), sp.Gutter(), probe_col],
                       note="another entity: one of the same kind · answers moved to its fact")  # fmt: skip
     bottom = sp.DotTable(models, [panel("noown", "without another entity's own-word directions"),
                                   panel("rot", "rotated"),
                                   sp.TextColumn("neutral − own passage", "moved_difference",
                                                 {m: diff(m) for m in models}, unit_title=False)],
-                         note="the lens-part swap runs: a different item set from Fig. 6's swap")  # fmt: skip
-    return sp.Figure("fig12_pointer", vocab()).add(top, bottom)
+                         note="the same swap-source runs")  # fmt: skip
+    return sp.Figure("fig12_pointer", vocab(), subtitle="method: another entity's lens part swapped in at the bridge · data: "
+                                                     "known-fact set").add(top, bottom)  # fmt: skip
 
 
 # ---- appendix B f17: attention under the address swap; f17b: the top 10 heads --------------------------------------------

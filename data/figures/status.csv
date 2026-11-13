@@ -63,6 +63,12 @@ fig12_pointer,swap.nl,fixed_in_advance,claimed,,"Lightning's breadth test, regis
 fig12_pointer,neutral.nl,fixed_in_advance,claimed,,"Lightning's breadth test, registered before its data","docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit); Dan 7 Nov (decision 8)"
 fig12_pointer,noown.nl,fixed_in_advance,claimed,,"Lightning's breadth test, registered before its data","docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit); Dan 7 Nov (decision 8)"
 fig12_pointer,rot.nl,fixed_in_advance,claimed,,"Lightning's breadth test, registered before its data","docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit); Dan 7 Nov (decision 8)"
+fig12_pointer,probe.probe_pts.q9,fixed_in_advance,claimed,,the pointer runs and the probe's subspace,src/bridge_jspace/figkit/exemplars.py r4_pointer
+fig12_pointer,probe.swap_pts.q9,fixed_in_advance,claimed,,the pointer runs and the probe's subspace,src/bridge_jspace/figkit/exemplars.py r4_pointer
+fig12_pointer,probe.probe_pts.q27,fixed_in_advance,claimed,,the pointer runs and the probe's subspace,src/bridge_jspace/figkit/exemplars.py r4_pointer
+fig12_pointer,probe.swap_pts.q27,fixed_in_advance,claimed,,the pointer runs and the probe's subspace,src/bridge_jspace/figkit/exemplars.py r4_pointer
+fig12_pointer,probe.probe_pts.nl,fixed_in_advance,claimed,,"Lightning's breadth test, registered before its data","docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit); Dan 7 Nov (decision 8)"
+fig12_pointer,probe.swap_pts.nl,fixed_in_advance,claimed,,"Lightning's breadth test, registered before its data","docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit); Dan 7 Nov (decision 8)"
 appB_f17_attention,att.old.switched.q9,fixed_in_advance,claimed,,attention under the address swap; the template drew no mark hollow,src/bridge_jspace/figkit/curve_figs.py f_attention
 appB_f17_attention,att.old.stayed.q9,fixed_in_advance,claimed,,attention under the address swap; the template drew no mark hollow,src/bridge_jspace/figkit/curve_figs.py f_attention
 appB_f17_attention,att.old.nochange.q9,fixed_in_advance,claimed,,attention under the address swap; the template drew no mark hollow,src/bridge_jspace/figkit/curve_figs.py f_attention
