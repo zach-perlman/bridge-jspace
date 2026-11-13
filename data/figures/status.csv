@@ -274,6 +274,14 @@ fig14_bridge_readout,cue.nl,fixed_in_advance,claimed,,note 26 (c): the cue word 
 conflict_example,bridge.nl,fixed_in_advance,claimed,,note 30 reading 3: the bridge by which source wins,"docs/breadth/prereg_replication_1022.md Note 30 readings 2-4, rebuilt set note 30b (Amendment 61); journal :290, correction (2) :294"
 conflict_example,frame.nl,fixed_in_advance,claimed,,note 30 reading 4: 'according to the passage' against the plain question,"docs/breadth/prereg_replication_1022.md Note 30 readings 2-4, rebuilt set note 30b (Amendment 61); journal :290, correction (2) :294"
 conflict_example,ko.nl,fixed_in_advance,claimed,,"note 30 reading 2: the knock-out's passage-share shift (the raw shift, correction 2)","docs/breadth/prereg_replication_1022.md Note 30 readings 2-4, rebuilt set note 30b (Amendment 61); journal :290, correction (2) :294"
+lens_words,atom.r1,fixed_in_advance,claimed,,"the lens part's atoms, one scene (x52_atoms): fixed in advance for qwen3.6-27b",src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
+lens_words,atom.r2,fixed_in_advance,claimed,,"the lens part's atoms, one scene (x52_atoms): fixed in advance for qwen3.6-27b",src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
+lens_words,atom.r3,fixed_in_advance,claimed,,"the lens part's atoms, one scene (x52_atoms): fixed in advance for qwen3.6-27b",src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
+lens_words,atom.r4,fixed_in_advance,claimed,,"the lens part's atoms, one scene (x52_atoms): fixed in advance for qwen3.6-27b",src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
+lens_words,atom.r5,fixed_in_advance,claimed,,"the lens part's atoms, one scene (x52_atoms): fixed in advance for qwen3.6-27b",src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
+lens_words,atom.r6,fixed_in_advance,claimed,,"the lens part's atoms, one scene (x52_atoms): fixed in advance for qwen3.6-27b",src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
+lens_words,atom.r7,fixed_in_advance,claimed,,"the lens part's atoms, one scene (x52_atoms): fixed in advance for qwen3.6-27b",src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
+lens_words,atom.r8,fixed_in_advance,claimed,,"the lens part's atoms, one scene (x52_atoms): fixed in advance for qwen3.6-27b",src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 fig06_nine_models,gap.q9,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models",figures/common/writeup/README.md Fig. 1 row (as Fig. 1)
 fig06_nine_models,gap.q27,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models",figures/common/writeup/README.md Fig. 1 row (as Fig. 1)
 fig06_nine_models,gap.mu,post_hoc,claimed,,the band test on this model was run after the data (README Fig. 1: hollow),figures/common/writeup/README.md Fig. 1 row; docs/breadth/data.csv (as Fig. 1)

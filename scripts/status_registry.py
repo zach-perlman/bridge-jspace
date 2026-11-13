@@ -120,6 +120,9 @@ def readout_figs() -> list[dict]:
             ("bridge", "note 30 reading 3: the bridge by which source wins"),
             ("frame", "note 30 reading 4: 'according to the passage' against the plain question"),
             ("ko", "note 30 reading 2: the knock-out's passage-share shift (the raw shift, correction 2)"))]  # fmt: skip
+    # Result 1's example card (14 Nov): one scene's atoms, under 05_atoms' rule (by_hollow on the atoms run's model)
+    out += [by_hollow("lens_words", f"atom.r{i}", "qwen3.6-27b", what="the lens part's atoms, one scene (x52_atoms)")
+            for i in range(1, 9)]  # fmt: skip
     return out
 
 

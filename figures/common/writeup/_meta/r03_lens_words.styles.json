@@ -1,0 +1,137 @@
+{
+ "styles_plot": "0.2.8",
+ "vocab": {
+  "project": "bridge-jspace",
+  "sha256": "583f83b7ead650f7ae47410a994decd711b1fe2fcdf38bbb13a8e65dd3348ded",
+  "hash": "meaning"
+ },
+ "registry": {
+  "path": "data/figures/status.csv",
+  "sha256": "2d618ab1ce31049485ac6be9e39b990983fd36b59d1d9bda9ab6846787bd99ae"
+ },
+ "figure": "lens_words",
+ "target": "post",
+ "mode": "strict",
+ "publishable": true,
+ "text_only": false,
+ "png": {
+  "pixels_sha256": "b76eed040d5cd73bf120cf9f0eda2924754782addc794fddcb901dd84a0a8307",
+  "dpi": 200
+ },
+ "roles": [
+  "lens"
+ ],
+ "controls": [],
+ "cells": {
+  "atom.r1": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "atom.r2": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "atom.r3": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "atom.r4": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "atom.r5": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "atom.r6": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "atom.r7": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "atom.r8": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  }
+ },
+ "marks": [
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atom.r1",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atom.r2",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atom.r3",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "other",
+   "cell": "atom.r4",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "other",
+   "cell": "atom.r5",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "atom.r6",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "other",
+   "cell": "atom.r7",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "other",
+   "cell": "atom.r8",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  }
+ ],
+ "key": [],
+ "numbers": {
+  "lens_words.q27.r1": "0.15",
+  "lens_words.q27.r2": "0.11",
+  "lens_words.q27.r3": "0.06",
+  "lens_words.q27.r4": "0.05",
+  "lens_words.q27.r5": "0.05",
+  "lens_words.q27.r6": "0.05",
+  "lens_words.q27.r7": "0.04",
+  "lens_words.q27.r8": "0.03"
+ },
+ "problems": []
+}

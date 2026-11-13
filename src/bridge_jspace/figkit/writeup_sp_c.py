@@ -267,6 +267,124 @@ def patch_layers() -> sp.Figure:
 
 RANDOM_TICK = "random part, same size"
 
+# ---- Result 1's example card: the lens part read as words (Qwen 27B, layer 32, main test) --------------------------------
+# the depth README card "What do the lens part's 25 directions stand for?" (52 A): its per-item rows, the lookup's view
+# (both views hold the same 25 atoms); the scene by a rule fixed before looking: the first main-test scene of the file
+ATOMS_REPORT = "results/x52_atoms/report-20261029T000125Z/labelled.jsonl"
+ATOMS_ITEMS = "data/tasks_v2/d1_topics_v3/items.jsonl"  # the scene's prompt and its changed prompt (two picks swap)
+TOP = 8  # the 25 do not fit the post's aspect: the top 8 drawn, the rest summed in words (all 25 in data.csv)
+BRIDGE_CLASSES = ("bridge", "new_bridge")
+# the 25 include tokens of scripts DejaVu Sans lacks (CJK, Thai, Tamil, Hangul): this card falls back per glyph to a
+# wide-coverage font where the machine has one (macOS: Arial Unicode MS); the other figures keep the plain font
+WIDE_FONT = ("DejaVu Sans", "Arial Unicode MS")
+T_REST = "{num} more, none a scene word or the answer: together {num} of the rebuilt energy"
+T_ANSWER = "the answers ({num} → {num}, {num} → {num}) as words: not among the {num} (digits are not lens words)"
+T_SCENES = "both bridge words are the top two directions in {num} of {num} scenes, and among the {num} in {num}"
+
+
+def _first_scene() -> tuple[dict, dict]:
+    """The model's first main-test record of the report (atoms parsed) and its task item (context and cf_context)."""
+    import ast
+    import json
+
+    from bridge_jspace.figkit.writeup_sp_base import REPO
+
+    rec = next(r for r in map(json.loads, (REPO / ATOMS_REPORT).open())
+               if r["target"] == "qwen3.6-27b" and r["set"] == "e1" and r["view"] == "PP")  # fmt: skip
+    rec["atoms"] = rec["atoms"] if isinstance(rec["atoms"], list) else ast.literal_eval(rec["atoms"])
+    item_id = "PP" + rec["key"][2:]  # the report's pair key P2-… names the scene's lookup item PP-…
+    item = next(i for i in map(json.loads, (REPO / ATOMS_ITEMS).open()) if i["id"] == item_id)
+    assert (item["bridge"], item["cf_bridge"]) == (rec["entity"], rec["cf_entity"]), item_id
+    return rec, item
+
+
+def _sentence_parts(context: str, bridge: str, asker: str) -> list[tuple]:
+    """The scene's pick sentences that the change touches, the asker's pick in bold."""
+    parts: list[tuple] = []
+    for s in (t.strip() + "." for t in context.split(".") if "picked the" in t):
+        if s.startswith(asker + " "):
+            i = s.rindex(bridge)
+            parts += [(s[:i], None), (bridge, None, True), (s[i + len(bridge):] + " ", None)]
+        else:
+            parts.append((s + " ", None))
+    return parts
+
+
+def lens_words() -> sp.Figure:
+    """One scene's lens part read as words: the original and the changed pick sentences (the asked pick bold); the
+    top directions in rank order, each a word of the lens's vocabulary with its sign (+: towards the changed prompt) and
+    its share of the rebuilt energy, teal for the old or new bridge word, grey for any other word; the rest, the
+    answers and how often both bridge words lead, in words under the table."""
+    import re
+
+    from bridge_jspace import figdata as W
+
+    rec, item = _first_scene()
+    atoms = rec["atoms"]
+    asker = re.search(r"belongs to (\w+)'s pick", item["question"]).group(1)
+    lines = [("original: ", item["context"], rec["entity"]), ("changed: ", item["cf_context"], rec["cf_entity"])]
+    el, y = [], 0.25
+    for label, ctx_, bridge in lines:
+        el.append(sp.Words(0.15, y, [(label, None, True), *_sentence_parts(ctx_, bridge, asker)], verbatim=True))
+        y += 0.3
+    head = sp.Schematic(y + 0.05, el)
+
+    rows, ents, bridge_cells, other_cells = [], [], {}, {}
+    for a in atoms[:TOP]:
+        key = f"r{a['rank']}"
+        share = need(W.w(f"lens_words.q27.{key}"), f"lens_words.q27.{key}")
+        assert abs(share[0] - a["share"] / sum(x["share"] for x in atoms)) < 1e-4, key  # data.csv is this record
+        sign = "+" if a["coef"] > 0 else "−"
+        rows.append(key)
+        ents.append(sp.Entity(key=key, name=f"{a['rank']}.  {sign} “{a['token']}”", id=key))
+        cells = bridge_cells if a["class"] in BRIDGE_CLASSES else other_cells
+        cells[key] = est(share, f"atom.{key}", key=f"lens_words.q27.{key}", label=True)
+    col = sp.DotColumn("", "rebuilt", (0, 0.2), (0, 0.1, 0.2),
+                       series=[sp.Series("lens", bridge_cells, word="old or new bridge word"),
+                               sp.Series("other", other_cells, word="another word")])  # fmt: skip
+    table = sp.DotTable(rows, [col], kind="atoms", note="rank, sign (+: towards the changed prompt), the word")
+
+    v = vocab()
+    fmt = lambda x, unit: v.format(x, unit)  # noqa: E731
+    rest = need(W.w("lens_words.q27.rest"), "lens_words.q27.rest")
+    n_rest = W.writeup_n("lens_words.q27.rest")
+    assert all(a["class"] not in (*BRIDGE_CLASSES, "scene_item", "person", "answer_own", "answer_other")
+               for a in atoms[TOP:]), "the words after the top 8 hold no scene word and no answer"  # fmt: skip
+    assert not any(a["class"].startswith("answer") for a in atoms), "no answer word among the 25"
+    answers = _answers(rec)
+    top2, all25 = (need(W.w(f"lens_words.q27.{k}"), k)[0] for k in ("both_top2", "both_25"))
+    n = W.writeup_n("lens_words.q27.both_top2")
+    texts = [_fill(T_REST, [n_rest, fmt(rest[0], "rebuilt")]),
+             _fill(T_ANSWER, [*answers["PP"], *answers["PM"], len(atoms)]),
+             _fill(T_SCENES, [int(top2), n, len(atoms), int(all25)])]  # fmt: skip
+    tail = sp.Schematic(0.25 + 0.3 * len(texts), [sp.Words(0.15, 0.22 + 0.3 * i, [(t, None)]) for i, t in enumerate(texts)])
+    post = dataclasses.replace(v.target("post"), font=WIDE_FONT)
+    # the remainder grey is a stack fill, too light for dots and their values: this card's other words in muted grey
+    palette = dataclasses.replace(v.palette, other=v.palette.chrome["muted"])
+    v = dataclasses.replace(v, entity_kinds={**v.entity_kinds, "atoms": tuple(ents)},
+                            targets={**v.targets, "post": post}, palette=palette)  # fmt: skip
+    return sp.Figure("lens_words", v, subtitle="method: the lens part's directions, each read as a word · data: locker "
+                                               "scenes, Qwen 27B, layer 32").add(head, table, tail)  # fmt: skip
+
+
+def _answers(rec: dict) -> dict:
+    """The scene's answers per reader (original, changed), from the atoms run's items file."""
+    import json
+
+    from bridge_jspace.figkit.writeup_sp_base import REPO
+
+    path = REPO / "results/x52_atoms/x52_atoms_fwd_27b/items.jsonl"
+    it = next(i for i in map(json.loads, path.open()) if i["set"] == "e1" and i["key"] == rec["key"])
+    return it["views"]["PP"]["answers"]
+
+
+def _fill(template: str, values: list) -> str:
+    out = template
+    for x in values:
+        out = out.replace("{num}", str(x), 1)
+    return out
+
+
 FIGS = {"patch_split": patch_split, "patch_layers": patch_layers, "fig06_nine_models": fig06_nine_models,
-        "fig07_routes": fig07_routes,
+        "fig07_routes": fig07_routes, "lens_words": lens_words,
         "appB_f15_link_crossover": appB_f15_link_crossover, "appB_f18_code_tool": appB_f18_code_tool}  # fmt: skip

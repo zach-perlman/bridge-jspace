@@ -541,6 +541,8 @@ format = "share"
 
 [terms]
 canonical = [
+    "method: the lens part's directions, each read as a word · data: locker scenes, Qwen 27B, layer 32",
+    "rank, sign (+: towards the changed prompt), the word", "another word", "old or new bridge word",
     # Result 3 (brief 13 Nov): the pointer's controls, the readout at the bridge, Example 4, twice the size
     "at twice the size", "method: J++ lens readout, top-1 share · data: made-up-fact set; cue-conflict set",
     "the person's remembered attribute · each panel on its own paired scenes", "before a recall or a lookup",
@@ -904,6 +906,10 @@ canonical = [
     "random directions",
 ]
 templates = [
+    # Result 1's example card, the lens part read as words (figkit/writeup_sp_c.py lens_words)
+    "{num} more, none a scene word or the answer: together {num} of the rebuilt energy",
+    "the answers ({num} → {num}, {num} → {num}) as words: not among the {num} (digits are not lens words)",
+    "both bridge words are the top two directions in {num} of {num} scenes, and among the {num} in {num}",
     # the README headline's read line (figkit/readme_sp.py READ_HEADLINE)
     "read: on {entity}, removing the lens part everywhere costs recall {num} points and lookup {num}; at one layer it blocks {num} of the recall's switches beyond random and {num} of the lookup's",
     "{num} directions",

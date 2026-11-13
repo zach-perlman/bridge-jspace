@@ -405,7 +405,52 @@ def e06_rows() -> list[dict]:
     return out
 
 
-BUILDERS = (fig04_rows, fig05_rows, fig10_rows, fig11_rows, figA1_rows, fig12_rows, patch_rows, fig14_rows, e06_rows)
+# ---- lens_words: Result 1's example card, the lens part read as words (x52_atoms, Qwen 27B, layer 32, main test) ------
+ATOMS_REPORT = "results/x52_atoms/report-20261029T000125Z/labelled.jsonl"  # depth README card "52 A"'s per-item rows
+
+
+def atoms_records(target: str = "qwen3.6-27b") -> list[dict]:
+    """The model's 50 main-test scenes in file order (the lookup's view: both views hold the same 25 atoms, only the
+    answer classes differ), each with its atoms parsed."""
+    import ast
+
+    out = []
+    for line in (REPO / ATOMS_REPORT).open():
+        r = json.loads(line)
+        if r["target"] == target and r["set"] == "e1" and r["view"] == "PP":
+            atoms = r["atoms"] if isinstance(r["atoms"], list) else ast.literal_eval(r["atoms"])
+            out.append({**r, "atoms": atoms})
+    return out
+
+
+def lens_words_rows() -> list[dict]:
+    """The card's scene by a rule fixed before looking: the first main-test scene of the file. Its 25 atoms in OMP rank
+    order, each with its share of the rebuilt energy (its energy share / the 25 atoms' sum, x52_atoms.per_item); the 17
+    after the top 8 together; and over the 50 scenes, how many have both bridge words among the top 2 and among the 25."""
+    recs = atoms_records()
+    r = recs[0]
+    total = sum(a["share"] for a in r["atoms"])
+    src = f'{ATOMS_REPORT} (target qwen3.6-27b, set e1, view PP, key {r["key"]}; first scene of the file)'
+    out = []
+    for a in r["atoms"]:
+        sign = "+" if a["coef"] > 0 else "-"
+        out.append(_row(f"lens_words.q27.r{a['rank']}", "lens_words", "qwen3.6-27b",
+                        f"atom {a['rank']} ({a['token']!r}, {sign}, {a['class']}): share of the rebuilt energy",
+                        a["share"] / total, unit="share", source=f'{src} atoms[rank={a["rank"]}].share / sum'))  # fmt: skip
+    rest = sum(a["share"] for a in r["atoms"] if a["rank"] > 8) / total
+    out.append(_row("lens_words.q27.rest", "lens_words", "qwen3.6-27b", "atoms 9-25 together: share of the rebuilt energy",
+                    rest, n=sum(a["rank"] > 8 for a in r["atoms"]), unit="share", source=f"{src} atoms[rank>8]"))  # fmt: skip
+    both = {"bridge", "new_bridge"}
+    for key, k, what in (("both_top2", 2, "the top 2"), ("both_25", 25, "the 25")):
+        hits = sum(both <= {a["class"] for a in x["atoms"] if a["rank"] <= k} for x in recs)
+        out.append(_row(f"lens_words.q27.{key}", "lens_words", "qwen3.6-27b",
+                        f"scenes with both bridge words (old and new) among {what} atoms", hits, n=len(recs),
+                        unit="count", source=f"{ATOMS_REPORT} (target qwen3.6-27b, set e1, view PP: atoms' class)"))  # fmt: skip
+    return out
+
+
+BUILDERS = (fig04_rows, fig05_rows, fig10_rows, fig11_rows, figA1_rows, fig12_rows, patch_rows, fig14_rows, e06_rows,
+            lens_words_rows)  # fmt: skip
 
 
 # ---- Appendix E3: the nine models' other tests, a table for the post (Dan's brief, 10 Nov 20:05) -----------------------

@@ -26,7 +26,7 @@ ORDER: dict[str, list[tuple[str, str]]] = {
                 *(("setup", i) for i in ("setup_twins", "setup_locker", "setup_patch", "setup_knockout", "setup_datasets")),
                 ("main", "fig00_schematic"),
                 # Result 1's first section ends on one figure of its claims (figkit/writeup_sp_c.py), before Figure 3
-                ("result", "patch_split"), ("result", "patch_layers"),
+                ("result", "patch_split"), ("result", "patch_layers"), ("result", "lens_words"),
                 *(("main", i) for i in (
                     "fig01_main_split", "fig02_datasets", "fig03_tools", "fig04_twin_set",
                     "fig05a_controls_band", "fig05b_controls_layer", "fig06_nine_models", "fig07_routes",
