@@ -223,6 +223,25 @@ title = "points"
 quantity = "gap"
 format = "points"
 
+# Result 3's readout figures (13 Nov): the lens readout's top-1 share, its change, a ratio printed beside
+[units.readout_share]
+title = "lens readout, top-1 share (%)"
+quantity = "top-1 share"
+format = "points"
+cue = false
+
+[units.readout_change]
+title = "change (points)"
+quantity = "change"
+format = "points_signed"
+cue = false
+
+[units.ratio]
+title = "ratio"
+quantity = "ratio"
+format = "ratio"
+cue = false
+
 [units.share]
 title = "share"
 quantity = "blocked"
@@ -522,6 +541,16 @@ format = "share"
 
 [terms]
 canonical = [
+    # Result 3 (brief 13 Nov): the pointer's controls, the readout at the bridge, Example 4, twice the size
+    "at twice the size", "method: J++ lens readout, top-1 share · data: made-up-fact set; cue-conflict set",
+    "the person's remembered attribute · each panel on its own paired scenes", "before a recall or a lookup",
+    "lookup ÷ recall", "with no relation asked", "no relation ÷ recall", "no relation",
+    "the made-up value the model will say", "at the bridge", "at the final token", "a misleading cue word",
+    "made-up value", "remembered", "cue word", "method: J++ lens readout and knock-out · data: conflict set",
+    "(the passage)", "(memory)", "an invented example; the conflict set is not public",
+    "the lens readout at the bridge, plain question", "when the passage wins", "when memory wins", "false value",
+    "remembered value", "change against the plain question, or with nothing removed",
+    "'according to the passage'", "the lens part knocked out", "the bridge", "answers", "passage", "memory", "an answer absent from the scene",
     # the ledger cards' figures (figkit/depth_sp_f.py): headers, lanes, colour words, rows
     "the recall's switches", "without the lens part", "lens part out, answer kept", "answer directions only",
     "rung 2", "rung 3", "the recall, locker sentence first", "the recall, locker sentence after",

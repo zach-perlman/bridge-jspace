@@ -182,54 +182,69 @@ def fig09_order() -> sp.Figure:
 PTR_KEY = {"swap": "swap", "neutral": "neutral_pts", "noown": "noown_pts", "rot": "rot_pts"}
 
 
-def fig12_pointer() -> sp.Figure:
-    """Models are rows; the conditions are columns:
-    another entity's own passage and one neutral sentence about it on top; without its own-word directions and rotated
-    below, beside the paired difference neutral sentence − own passage; last, on the relations a supervised probe reads,
-    the probe's subspace swapped in (slate) beside the lens part (teal)."""
-    models = [MODEL[k] for k, _ in W.TWIN_MODELS]
+PTR_MODELS = [MODEL[k] for k, _ in W.TWIN_MODELS]
+PTR_NOTE = "another entity: one of the same kind · answers moved to its fact"
+PTR_TAG = "method: another entity's lens part swapped in at the bridge · data: known-fact set"
 
-    def cells(cond):
+
+def _ptr_cells(cond, label=True):
+    out = {}
+    for m in PTR_MODELS:
+        c = D.b(f"ptr.{ZK[m]}.{PTR_KEY[cond]}")
+        out[m] = (est(c, f"{cond}.{ZK[m]}", key=f"ptr.{ZK[m]}.{PTR_KEY[cond]}", label=label) if c
+                  else sp.Missing("no run"))  # fmt: skip
+    return out
+
+
+def _ptr_panel(cond, header):
+    role = "control" if cond == "rot" else "lens"
+    return sp.DotColumn(header, "moved", (-8, 96), (0, 40, 80),
+                        series=[sp.Series(role, _ptr_cells(cond), control="rotated" if role == "control" else None,
+                                          word=None if role == "control" else "lens part swapped in")])  # fmt: skip
+
+
+def fig12_pointer() -> sp.Figure:
+    """Models are rows; the conditions are columns: another entity's own passage; one neutral sentence about it, with
+    its rotated control (grey; the pointer runs rotate the neutral-sentence swap only); on the relations a supervised
+    probe reads (their own runs), the probe's subspace swapped in (slate) beside the lens part (teal)."""
+
+    def probe(key):  # the probe-ceiling runs (docs/breadth/data.csv probe.*): relations a supervised probe reads
         out = {}
-        for m in models:
-            c = D.b(f"ptr.{ZK[m]}.{PTR_KEY[cond]}")
-            out[m] = (est(c, f"{cond}.{ZK[m]}", key=f"ptr.{ZK[m]}.{PTR_KEY[cond]}", label=True) if c
-                      else sp.Missing("no run"))  # fmt: skip
+        for m in PTR_MODELS:
+            k = f"probe.{ZK[m]}.{key}"
+            c = D.b(k)
+            out[m] = est(c, f"probe.{key}.{ZK[m]}", key=k, label=True) if c else sp.Missing("no run")
         return out
 
-    def panel(cond, header):
-        role = "control" if cond == "rot" else "lens"
-        return sp.DotColumn(header, "moved", (-8, 96), (0, 40, 80),
-                            series=[sp.Series(role, cells(cond), control="rotated" if role == "control" else None,
-                                              word=None if role == "control" else "lens part swapped in")])  # fmt: skip
+    # brief 13 Nov (Dan): the main text keeps the top row; the rotated control joins the swap it rotates (ptr.*.rot_pts
+    # is the neutral-sentence donor rotated, report_breadth.py swap_neutral_rot), so it sits in that panel
+    neutral = sp.DotColumn("one neutral sentence about it", "moved", (-8, 96), (0, 40, 80),
+                           series=[sp.Series("control", _ptr_cells("rot", label=False), control="rotated"),
+                                   sp.Series("lens", _ptr_cells("neutral"), word="lens part swapped in")],
+                           connect=("lens", "control"))  # fmt: skip
+    probe_col = sp.DotColumn("relations a probe reads", "moved", (-8, 96), (0, 40, 80),
+                             series=[sp.Series("neutral", probe("probe_pts"), word="probe"),
+                                     sp.Series("lens", probe("swap_pts"), word="lens part")])  # fmt: skip
+    top = sp.DotTable(PTR_MODELS, [_ptr_panel("swap", "another entity's own passage"), neutral, sp.Gutter(), probe_col],
+                      note=PTR_NOTE)  # fmt: skip
+    return sp.Figure("fig12_pointer", vocab(), subtitle=PTR_TAG).add(top)
+
+
+def appB_f20_pointer_controls() -> sp.Figure:
+    """The pointer's controls (the second row the main-text figure dropped, same data and order): without another
+    entity's own-word directions, rotated, and the paired difference neutral sentence − own passage."""
 
     def diff(m):
         key = f"ptr.{ZK[m]}.neutral_minus_swap"
         d = D.b(key)
         return sp.Est(d[0], d[1], d[2], key=key) if d else sp.Missing("no run")
 
-    def probe(key):  # the probe-ceiling runs (docs/breadth/data.csv probe.*): relations a supervised probe reads
-        out = {}
-        for m in models:
-            k = f"probe.{ZK[m]}.{key}"
-            c = D.b(k)
-            out[m] = est(c, f"probe.{key}.{ZK[m]}", key=k, label=True) if c else sp.Missing("no run")
-        return out
-
-    # brief 9 B / the critic, 12 Nov: the supervised probe beside the lens part on the same relations (its own runs)
-    probe_col = sp.DotColumn("relations a probe reads", "moved", (-8, 96), (0, 40, 80),
-                             series=[sp.Series("neutral", probe("probe_pts"), word="probe"),
-                                     sp.Series("lens", probe("swap_pts"), word="lens part")])  # fmt: skip
-    top = sp.DotTable(models, [panel("swap", "another entity's own passage"),
-                               panel("neutral", "one neutral sentence about it"), sp.Gutter(), probe_col],
-                      note="another entity: one of the same kind · answers moved to its fact")  # fmt: skip
-    bottom = sp.DotTable(models, [panel("noown", "without another entity's own-word directions"),
-                                  panel("rot", "rotated"),
-                                  sp.TextColumn("neutral − own passage", "moved_difference",
-                                                {m: diff(m) for m in models}, unit_title=False)],
-                         note="the same swap-source runs")  # fmt: skip
-    return sp.Figure("fig12_pointer", vocab(), subtitle="method: another entity's lens part swapped in at the bridge · data: "
-                                                     "known-fact set").add(top, bottom)  # fmt: skip
+    table = sp.DotTable(PTR_MODELS, [_ptr_panel("noown", "without another entity's own-word directions"),
+                                     _ptr_panel("rot", "rotated"),
+                                     sp.TextColumn("neutral − own passage", "moved_difference",
+                                                   {m: diff(m) for m in PTR_MODELS}, unit_title=False)],
+                        note=PTR_NOTE)  # fmt: skip
+    return sp.Figure("appB_f20_pointer_controls", vocab(), subtitle=PTR_TAG).add(table)
 
 
 # ---- appendix B f17: attention under the address swap; f17b: the top 10 heads --------------------------------------------
@@ -304,7 +319,7 @@ def key() -> sp.Figure:
 
 FIGS = {"key": key, "fig01_main_split": fig01_main_split, "fig04_twin_set": fig04_twin_set, "fig09_order": fig09_order,
         "fig12_pointer": fig12_pointer, "appB_f17_attention": appB_f17_attention,
-        "appB_f17b_heads": appB_f17b_heads}  # fmt: skip
+        "appB_f17b_heads": appB_f17b_heads, "appB_f20_pointer_controls": appB_f20_pointer_controls}  # fmt: skip
 FIGS.update(writeup_sp_b.FIGS)
 FIGS.update(writeup_sp_c.FIGS)
 FIGS.update(writeup_sp_d.FIGS)
@@ -329,6 +344,8 @@ TAKEAWAY = {
     "fig11_orthogonal": "Removals made orthogonal to the answers cannot see even the subject",
     "fig12_pointer": "Another entity's lens part moves the recall, even from one neutral sentence",
     "fig13_last_token": "At the last token the lens part reads the entity, yet a 1× swap barely moves the answer",
+    "fig14_bridge_readout": "At the bridge the lens shows what the entity brings to mind, not the answer",
+    "conflict_example": "In a conflict, the bridge shows memory whichever source wins",
     "figA1_agents": "Inside agent transcripts, copying and picking survive the knock-out; producing does not",
 }  # fmt: skip
 

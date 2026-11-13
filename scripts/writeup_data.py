@@ -312,7 +312,100 @@ def patch_rows() -> list[dict]:
                                     f"{path} | {run} :: cells.{reader}.all.kept.{arm}{rung} (scripts/x49_ladder.py)"))
     return out
 
-BUILDERS = (fig04_rows, fig05_rows, fig10_rows, fig11_rows, figA1_rows, fig12_rows, patch_rows)
+# ---- fig14 / e06: what the lens shows at the bridge (notes 25, 26, 30b), from the readers' saved outputs ----------------
+# the readout runs exist for the 9B, the 27B and Lightning only; the readers' prefixes (the 27B's is empty)
+READ_PREFIX = {"qwen3.5-9b": "qwen35_9b_", "qwen3.6-27b": "", "nemotron-3.5-lightning": "nem35l_"}
+PRIMING_READ = "results/nn_readout/nn_priming_read/{}v4_n25.json"  # note 25 (scripts/nn_priming_read.py)
+BRIDGE_READ = "results/nn_readout/nn_bridge_read/{}v4_n26.json"  # note 26 (scripts/nn_bridge_read.py)
+KC2_READ = "results/ablate_v2/nn_v5_read/{}kc2.json"  # note 30b (scripts/nn_v5_read.py kc2)
+
+
+def fig14_rows() -> list[dict]:
+    """The lens (J++) top-1 share at the description's end (note 25's window), in points: (a) note 25's paired scenes,
+    X's remembered attribute before a recall (MM attr) and before a lookup of a made-up value (MP other), with their
+    ratio above an absent answer (rho); the made-up value the lookup will say (MP attr) at the description's end and at
+    the final token; (b) note 26 (b)'s own pairing (scenes whose recall is gated right), the remembered attribute before
+    the recall and with no relation asked (closed-book naming, H1), with rho_H1; (c) note 26 (c), cue-conflict items of
+    people known by name, the description's cue and the remembered attribute. The readers store intervals for the ratios
+    only."""
+    out = []
+    for model, p in READ_PREFIX.items():
+        k = SHORT[model]
+        src = PRIMING_READ.format(p)
+        d = json.loads((REPO / src).read_text())
+        n, end, fin = d["n_paired"], d["cells"]["paired/desc_end/jlens"], d["cells"]["paired/final/jlens"]
+
+        def cite(c, f, src=src, run=d["run"]):
+            return f'{src} cells["{c}"]["{f}"] (scripts/nn_priming_read.py; run {run})'
+
+        for key, cells, c, f, what in (
+                ("prime.recall", end, "paired/desc_end/jlens", "MM/attr", "X's remembered attribute, before a recall"),
+                ("prime.lookup", end, "paired/desc_end/jlens", "MP/other",
+                 "X's remembered attribute, before a lookup of a made-up value"),
+                ("said.bridge", end, "paired/desc_end/jlens", "MP/attr",
+                 "the made-up value the lookup will say, at the description's end"),
+                ("said.final", fin, "paired/final/jlens", "MP/attr", "the made-up value the lookup will say, at the final token")):  # fmt: skip
+            out.append(_row(f"fig14.{key}.{k}", "fig14_bridge_readout", model, f"J++ top-1 share: {what} (paired scenes)",
+                            cells[f], n=n, unit="points", source=cite(c, f)))  # fmt: skip
+        out.append(_row(f"fig14.prime.rho.{k}", "fig14_bridge_readout", model,
+                        "rho: (lookup's remembered - absent) / (recall's remembered - absent), paired scenes", end["rho"],
+                        *end["ci"]["rho"], n=n, unit="ratio", source=cite("paired/desc_end/jlens", "rho")))  # fmt: skip
+        src = BRIDGE_READ.format(p)
+        b = json.loads((REPO / src).read_text())
+        jb = b["b"]["jlens"]
+        for key, f, what in (("norel.recall", "MM_ok/attr", "before the recall"),
+                             ("norel.none", "H1_mmok/attr", "with no relation asked (closed-book naming, no passage)")):
+            out.append(_row(f"fig14.{key}.{k}", "fig14_bridge_readout", model,
+                            f"J++ top-1 share: X's remembered attribute, {what} (scenes whose recall is gated right)", jb[f],
+                            n=jb["n"], unit="points", source=f'{src} ["b"]["jlens"]["{f}"] (scripts/nn_bridge_read.py)'))
+        out.append(_row(f"fig14.norel.rho.{k}", "fig14_bridge_readout", model,
+                        "rho_H1: (no relation - absent) / (recall - absent), paired by scene", jb["rho_H1"],
+                        *jb["rho_H1_ci"], n=jb["n"], unit="ratio",
+                        source=f'{src} ["b"]["jlens"]["rho_H1"] (scripts/nn_bridge_read.py)'))  # fmt: skip
+        c = b["c"]["known/jlens"]["conflict"]
+        for key, f, what in (("cue.cue", "cue", "the description's cue word"), ("cue.rem", "rem", "X's remembered attribute")):
+            out.append(_row(f"fig14.{key}.{k}", "fig14_bridge_readout", model,
+                            f"J++ top-1 share: {what}, cue-conflict items, person known by name (MP and MM pooled)",
+                            c[f], n=c["n"], unit="points",
+                            source=f'{src} ["c"]["known/jlens"]["conflict"]["{f}"] (scripts/nn_bridge_read.py)'))  # fmt: skip
+    return out
+
+
+def e06_rows() -> list[dict]:
+    """Note 30b on the conflict set (named, plain question; eligible scenes): the lens top-1 share at the description's
+    end of the remembered (true) value, the passage's false value and an answer absent from the scene, split by which
+    source the answer follows; "according to the passage" against the plain question (the change in the passage share
+    of answers, and in the bridge's true-value share); the knock-out's passage-share shift against no edit, and its
+    rotated control's (correction 2 of 30 Oct: the raw shift, not the shift beyond rotated)."""
+    out = []
+    for model, p in READ_PREFIX.items():
+        k = SHORT[model]
+        src = KC2_READ.format(p)
+        d = json.loads((REPO / src).read_text())
+        cite = f"{src} (scripts/nn_v5_read.py kc2)"
+        for win in ("passage", "memory"):
+            c = d["bridge"]["CN/jlens"][win]
+            for key, f, what in (("rem", "attr", "the remembered value"), ("false", "other", "the passage's false value"),
+                                 ("absent", "third", "an answer absent from the scene")):  # fmt: skip
+                out.append(_row(f"e06.{win}.{key}.{k}", "e06_conflict_example", model,
+                                f"J++ top-1 share at the description's end: {what}, when the {win} wins", c[f], n=c["n"],
+                                unit="points", source=f'{cite} ["bridge"]["CN/jlens"]["{win}"]["{f}"]'))  # fmt: skip
+        fr = d["framing"]["CN->CA"]
+        for key, f, what in (("answers", "passage_share_change", "answers following the passage"),
+                             ("bridge", "bridge_true_share_change", "the bridge's remembered-value share")):
+            out.append(_row(f"e06.frame.{key}.{k}", "e06_conflict_example", model,
+                            f"'according to the passage' minus the plain question: {what} (points)", fr[f], n=fr["n"],
+                            unit="points", source=f'{cite} ["framing"]["CN->CA"]["{f}"]'))  # fmt: skip
+        for key, f, what in (("raw", "shift_paper10", "the lens part knocked out"),
+                             ("rot", "shift_paper10_rot", "a rotated part knocked out")):
+            s = d["knockout"][f]
+            out.append(_row(f"e06.ko.{key}.{k}", "e06_conflict_example", model,
+                            f"passage share of answers, {what} minus no edit (points)", s["shift"], *s["ci"],
+                            unit="points", source=f'{cite} ["knockout"]["{f}"]'))  # fmt: skip
+    return out
+
+
+BUILDERS = (fig04_rows, fig05_rows, fig10_rows, fig11_rows, figA1_rows, fig12_rows, patch_rows, fig14_rows, e06_rows)
 
 
 # ---- Appendix E3: the nine models' other tests, a table for the post (Dan's brief, 10 Nov 20:05) -----------------------

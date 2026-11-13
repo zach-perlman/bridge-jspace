@@ -242,12 +242,16 @@ def fig11_orthogonal() -> sp.Figure:
 
 
 # ---- Fig. 13: the last token ---------------------------------------------------------------------------------------------
+G2 = "lenswrite: {} at gain 2 gives the changed prompt's recall answer"  # data/figures/depth/data.csv (figure "cards")
+
+
 def fig13_last_token() -> sp.Figure:
     """At the recall's last token a probe reads the entity from the lens part (left), yet the lens part swapped in
-    switches almost no recalls, against the whole state swapped in (grey, right)."""
+    switches almost no recalls, against the whole state swapped in (grey, middle); right, the lens part swapped in at
+    twice the size against a random part at twice the size (grey; the 122B: not run)."""
     v = vocab()
     rx_r = r"51\.10: recall, last token, read peak layer (\d+): the probe's accuracy"
-    models, sub, read, lens, whole, chance = [], {}, {}, {}, {}, []
+    models, sub, read, lens, whole, chance, lens2, rand2 = [], {}, {}, {}, {}, [], {}, {}
     for m in DAN:
         r = D.s_match(m, rx_r, "fig17_jspace_last_token")
         if not r:
@@ -262,15 +266,66 @@ def fig13_last_token() -> sp.Figure:
         lens[m] = sp.Est(float(mm.group(1)), cell=f"last.{k}", key=f"fig13.lens.{k}")
         whole[m] = sp.Est(float(mm.group(2)), cell=f"last.{k}", key=f"fig13.whole.{k}")
         chance.append(need(D.s(m, "51.10: the read probe's chance (locker-first rows)"), m)[0])
+        # brief 13 Nov: the same swap at twice the size (the lenswrite runs; the 122B has none)
+        for name, part, out, label in (("lens", "the J++ part", lens2, True), ("random", "a random part", rand2, False)):
+            c = D.s(m, G2.format(part), "cards")
+            if c:
+                out[m] = est(c, f"gain2.{k}", key=f"fig13.gain2.{name}.{k}", label=label)
+            elif name == "lens":  # one "not run" per line: the random part's cell is left empty
+                out[m] = sp.Missing("not run")
     probe = sp.DotColumn("probe accuracy on the lens part", "probe_accuracy", (0, 1.02), (0, 0.5, 1),
-                         series=[sp.Series("recall", read)], rules=[sp.Rule(max(chance), "chance")])  # fmt: skip
+                         series=[sp.Series("recall", read)], rules=[sp.Rule(max(chance), "chance")],
+                         weight=0.85)  # fmt: skip
     used = sp.DotColumn("recalls switched", "recalls", (-0.05, 1.05), (0, 0.5, 1),
                         series=[sp.Series("control", whole, control="the whole state swapped in"),
                                 sp.Series("lens", lens, word="lens part swapped in")],
-                        connect=("lens", "control"))  # fmt: skip
+                        connect=("lens", "control"), weight=1.15)  # fmt: skip
+    twice = sp.DotColumn("at twice the size", "recalls", (-0.05, 1.05), (0, 0.5, 1),
+                         series=[sp.Series("control", rand2, control="a random part"),
+                                 sp.Series("lens", lens2, word="lens part")],
+                         connect=("lens", "control"))  # fmt: skip
     # the lens part's values in their own column, as the figkit figure printed them apart from the dots
     values = sp.TextColumn("lens part", "recalls", lens, role="lens", unit_title=False)
-    return sp.Figure("fig13_last_token", v, subtitle="method: probe and swap at the last token · data: locker scenes").add(sp.DotTable(models, [probe, used, values], row_sub=sub))
+    return sp.Figure("fig13_last_token", v, subtitle="method: probe and swap at the last token · data: locker scenes").add(sp.DotTable(models, [probe, used, values, twice], row_sub=sub))
+
+
+# ---- Fig. 14 (the post's Figure 12): what the lens shows at the bridge ---------------------------------------------------
+READ_LIM, READ_TICKS = (-4, 104), (0, 50, 100)
+
+
+def _read(key: str, cell: str, label: bool = True) -> dict:
+    """Per model, a data/figures/writeup/data.csv cell (scripts/writeup_data.py fig14_rows) as an estimate."""
+    return {m: est(need(W.w(f"fig14.{key}.{ZK[m]}"), f"fig14.{key}.{ZK[m]}"), f"{cell}.{ZK[m]}",
+                   key=f"fig14.{key}.{ZK[m]}", label=label) for m in TWIN}  # fmt: skip
+
+
+def fig14_bridge_readout() -> sp.Figure:
+    """The lens readout (J++ top-1 share) at the end of the person's description. Top: the person's remembered
+    attribute before a recall (ink) and before a lookup of a made-up value (violet), on note 25's paired scenes, and
+    before the recall and with no relation asked (slate), on note 26's own pairing; each with its ratio above an absent
+    answer and 95% interval. Bottom: the made-up value the model will say, at the bridge and at the final token (brick);
+    on cue-conflict descriptions, the cue word (slate) against the remembered attribute (teal)."""
+    asked = sp.DotColumn("before a recall or a lookup", "readout_share", (-3, 63), (0, 25, 50),
+                         series=[sp.Series("lookup", _read("prime.lookup", "prime")),
+                                 sp.Series("recall", _read("prime.recall", "prime"))])  # fmt: skip
+    norel = sp.DotColumn("with no relation asked", "readout_share", (-3, 63), (0, 25, 50),
+                         series=[sp.Series("neutral", _read("norel.none", "norel"), word="no relation"),
+                                 sp.Series("recall", _read("norel.recall", "norel"))])  # fmt: skip
+    top = sp.DotTable(TWIN, [asked, sp.TextColumn("lookup ÷ recall", "ratio", _read("prime.rho", "prime"), unit_title=False),
+                             norel,
+                             sp.TextColumn("no relation ÷ recall", "ratio", _read("norel.rho", "norel"),
+                                           unit_title=False)],
+                      note="the person's remembered attribute · each panel on its own paired scenes")  # fmt: skip
+    said = [sp.DotColumn(header, "readout_share", READ_LIM, READ_TICKS,
+                         series=[sp.Series("answer", _read(f"said.{where}", "said"), word="made-up value")])
+            for where, header in (("bridge", "at the bridge"), ("final", "at the final token"))]  # fmt: skip
+    cue = sp.DotColumn("a misleading cue word", "readout_share", READ_LIM, READ_TICKS, weight=1.5,
+                       series=[sp.Series("lens", _read("cue.rem", "cue"), word="remembered"),
+                               sp.Series("neutral", _read("cue.cue", "cue"), word="cue word")])  # fmt: skip
+    bottom = sp.DotTable(TWIN, [sp.ColumnGroup("the made-up value the model will say", [said[0], sp.Gutter(0.2), said[1]],
+                                               rule=True), sp.Gutter(), cue])  # fmt: skip
+    return sp.Figure("fig14_bridge_readout", vocab(), subtitle="method: J++ lens readout, top-1 share · data: made-up-fact "
+                                                            "set; cue-conflict set").add(top, bottom)  # fmt: skip
 
 
 # ---- Fig. A1: inside agent transcripts -----------------------------------------------------------------------------------
@@ -671,7 +726,8 @@ def fig03_tools(width: float | None = None) -> sp.Figure:
 BLOCKED = {"fig05_controls": fig05_controls, "appB_f14_two_codes": appB_f14_two_codes}
 FIGS = {"fig00_schematic": fig00_schematic, "fig02_datasets": fig02_datasets,
         "fig08b_address_swap_lens": fig08b_address_swap_lens, "fig11_orthogonal": fig11_orthogonal,
-        "fig13_last_token": fig13_last_token, "figA1_agents": figA1_agents, "appB_f9_where": appB_f9_where,
+        "fig13_last_token": fig13_last_token, "fig14_bridge_readout": fig14_bridge_readout,
+        "figA1_agents": figA1_agents, "appB_f9_where": appB_f9_where,
         "appB_f12_order": appB_f12_order, "appB_f8_facts": appB_f8_facts, "appB_f8_directions": appB_f8_directions,
         "appB_f19_six_lockers": appB_f19_six_lockers, "fig08a_address_read_remove": fig08a_address_read_remove,
         "fig05a_controls_band": fig05a_controls_band, "fig05b_controls_layer": fig05b_controls_layer,

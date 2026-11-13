@@ -53,16 +53,19 @@ fig09_order,facts.first.q122,fixed_in_advance,claimed,,sentence order: fixed in 
 fig09_order,facts.after.q122,fixed_in_advance,claimed,,sentence order: fixed in advance for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 fig12_pointer,swap.q9,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/common/writeup/README.md Fig. 12 row (no post hoc mark)
 fig12_pointer,neutral.q9,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/common/writeup/README.md Fig. 12 row (no post hoc mark)
-fig12_pointer,noown.q9,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/common/writeup/README.md Fig. 12 row (no post hoc mark)
 fig12_pointer,rot.q9,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/common/writeup/README.md Fig. 12 row (no post hoc mark)
+appB_f20_pointer_controls,noown.q9,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/common/writeup/README.md Fig. 12 row (no post hoc mark)
+appB_f20_pointer_controls,rot.q9,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/common/writeup/README.md Fig. 12 row (no post hoc mark)
 fig12_pointer,swap.q27,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/common/writeup/README.md Fig. 12 row (no post hoc mark)
 fig12_pointer,neutral.q27,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/common/writeup/README.md Fig. 12 row (no post hoc mark)
-fig12_pointer,noown.q27,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/common/writeup/README.md Fig. 12 row (no post hoc mark)
 fig12_pointer,rot.q27,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/common/writeup/README.md Fig. 12 row (no post hoc mark)
+appB_f20_pointer_controls,noown.q27,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/common/writeup/README.md Fig. 12 row (no post hoc mark)
+appB_f20_pointer_controls,rot.q27,fixed_in_advance,claimed,,"the pointer runs, fixed in advance",figures/common/writeup/README.md Fig. 12 row (no post hoc mark)
 fig12_pointer,swap.nl,fixed_in_advance,claimed,,"Lightning's breadth test, registered before its data","docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit); Dan 7 Nov (decision 8)"
 fig12_pointer,neutral.nl,fixed_in_advance,claimed,,"Lightning's breadth test, registered before its data","docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit); Dan 7 Nov (decision 8)"
-fig12_pointer,noown.nl,fixed_in_advance,claimed,,"Lightning's breadth test, registered before its data","docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit); Dan 7 Nov (decision 8)"
 fig12_pointer,rot.nl,fixed_in_advance,claimed,,"Lightning's breadth test, registered before its data","docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit); Dan 7 Nov (decision 8)"
+appB_f20_pointer_controls,noown.nl,fixed_in_advance,claimed,,"Lightning's breadth test, registered before its data","docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit); Dan 7 Nov (decision 8)"
+appB_f20_pointer_controls,rot.nl,fixed_in_advance,claimed,,"Lightning's breadth test, registered before its data","docs/breadth/prereg_replication_1022.md Amendment 45 note 2 (Lightning's chain: gate, profile, knock-out, swap, set before the fit); Dan 7 Nov (decision 8)"
 fig12_pointer,probe.probe_pts.q9,fixed_in_advance,claimed,,the pointer runs and the probe's subspace,src/bridge_jspace/figkit/exemplars.py r4_pointer
 fig12_pointer,probe.swap_pts.q9,fixed_in_advance,claimed,,the pointer runs and the probe's subspace,src/bridge_jspace/figkit/exemplars.py r4_pointer
 fig12_pointer,probe.probe_pts.q27,fixed_in_advance,claimed,,the pointer runs and the probe's subspace,src/bridge_jspace/figkit/exemplars.py r4_pointer
@@ -108,6 +111,7 @@ fig08a_address_read_remove,remove.q9,fixed_in_advance,claimed,,the address remov
 fig08b_address_swap_lens,swap.q9,fixed_in_advance,claimed,,the address swap: fixed in advance for qwen3.5-9b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
 fig08b_address_swap_lens,lens.q9,fixed_in_advance,claimed,,the lens rebuild: fixed in advance for qwen3.5-9b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
 fig13_last_token,last.q9,fixed_in_advance,claimed,,the last token: fixed in advance for qwen3.5-9b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
+fig13_last_token,gain2.q9,fixed_in_advance,claimed,,"the last token, twice the size (lenswrite): fixed in advance for qwen3.5-9b",src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 appB_f8_facts,facts.q9,fixed_in_advance,claimed,,true and made-up facts: fixed in advance for qwen3.5-9b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 appB_f8_directions,dirs.q9,fixed_in_advance,claimed,,more lens directions: the figkit figure drew no mark hollow,src/bridge_jspace/figkit/writeup_appendix.py
 appB_f12_order,after.q9,fixed_in_advance,claimed,,question order: the figkit figure drew no mark hollow,src/bridge_jspace/figkit/writeup_address.py
@@ -123,6 +127,7 @@ fig08a_address_read_remove,remove.q27,fixed_in_advance,claimed,,the address remo
 fig08b_address_swap_lens,swap.q27,fixed_in_advance,claimed,,the address swap: fixed in advance for qwen3.6-27b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
 fig08b_address_swap_lens,lens.q27,fixed_in_advance,claimed,,the lens rebuild: fixed in advance for qwen3.6-27b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
 fig13_last_token,last.q27,fixed_in_advance,claimed,,the last token: fixed in advance for qwen3.6-27b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
+fig13_last_token,gain2.q27,fixed_in_advance,claimed,,"the last token, twice the size (lenswrite): fixed in advance for qwen3.6-27b",src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 appB_f8_facts,facts.q27,fixed_in_advance,claimed,,true and made-up facts: fixed in advance for qwen3.6-27b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 appB_f8_directions,dirs.q27,fixed_in_advance,claimed,,more lens directions: the figkit figure drew no mark hollow,src/bridge_jspace/figkit/writeup_appendix.py
 appB_f12_order,after.q27,post_hoc,claimed,,question order (the 27B's rule set after its cells; Lightning's gate after its pre-check): the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/writeup_address.py appB_f12_order
@@ -138,6 +143,7 @@ fig08a_address_read_remove,remove.mu,fixed_in_advance,claimed,,the address remov
 fig08b_address_swap_lens,swap.mu,fixed_in_advance,claimed,,the address swap: fixed in advance for muse-glimmer-30b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
 fig08b_address_swap_lens,lens.mu,fixed_in_advance,claimed,,the lens rebuild: fixed in advance for muse-glimmer-30b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
 fig13_last_token,last.mu,fixed_in_advance,claimed,,the last token: fixed in advance for muse-glimmer-30b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
+fig13_last_token,gain2.mu,fixed_in_advance,claimed,,"the last token, twice the size (lenswrite): fixed in advance for muse-glimmer-30b",src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 appB_f8_facts,facts.mu,fixed_in_advance,claimed,,true and made-up facts: fixed in advance for muse-glimmer-30b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 appB_f8_directions,dirs.mu,fixed_in_advance,claimed,,more lens directions: the figkit figure drew no mark hollow,src/bridge_jspace/figkit/writeup_appendix.py
 appB_f12_order,after.mu,fixed_in_advance,claimed,,question order: the figkit figure drew no mark hollow,src/bridge_jspace/figkit/writeup_address.py
@@ -153,6 +159,7 @@ fig08a_address_read_remove,remove.nl,post_hoc,claimed,,Lightning's depth test: a
 fig08b_address_swap_lens,swap.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
 fig08b_address_swap_lens,lens.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
 fig13_last_token,last.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+fig13_last_token,gain2.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
 appB_f8_facts,facts.nl,post_hoc,claimed,,true and made-up facts: post hoc for nemotron-3.5-lightning,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 appB_f8_directions,dirs.nl,fixed_in_advance,claimed,,more lens directions: the figkit figure drew no mark hollow,src/bridge_jspace/figkit/writeup_appendix.py
 appB_f12_order,after.nl,post_hoc,claimed,,question order (the 27B's rule set after its cells; Lightning's gate after its pre-check): the figkit figure drew it hollow (post hoc),src/bridge_jspace/figkit/writeup_address.py appB_f12_order
@@ -168,6 +175,7 @@ fig08a_address_read_remove,remove.q122,post_hoc,claimed,,the address removed: po
 fig08b_address_swap_lens,swap.q122,post_hoc,claimed,,the address swap: post hoc for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
 fig08b_address_swap_lens,lens.q122,post_hoc,claimed,,the lens rebuild: post hoc for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=True)
 fig13_last_token,last.q122,fixed_in_advance,claimed,,the last token: fixed in advance for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
+fig13_last_token,gain2.q122,fixed_in_advance,claimed,,"the last token, twice the size (lenswrite): fixed in advance for qwen3.5-122b-a10b",src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 appB_f8_facts,facts.q122,fixed_in_advance,claimed,,true and made-up facts: fixed in advance for qwen3.5-122b-a10b,src/bridge_jspace/figkit/data.py hollow(lowered_test=False)
 appB_f8_directions,dirs.q122,fixed_in_advance,claimed,,more lens directions: the figkit figure drew no mark hollow,src/bridge_jspace/figkit/writeup_appendix.py
 appB_f12_order,after.q122,fixed_in_advance,claimed,,question order: the figkit figure drew no mark hollow,src/bridge_jspace/figkit/writeup_address.py
@@ -245,6 +253,27 @@ figA1_agents,pick.nl,fixed_in_advance,claimed,,Lightning: a registration committ
 figA1_agents,verify.nl,fixed_in_advance,claimed,,Lightning: a registration committed before the run names the test and the model,"docs/breadth/prereg_replication_1022.md: ""Note 65 (as decided): generate vs verify a single claim ... 9B primary, Lightning confirmatory"" (first committed 2026-10-30T19:39:34Z); Lightning's run results/sd_necessity/nem35l_sd65_ko_test_v1 started 2026-10-30T20:53:52Z (manifest written_utc); Dan 8 Nov (Q2b)"
 figA1_agents,produce.nl,fixed_in_advance,claimed,,Lightning: a registration committed before the run names the test and the model,"docs/breadth/prereg_replication_1022.md: ""Note 59: safety-relevant agent settings ... 9B test and dev primary, Lightning confirmatory"" (first committed 2026-10-30T17:20:51Z); Lightning's run results/sd_necessity/nem35l_sd59_ko_test_v1 started 2026-10-30T17:41:33Z (manifest written_utc); Dan 8 Nov (Q2b)"
 figA1_agents,derive.nl,fixed_in_advance,claimed,,no Lightning run of this arm; the figure draws no mark,data/figures/writeup/data.csv
+fig14_bridge_readout,prime.q9,fixed_in_advance,claimed,,"note 25: the remembered attribute by the question, paired scenes","docs/breadth/prereg_replication_1022.md Amendment 58 note 25 (2026-10-29 ~17:30 UTC, before any run of it); journal docs/archive/EXPERIMENTS.md:284"
+fig14_bridge_readout,said.q9,fixed_in_advance,claimed,,note 25: the made-up value at the bridge and at the final token,"docs/breadth/prereg_replication_1022.md Amendment 58 note 25 (2026-10-29 ~17:30 UTC, before any run of it); journal docs/archive/EXPERIMENTS.md:284"
+fig14_bridge_readout,norel.q9,fixed_in_advance,claimed,,note 26 (b): no relation asked against the recall,"docs/breadth/prereg_replication_1022.md Amendment 59 note 26 (b), (c) (2026-10-29 ~18:45 UTC, before any run of it); journal :286"
+fig14_bridge_readout,cue.q9,fixed_in_advance,claimed,,note 26 (c): the cue word against the remembered attribute,"docs/breadth/prereg_replication_1022.md Amendment 59 note 26 (b), (c) (2026-10-29 ~18:45 UTC, before any run of it); journal :286"
+conflict_example,bridge.q9,fixed_in_advance,claimed,,note 30 reading 3: the bridge by which source wins,"docs/breadth/prereg_replication_1022.md Note 30 readings 2-4, rebuilt set note 30b (Amendment 61); journal :290, correction (2) :294"
+conflict_example,frame.q9,fixed_in_advance,claimed,,note 30 reading 4: 'according to the passage' against the plain question,"docs/breadth/prereg_replication_1022.md Note 30 readings 2-4, rebuilt set note 30b (Amendment 61); journal :290, correction (2) :294"
+conflict_example,ko.q9,fixed_in_advance,claimed,,"note 30 reading 2: the knock-out's passage-share shift (the raw shift, correction 2)","docs/breadth/prereg_replication_1022.md Note 30 readings 2-4, rebuilt set note 30b (Amendment 61); journal :290, correction (2) :294"
+fig14_bridge_readout,prime.q27,fixed_in_advance,claimed,,"note 25: the remembered attribute by the question, paired scenes","docs/breadth/prereg_replication_1022.md Amendment 58 note 25 (2026-10-29 ~17:30 UTC, before any run of it); journal docs/archive/EXPERIMENTS.md:284"
+fig14_bridge_readout,said.q27,fixed_in_advance,claimed,,note 25: the made-up value at the bridge and at the final token,"docs/breadth/prereg_replication_1022.md Amendment 58 note 25 (2026-10-29 ~17:30 UTC, before any run of it); journal docs/archive/EXPERIMENTS.md:284"
+fig14_bridge_readout,norel.q27,fixed_in_advance,claimed,,note 26 (b): no relation asked against the recall,"docs/breadth/prereg_replication_1022.md Amendment 59 note 26 (b), (c) (2026-10-29 ~18:45 UTC, before any run of it); journal :286"
+fig14_bridge_readout,cue.q27,fixed_in_advance,claimed,,note 26 (c): the cue word against the remembered attribute,"docs/breadth/prereg_replication_1022.md Amendment 59 note 26 (b), (c) (2026-10-29 ~18:45 UTC, before any run of it); journal :286"
+conflict_example,bridge.q27,fixed_in_advance,claimed,,note 30 reading 3: the bridge by which source wins,"docs/breadth/prereg_replication_1022.md Note 30 readings 2-4, rebuilt set note 30b (Amendment 61); journal :290, correction (2) :294"
+conflict_example,frame.q27,fixed_in_advance,claimed,,note 30 reading 4: 'according to the passage' against the plain question,"docs/breadth/prereg_replication_1022.md Note 30 readings 2-4, rebuilt set note 30b (Amendment 61); journal :290, correction (2) :294"
+conflict_example,ko.q27,fixed_in_advance,claimed,,"note 30 reading 2: the knock-out's passage-share shift (the raw shift, correction 2)","docs/breadth/prereg_replication_1022.md Note 30 readings 2-4, rebuilt set note 30b (Amendment 61); journal :290, correction (2) :294"
+fig14_bridge_readout,prime.nl,fixed_in_advance,claimed,,"note 25: the remembered attribute by the question, paired scenes","docs/breadth/prereg_replication_1022.md Amendment 58 note 25 (2026-10-29 ~17:30 UTC, before any run of it); journal docs/archive/EXPERIMENTS.md:284"
+fig14_bridge_readout,said.nl,fixed_in_advance,claimed,,note 25: the made-up value at the bridge and at the final token,"docs/breadth/prereg_replication_1022.md Amendment 58 note 25 (2026-10-29 ~17:30 UTC, before any run of it); journal docs/archive/EXPERIMENTS.md:284"
+fig14_bridge_readout,norel.nl,fixed_in_advance,claimed,,note 26 (b): no relation asked against the recall,"docs/breadth/prereg_replication_1022.md Amendment 59 note 26 (b), (c) (2026-10-29 ~18:45 UTC, before any run of it); journal :286"
+fig14_bridge_readout,cue.nl,fixed_in_advance,claimed,,note 26 (c): the cue word against the remembered attribute,"docs/breadth/prereg_replication_1022.md Amendment 59 note 26 (b), (c) (2026-10-29 ~18:45 UTC, before any run of it); journal :286"
+conflict_example,bridge.nl,fixed_in_advance,claimed,,note 30 reading 3: the bridge by which source wins,"docs/breadth/prereg_replication_1022.md Note 30 readings 2-4, rebuilt set note 30b (Amendment 61); journal :290, correction (2) :294"
+conflict_example,frame.nl,fixed_in_advance,claimed,,note 30 reading 4: 'according to the passage' against the plain question,"docs/breadth/prereg_replication_1022.md Note 30 readings 2-4, rebuilt set note 30b (Amendment 61); journal :290, correction (2) :294"
+conflict_example,ko.nl,fixed_in_advance,claimed,,"note 30 reading 2: the knock-out's passage-share shift (the raw shift, correction 2)","docs/breadth/prereg_replication_1022.md Note 30 readings 2-4, rebuilt set note 30b (Amendment 61); journal :290, correction (2) :294"
 fig06_nine_models,gap.q9,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models",figures/common/writeup/README.md Fig. 1 row (as Fig. 1)
 fig06_nine_models,gap.q27,fixed_in_advance,claimed,,"the band test, fixed in advance on the three models",figures/common/writeup/README.md Fig. 1 row (as Fig. 1)
 fig06_nine_models,gap.mu,post_hoc,claimed,,the band test on this model was run after the data (README Fig. 1: hollow),figures/common/writeup/README.md Fig. 1 row; docs/breadth/data.csv (as Fig. 1)
@@ -300,10 +329,15 @@ appB_f14b_identity_route,lens.nl,post_hoc,claimed,,"the two removals, every cell
 appB_f14a_position_route,address.q122,post_hoc,claimed,,"the two removals, every cell post hoc: the figkit figure drew it hollow (post hoc)",src/bridge_jspace/figkit/writeup_claims.py appB_f14_two_codes
 appB_f14b_identity_route,lens.q122,post_hoc,claimed,,"the two removals, every cell post hoc: the figkit figure drew it hollow (post hoc)",src/bridge_jspace/figkit/writeup_claims.py appB_f14_two_codes
 r3_last_token,last.q9,fixed_in_advance,claimed,,the last token: fixed in advance for qwen3.5-9b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig13_last_token, drawn for README.md)"
+r3_last_token,gain2.q9,fixed_in_advance,claimed,,"the last token, twice the size (lenswrite): fixed in advance for qwen3.5-9b","src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig13_last_token, drawn for README.md)"
 r3_last_token,last.q27,fixed_in_advance,claimed,,the last token: fixed in advance for qwen3.6-27b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig13_last_token, drawn for README.md)"
+r3_last_token,gain2.q27,fixed_in_advance,claimed,,"the last token, twice the size (lenswrite): fixed in advance for qwen3.6-27b","src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig13_last_token, drawn for README.md)"
 r3_last_token,last.mu,fixed_in_advance,claimed,,the last token: fixed in advance for muse-glimmer-30b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig13_last_token, drawn for README.md)"
+r3_last_token,gain2.mu,fixed_in_advance,claimed,,"the last token, twice the size (lenswrite): fixed in advance for muse-glimmer-30b","src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig13_last_token, drawn for README.md)"
 r3_last_token,last.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
+r3_last_token,gain2.nl,post_hoc,claimed,,Lightning's depth test: after the data,Dan 7 Nov (decision 8): depth tests post hoc; figkit/data.py hollow()
 r3_last_token,last.q122,fixed_in_advance,claimed,,the last token: fixed in advance for qwen3.5-122b-a10b,"src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig13_last_token, drawn for README.md)"
+r3_last_token,gain2.q122,fixed_in_advance,claimed,,"the last token, twice the size (lenswrite): fixed in advance for qwen3.5-122b-a10b","src/bridge_jspace/figkit/data.py hollow(lowered_test=False) (as fig13_last_token, drawn for README.md)"
 f9_where,mid.0.q9,fixed_in_advance,claimed,,where in the prompt: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/writeup_appendix.py (as appB_f9_where, drawn for README.md)"
 f9_where,mid.1.q9,fixed_in_advance,claimed,,where in the prompt: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/writeup_appendix.py (as appB_f9_where, drawn for README.md)"
 f9_where,mid.2.q9,fixed_in_advance,claimed,,where in the prompt: the figkit figure drew no mark hollow,"src/bridge_jspace/figkit/writeup_appendix.py (as appB_f9_where, drawn for README.md)"

@@ -5,6 +5,7 @@ parameter, so the writer can switch to another."""
 from __future__ import annotations
 
 import csv
+import dataclasses
 import json
 import re
 from dataclasses import dataclass, field
@@ -12,8 +13,10 @@ from pathlib import Path
 
 import styles_plot as sp
 
+from bridge_jspace import figdata as W
+from bridge_jspace.figkit.writeup_sp_b import TWIN
 from bridge_jspace.figkit.writeup_sp_b import _width as _w
-from bridge_jspace.figkit.writeup_sp_base import vocab
+from bridge_jspace.figkit.writeup_sp_base import ZK, est, need, vocab
 
 
 @dataclass(frozen=True)
@@ -363,5 +366,55 @@ def setup_datasets() -> sp.Figure:
     return sp.Figure("setup_datasets", vocab(), direct_labels=True).add(sp.Schematic(y_ft + 0.3, el))
 
 
+# ---- Example 4: a conflict between passage and memory -----------------------------------------------------------------
+# the conflict set (jsuite_v5kc2) is not public: the item on the card is invented in the set's format, never a test item;
+# the numbers are the set's aggregates (data/figures/writeup/data.csv e06.*, scripts/writeup_data.py e06_rows)
+CONFLICT = {"passage": "The club's notes say Cervantes was Portuguese.", "question": "What was Cervantes's nationality?",
+            "false": "Portuguese", "real": "Spanish"}  # fmt: skip
+CONFLICT_TICK = "an answer absent from the scene"
+
+
+def _e06(key: str, cell: str, label: bool = True) -> dict:
+    return {m: est(need(W.w(f"e06.{key}.{ZK[m]}"), f"e06.{key}.{ZK[m]}"), f"{cell}.{ZK[m]}", key=f"e06.{key}.{ZK[m]}",
+                   label=label) for m in TWIN}  # fmt: skip
+
+
+def conflict_example() -> sp.Figure:
+    """An invented item in the conflict set's format, its two possible answers; the lens readout at the bridge split
+    by which source the answer follows (the remembered value teal, the passage's false value brick, an answer absent
+    from the scene as the grey tick); "according to the passage" against the plain question, and the lens part knocked
+    out against nothing removed (rotated grey), as changes in points."""
+    lh, y0 = 0.28, 0.2
+    el = [sp.Words(0.15, y0, [("Passage: … ", None, True), (CONFLICT["passage"], None), (" …", None)], verbatim=True),
+          sp.Words(0.15, y0 + lh, [("Question: ", None, True), (CONFLICT["question"], None)], verbatim=True),
+          sp.Words(0.15, y0 + 2 * lh, [(CONFLICT["false"], "answer", True)], verbatim=True),
+          sp.Words(0.15 + _w(CONFLICT["false"], True) + 0.08, y0 + 2 * lh, [("(the passage)", None)]),
+          sp.Words(2.6, y0 + 2 * lh, [(CONFLICT["real"], "lens", True)], verbatim=True),
+          sp.Words(2.6 + _w(CONFLICT["real"], True) + 0.08, y0 + 2 * lh, [("(memory)", None)]),
+          sp.Words(0.15, y0 + 3 * lh, [("an invented example; the conflict set is not public", None)])]  # fmt: skip
+    item = sp.Schematic(y0 + 3 * lh + 0.2, el)
+
+    # the colour words name the two answers above ("passage" brick, "memory" teal)
+    def wins(win, header):
+        tick = {m: e.value for m, e in _e06(f"{win}.absent", "bridge", label=False).items()}
+        return sp.DotColumn(header, "readout_share", (-4, 104), (0, 50, 100), ticks=tick,
+                            series=[sp.Series("answer", _e06(f"{win}.false", "bridge"), word="passage"),
+                                    sp.Series("lens", _e06(f"{win}.rem", "bridge"), word="memory")])  # fmt: skip
+
+    framing = sp.DotColumn("'according to the passage'", "readout_change", (-22, 45), (0, 20, 40),
+                           series=[sp.Series("lens", _e06("frame.bridge", "frame"), word="the bridge"),
+                                   sp.Series("answer", _e06("frame.answers", "frame"), word="answers")])  # fmt: skip
+    knock = sp.DotColumn("the lens part knocked out", "readout_change", (-22, 45), (0, 20, 40),
+                         series=[sp.Series("control", _e06("ko.rot", "ko", label=False), control="rotated"),
+                                 sp.Series("answer", _e06("ko.raw", "ko"), word="answers")],
+                         connect=("answer", "control"))  # fmt: skip
+    bridge = sp.DotTable(TWIN, [wins("passage", "when the passage wins"), sp.Gutter(), wins("memory", "when memory wins")],
+                         note="the lens readout at the bridge, plain question")  # fmt: skip
+    change = sp.DotTable(TWIN, [framing, sp.Gutter(), knock], note="change against the plain question, or with nothing removed")
+    v = dataclasses.replace(vocab(), key_tick=CONFLICT_TICK)
+    return sp.Figure("conflict_example", v,
+                     subtitle="method: J++ lens readout and knock-out · data: conflict set").add(item, bridge, change)  # fmt: skip
+
+
 FIGS = {"setup_twins": setup_twins, "setup_locker": setup_locker, "setup_patch": setup_patch,
-        "setup_knockout": setup_knockout, "setup_datasets": setup_datasets}
+        "setup_knockout": setup_knockout, "setup_datasets": setup_datasets, "conflict_example": conflict_example}

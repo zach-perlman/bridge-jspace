@@ -31,11 +31,15 @@ ORDER: dict[str, list[tuple[str, str]]] = {
                     "fig01_main_split", "fig02_datasets", "fig03_tools", "fig04_twin_set",
                     "fig05a_controls_band", "fig05b_controls_layer", "fig06_nine_models", "fig07_routes",
                     "fig08a_address_read_remove", "fig08b_address_swap_lens", "fig09_order", "fig10_answer_span",
-                    "fig11_orthogonal", "fig12_pointer", "fig13_last_token")),
+                    "fig11_orthogonal", "fig12_pointer", "fig14_bridge_readout")),
+                # Result 3's order (Dan, 13 Nov): pointer, readout at the bridge, Example 4 (a setup-style card, so
+                # e06), the answer position; file names keep their ids' numbers
+                ("setup", "conflict_example"), ("main", "fig13_last_token"),
                 *(("appendix", i) for i in (
                     "figA1_agents", "appB_f5_atoms", "appB_f14a_position_route", "appB_f14b_identity_route",
                     "appB_f9_where", "appB_f12_order", "appB_f8_facts", "appB_f8_directions", "appB_f15_link_crossover",
-                    "appB_f17_attention", "appB_f17b_heads", "appB_f18_code_tool", "appB_f19_six_lockers"))],
+                    "appB_f17_attention", "appB_f17b_heads", "appB_f18_code_tool", "appB_f19_six_lockers",
+                    "appB_f20_pointer_controls"))],
     "common/readme": [("main", i) for i in (
         "p0b_tools", "r1_c1_split", "r1_c1_gaps", "f2_controls", "f2_controls_layer", "f2_controls_more", "r4_pointer", "f5_atoms", "f6a_address_read_remove",
         "f6b_address_swap_lens", "r5_routes", "f10_sentence_order", "f14_two_codes", "f11_monitor", "r3_last_token",

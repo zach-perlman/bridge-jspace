@@ -89,12 +89,38 @@ def fig09() -> list[dict]:
 
 
 def fig12() -> list[dict]:
-    return [row("fig12_pointer", f"{cond}.{SHORT[m]}", "fixed_in_advance", "the pointer runs, fixed in advance",
+    # 13 Nov: own-word directions and rotated also in the appendix figure (the main figure keeps rotated, beside the
+    # neutral-sentence swap it rotates)
+    return [row(fig, f"{cond}.{SHORT[m]}", "fixed_in_advance", "the pointer runs, fixed in advance",
                 f"{README} Fig. 12 row (no post hoc mark)")
-            for m in TWIN for cond in ("swap", "neutral", "noown", "rot")] + [
+            for m in TWIN for fig, conds in (("fig12_pointer", ("swap", "neutral", "rot")),
+                                              ("appB_f20_pointer_controls", ("noown", "rot")))
+            for cond in conds] + [
         # the probe ceiling beside the lens swap on the same relations (brief 9 B, 12 Nov): as r4_pointer's probe cells
         row("fig12_pointer", f"probe.{key}.{SHORT[m]}", "fixed_in_advance", "the pointer runs and the probe's subspace",
             "src/bridge_jspace/figkit/exemplars.py r4_pointer") for m in TWIN for key in ("probe_pts", "swap_pts")]  # fmt: skip
+
+
+# Result 3's readout figures (brief 13 Nov): each note registered before its runs, on the three models it names
+N25 = "docs/breadth/prereg_replication_1022.md Amendment 58 note 25 (2026-10-29 ~17:30 UTC, before any run of it); journal docs/archive/EXPERIMENTS.md:284"
+N26 = "docs/breadth/prereg_replication_1022.md Amendment 59 note 26 (b), (c) (2026-10-29 ~18:45 UTC, before any run of it); journal :286"
+N30 = "docs/breadth/prereg_replication_1022.md Note 30 readings 2-4, rebuilt set note 30b (Amendment 61); journal :290, correction (2) :294"
+
+
+def readout_figs() -> list[dict]:
+    out = []
+    for m in TWIN:
+        k = SHORT[m]
+        out += [row("fig14_bridge_readout", f"{c}.{k}", "fixed_in_advance", what, src) for c, what, src in (
+            ("prime", "note 25: the remembered attribute by the question, paired scenes", N25),
+            ("said", "note 25: the made-up value at the bridge and at the final token", N25),
+            ("norel", "note 26 (b): no relation asked against the recall", N26),
+            ("cue", "note 26 (c): the cue word against the remembered attribute", N26))]  # fmt: skip
+        out += [row("conflict_example", f"{c}.{k}", "fixed_in_advance", what, N30) for c, what in (
+            ("bridge", "note 30 reading 3: the bridge by which source wins"),
+            ("frame", "note 30 reading 4: 'according to the passage' against the plain question"),
+            ("ko", "note 30 reading 2: the knock-out's passage-share shift (the raw shift, correction 2)"))]  # fmt: skip
+    return out
 
 
 def appB_f17() -> list[dict]:
@@ -139,6 +165,7 @@ def styles_plot_port() -> list[dict]:
         out.append(by_hollow("fig08b_address_swap_lens", f"swap.{k}", m, lowered=True, what="the address swap"))
         out.append(by_hollow("fig08b_address_swap_lens", f"lens.{k}", m, lowered=True, what="the lens rebuild"))
         out.append(by_hollow("fig13_last_token", f"last.{k}", m, what="the last token"))
+        out.append(by_hollow("fig13_last_token", f"gain2.{k}", m, what="the last token, twice the size (lenswrite)"))
         out.append(by_hollow("appB_f8_facts", f"facts.{k}", m, what="true and made-up facts"))
         out.append(fixed("appB_f8_directions", f"dirs.{k}", "more lens directions", f"{src}writeup_appendix.py"))
         for when in ("after", "before"):
@@ -244,7 +271,7 @@ CHAIN = f"{PREREG} Amendment 45 note 2 (Lightning's chain: gate, profile, knock-
 BREADTH = {  # (figure, cell prefix) -> the registration it cites
     ("fig01_main_split", "band."): CHAIN, ("r1_c1_split", "band."): CHAIN, ("key", "band."): CHAIN,
     ("fig05_controls", "band."): CHAIN, ("fig05a_controls_band", "band."): CHAIN, ("f2_controls", "band."): CHAIN,
-    ("fig12_pointer", ""): CHAIN, ("r4_pointer", ""): CHAIN,
+    ("fig12_pointer", ""): CHAIN, ("r4_pointer", ""): CHAIN, ("appB_f20_pointer_controls", ""): CHAIN,
     ("t12_two_by_two", "t12.2."): CHAIN, ("t12_two_by_two", "t12.3."): CHAIN,
     ("fig06_nine_models", ""): CHAIN, ("f3_nine_models", ""): CHAIN,
 }  # fmt: skip
@@ -731,7 +758,7 @@ def e5_address() -> list[dict]:
 
 
 def rows() -> list[dict]:
-    writeup = [*key(), *fig01(), *fig04(), *fig09(), *fig12(), *appB_f17(), *styles_plot_port()]
+    writeup = [*key(), *fig01(), *fig04(), *fig09(), *fig12(), *appB_f17(), *styles_plot_port(), *readout_figs()]
     writeup += unblocked_016(fig01(), depth_set(writeup) + depth_set_b())
     writeup += fig05_split(writeup) + f14_split(writeup)
     readme = readme_set(writeup)

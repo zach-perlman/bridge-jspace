@@ -2,12 +2,12 @@
  "styles_plot": "0.2.8",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "f5b1b664244a1a8362fb25ccdac282271cb9f23a7253b40a56c11087448f45c3",
+  "sha256": "d89a2b3538a3b8da17ef99dbf34f5ea0e28542bcc89edf7c42d71fb4046242be",
   "hash": "meaning"
  },
  "registry": {
   "path": "data/figures/status.csv",
-  "sha256": "ce64269a808fdf6f36fa61473041126d6ff5f9b0278cfecf218697f3ca223bba"
+  "sha256": "9a5190723177db83e8828f3ed87e5f5808085616f026f96639e4b1704c2e724a"
  },
  "figure": "fig12_pointer",
  "target": "post",
@@ -15,7 +15,7 @@
  "publishable": true,
  "text_only": false,
  "png": {
-  "pixels_sha256": "c0586c4fa34bf982a3787dc19179521466c49a0aed0c7ef0e4cafc124730136c",
+  "pixels_sha256": "ddf3c04000e6713c8a5d695ba4842279c1c6afa6acacf1cf58b5bde4efde8509",
   "dpi": 200
  },
  "roles": [
@@ -35,18 +35,6 @@
    "claim": "claimed"
   },
   "neutral.q9": {
-   "timing": "fixed_in_advance",
-   "claim": "claimed"
-  },
-  "noown.nl": {
-   "timing": "fixed_in_advance",
-   "claim": "claimed"
-  },
-  "noown.q27": {
-   "timing": "fixed_in_advance",
-   "claim": "claimed"
-  },
-  "noown.q9": {
    "timing": "fixed_in_advance",
    "claim": "claimed"
   },
@@ -126,6 +114,14 @@
   },
   {
    "kind": "dot",
+   "role": "control",
+   "cell": "rot.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
    "role": "lens",
    "cell": "neutral.q9",
    "timing": "fixed_in_advance",
@@ -134,8 +130,24 @@
   },
   {
    "kind": "dot",
+   "role": "control",
+   "cell": "rot.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
    "role": "lens",
    "cell": "neutral.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "rot.nl",
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
@@ -195,54 +207,6 @@
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "lens",
-   "cell": "noown.q9",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "lens",
-   "cell": "noown.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "lens",
-   "cell": "noown.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "rot.q9",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "rot.q27",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
-  },
-  {
-   "kind": "dot",
-   "role": "control",
-   "cell": "rot.nl",
-   "timing": "fixed_in_advance",
-   "claim": "claimed",
-   "hollow": false
   }
  ],
  "key": [
@@ -250,12 +214,6 @@
   "whiskers: 95% interval"
  ],
  "numbers": {
-  "ptr.q9.neutral_minus_swap": "+6.2",
-  "ptr.q9.neutral_minus_swap.interval": "[3.2, 8.9]",
-  "ptr.q27.neutral_minus_swap": "+6.0",
-  "ptr.q27.neutral_minus_swap.interval": "[3.3, 8.7]",
-  "ptr.nl.neutral_minus_swap": "+0.3",
-  "ptr.nl.neutral_minus_swap.interval": "[−2.4, 3.2]",
   "ptr.q9.swap": "63.5",
   "ptr.q27.swap": "64.0",
   "ptr.nl.swap": "45.8",
@@ -267,13 +225,7 @@
   "probe.q27.swap_pts": "74.8",
   "probe.q27.probe_pts": "8.3",
   "probe.nl.swap_pts": "62.4",
-  "probe.nl.probe_pts": "2.2",
-  "ptr.q9.noown_pts": "52.5",
-  "ptr.q27.noown_pts": "53.9",
-  "ptr.nl.noown_pts": "28.5",
-  "ptr.q9.rot_pts": "0.7",
-  "ptr.q27.rot_pts": "−0.8",
-  "ptr.nl.rot_pts": "−0.5"
+  "probe.nl.probe_pts": "2.2"
  },
  "problems": []
 }

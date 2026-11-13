@@ -2,12 +2,12 @@
  "styles_plot": "0.2.8",
  "vocab": {
   "project": "bridge-jspace",
-  "sha256": "f5b1b664244a1a8362fb25ccdac282271cb9f23a7253b40a56c11087448f45c3",
+  "sha256": "d89a2b3538a3b8da17ef99dbf34f5ea0e28542bcc89edf7c42d71fb4046242be",
   "hash": "meaning"
  },
  "registry": {
   "path": "data/figures/status.csv",
-  "sha256": "ce64269a808fdf6f36fa61473041126d6ff5f9b0278cfecf218697f3ca223bba"
+  "sha256": "9a5190723177db83e8828f3ed87e5f5808085616f026f96639e4b1704c2e724a"
  },
  "figure": "fig13_last_token",
  "target": "post",
@@ -15,7 +15,7 @@
  "publishable": true,
  "text_only": false,
  "png": {
-  "pixels_sha256": "00f270edb70196020072e7a941c0d8656686f6ef1d7d7503c130bbc82741d30e",
+  "pixels_sha256": "a31a63e7a8e9b43e6f57e8b437a6b250067fb671360d28bb325148dab054be40",
   "dpi": 200
  },
  "roles": [
@@ -23,9 +23,26 @@
   "recall"
  ],
  "controls": [
+  "a random part",
   "the whole state swapped in"
  ],
  "cells": {
+  "gain2.mu": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "gain2.nl": {
+   "timing": "post_hoc",
+   "claim": "claimed"
+  },
+  "gain2.q27": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
+  "gain2.q9": {
+   "timing": "fixed_in_advance",
+   "claim": "claimed"
+  },
   "last.mu": {
    "timing": "fixed_in_advance",
    "claim": "claimed"
@@ -167,10 +184,74 @@
    "timing": "fixed_in_advance",
    "claim": "claimed",
    "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "gain2.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "gain2.q9",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "gain2.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "gain2.q27",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "gain2.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "gain2.mu",
+   "timing": "fixed_in_advance",
+   "claim": "claimed",
+   "hollow": false
+  },
+  {
+   "kind": "dot",
+   "role": "control",
+   "cell": "gain2.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
+  },
+  {
+   "kind": "dot",
+   "role": "lens",
+   "cell": "gain2.nl",
+   "timing": "post_hoc",
+   "claim": "claimed",
+   "hollow": true
   }
  ],
  "key": [
-  "grey: the whole state swapped in",
+  "grey: a random part · the whole state swapped in",
   "whiskers: 95% interval",
   "○ post hoc"
  ],
@@ -184,7 +265,11 @@
   "fig13.read.q27": "0.95",
   "fig13.read.mu": "0.95",
   "fig13.read.nl": "0.98",
-  "fig13.read.q122": "0.91"
+  "fig13.read.q122": "0.91",
+  "fig13.gain2.lens.q9": "0.15",
+  "fig13.gain2.lens.q27": "0.03",
+  "fig13.gain2.lens.mu": "0.38",
+  "fig13.gain2.lens.nl": "0.56"
  },
  "problems": []
 }
